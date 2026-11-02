@@ -1,0 +1,25 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Type-check (includes react-router typegen) + lint + unit tests + build.
+      - run: npm run verify
+
+      # Design gates from AGENT §10: no gradients, no emoji, tokens only.
+      - run: node scripts/scan-design.mjs

@@ -146,9 +146,16 @@ export function CartDrawer() {
 
           <div className="mt-4 flex flex-col gap-2">
             <Link
-              to={`/${lang}/cart`}
+              to={`/${lang}/checkout`}
               onClick={cart.closeDrawer}
               className="flex min-h-11 items-center justify-center rounded-m bg-action text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+            >
+              {t("cart.checkout")}
+            </Link>
+            <Link
+              to={`/${lang}/cart`}
+              onClick={cart.closeDrawer}
+              className="flex min-h-11 items-center justify-center rounded-m border border-border text-[13px] font-extrabold text-text transition-colors duration-150 hover:bg-surface-tint"
             >
               {t("cart.viewCart")}
             </Link>

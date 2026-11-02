@@ -53,6 +53,7 @@ export default function BrandPage({ loaderData }: Route.ComponentProps) {
       ]}
       title={name}
       description={t("store.brand.productsFrom", { brand: name })}
+      wishedIds={data.wishedIds}
     />
   );
 }

@@ -35,9 +35,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
-  requireLang(params);
+  const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) return { ok: false as const, reason: "db" };
+  // Writes are is_admin()-gated in RLS, but the loader-only guard meant a
+  // non-admin POST surfaced a raw DB error instead of a 403.
+  await requirePanelAccess(client, lang, "admin", request);
   const form = await request.formData();
   const intent = String(form.get("intent"));
 

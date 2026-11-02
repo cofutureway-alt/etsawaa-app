@@ -7,7 +7,7 @@ import { SkeletonPage } from "~/components/ui/Skeleton";
 
 import {
   renderAdminInvoice, renderCarrierLabel, renderVendorLabel, renderVendorInvoice,
-  withCopies, type DocType,
+  withCopies, type DocType, type DocSettings,
 } from "~/features/orders/documents.server";
 
 /**
@@ -77,7 +77,22 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   }
 
   const url = new URL(request.url);
-  const copies = Math.max(1, Math.min(50, Number(url.searchParams.get("copies") ?? 1) || 1));
+  // settings['documents'] was written by /admin/document-settings but never
+  // read — every stored preference was dead configuration.
+  const { data: docRow } = await client
+    .from("settings")
+    .select("value")
+    .eq("key", "documents")
+    .maybeSingle();
+  const docSettings = (docRow?.value ?? {}) as DocSettings;
+  const copiesParam = url.searchParams.get("copies");
+  const copiesDefault = {
+    invoice_admin: docSettings.copies_invoice_admin,
+    label_carrier: docSettings.copies_label_carrier,
+    label_vendor: docSettings.copies_label_vendor,
+    invoice_vendor: docSettings.copies_invoice_vendor,
+  }[doc];
+  const copies = Math.max(1, Math.min(50, Number(copiesParam ?? copiesDefault) || 1));
   const piecesParam = url.searchParams.get("pieces");
   const vendorParam = url.searchParams.get("vendor") ?? "";
   const isAdmin = viewer.profile.role === "admin";
@@ -132,6 +147,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     lang: lang === "en" ? ("en" as const) : ("ar" as const),
     piecesOverride: piecesParam ? Math.max(1, Math.min(999, Number(piecesParam) || 1)) : null,
     categoryNames,
+    docSettings,
   };
 
   let html: string;

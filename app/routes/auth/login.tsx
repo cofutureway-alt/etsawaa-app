@@ -9,6 +9,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { loginSchema } from "~/features/auth/schemas";
 import { Button, Card, CardBody, Input, AlertIcon } from "~/components/ui";
 import { requireLang } from "~/lib/lang.server";
+import { safeNext } from "~/lib/auth/next";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
@@ -75,7 +76,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 
   const url = new URL(request.url);
   const next = url.searchParams.get("next");
-  const redirectTo = next && next.startsWith("/") ? next : `/${lang}/account`;
+  const redirectTo = safeNext(next, `/${lang}/account`);
   if (isDocumentPost) throw redirect(redirectTo, { headers });
   return data<LoginActionData>({ ok: true, redirectTo }, { headers });
 }

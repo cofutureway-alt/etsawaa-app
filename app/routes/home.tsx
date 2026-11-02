@@ -15,6 +15,7 @@ import { VendorCard } from "~/components/catalog/VendorCard";
 import { RecentStrip } from "~/components/catalog/RecentStrip";
 import { MediaImg } from "~/components/catalog/MediaImg";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { getViewer } from "~/lib/auth/guards";
 
 import {
   ChevronLeftIcon, ChevronRightIcon, GridIcon, ReceiptIcon,
@@ -32,15 +33,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     topRated: [] as ProductCard[],
     stores: [] as StoreCard[],
     event: null as ActiveEvent | null,
+    viewerId: null as string | null,
   };
   if (!client) return empty;
+  // A DB failure must surface as an error page, not an empty-looking storefront
+  // (the old .catch(() => []) made an outage indistinguishable from no products).
   const [banners, categories, featured, topRated, stores, event] = await Promise.all([
-    getBanners(client).catch(() => []),
-    getCategories(client).catch(() => []),
-    getFeaturedProducts(client).catch(() => []),
-    getTopRatedProducts(client).catch(() => []),
-    getFeaturedStores(client).catch(() => []),
-    getActiveEvent(client).catch(() => null),
+    getBanners(client),
+    getCategories(client),
+    getFeaturedProducts(client),
+    getTopRatedProducts(client),
+    getFeaturedStores(client),
+    getActiveEvent(client),
   ]);
   // warm the same-origin media cache with the LCP banner while the HTML
   // streams — the browser's image request lands on a hot cache
@@ -50,7 +54,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     // stripped → warmMedia is optional-chained to a no-op
     void import("~/lib/media-cache.server").then((m) => m.warmMedia?.(firstBanner)).catch(() => undefined);
   }
-  return { lang, banners, categories, featured, topRated, stores, event };
+  // RecentStrip needs the real viewer so signed-in users see the DB-backed
+  // history, not the guest localStorage strip.
+  const { viewer } = (await getViewer(client)) ?? { viewer: null };
+  return {
+    lang, banners, categories, featured, topRated, stores, event,
+    viewerId: viewer?.user.id ?? null,
+  };
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {
@@ -346,7 +356,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       ) : null}
 
       {/* You viewed before (guest localStorage / account DB) */}
-      <RecentStrip lang={lang} viewerId={null} />
+      <RecentStrip lang={lang} viewerId={loaderData.viewerId} />
 
       {/* The odd-sized banner sits alone as the final section above the footer */}
       <section

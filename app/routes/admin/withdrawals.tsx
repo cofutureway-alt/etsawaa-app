@@ -74,7 +74,12 @@ export async function action({ request, params }: Route.ActionArgs) {
   const form = await request.formData();
   const id = String(form.get("id") ?? "");
   const decision = String(form.get("decision") ?? "");
-  const { data: res, error } = await client.rpc("fn_admin_withdrawal_decision", { p_id: id, p_decision: decision });
+  const reason = String(form.get("reason") ?? "").trim();
+  const { data: res, error } = await client.rpc("fn_admin_withdrawal_decision", {
+    p_id: id,
+    p_decision: decision,
+    p_reason: reason || null,
+  });
   if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
   const r = res as { ok: boolean; reason?: string };
   return r.ok ? { ok: true as const } : data({ ok: false, reason: r.reason }, { status: 400 });

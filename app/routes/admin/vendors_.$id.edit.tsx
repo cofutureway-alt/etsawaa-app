@@ -65,7 +65,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     .select("id, source, status, started_at, ends_at, ad_packages(name_ar, name_en)")
     .eq("vendor_id", id).order("created_at", { ascending: false }).limit(10);
   const docs = await client.from("vendor_documents")
-    .select("id, doc_type, file_path, created_at").eq("vendor_id", id);
+    .select("id, type, path, status, review_note, created_at").eq("vendor_id", id);
 
   const row = v as unknown as Record<string, unknown>;
   const lvl = row.vendor_levels as { name_ar: string; name_en: string } | null;
@@ -91,7 +91,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     penalties: JSON.parse(JSON.stringify(pen.data ?? [])) as Array<{ id: string; amount_piastres: number; reason: string; status: string; created_at: string }>,
     wallet: JSON.parse(JSON.stringify(wallet.data ?? null)) as { available_piastres: number; pending_piastres: number } | null,
     ads: JSON.parse(JSON.stringify(ads.data ?? [])) as Array<{ id: string; source: string; status: string; started_at: string; ends_at: string; ad_packages: { name_ar: string; name_en: string } | null }>,
-    docs: JSON.parse(JSON.stringify(docs.data ?? [])) as Array<{ id: string; doc_type: string; file_path: string; created_at: string }>,
+    docs: JSON.parse(JSON.stringify(docs.data ?? [])) as Array<{ id: string; type: string; path: string; status: string; review_note: string | null; created_at: string }>,
   };
 }
 
@@ -460,8 +460,13 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 <ul className="flex flex-col gap-1 text-[13px] text-text">
                   {loaderData.docs.map((d) => (
                     <li key={d.id} className="flex items-center justify-between gap-2">
-                      <span>{t(`onboarding.doc_${d.doc_type}`)}</span>
-                      <span className="text-xs text-text-muted" dir="ltr">{d.created_at.slice(0, 10)}</span>
+                      <span>{t(`onboarding.doc_${d.type}`)}</span>
+                      <span className="flex items-center gap-2">
+                        <Badge tone={d.status === "verified" ? "success" : d.status === "rejected" ? "danger" : "warning"}>
+                          {t(`ve.docStatus_${d.status}`)}
+                        </Badge>
+                        <span className="text-xs text-text-muted" dir="ltr">{d.created_at.slice(0, 10)}</span>
+                      </span>
                       {/* never expose raw storage URLs — admin sees the reference only;
                           document bodies stream via the signed-URL flow (AGENT §12) */}
                     </li>

@@ -54,6 +54,8 @@ const BASE_CSS = `
     border: 8px solid rgba(0,0,0,0.08); border-radius: 24px; padding: 0 48px;
   }
   .copy-note { margin-top: 8px; font-size: 10px; color: #737373; }
+  .doc-footer { margin-top: 10px; padding-top: 6px; border-top: 1px solid #d4d4d4; font-size: 10px; color: #525252; text-align: center; }
+  .doc-logo { display: block; max-height: 12mm; width: auto; margin-bottom: 3px; }
   /* the Code128 barcode block lives INSIDE the sheet, width-contained */
   .barcode { width: 70mm; max-width: 100%; }
   .barcode svg { display: block; width: 100%; height: auto; }
@@ -109,23 +111,34 @@ function money(piastres: number, lang: "ar" | "en"): string {
 const esc = (s: string): string =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-function head(lang: "ar" | "en"): string {
+function head(lang: "ar" | "en", settings?: DocSettings): string {
+  const custom = lang === "ar" ? settings?.header_ar : settings?.header_en;
+  const logo = settings?.logo_path
+    ? `<img class="doc-logo" src="/api/media?path=${encodeURIComponent(settings.logo_path)}" alt="" />`
+    : "";
+  if (custom) return `<div class="brand">${logo}${esc(custom)}</div>`;
   return lang === "ar"
-    ? `<div class="brand">اتسوء<small>etsawaa.com — سوقك المصري متعدد البائعين</small></div>`
-    : `<div class="brand">Etsawaa<small>etsawaa.com — Egypt's multi-vendor marketplace</small></div>`;
+    ? `<div class="brand">${logo}اتسوء<small>etsawaa.com — سوقك المصري متعدد البائعين</small></div>`
+    : `<div class="brand">${logo}Etsawaa<small>etsawaa.com — Egypt's multi-vendor marketplace</small></div>`;
 }
 
-function watermarkIf(order: OrderRow, lang: "ar" | "en"): string {
+function footer(lang: "ar" | "en", settings?: DocSettings): string {
+  const text = lang === "ar" ? settings?.footer_ar : settings?.footer_en;
+  return text ? `<div class="doc-footer">${esc(text)}</div>` : "";
+}
+
+function watermarkIf(order: OrderRow, lang: "ar" | "en", settings?: DocSettings): string {
   if (order.status !== "cancelled") return "";
-  return `<div class="watermark" aria-hidden="true"><span>${lang === "ar" ? "ملغي" : "CANCELLED"}</span></div>`;
+  const custom = settings?.watermark_cancelled;
+  return `<div class="watermark" aria-hidden="true"><span>${esc(custom || (lang === "ar" ? "ملغي" : "CANCELLED"))}</span></div>`;
 }
 
-async function code128Svg(text: string): Promise<string> {
+async function code128Svg(text: string, heightMm = 14): Promise<string> {
   const svg = await bwipjs.toSVG({
     bcid: "code128",
     text,
     scale: 3,          // 100% print scale target: ~2.5px/module at 96dpi
-    height: 14,        // mm
+    height: heightMm,  // mm
     includetext: true,
     textxalign: "center",
     textsize: 10,
@@ -169,6 +182,27 @@ export interface DocInput {
   piecesOverride?: number | null; // carrier label: editable pieces at print
   /** Resolved leaf-category display names for the label. */
   categoryNames?: string[];
+  /** settings['documents'] — header/footer/logo/watermark/barcode height. */
+  docSettings?: DocSettings;
+}
+
+export interface DocSettings {
+  copies_invoice_admin?: number;
+  copies_invoice_vendor?: number;
+  copies_label_carrier?: number;
+  copies_label_vendor?: number;
+  paper_invoice?: string;
+  paper_label?: string;
+  terms_ar?: string;
+  terms_en?: string;
+  header_ar?: string;
+  header_en?: string;
+  footer_ar?: string;
+  footer_en?: string;
+  logo_path?: string;
+  watermark_cancelled?: string;
+  barcode_height_mm?: number;
+  show_commission?: boolean;
 }
 
 /* ---------------------------------------------------------------------------
@@ -176,7 +210,7 @@ export interface DocInput {
    payment method — those lines only (AGENT §28).
 --------------------------------------------------------------------------- */
 export function renderAdminInvoice(input: DocInput): string {
-  const { order, groups, items, governorate, area, lang } = input;
+  const { order, groups, items, governorate, area, lang, docSettings } = input;
   const ar = lang === "ar";
   const dir = ar ? "rtl" : "ltr";
   const L = {
@@ -225,9 +259,9 @@ export function renderAdminInvoice(input: DocInput): string {
 
   return `<!doctype html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8"><title>${L.no} ${esc(order.number)}</title>${FONT_LINK}<style>${BASE_CSS}${PAGE_CSS.a4}</style></head><body>
   ${PRINT_BAR(lang)}
-  <div class="sheet sheet-a4">${watermarkIf(order, lang)}
+  <div class="sheet sheet-a4">${watermarkIf(order, lang, docSettings)}
     <div class="doc-head">
-      ${head(lang)}
+      ${head(lang, docSettings)}
       <div style="text-align:${ar ? "left" : "right"};font-size:12px;">
         <p><strong>${L.no}:</strong> <span class="num">${esc(order.number)}</span></p>
         <p><strong>${L.date}:</strong> <span class="num" dir="ltr">${docDate(order.created_at)}</span></p>
@@ -246,7 +280,7 @@ export function renderAdminInvoice(input: DocInput): string {
         <tr><td class="grand">${L.grand}</td><td class="num grand">${money(order.total_piastres, lang)}</td></tr>
       </tbody>
     </table>
-    <p class="copy-note">${L.copyNote}</p>
+    <p class="copy-note">${L.copyNote}</p>${footer(lang, docSettings)}
   </div></body></html>`;
 }
 
@@ -255,7 +289,7 @@ export function renderAdminInvoice(input: DocInput): string {
    of the shipment number + pieces count (auto = total qty, editable at print).
 --------------------------------------------------------------------------- */
 export async function renderCarrierLabel(input: DocInput): Promise<string> {
-  const { order, governorate, area, lang, piecesOverride } = input;
+  const { order, governorate, area, lang, piecesOverride, docSettings } = input;
   const ar = lang === "ar";
   const dir = ar ? "rtl" : "ltr";
   const pieces = piecesOverride ?? input.items.reduce((s, i) => s + i.qty, 0);
@@ -287,7 +321,7 @@ export async function renderCarrierLabel(input: DocInput): Promise<string> {
   }
 
   const categoryNames = input.categoryNames ?? [];
-  const barcode = await code128Svg(order.number);
+  const barcode = await code128Svg(order.number, docSettings?.barcode_height_mm);
   // L-20 — QR of the maps pin placed beside the Code128 (empty when the
   // customer did not drop a pin; vendor labels never carry either)
   const qr = await mapsQrSvg(order);
@@ -296,7 +330,7 @@ export async function renderCarrierLabel(input: DocInput): Promise<string> {
   ${PRINT_BAR(lang)}
   <div class="sheet sheet-a5">
     <div class="doc-head">
-      ${head(lang)}
+      ${head(lang, docSettings)}
       <div style="text-align:${ar ? "left" : "right"};font-size:12px;">
         <p><strong>${L.shipment}:</strong> <span class="num" style="font-weight:900;font-size:15px;" dir="ltr">${esc(order.number)}</span></p>
         <p><strong>${L.date}:</strong> <span class="num" dir="ltr">${docDate(order.created_at)}</span></p>
@@ -332,7 +366,7 @@ export async function renderCarrierLabel(input: DocInput): Promise<string> {
    barcode), customer NAME only (no phone/address), own items, shipping "—".
 --------------------------------------------------------------------------- */
 export function renderVendorLabel(input: DocInput, group: GroupRow): string {
-  const { order, lang } = input;
+  const { order, lang, docSettings } = input;
   const ar = lang === "ar";
   const dir = ar ? "rtl" : "ltr";
   const own = input.items.filter((i) => i.group_id === group.id);
@@ -354,9 +388,9 @@ export function renderVendorLabel(input: DocInput, group: GroupRow): string {
 
   return `<!doctype html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8"><title>${L.shipment} ${esc(order.number)}</title>${FONT_LINK}<style>${BASE_CSS}${PAGE_CSS.a5}</style></head><body>
   ${PRINT_BAR(lang)}
-  <div class="sheet sheet-a5">${watermarkIf(order, lang)}
+  <div class="sheet sheet-a5">${watermarkIf(order, lang, docSettings)}
     <div class="doc-head">
-      ${head(lang)}
+      ${head(lang, docSettings)}
       <div style="text-align:${ar ? "left" : "right"};font-size:12px;">
         <p><strong>${L.shipment}:</strong> <span class="num" style="font-weight:900;font-size:15px;">${esc(order.number)}</span></p>
         <p><strong>${L.date}:</strong> <span class="num" dir="ltr">${docDate(order.created_at)}</span></p>
@@ -381,7 +415,7 @@ export function renderVendorLabel(input: DocInput, group: GroupRow): string {
         </tbody>
       </table>
     </div>
-    <p class="copy-note">${ar ? "نسخة البائع — لا تتضمن بيانات التواصل أو العنوان" : "Vendor copy — no contact data or address"}</p>
+    <p class="copy-note">${ar ? "نسخة البائع — لا تتضمن بيانات التواصل أو العنوان" : "Vendor copy — no contact data or address"}</p>${footer(lang, docSettings)}
   </div></body></html>`;
 }
 
@@ -390,7 +424,7 @@ export function renderVendorLabel(input: DocInput, group: GroupRow): string {
    contact data; no other vendors' amounts; no commission unless enabled.
 --------------------------------------------------------------------------- */
 export function renderVendorInvoice(input: DocInput, group: GroupRow): string {
-  const { order, lang } = input;
+  const { order, lang, docSettings } = input;
   const ar = lang === "ar";
   const dir = ar ? "rtl" : "ltr";
   const own = input.items.filter((i) => i.group_id === group.id);
@@ -411,9 +445,9 @@ export function renderVendorInvoice(input: DocInput, group: GroupRow): string {
 
   return `<!doctype html><html lang="${lang}" dir="${dir}"><head><meta charset="utf-8"><title>${L.shipment} ${esc(order.number)}</title>${FONT_LINK}<style>${BASE_CSS}${PAGE_CSS.a4}</style></head><body>
   ${PRINT_BAR(lang)}
-  <div class="sheet sheet-a4">${watermarkIf(order, lang)}
+  <div class="sheet sheet-a4">${watermarkIf(order, lang, docSettings)}
     <div class="doc-head">
-      ${head(lang)}
+      ${head(lang, docSettings)}
       <div style="text-align:${ar ? "left" : "right"};font-size:12px;">
         <p><strong>${L.shipment}:</strong> <span class="num">${esc(order.number)}</span></p>
         <p><strong>${L.date}:</strong> <span class="num" dir="ltr">${docDate(order.created_at)}</span></p>
@@ -441,7 +475,7 @@ export function renderVendorInvoice(input: DocInput, group: GroupRow): string {
         <tr><td>${L.shipping}</td><td class="num" style="font-weight:900;">—</td></tr>
       </tbody>
     </table>
-    <p class="copy-note">${ar ? "نسخة البائع — مبالغ هذا البائع فقط، بدون عمولة المنصة أو بيانات التواصل" : "Vendor copy — this vendor's amounts only, no platform commission or contact data"}</p>
+    <p class="copy-note">${ar ? "نسخة البائع — مبالغ هذا البائع فقط، بدون عمولة المنصة أو بيانات التواصل" : "Vendor copy — this vendor's amounts only, no platform commission or contact data"}</p>${footer(lang, docSettings)}
   </div></body></html>`;
 }
 

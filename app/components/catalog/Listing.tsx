@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Drawer } from "~/components/ui/Overlay";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { Breadcrumbs, type Crumb } from "~/components/ui/Breadcrumbs";
-import { ChevronLeftIcon, ChevronRightIcon, FilterIcon } from "~/components/ui/icons";
+import { Pagination } from "~/components/ui/Pagination";
+import { FilterIcon } from "~/components/ui/icons";
 import type { SearchResult } from "~/features/storefront/api";
 import type { FacetDef, FilterState } from "./FacetPanel";
 import { FacetPanel } from "./FacetPanel";
@@ -180,10 +181,7 @@ export function Listing({
                 page={result.page}
                 perPage={result.per_page}
                 total={result.total}
-                state={state}
-                defs={defs}
-                basePath={basePath}
-                lang={lang}
+                hrefFor={(p) => `${basePath}${buildListingQuery({ ...state, page: p }, defs)}`}
               />
             </>
           )}
@@ -216,72 +214,3 @@ export function Listing({
   );
 }
 
-function Pagination({
-  page,
-  perPage,
-  total,
-  state,
-  defs,
-  basePath,
-  lang,
-}: {
-  page: number;
-  perPage: number;
-  total: number;
-  state: FilterState;
-  defs: FacetDef[];
-  basePath: string;
-  lang: string;
-}) {
-  const { t } = useTranslation();
-  const pages = Math.max(1, Math.ceil(total / perPage));
-  if (pages <= 1) return null;
-
-  const pageHref = (p: number) => `${basePath}${buildListingQuery({ ...state, page: p }, defs)}`;
-  const windowStart = Math.max(1, Math.min(page - 2, pages - 4));
-  const windowEnd = Math.min(pages, windowStart + 4);
-  const items: number[] = [];
-  for (let p = windowStart; p <= windowEnd; p += 1) items.push(p);
-
-  return (
-    <nav aria-label={t("store.listing.pagination")} className="mt-5 flex items-center justify-center gap-1.5">
-      {page > 1 ? (
-        <Link
-          to={pageHref(page - 1)}
-          rel="prev"
-          aria-label={t("common.back")}
-          className="flex size-10 items-center justify-center rounded-m border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
-        >
-          <ChevronRightIcon aria-hidden="true" className="mirr" />
-        </Link>
-      ) : null}
-      {items.map((p) => (
-        <Link
-          key={p}
-          to={pageHref(p)}
-          aria-current={p === page ? "page" : undefined}
-          aria-label={t("store.listing.pageN", { page: p })}
-          className={`num flex size-10 items-center justify-center rounded-m border text-[13px] font-bold transition-colors duration-150 ${
-            p === page
-              ? "border-action bg-action text-on-action"
-              : "border-border bg-surface text-text hover:bg-surface-tint"
-          }`}
-        >
-          {p}
-        </Link>
-      ))}
-      {page < pages ? (
-        <Link
-          to={pageHref(page + 1)}
-          rel="next"
-          aria-label={t("common.next")}
-          className="flex size-10 items-center justify-center rounded-m border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
-        >
-          <ChevronLeftIcon aria-hidden="true" className="mirr" />
-        </Link>
-      ) : null}
-      <span className="num sr-only">{t("store.listing.pageOf", { page, total: pages })}</span>
-      <span className="sr-only" lang={lang} />
-    </nav>
-  );
-}

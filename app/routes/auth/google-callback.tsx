@@ -3,40 +3,46 @@ import type { Route } from "./+types/google-callback";
 import { redirect, useNavigate } from "react-router";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requireLang } from "~/lib/lang.server";
+import { safeNext } from "~/lib/auth/next";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
-  const { client } = createSupabaseServerClient(request);
-  if (!client) return redirect(`/${lang}/auth/login?error=db`);
+  const { client, headers } = createSupabaseServerClient(request);
+  if (!client) return redirect(`/${lang}/auth/login?error=db`, { headers });
 
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const oauthError = url.searchParams.get("error_description") ?? url.searchParams.get("error");
   if (oauthError) {
     // User canceled the popup or provider refused — return calmly (US-03 edge).
-    return redirect(`/${lang}/auth/login?error=oauth_cancelled`);
+    return redirect(`/${lang}/auth/login?error=oauth_cancelled`, { headers });
   }
-  if (!code) return redirect(`/${lang}/auth/login?error=oauth_cancelled`);
+  if (!code) return redirect(`/${lang}/auth/login?error=oauth_cancelled`, { headers });
 
+  // exchangeCodeForSession mints the session cookies into `headers` — they must
+  // ride on every redirect below or the user lands signed-out.
   const { error } = await client.auth.exchangeCodeForSession(code);
-  if (error) return redirect(`/${lang}/auth/login?error=oauth_failed`);
+  if (error) return redirect(`/${lang}/auth/login?error=oauth_failed`, { headers });
 
   // F-12 rule: new Google users must add a phone + accept terms once.
   const { data: userData } = await client.auth.getUser();
   const userId = userData?.user?.id;
-  if (!userId) return redirect(`/${lang}/auth/login?error=oauth_failed`);
+  if (!userId) return redirect(`/${lang}/auth/login?error=oauth_failed`, { headers });
   const { data: profile } = await client
     .from("profiles")
     .select("phone")
     .eq("id", userId)
     .single();
-  const next = url.searchParams.get("next");
+  const next = safeNext(url.searchParams.get("next"), "");
   if (!profile?.phone) {
-    return redirect(`/${lang}/auth/complete${next ? `?next=${encodeURIComponent(next)}` : ""}`);
+    return redirect(
+      `/${lang}/auth/complete${next ? `?next=${encodeURIComponent(next)}` : ""}`,
+      { headers },
+    );
   }
-  return redirect(next && next.startsWith("/") ? next : `/${lang}/account`);
+  return redirect(next || `/${lang}/account`, { headers });
 }
 
 /** The loader always redirects; this screen only shows during hydration edge cases. */

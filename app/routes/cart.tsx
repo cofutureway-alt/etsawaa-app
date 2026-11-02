@@ -329,14 +329,12 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
 
           {/* checkout gate (JOURNEYS §1.6): account creation is forced */}
           {loaderData.signedIn ? (
-            <button
-              type="button"
-              disabled
-              title={t("cart.checkoutNextPhase")}
-              className="flex min-h-11 cursor-not-allowed items-center justify-center rounded-m bg-action text-sm font-extrabold text-on-action opacity-60"
+            <Link
+              to={`/${lang}/checkout`}
+              className="flex min-h-11 items-center justify-center rounded-m bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.checkout")}
-            </button>
+            </Link>
           ) : (
             <Link
               to={`/${lang}/auth/register?next=${encodeURIComponent(`/${lang}/cart`)}`}

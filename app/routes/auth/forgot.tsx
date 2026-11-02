@@ -18,10 +18,14 @@ const resetCodeSchema = resetPasswordSchema.extend({ token: otpCodeSchema });
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
-  const { client } = createSupabaseServerClient(request);
-  if (!client) return { lang, recovery: false, recoveryError: "db_not_connected" as const };
+  const { client, headers } = createSupabaseServerClient(request);
+  if (!client) {
+    return data({ lang, recovery: false, recoveryError: "db_not_connected" as const }, { headers });
+  }
 
   // Email-link path: Supabase appends token_hash&type=recovery to redirectTo.
+  // verifyOtp mints the recovery session — the Set-Cookie in `headers` is what
+  // lets reset_new actually update the password, so it must be returned.
   const url = new URL(request.url);
   const tokenHash = url.searchParams.get("token_hash");
   if (tokenHash) {
@@ -29,9 +33,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       token_hash: tokenHash,
       type: "recovery",
     });
-    return { lang, recovery: !error, recoveryError: error ? ("recovery_failed" as const) : undefined };
+    return data(
+      { lang, recovery: !error, recoveryError: error ? ("recovery_failed" as const) : undefined },
+      { headers },
+    );
   }
-  return { lang, recovery: false };
+  return data({ lang, recovery: false }, { headers });
 }
 
 type ForgotActionData =

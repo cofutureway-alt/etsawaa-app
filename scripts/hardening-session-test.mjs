@@ -13,7 +13,7 @@ const OUT = "evidence/phase-08.5/session-test.json";
 fs.mkdirSync("evidence/phase-08.5", { recursive: true });
 
 // ---- login like the browser (POST form) → capture REAL cookie
-const form = new URLSearchParams({ identifier: "process.env.TEST_ADMIN_EMAIL ?? """, password: "process.env.TEST_ADMIN_PASSWORD ?? """ });
+const form = new URLSearchParams({ identifier: process.env.TEST_ADMIN_EMAIL ?? "", password: process.env.TEST_ADMIN_PASSWORD ?? "" });
 const loginRes = await fetch(`${BASE}/ar/auth/login`, {
   method: "POST", body: form,
   headers: { "Content-Type": "application/x-www-form-urlencoded" }, redirect: "manual",

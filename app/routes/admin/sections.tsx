@@ -20,7 +20,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
  */
 
 type SectionKey =
-  | "general" | "login" | "vendors" | "verification" | "financial" | "withdrawals"
+  | "general" | "login" | "vendors" | "verification" | "financial" | "wallet"
   | "payments" | "policies" | "seo" | "notifications" | "emails";
 
 const SECTIONS: Array<{ key: SectionKey; i18n: string }> = [
@@ -29,7 +29,7 @@ const SECTIONS: Array<{ key: SectionKey; i18n: string }> = [
   { key: "vendors", i18n: "st.sec_vendors" },
   { key: "verification", i18n: "st.sec_verification" },
   { key: "financial", i18n: "st.sec_financial" },
-  { key: "withdrawals", i18n: "st.sec_withdrawals" },
+  { key: "wallet", i18n: "st.sec_withdrawals" },
   { key: "payments", i18n: "st.sec_payments" },
   { key: "policies", i18n: "st.sec_policies" },
   { key: "seo", i18n: "st.sec_seo" },
@@ -38,7 +38,7 @@ const SECTIONS: Array<{ key: SectionKey; i18n: string }> = [
 ];
 
 const NUMERIC_FIELDS: Partial<Record<SectionKey, string[]>> = {
-  withdrawals: ["min_withdrawal_piastres", "hold_days"],
+  wallet: ["min_withdrawal_piastres", "hold_days"],
   payments: ["cod_max_total_piastres"],
   verification: ["grace_value", "max_document_mb"],
   financial: ["default_commission_percent"],
@@ -141,7 +141,7 @@ export default function AdminSettingsSections({ loaderData }: Route.ComponentPro
             {t("st.showCustomer")}
           </label>
           <label className="flex items-center gap-2 text-[13px] font-bold text-text">
-            <input type="checkbox" name="f_vendor_registration" defaultChecked={isOn("general", "vendor_registration")} className={BOOL} />
+            <input type="checkbox" name="f_vendor_registration_enabled" defaultChecked={isOn("site.general", "vendor_registration_enabled")} className={BOOL} />
             {t("st.vendorRegistration")}
           </label>
           <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
@@ -238,15 +238,17 @@ export default function AdminSettingsSections({ loaderData }: Route.ComponentPro
         </SectionCard>
 
         {/* 7) WITHDRAWALS */}
-        <SectionCard section="withdrawals" title={t("st.sec_withdrawals")}>
+        {/* fn_request_withdrawal reads settings key `wallet`; this card used to
+            write `withdrawals`, so the minimum never took effect. */}
+        <SectionCard section="wallet" title={t("st.sec_withdrawals")}>
           <div className="grid grid-cols-2 gap-2">
             <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
               {t("st.minWithdrawal")}
-              <input name="f_min_withdrawal_piastres" type="number" min={0} defaultValue={get("withdrawals", "min_withdrawal_piastres", "5000")} dir="ltr" className={INPUT} />
+              <input name="f_min_withdrawal_piastres" type="number" min={0} defaultValue={get("wallet", "min_withdrawal_piastres", "5000")} dir="ltr" className={INPUT} />
             </label>
             <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
               {t("st.holdDays")}
-              <input name="f_hold_days" type="number" min={0} defaultValue={get("withdrawals", "hold_days", "14")} dir="ltr" className={INPUT} />
+              <input name="f_hold_days" type="number" min={0} defaultValue={get("wallet", "hold_days", "14")} dir="ltr" className={INPUT} />
             </label>
           </div>
           <label className="flex flex-col gap-1 text-[13px] font-bold text-text">

@@ -7,8 +7,8 @@ import { otpCodeSchema } from "~/features/auth/schemas";
 import { resendSecondsLeft } from "~/features/auth/otp";
 import { Button, Card, CardBody, AlertIcon } from "~/components/ui";
 import { requireLang } from "~/lib/lang.server";
+import { safeNext } from "~/lib/auth/next";
 import { getSupabaseAdminClient } from "~/lib/supabase/admin";
-import { sendEmail } from "~/lib/email/server";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
@@ -20,14 +20,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const tokenHash = url.searchParams.get("token_hash");
   const linkType = url.searchParams.get("type");
   if (tokenHash && (linkType === "signup" || linkType === "email_change")) {
-    const { client } = createSupabaseServerClient(request);
+    const { client, headers } = createSupabaseServerClient(request);
     if (client) {
+      // verifyOtp mints the session cookies; they must ride the redirect.
       const { error } = await client.auth.verifyOtp({
         token_hash: tokenHash,
         type: linkType === "email_change" ? "email_change" : "signup",
       });
       if (!error) {
-        throw redirect(linkType === "email_change" ? `/${lang}/account/profile?email=changed` : `/${lang}/account`);
+        throw redirect(
+          linkType === "email_change" ? `/${lang}/account/profile?email=changed` : `/${lang}/account`,
+          { headers },
+        );
       }
     }
   }
@@ -94,7 +98,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   // Vendor funnel (phase 03): the signup metadata carries the intent —
   // promotion happens server-side right after the OTP, so the fresh vendor
   // lands on the forced onboarding wizard and nowhere else (US-01).
-  let effectiveNext = next && next.startsWith("/") ? next : `/${lang}/account`;
+  let effectiveNext = safeNext(next, `/${lang}/account`);
   const { data: userData } = await client.auth.getUser();
   if (userData?.user?.user_metadata?.signup_intent === "vendor") {
     const admin = getSupabaseAdminClient();
@@ -104,12 +108,8 @@ export async function action({ request, params }: Route.ActionArgs) {
     if (!next) effectiveNext = `/${lang}/vendor/onboarding`;
   }
 
-  void sendEmail(getSupabaseAdminClient(), {
-    to: email,
-    templateKey: "welcome",
-    locale: lang === "en" ? "en" : "ar",
-    variables: { name: "", site_name: lang === "ar" ? "اتسوء" : "Etsawaa", site_url: url.origin },
-  }).catch(() => undefined);
+  // Welcome email is sent once, at register (it carries the real first name).
+  // Re-sending here duplicated it with an empty {{name}}.
 
   const redirectTo = effectiveNext;
   if (request.headers.get("sec-fetch-mode") === "navigate") {
@@ -130,7 +130,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
 
   const [digits, setDigits] = useState<string[]>(Array(6).fill(""));
-  const [cooldownStart] = useState(() => Date.now());
+  const [cooldownStart, setCooldownStart] = useState(() => Date.now());
   const [secondsLeft, setSecondsLeft] = useState(() => resendSecondsLeft(cooldownStart, Date.now()));
   const cellsRef = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -138,6 +138,15 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
     const timer = window.setInterval(() => setSecondsLeft(resendSecondsLeft(cooldownStart, Date.now())), 500);
     return () => window.clearInterval(timer);
   }, [cooldownStart]);
+
+  // Re-arm the 60s throttle after a successful resend. Previously the start
+  // time was fixed at mount, so once it hit 0 the button stayed enabled forever
+  // and only Supabase's rate limiter stood in the way.
+  useEffect(() => {
+    if (resendFetcher.state === "idle" && resendFetcher.data && "ok" in resendFetcher.data && resendFetcher.data.ok) {
+      setCooldownStart(Date.now());
+    }
+  }, [resendFetcher.state, resendFetcher.data]);
 
   const token = useMemo(() => digits.join(""), [digits]);
   const canSubmit = token.length === 6;

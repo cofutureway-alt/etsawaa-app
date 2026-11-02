@@ -312,7 +312,10 @@ export async function listStores(client: SupabaseClient, opts: { featuredOnly?: 
 export async function getStoreBySlug(client: SupabaseClient, slug: string): Promise<StoreCard | null> {
   const { data, error } = await client.from("v_storefront_stores").select("*").eq("slug", slug).limit(1);
   if (error) throw new Error(error.message);
-  return (data?.[0] as StoreCard | undefined) ?? null;
+  const store = (data?.[0] as StoreCard | undefined) ?? null;
+  // A store hidden from listings must not be reachable by direct URL either.
+  if (!store || store.is_listable === false) return null;
+  return store;
 }
 
 export async function listBrands(client: SupabaseClient): Promise<BrandCard[]> {

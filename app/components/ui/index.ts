@@ -32,4 +32,6 @@ export { Rating } from "./Rating";
 export { PriceTag } from "./PriceTag";
 export { FileUpload } from "./FileUpload";
 export { Timeline } from "./Timeline";
+export { Pagination } from "./Pagination";
+export { AccordionStep, useAccordion } from "./Accordion";
 export * from "./icons";

@@ -41,6 +41,16 @@ export function createSupabaseServerClient(request: Request): SupabaseServer {
   if (!env) return { client: null, headers };
 
   const client = createServerClient(env.url, env.anonKey, {
+    // @supabase/ssr defaults to httpOnly:false + no Secure + 400 days.
+    // The session cookie is read by our own server client (getAll parses the
+    // raw Cookie header), so httpOnly costs us nothing and removes XSS token
+    // theft. `secure` stays on in production only — HTTP localhost can't set it.
+    cookieOptions: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+    },
     cookies: {
       getAll() {
         return parseCookieHeader(request.headers.get("Cookie") ?? "").filter(
@@ -49,7 +59,16 @@ export function createSupabaseServerClient(request: Request): SupabaseServer {
       },
       setAll(cookiesToSet: Array<{ name: string; value: string; options: CookieOptionsWithName }>) {
         for (const { name, value, options } of cookiesToSet) {
-          headers.append("Set-Cookie", serializeCookieHeader(name, value, options));
+          headers.append(
+            "Set-Cookie",
+            serializeCookieHeader(name, value, {
+              ...options,
+              httpOnly: true,
+              sameSite: "lax",
+              secure: process.env.NODE_ENV === "production",
+              path: "/",
+            }),
+          );
         }
       },
     },

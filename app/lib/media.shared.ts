@@ -65,13 +65,23 @@ export function validateUpload(file: { type: string; size: number }, s: MediaSet
   return null;
 }
 
+/** Image dimension guard. max_dimensions_px was stored and editable but never
+ *  enforced; this reads the bitmap before upload. Non-images pass through. */
+export async function validateImageDimensions(file: File, maxPx: number): Promise<string | null> {
+  if (!file.type.startsWith("image/")) return null;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const tooWide = bitmap.width > maxPx;
+    const tooTall = bitmap.height > maxPx;
+    bitmap.close();
+    return tooWide || tooTall ? "media.errors.tooLargeDims" : null;
+  } catch {
+    // Undecodable image — let the mime/size guards and the server decide.
+    return null;
+  }
+}
+
 export function publicMediaUrl(supabaseUrl: string, path: string): string {
   return `${supabaseUrl}/storage/v1/object/public/media/${path}`;
 }
 
-/** Render-transform srcset for public images (smaller variants on the CDN). */
-export function mediaSrcSet(supabaseUrl: string, path: string): string {
-  return [480, 800, 1280]
-    .map((w) => `${supabaseUrl}/storage/v1/render/image/public/media/${path}?width=${w} ${w}w`)
-    .join(", ");
-}

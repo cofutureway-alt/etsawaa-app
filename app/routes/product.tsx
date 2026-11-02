@@ -116,6 +116,9 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
     return map;
   }, [selected, page.axes]);
 
+  // qty lives per variant; onSelectOption resets it when the variant changes.
+  const [qty, setQty] = useState(1);
+
   const onSelectOption = (attributeId: string, optionId: string) => {
     const next = new Map(selectedMap);
     next.set(attributeId, optionId);
@@ -130,6 +133,8 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
     });
     if (match) {
       setSelectedId(match.id);
+      setPickedImage(null); // variant change wins over an earlier thumbnail pick
+      setQty(1);            // qty is per-variant; keep it inside the new stock
       const url = new URL(window.location.href);
       url.searchParams.set("v", match.option_key);
       void navigate(`${url.pathname}${url.search}`, { replace: true, preventScrollReset: true });
@@ -137,9 +142,11 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
   };
 
   /* ---- price / stock / sale window -------------------------------------- */
+  // A sale price with no scheduled window is a permanent sale — previously it
+  // was ignored entirely until an admin set sale_starts_at.
   const inSaleWindow = (() => {
-    if (!page.sale_starts_at) return false;
-    const start = new Date(page.sale_starts_at).getTime();
+    if (!page.sale_starts_at && !page.sale_ends_at) return true;
+    const start = page.sale_starts_at ? new Date(page.sale_starts_at).getTime() : -Infinity;
     const end = page.sale_ends_at ? new Date(page.sale_ends_at).getTime() : Infinity;
     const now = Date.now();
     return now >= start && now <= end;
@@ -161,11 +168,16 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
 
   /* ---- gallery images ---------------------------------------------------- */
   const images = page.media.filter((m) => m.kind === "image").map((m) => ({ id: m.id, path: m.path }));
-  const selectedImage = selected?.image_path ?? images[0]?.path ?? null;
+  // A thumbnail click sets `pickedImage`; switching variant drops it so the
+  // variant's own image wins again. Previously onSelect was a no-op and only
+  // variant changes ever moved the main image.
+  const [pickedImage, setPickedImage] = useState<string | null>(null);
+  const variantImage = selected?.image_path ?? null;
+  const selectedImage = pickedImage ?? variantImage ?? images[0]?.path ?? null;
+  const onPickImage = (path: string) => setPickedImage(path);
 
   /* ---- cart -------------------------------------------------------------- */
   const cart = useCart();
-  const [qty, setQty] = useState(1);
   const [adding, setAdding] = useState(false);
 
   const addToCart = async () => {
@@ -259,7 +271,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,560px)_minmax(0,1fr)]">
         {/* gallery */}
         <div className="min-w-0">
-          <Gallery images={images} selectedPath={selectedImage} alt={name} eager onSelect={() => undefined} />
+          <Gallery images={images} selectedPath={selectedImage} alt={name} eager onSelect={onPickImage} />
         </div>
 
         {/* buy box */}

@@ -11,6 +11,21 @@ import type { SupabaseClient } from "@supabase/supabase-js";
  * by governorate; COD blocked over the settings cap or on vendor-shipped items.
  */
 
+/**
+ * Apply an event discount to a unit price. maxPiastres caps the DISCOUNT,
+ * not the resulting price — mirrors fn_create_order's least() expression.
+ * Exported so tests/pricing.test.ts can pin the behaviour.
+ */
+export function applyEventDiscount(
+  unit: number,
+  percent: number,
+  maxPiastres: number | null,
+): number {
+  if (!(percent > 0)) return unit;
+  const off = Math.trunc((unit * percent) / 100);
+  return unit - Math.min(off, maxPiastres ?? unit);
+}
+
 export interface CheckoutLine {
   variant_id: string;
   product_id: string;
@@ -148,10 +163,7 @@ export async function loadCheckoutQuote(
       v.sale_price_piastres !== null;
     let unit = saleActive ? Math.min(v.price_piastres ?? 0, v.sale_price_piastres ?? 0) : (v.price_piastres ?? 0);
     const rate = eventRate.get(p.id);
-    if (rate && rate.percent > 0) {
-      unit = unit - Math.trunc((unit * rate.percent) / 100);
-      if (rate.max !== null && unit < rate.max) unit = rate.max;
-    }
+    if (rate) unit = applyEventDiscount(unit, rate.percent, rate.max);
     const listable =
       p.status === "approved" && p.deleted_at === null && !p.event_hidden &&
       p.vendors.status === "active" && p.vendors.verification_status !== "grace_expired" &&

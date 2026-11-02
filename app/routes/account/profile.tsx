@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { normalizeEgyptianPhone } from "~/lib/phone";
+import { passwordSchema } from "~/features/auth/schemas";
 import { Input } from "~/components/ui/Input";
 import { Button } from "~/components/ui/Button";
 import { AvatarField } from "~/features/account/AvatarField";
@@ -83,7 +84,11 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (intent === "password") {
     const current = String(form.get("current_password") ?? "");
     const next = String(form.get("new_password") ?? "");
-    if (next.length < 8) return data({ ok: false, reason: "weak" }, { status: 400 });
+    // Same rules as registration/forgot (8–72, letter + digit) — this path
+    // previously accepted any 8 characters, bypassing passwordSchema.
+    if (!passwordSchema.safeParse(next).success) {
+      return data({ ok: false, reason: "weak" }, { status: 400 });
+    }
     // verify the current password by signing in with it
     const { error: signInError } = await client.auth.signInWithPassword({
       email: viewer.user.email ?? "",

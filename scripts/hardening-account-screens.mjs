@@ -8,8 +8,8 @@ const OUT = "evidence/phase-08.5/screens";
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: "new" });
 const page = await browser.newPage();
 await page.goto(`${BASE}/ar/auth/login`, { waitUntil: "networkidle2" });
-await page.type('input[name="identifier"]', "process.env.TEST_ADMIN_EMAIL ?? """);
-await page.type('input[name="password"]', "process.env.TEST_ADMIN_PASSWORD ?? """);
+await page.type('input[name="identifier"]', process.env.TEST_ADMIN_EMAIL ?? "");
+await page.type('input[name="password"]', process.env.TEST_ADMIN_PASSWORD ?? "");
 await Promise.all([
   page.click('button[type="submit"]'),
   page.waitForNavigation({ waitUntil: "networkidle2" }).catch(() => {}),

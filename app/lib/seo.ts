@@ -38,7 +38,7 @@ export function publicMeta({ lang, path, title, description, ogImage, noindex }:
     { tagName: "link", rel: "canonical", href: canonical },
     { tagName: "link", rel: "alternate", href: `${base}/${lang}${clean === "/" ? "" : clean}`, hreflang: lang },
     { tagName: "link", rel: "alternate", href: `${base}/${other}${clean === "/" ? "" : clean}`, hreflang: other },
-    { tagName: "link", rel: "alternate", href: `${base}/${other}${clean === "/" ? "" : clean}`, hreflang: "x-default" },
+    { tagName: "link", rel: "alternate", href: `${base}/ar${clean === "/" ? "" : clean}`, hreflang: "x-default" },
     { property: "og:type", content: "website" },
     { property: "og:site_name", content: "Etsawaa" },
     { property: "og:title", content: title },

@@ -75,6 +75,7 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
       crumbs={[{ label: t("nav.home"), href: `/${lang}` }, { label: `${t("store.search.resultsFor")} "${q}"` }]}
       title={`${t("store.search.resultsFor")} "${q}"`}
       zeroSuggestion={suggestion}
+      wishedIds={data.wishedIds}
     />
   );
 }

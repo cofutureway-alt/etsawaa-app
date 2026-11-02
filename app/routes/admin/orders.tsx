@@ -2,6 +2,7 @@ import { Link, data, useFetcher } from "react-router";
 import type { Route } from "./+types/orders";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CloseIcon } from "~/components/ui/icons";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
@@ -156,7 +157,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
                 className="absolute inset-y-0 end-2 my-auto flex size-5 items-center justify-center rounded-full text-xs text-text-faint hover:bg-surface-tint hover:text-text"
                 title={t("common.clear", "مسح")}
               >
-                ✕
+                <CloseIcon aria-hidden="true" className="size-3.5" />
               </Link>
             ) : null}
           </div>
@@ -379,7 +380,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
 
       {/* Floating Bulk Action Bar (when rows selected) */}
       {checked.size > 0 ? (
-        <div className="fixed bottom-6 inset-x-0 mx-auto z-50 flex w-fit max-w-[90vw] items-center gap-3 rounded-full border border-border bg-[#0f172a] px-5 py-2.5 text-white shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div className="fixed bottom-6 inset-x-0 mx-auto z-50 flex w-fit max-w-[90vw] items-center gap-3 rounded-full border border-border bg-side px-5 py-2.5 text-white shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
           <span className="flex items-center gap-2 text-xs font-extrabold">
             <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-black text-white">
               {checked.size}

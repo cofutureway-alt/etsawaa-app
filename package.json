@@ -11,7 +11,7 @@
     "start": "node --env-file=.env node_modules/@react-router/serve/bin.js ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "oxlint app scripts tests",
-    "test": "node --import tsx --test tests/compare.test.ts tests/phone.test.ts tests/permissions.test.ts tests/tokens.test.ts tests/i18n-keys.test.ts tests/auth-schemas.test.ts tests/otp-cooldown.test.ts tests/money.test.ts tests/variant.test.ts tests/email-template.test.ts",
+    "test": "node --import tsx --test tests/compare.test.ts tests/phone.test.ts tests/permissions.test.ts tests/tokens.test.ts tests/i18n-keys.test.ts tests/auth-schemas.test.ts tests/otp-cooldown.test.ts tests/money.test.ts tests/pricing.test.ts tests/next.test.ts tests/session-headers.test.ts tests/variant.test.ts tests/email-template.test.ts",
     "verify": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
@@ -23,10 +23,8 @@
     "@react-router/serve": "^7.9.6",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.87.1",
-    "@tanstack/react-query": "^5.90.12",
     "@types/leaflet": "^1.9.22",
     "bwip-js": "^4.11.4",
-    "framer-motion": "^12.23.24",
     "i18next": "^25.7.2",
     "isbot": "^5.1.31",
     "leaflet": "^1.9.4",

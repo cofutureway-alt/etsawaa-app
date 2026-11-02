@@ -171,7 +171,7 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
               <th scope="col" className="w-48 p-3 text-start font-extrabold text-text-muted">{t("store.compare.attribute")}</th>
               {[productA, productB].map((p) => (
                 <th key={p.id} scope="col" className="min-w-56 p-3 text-start">
-                  <Link to={`/${lang}/product/${encodeURIComponent(p.id)}`} className="flex items-center gap-2.5">
+                  <Link to={`/${lang}/product/${encodeURIComponent(lang === "ar" ? p.slug_ar || p.slug_en : p.slug_en || p.slug_ar)}`} className="flex items-center gap-2.5">
                     {p.image_path ? (
                       <MediaImg path={p.image_path} alt={nameOf(p)} width={56} height={56} className="size-14 rounded-m border border-border" />
                     ) : (

@@ -268,10 +268,14 @@ begin
       order by (d.scope = 'product') desc, d.percent desc
       limit 1;
     if found and v_event_percent > 0 then
-      v_unit := v_unit - trunc(v_unit * v_event_percent / 100);
-      if v_event_cap is not null and v_unit < v_event_cap then
-        v_unit := v_event_cap;
-      end if;
+      -- max_discount_piastres caps the DISCOUNT, not the resulting price.
+      -- (Previously this raised v_unit up to the cap, overcharging the customer
+      -- whenever the discount exceeded it; least() also bounds the subtraction
+      -- so int4 cannot overflow on ~21.5M+ EGP lines.)
+      v_unit := v_unit - least(
+        trunc(v_unit * v_event_percent / 100),
+        coalesce(v_event_cap, v_unit)
+      );
     end if;
     v_event_percent := 0; v_event_cap := null;
 

@@ -23,17 +23,26 @@ export interface ListingScope {
 
 export async function resolveScope(
   client: SupabaseClient,
-  opts: { categorySlug?: string; brandSlug?: string } = {},
+  opts: { categorySlug?: string; categoryId?: string; brandSlug?: string } = {},
 ): Promise<ListingScope> {
   let category: CategoryNode | null = null;
   let chain: CategoryNode[] = [];
   let brand: BrandCard | null = null;
   let all: CategoryNode[] = [];
 
-  if (opts.categorySlug) {
-    category = await getCategoryBySlug(client, opts.categorySlug);
-    if (category) {
+  if (opts.categorySlug || opts.categoryId) {
+    if (opts.categorySlug) {
+      category = await getCategoryBySlug(client, opts.categorySlug);
+    }
+    if (!category) {
+      // /products, /search and /brand narrow by the `?cat=` URL param instead of
+      // a slug; without this the scope stayed empty and every attribute facet
+      // was dropped even though fn_search_products returned them.
       all = await getCategories(client);
+      category = all.find((c) => c.id === (opts.categoryId ?? "")) ?? null;
+    }
+    if (category) {
+      if (all.length === 0) all = await getCategories(client);
       const byId = new Map(all.map((c) => [c.id, c]));
       const parts = category.path.split("/").filter(Boolean);
       chain = parts
@@ -79,8 +88,10 @@ export async function loadListing(
   opts: { fixedCategorySlug?: string; fixedBrandSlug?: string; forceQ?: string; perPage?: number } = {},
 ): Promise<ListingData> {
   const url = new URL(request.url);
+  const urlCat = (url.searchParams.get("cat") ?? "").match(/^[0-9a-f-]{36}$/i)?.[0];
   const scope = await resolveScope(client, {
     categorySlug: opts.fixedCategorySlug,
+    categoryId: opts.fixedCategorySlug ? undefined : urlCat,
     brandSlug: opts.fixedBrandSlug,
   });
   const state = parseListingState(url, scope.defs, {

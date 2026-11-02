@@ -59,6 +59,7 @@ export const GlobeIcon = (p: IconProps) => (
   <Icon {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 4 5.6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-5.6-4-9s1.5-6.4 4-9Z" /></Icon>
 );
 export const CheckIcon = (p: IconProps) => <Icon {...p}><path d="m4 12 5 5L20 6" /></Icon>;
+export const CloseIcon = (p: IconProps) => <Icon {...p}><path d="M6 6l12 12M18 6L6 18" /></Icon>;
 export const XIcon = (p: IconProps) => <Icon {...p}><path d="M6 6l12 12M18 6 6 18" /></Icon>;
 export const AlertIcon = (p: IconProps) => (
   <Icon {...p}><path d="M12 3 2 20h20L12 3Z" /><path d="M12 10v4m0 3v.5" /></Icon>

@@ -130,6 +130,7 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
         crumbs={crumbs}
         title={name}
         hideCategoryFacet
+        wishedIds={data.wishedIds}
       />
     </div>
   );

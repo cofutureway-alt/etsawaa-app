@@ -11,8 +11,8 @@ await page.setViewport({ width: 390, height: 900, deviceScaleFactor: 2 });
 page.on("pageerror", (e) => console.log("[pageerror]", String(e).slice(0, 150)));
 
 await page.goto("http://localhost:3000/ar/auth/login", { waitUntil: "networkidle0" });
-await page.type("input[name=identifier]", "process.env.TEST_ADMIN_EMAIL ?? """);
-await page.type("input[name=password]", "process.env.TEST_ADMIN_PASSWORD ?? """);
+await page.type("input[name=identifier]", process.env.TEST_ADMIN_EMAIL ?? "");
+await page.type("input[name=password]", process.env.TEST_ADMIN_PASSWORD ?? "");
 await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" }).catch(() => null), page.click("button[type=submit]")]);
 
 await page.goto("http://localhost:3000/ar/account/addresses", { waitUntil: "networkidle0" });

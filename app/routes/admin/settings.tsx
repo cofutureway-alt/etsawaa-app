@@ -72,6 +72,15 @@ export async function action({ request, params }: Route.ActionArgs) {
     design: parseDesignTokens(designRaw),
   });
   if (!result.ok) return data<SettingsActionData>({ ok: false, reason: result.error });
+  // No DB trigger records settings writes, so audit explicitly — this page used
+  // to bypass fn_admin_set_setting and leave no trace (AGENT §12).
+  await client.rpc("fn_audit", {
+    p_action: "settings.update",
+    p_entity: "settings",
+    p_entity_id: "site.general+design",
+    p_before: null,
+    p_after: { site, design: designRaw },
+  });
   return data<SettingsActionData>({ ok: true });
 }
 

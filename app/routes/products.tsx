@@ -2,7 +2,7 @@ import type { Route } from "./+types/products";
 import { useTranslation } from "react-i18next";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
-import { jsonLd, publicMeta } from "~/lib/seo";
+import { jsonLd, publicMeta, siteUrl } from "~/lib/seo";
 import { loadListing } from "~/features/storefront/server-listing";
 import { Listing } from "~/components/catalog/Listing";
 import { SkeletonPage } from "~/components/ui/Skeleton";
@@ -47,7 +47,7 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
             "@type": "ListItem",
             position: index + 1,
             name: lang === "ar" ? item.name_ar : item.name_en,
-            url: `${lang === "ar" ? item.slug_ar : item.slug_en}`,
+            url: `${siteUrl()}/${lang}/product/${encodeURIComponent(lang === "ar" ? item.slug_ar || item.slug_en : item.slug_en || item.slug_ar)}`,
           })),
         })}
       />
@@ -59,6 +59,7 @@ export default function ProductsPage({ loaderData }: Route.ComponentProps) {
         basePath={`/${lang}/products`}
         crumbs={[{ label: t("nav.home"), href: `/${lang}` }, { label: t("nav.allProducts") }]}
         title={t("nav.allProducts")}
+        wishedIds={data.wishedIds}
       />
     </>
   );

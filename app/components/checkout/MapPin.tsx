@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CheckIcon } from "~/components/ui/icons";
 import { Button } from "~/components/ui/Button";
 
 /**
@@ -206,7 +207,7 @@ export function MapPin({
               className="inline-flex items-center gap-1.5 rounded-s border border-success/40 bg-success-soft px-2.5 py-1 text-xs font-bold text-success"
               role="status"
             >
-              <span aria-hidden="true">✓</span>
+              <CheckIcon aria-hidden="true" className="size-3.5" />
               {t("map.pinSet")}
               <span className="num font-normal text-text-muted" dir="ltr">
                 {value.lat.toFixed(5)}, {value.lng.toFixed(5)}

@@ -10,7 +10,7 @@ import {
   CheckIcon, FolderIcon, FolderPlusIcon, TrashIcon, PencilIcon, MoveIcon, CopyIcon,
   VideoIcon, FileIcon, UploadIcon, XIcon, ChevronRightIcon, ChevronLeftIcon, SearchIcon,
 } from "~/components/ui/icons";
-import { publicMediaUrl, validateUpload, type MediaKind, type MediaSettings } from "~/lib/media.shared";
+import { publicMediaUrl, validateUpload, validateImageDimensions, type MediaKind, type MediaSettings } from "~/lib/media.shared";
 import {
   createFolder, listFilesPage, listFolders, moveFile, physicalDelete, renameFile,
   renameFolder, softDeleteFile, uploadFile, MEDIA_PAGE_SIZE,
@@ -197,8 +197,14 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
 
   const doUpload = useCallback(
     async (items: File[]) => {
-      const queue: UploadItem[] = items.map((file) => {
-        const errorKey = validateUpload({ type: file.type, size: file.size }, settings);
+      // Dimension limit was stored in settings but never checked; validate it
+      // here (async, before queueing) so oversized bitmaps are rejected early.
+      const dims = await Promise.all(
+        items.map((file) => validateImageDimensions(file, settings.max_dimensions_px)),
+      );
+      const queue: UploadItem[] = items.map((file, idx) => {
+        const errorKey =
+          validateUpload({ type: file.type, size: file.size }, settings) ?? dims[idx] ?? null;
         return {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           file,

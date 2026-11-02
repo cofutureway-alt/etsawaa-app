@@ -78,7 +78,7 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
             "@type": "Organization",
             name,
             url: `${siteUrl()}/${lang}/store/${encodeURIComponent(store.slug)}`,
-            ...(store.logo_path ? { logo: undefined } : {}),
+            ...(store.logo_path ? { logo: `${siteUrl()}/api/media?path=${encodeURIComponent(store.logo_path)}` } : {}),
           },
         ])}
       />

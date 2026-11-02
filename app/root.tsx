@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
   data,
+  useLocation,
   useRouteError,
 } from "react-router";
 import type { Route } from "./+types/root";
@@ -46,9 +47,7 @@ export async function loader({ request }: Route.LoaderArgs) {
  */
 export default function App({ loaderData }: Route.ComponentProps) {
   const i18n = getI18n(loaderData.locale);
-  const { site, locale } = loaderData;
-  const siteName = locale === "ar" ? site.site_name_ar : site.site_name_en;
-  const tagline = locale === "ar" ? site.tagline_ar : site.tagline_en;
+  const { locale } = loaderData;
 
   return (
     <I18nextProvider i18n={i18n}>
@@ -56,8 +55,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <head>
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>{`${siteName} — ${tagline}`}</title>
-          <meta name="description" content={tagline} />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.jpg" />
           {/* The LCP image (and every product image) lives on the storage
@@ -99,70 +96,114 @@ export default function App({ loaderData }: Route.ComponentProps) {
   );
 }
 
+/**
+ * The root boundary renders outside App, so it cannot read the loader — derive
+ * the locale from the URL instead of hardcoding Arabic (English readers got an
+ * Arabic RTL error page before).
+ */
+function useErrorLocale(): Locale {
+  const location = useLocation();
+  const segment = location.pathname.split("/")[1];
+  return isLocale(segment) ? segment : DEFAULT_LOCALE;
+}
+
 export function ErrorBoundary() {
   const error = useRouteError();
+  const lang = useErrorLocale();
   const status = isRouteErrorResponse(error) ? error.status : 500;
-  if (status === 403) return <StandaloneForbidden />;
+  if (status === 403) return <StandaloneForbidden lang={lang} />;
   // Full standalone document: root-level errors render outside App.
   return (
-    <html lang="ar" dir="rtl">
+    <html lang={lang} dir={dirFor(lang)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{status === 404 ? "اتسوء — الصفحة غير موجودة" : "اتسوء — حدث خطأ"}</title>
+        <title>{status === 404 ? COPY[lang].notFoundTitle : COPY[lang].errorTitle}</title>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <Meta />
         <Links />
       </head>
       <body>
-        <StandaloneErrorPage status={status} />
+        <StandaloneErrorPage status={status} lang={lang} />
         <Scripts />
       </body>
     </html>
   );
 }
 
-function StandaloneErrorPage({ status }: { status: number }) {
+const COPY = {
+  ar: {
+    notFoundTitle: "اتسوء — الصفحة غير موجودة",
+    errorTitle: "اتسوء — حدث خطأ",
+    notFound: "الصفحة غير موجودة",
+    error: "حدث خطأ ما",
+    notFoundBody: "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    errorBody: "حدث خطأ غير متوقع. يمكنك إعادة المحاولة أو العودة للرئيسية.",
+    searchPlaceholder: "ابحث في المنتجات…",
+    search: "بحث",
+    home: "العودة للرئيسية",
+    refresh: "تحديث الصفحة",
+    forbiddenTitle: "اتسوء — لا تملك صلاحية",
+    forbidden: "لا تملك صلاحية",
+    forbiddenBody: "حسابك لا يملك صلاحية عرض هذه الصفحة.",
+  },
+  en: {
+    notFoundTitle: "Etsawaa — Page not found",
+    errorTitle: "Etsawaa — Something went wrong",
+    notFound: "Page not found",
+    error: "Something went wrong",
+    notFoundBody: "The page you are looking for does not exist or has moved.",
+    errorBody: "An unexpected error occurred. Retry or go back home.",
+    searchPlaceholder: "Search products…",
+    search: "Search",
+    home: "Back to home",
+    refresh: "Reload page",
+    forbiddenTitle: "Etsawaa — Not allowed",
+    forbidden: "Not allowed",
+    forbiddenBody: "Your account does not have access to this page.",
+  },
+} as const;
+
+function StandaloneErrorPage({ status, lang }: { status: number; lang: Locale }) {
   const notFound = status === 404;
+  const c = COPY[lang];
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-4 p-6 text-center">
       <img src="/logo-transparent.webp" alt="Etsawaa" width={279} height={224} className="h-12 w-auto" />
       <p className="num text-5xl font-black text-action">{status}</p>
       <h1 className="text-xl font-extrabold text-text">
-        {notFound ? "الصفحة غير موجودة" : "حدث خطأ ما"}
+        {notFound ? c.notFound : c.error}
       </h1>
       <p className="max-w-md text-sm text-text-muted">
-        {notFound
-          ? "الصفحة التي تبحث عنها غير موجودة أو تم نقلها."
-          : "حدث خطأ غير متوقع. يمكنك إعادة المحاولة أو العودة للرئيسية."}
+        {notFound ? c.notFoundBody : c.errorBody}
       </p>
       {notFound ? (
-        <form action="/ar/search" method="get" className="mt-2 flex w-full max-w-sm items-center gap-2">
+        <form action={`/${lang}/search`} method="get" className="mt-2 flex w-full max-w-sm items-center gap-2">
           <input
             type="search"
             name="q"
-            placeholder="ابحث في المنتجات…"
-            aria-label="ابحث في المنتجات"
+            placeholder={c.searchPlaceholder}
+            aria-label={c.searchPlaceholder}
             className="min-w-0 flex-1 rounded-m border border-border bg-surface px-3 py-2.5 text-sm outline-none focus:border-action"
           />
           <button
             type="submit"
             className="cursor-pointer rounded-m bg-action px-4 py-2.5 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
           >
-            بحث
+            {c.search}
           </button>
         </form>
       ) : null}
       <div className="flex items-center gap-3">
         <Link
-          to="/ar"
+          to={`/${lang}`}
           className="rounded-m bg-action px-5 py-2.5 text-sm font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
         >
-          العودة للرئيسية
+          {c.home}
         </Link>
         {notFound ? null : (
-          <Link to="/ar" className="rounded-m border border-border px-5 py-2.5 text-sm font-bold text-text hover:bg-surface-tint">
-            تحديث الصفحة
+          <Link to={`/${lang}`} className="rounded-m border border-border px-5 py-2.5 text-sm font-bold text-text hover:bg-surface-tint">
+            {c.refresh}
           </Link>
         )}
       </div>
@@ -171,26 +212,27 @@ function StandaloneErrorPage({ status }: { status: number }) {
 }
 
 /** 403 for signed-in users without panel permission (US-09 edge case). */
-function StandaloneForbidden() {
+function StandaloneForbidden({ lang }: { lang: Locale }) {
+  const c = COPY[lang];
   return (
-    <html lang="ar" dir="rtl">
+    <html lang={lang} dir={dirFor(lang)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>اتسوء — لا تملك صلاحية</title>
+        <title>{c.forbiddenTitle}</title>
         <Meta />
         <Links />
       </head>
       <body>
         <main className="flex min-h-dvh flex-col items-center justify-center gap-3 p-6 text-center">
           <p className="num text-5xl font-black text-action">403</p>
-          <h1 className="text-xl font-extrabold text-text">لا تملك صلاحية</h1>
-          <p className="max-w-md text-sm text-text-muted">حسابك لا يملك صلاحية عرض هذه الصفحة.</p>
-          <Link to="/ar" className="font-bold text-action hover:underline">
-            العودة للرئيسية
+          <h1 className="text-xl font-extrabold text-text">{c.forbidden}</h1>
+          <p className="max-w-md text-sm text-text-muted">{c.forbiddenBody}</p>
+          <Link to={`/${lang}`} className="font-bold text-action hover:underline">
+            {c.home}
           </Link>
-          <Scripts />
         </main>
+        <Scripts />
       </body>
     </html>
   );

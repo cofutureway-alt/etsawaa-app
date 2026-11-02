@@ -25,7 +25,7 @@ async function login(email, password) {
   return ck;
 }
 
-const adminCookies = await login("process.env.TEST_ADMIN_EMAIL ?? """, "process.env.TEST_ADMIN_PASSWORD ?? """);
+const adminCookies = await login(process.env.TEST_ADMIN_EMAIL ?? "", process.env.TEST_ADMIN_PASSWORD ?? "");
 
 // vendor probe user (created during RLS probes) — may have no store; statuses matter
 let vendorCookies = null;
