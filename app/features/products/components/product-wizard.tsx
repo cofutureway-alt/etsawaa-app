@@ -31,9 +31,18 @@ export interface TemplateOption {
   label_en: string;
   color_hex: string | null;
 }
+/** Label for display: Arabic/English name, falling back to the machine code. */
+export function attrLabel(attr: TemplateAttr, isAr: boolean): string {
+  const l = isAr ? attr.label_ar : attr.label_en;
+  return l || attr.code;
+}
+
 export interface TemplateAttr {
   id: string;
   code: string;
+  /** Human labels — the vendor form shows these, never the machine code. */
+  label_ar: string;
+  label_en: string;
   type: "text" | "number" | "bool" | "enum" | "color";
   unit: string;
   is_required: boolean;
@@ -213,7 +222,7 @@ export function ProductWizard({
   supabaseUrl,
   media,
   product,
-  template,
+  template: loadedTemplate,
   categories,
   brands,
   tags,
@@ -224,6 +233,16 @@ export function ProductWizard({
   const toast = useToast();
   const navigate = useNavigate();
   const save = useFetcher<SaveActionData>();
+  // Template arrives from the loader only when editing an existing product; for
+  // a new product we fetch it the moment a category is picked, so the
+  // attributes step is never a blank page.
+  const tplFetch = useFetcher<SaveActionData>();
+  const [template, setTemplate] = useState<TemplateAttr[]>(loadedTemplate);
+  useEffect(() => {
+    if (tplFetch.state === "idle" && tplFetch.data?.intent === "template" && tplFetch.data.template) {
+      setTemplate(tplFetch.data.template);
+    }
+  }, [tplFetch.state, tplFetch.data]);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<WizardForm>(() => formFromProduct(product));
   const [dirty, setDirty] = useState(false);
@@ -419,12 +438,12 @@ export function ProductWizard({
                 : attr.type === "bool"
                   ? value.value_bool !== null
                   : value.value_text !== "");
-          if (!filled) errors.push(t("productWizard.errors.attributeRequired", { code: attr.code }));
+          if (!filled) errors.push(t("productWizard.errors.attributeRequired", { code: attrLabel(attr, isAr) }));
         }
       }
       if (anyAxisSelected) {
         for (const attr of template.filter((a) => a.is_variant_axis)) {
-          if ((form.axes[attr.id] ?? []).length === 0) errors.push(t("productWizard.errors.axisEmpty", { code: attr.code }));
+          if ((form.axes[attr.id] ?? []).length === 0) errors.push(t("productWizard.errors.axisEmpty", { code: attrLabel(attr, isAr) }));
         }
       }
       if (rows.some((row) => row.sku.trim() === "")) errors.push(t("productWizard.errors.sku"));
@@ -585,7 +604,10 @@ export function ProductWizard({
                 categories={categories}
                 value={form.leaf_category_id}
                 isAr={isAr}
-                onChange={(id) => patch({ leaf_category_id: id, attributes: {}, axes: {} })}
+                onChange={(id) => {
+                  patch({ leaf_category_id: id, attributes: {}, axes: {} });
+                  tplFetch.submit({ intent: "template", leaf_category_id: id }, { method: "post" });
+                }}
               />
               <Select
                 id="p_brand"
@@ -723,7 +745,7 @@ export function ProductWizard({
                     .filter((attr) => attr.is_variant_axis)
                     .map((attr) => (
                       <fieldset key={attr.id} className="flex flex-col gap-1.5">
-                        <legend className="text-[13px] font-bold text-text">{attr.code}</legend>
+                        <legend className="text-[13px] font-bold text-text">{attrLabel(attr, isAr)}</legend>
                         <div className="flex flex-wrap gap-1.5">
                           {attr.options.map((option) => {
                             const selected = (form.axes[attr.id] ?? []).includes(option.id);
@@ -934,7 +956,7 @@ function AttributeField({
   const { t } = useTranslation();
   const label = (
     <>
-      {attr.code}
+      {attrLabel(attr, isAr)}
       {attr.unit ? <span className="font-normal text-text-faint"> ({attr.unit})</span> : null}
       {attr.is_required ? <span className="text-danger"> *</span> : null}
     </>
@@ -980,7 +1002,7 @@ function AttributeField({
           checked={value.value_bool === true}
           onChange={(e) => onChange({ ...value, value_bool: e.target.checked })}
         />
-        {attr.code}
+        {attrLabel(attr, isAr)}
       </label>
     );
   }
@@ -1071,11 +1093,13 @@ function CategoryPicker({
 }
 
 export interface SaveActionData {
-  intent: "save" | "generate_variants" | "restore_variant" | "save_variants" | "submit";
+  intent: "save" | "generate_variants" | "restore_variant" | "save_variants" | "submit" | "template";
   ok: boolean;
   error?: string;
   stale?: boolean;
   updatedAt?: string;
   redirectTo?: string;
   skipped?: string[];
+  /** only for intent === "template" */
+  template?: TemplateAttr[];
 }

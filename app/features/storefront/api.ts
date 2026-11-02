@@ -453,9 +453,11 @@ export async function getProductPage(client: SupabaseClient, slug: string): Prom
     client.from("product_media").select("id, kind, path").eq("product_id", base.id).order("position"),
     client.from("variants").select("id, sku, option_key, option_ids, price_piastres, sale_price_piastres, stock, image_path, is_active")
       .eq("product_id", base.id).is("deleted_at", null).eq("is_active", true).order("created_at"),
+    // !inner + is(deleted_at, null): a soft-deleted attribute must disappear
+    // from the public spec table, not linger because the product still has rows.
     client.from("product_attribute_values").select(
       "attribute_id, option_id, value_text, value_number, value_bool, attribute_defs!inner(id, code, type, unit, label_ar, label_en, is_variant_axis, sort)",
-    ).eq("product_id", base.id),
+    ).eq("product_id", base.id).is("attribute_defs.deleted_at", null),
     client.from("v_storefront_reviews").select("id, rating, title, body, created_at, author_name").eq("product_id", base.id)
       .order("created_at", { ascending: false }).limit(50),
     product.brand_id

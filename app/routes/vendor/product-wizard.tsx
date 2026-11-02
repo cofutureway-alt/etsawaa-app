@@ -149,6 +149,8 @@ async function loadTemplate(client: SupabaseClient, leafCategoryId: string | nul
     attrs.push({
       id: def.id as string,
       code: def.code as string,
+      label_ar: (def.label_ar as string | null) ?? "",
+      label_en: (def.label_en as string | null) ?? "",
       type: def.type as TemplateAttr["type"],
       unit: def.unit as string,
       is_required: def.is_required as boolean,
@@ -205,6 +207,15 @@ export async function action({ request, params }: Route.ActionArgs) {
       updatedAt: result.updated_at,
       redirectTo: productId ? undefined : `/${lang}/vendor/products/${result.id}/edit`,
     });
+  }
+
+  // The template is loader-only today, and the loader reads it solely when a
+  // productId exists — so a vendor creating a product picked a category and the
+  // attributes step stayed empty until an autosave reloaded the page.
+  if (intent === "template") {
+    const leafId = String(form.get("leaf_category_id") ?? "") || null;
+    const template = await loadTemplate(client, leafId);
+    return { intent, ok: true as const, template };
   }
 
   if (intent === "generate_variants") {
