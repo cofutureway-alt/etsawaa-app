@@ -12,7 +12,7 @@ export function Card({ children, className = "", labelledBy }: CardProps) {
   return (
     <section
       aria-labelledby={labelledBy}
-      className={`rounded-l border border-border bg-surface shadow-1 ${className}`}
+      className={`rounded-lg border border-border bg-surface shadow-1 ${className}`}
     >
       {children}
     </section>

@@ -80,11 +80,11 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
         ])}
       />
       {/* category header */}
-      <header className="flex flex-wrap items-center gap-4 rounded-l border border-border bg-surface p-4">
+      <header className="flex flex-wrap items-center gap-4 rounded-lg border border-border bg-surface p-4">
         {cat.thumb_path ? (
-          <MediaImg path={cat.thumb_path} alt={name} width={96} height={96} className="size-20 rounded-m border border-border" />
+          <MediaImg path={cat.thumb_path} alt={name} width={96} height={96} className="size-20 rounded-md border border-border" />
         ) : (
-          <span className="flex size-20 items-center justify-center rounded-m bg-surface-tint text-2xl font-black text-action">
+          <span className="flex size-20 items-center justify-center rounded-md bg-surface-tint text-2xl font-black text-action">
             {name.slice(0, 1)}
           </span>
         )}
@@ -102,12 +102,12 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
               <li key={child.id}>
                 <Link
                   to={`/${lang}/category/${encodeURIComponent(lang === "en" ? child.slug_en || child.slug_ar : child.slug_ar || child.slug_en)}`}
-                  className="flex flex-col items-center gap-2 rounded-l border border-border bg-surface p-3 text-center transition-colors duration-150 hover:bg-surface-tint"
+                  className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface p-3 text-center transition-colors duration-150 hover:bg-surface-tint"
                 >
                   {child.thumb_path ? (
-                    <MediaImg path={child.thumb_path} alt={lang === "ar" ? child.name_ar : child.name_en} width={56} height={56} className="size-12 rounded-m" />
+                    <MediaImg path={child.thumb_path} alt={lang === "ar" ? child.name_ar : child.name_en} width={56} height={56} className="size-12 rounded-md" />
                   ) : (
-                    <span className="flex size-12 items-center justify-center rounded-m bg-surface-tint text-base font-black text-action">
+                    <span className="flex size-12 items-center justify-center rounded-md bg-surface-tint text-base font-black text-action">
                       {(lang === "ar" ? child.name_ar : child.name_en).slice(0, 1)}
                     </span>
                   )}

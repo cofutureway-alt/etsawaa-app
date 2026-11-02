@@ -166,7 +166,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               name="q"
               defaultValue={loaderData.q}
               placeholder={t("orders.search")}
-              className="w-56 sm:w-64 rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text shadow-1 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-56 sm:w-64 rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text shadow-1 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
             {loaderData.q ? (
               <Link
@@ -187,27 +187,27 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
 
       {/* KPI Stat Cards (Real Live Data) */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
-        <div className="rounded-l border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5">
+        <div className="rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5">
           <p className="text-xs font-bold text-text-muted">{t("orders.filterAll")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{totalCount}</p>
           <p className="mt-0.5 text-[11px] text-text-faint">{en ? "Current query" : "إجمالي المعروض"}</p>
         </div>
-        <div className="rounded-l border border-warning/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-warning">
+        <div className="rounded-lg border border-warning/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-warning">
           <p className="text-xs font-bold text-warning-strong">{t("orders.filterActive")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{activeCount}</p>
           <p className="mt-0.5 text-[11px] text-text-muted">{en ? "Requires action" : "تحتاج تجهيز ومتابعة"}</p>
         </div>
-        <div className="rounded-l border border-success/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-success">
+        <div className="rounded-lg border border-success/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-success">
           <p className="text-xs font-bold text-success-strong">{t("orders.filterCompleted")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{completedCount}</p>
           <p className="mt-0.5 text-[11px] text-text-muted">{en ? "Successfully delivered" : "تم التسليم بنجاح"}</p>
         </div>
-        <div className="rounded-l border border-danger/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-danger">
+        <div className="rounded-lg border border-danger/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-danger">
           <p className="text-xs font-bold text-danger">{t("orders.filterCancelled")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{cancelledCount}</p>
           <p className="mt-0.5 text-[11px] text-text-muted">{en ? "Returned / voided" : "ملغاة أو مسترجعة"}</p>
         </div>
-        <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-l border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-action">
+        <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-action">
           <p className="text-xs font-bold text-text-muted">{t("cart.total")}</p>
           <p className="mt-1 text-lg font-black text-action tabular-nums">{money(totalRevenue)}</p>
           <p className="mt-0.5 text-[11px] text-text-faint">{en ? "Gross value" : "إجمالي قيمة الطلبات"}</p>
@@ -215,7 +215,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* Filter Tabs & Content Container */}
-      <div className="rounded-l border border-border bg-surface shadow-1 overflow-hidden">
+      <div className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden">
         {/* Status Tabs with Live Badges */}
         <div className="flex border-b border-border bg-surface-alt px-3 pt-2 gap-1 overflow-x-auto scrollbar-none">
           {filters.map((f) => {
@@ -380,7 +380,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
                       <td className="px-3.5 py-3 text-center">
                         <Link
                           to={`/${lang}/admin/orders/${encodeURIComponent(o.number)}`}
-                          className="inline-flex items-center gap-1 rounded-s border border-border bg-surface px-2.5 py-1 text-xs font-bold text-text transition-colors hover:border-action hover:text-action"
+                          className="inline-flex items-center gap-1 rounded-sm border border-border bg-surface px-2.5 py-1 text-xs font-bold text-text transition-colors hover:border-action hover:text-action"
                         >
                           <span>{t("common.details", "تفاصيل")}</span>
                           <ChevronLeftIcon className="size-3 rtl:rotate-180" />
@@ -436,7 +436,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
             )}&lang=${loaderData.lang}`}
             target="_blank"
             rel="noreferrer"
-            className="rounded-m border border-white/30 px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-white/10"
+            className="rounded-md border border-white/30 px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-white/10"
           >
             {t("orders.bulkPrint")}
           </a>
@@ -468,7 +468,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
           ))}
           <input type="hidden" name="intent" value="bulk_status" />
 
-          <div className="rounded-m border border-border bg-surface-tint p-3 text-xs text-text-muted">
+          <div className="rounded-md border border-border bg-surface-tint p-3 text-xs text-text-muted">
             <p>
               {en
                 ? `You are updating the status for ${checked.size} selected order(s).`
@@ -487,7 +487,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               id="bulk-status"
               value={bulkStatus}
               onChange={(e) => setBulkStatus(e.target.value)}
-              className="w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text"
+              className="w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text"
             >
               <option value="processing">{t("order.status_processing")}</option>
               <option value="completed">{t("order.status_completed")}</option>
@@ -510,7 +510,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder={en ? "Enter the operational reason..." : "اكتب سبب تغيير الحالة الإداري..."}
-              className="w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text"
+              className="w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text"
             />
             <p className="mt-1 text-xs text-text-muted">{t("orders.bulkNote")}</p>
           </div>

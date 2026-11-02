@@ -52,7 +52,7 @@ export default function VendorPrintHistory({ loaderData }: Route.ComponentProps)
           <EmptyState title={t("vph.empty")} body={t("vph.emptyHint")} />
         </div>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded-m border border-border">
+        <div className="mt-4 overflow-x-auto rounded-md border border-border">
           <table className="w-full text-[13px]">
             <thead className="bg-surface-tint text-text-muted">
               <tr>

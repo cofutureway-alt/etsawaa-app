@@ -107,7 +107,7 @@ export default function SellPage({ loaderData }: Route.ComponentProps) {
                 const slug = (row: { slug_ar: string; slug_en: string }) =>
                   encodeURIComponent(isAr ? row.slug_ar || row.slug_en : row.slug_en || row.slug_ar);
                 return (
-                  <details key={root.id} className="rounded-l border border-border bg-surface p-3">
+                  <details key={root.id} className="rounded-lg border border-border bg-surface p-3">
                     <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[13px] font-extrabold text-text">
                       <ChevronDownIcon aria-hidden="true" className="size-4 text-text-faint" />
                       <Link to={`/${lang}/category/${slug(root)}`} className="hover:text-action">

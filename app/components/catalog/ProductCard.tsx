@@ -57,7 +57,7 @@ export function ProductCard({
 
   return (
     <article
-      className={`group relative flex flex-col overflow-hidden rounded-l border bg-surface transition-shadow duration-200 hover:shadow-1 ${
+      className={`group relative flex flex-col overflow-hidden rounded-lg border bg-surface transition-shadow duration-200 hover:shadow-1 ${
         card.is_featured ? "border-featured border-2" : "border-border"
       }`}
     >
@@ -132,7 +132,7 @@ export function ProductCard({
             onClick={onCompare}
             aria-label={t("store.compare.add")}
             title={t("store.compare.add")}
-            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-m border border-border text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-action"
           >
             <ScaleIcon className="size-4" />
           </button>

@@ -136,7 +136,7 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
             ref={summaryRef}
             tabIndex={-1}
             role="alert"
-            className="flex items-start gap-1.5 rounded-m border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger outline-none"
+            className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger outline-none"
           >
             <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
             <span className="font-bold">{summaryMessage}</span>

@@ -24,7 +24,7 @@ export interface VariantMatrixRow {
 }
 
 const CELL_CLASS =
-  "w-full rounded-m border border-border bg-surface px-2.5 py-2 text-[13px] text-text outline-none transition-colors duration-150 placeholder:text-text-faint focus:shadow-focus";
+  "w-full rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text outline-none transition-colors duration-150 placeholder:text-text-faint focus:shadow-focus";
 
 export interface VariantMatrixProps {
   rows: VariantMatrixRow[];
@@ -56,7 +56,7 @@ export function VariantMatrixEditor({
       </p>
 
       {skippedKeys.length > 0 ? (
-        <div className="rounded-m border border-warning/40 bg-warning-soft p-3 text-[12px] leading-relaxed text-text">
+        <div className="rounded-md border border-warning/40 bg-warning-soft p-3 text-[12px] leading-relaxed text-text">
           <p className="font-extrabold text-warning-strong">{t("productWizard.variants.skippedTitle")}</p>
           <p className="mt-1 text-text-muted">{t("productWizard.variants.skippedBody")}</p>
           <div className="mt-2 flex flex-wrap gap-1.5">
@@ -223,7 +223,7 @@ const MatrixRow = memo(function MatrixRow({
   }
 
   return (
-    <div className="rounded-l border border-border bg-surface p-3">
+    <div className="rounded-lg border border-border bg-surface p-3">
       <div className="flex items-center gap-2">
         {row.color ? (
           <span aria-hidden="true" className="size-4 shrink-0 rounded-full border border-border" style={{ backgroundColor: row.color }} />
@@ -309,7 +309,7 @@ function VariantImageField({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex size-11 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint"
+        className="flex size-11 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint"
         aria-label={t("media.picker.choose")}
       >
         {row.image_path ? (

@@ -114,7 +114,7 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
       <nav className="mt-3 flex flex-wrap gap-2" aria-label="filter">
         {["pending", "approved", "adjusted", "rejected", "all"].map((s) => (
           <a key={s} href={`?status=${s}`}
-            className={`inline-flex min-h-11 items-center rounded-m border px-3 text-xs font-bold ${
+            className={`inline-flex min-h-11 items-center rounded-md border px-3 text-xs font-bold ${
               loaderData.status === s ? "border-primary bg-primary-soft text-primary" : "border-border bg-surface text-text-muted hover:bg-surface-tint"
             }`} aria-current={loaderData.status === s ? "page" : undefined}>
             {s === "all" ? "—" : t(`dim.st_${s}`)}
@@ -123,7 +123,7 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
       </nav>
 
       {loaderData.templates.length === 0 ? (
-        <div className="mt-4 rounded-m border border-border bg-surface p-6 text-center text-sm text-text-muted">
+        <div className="mt-4 rounded-md border border-border bg-surface p-6 text-center text-sm text-text-muted">
           {t("dim.allReviewed")}
         </div>
       ) : (
@@ -132,7 +132,7 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
             const type = typeByKey.get(tpl.type_key);
             const catPath = type?.leaf_keys?.[0]?.split("/").join(" › ") ?? "—";
             return (
-              <div key={tpl.id} className="rounded-m border border-border bg-surface p-3">
+              <div key={tpl.id} className="rounded-md border border-border bg-surface p-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-sm font-extrabold text-text">{en ? tpl.type_key.replace(/-/g, " ") : (type?.name_ar || tpl.type_key)}</span>
                   <Badge tone={STATUS_TONE[tpl.review_status] ?? "neutral"}>{t(`dim.st_${tpl.review_status}`)}</Badge>
@@ -154,24 +154,24 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
                   </button>
                 </p>
                 {showFields === tpl.id ? (
-                  <p className="mt-1 rounded-s bg-surface-tint p-2 text-xs text-text" dir="ltr">{tpl.fields.join(" | ") || "—"}</p>
+                  <p className="mt-1 rounded-sm bg-surface-tint p-2 text-xs text-text" dir="ltr">{tpl.fields.join(" | ") || "—"}</p>
                 ) : null}
                 {tpl.review_note ? <p className="mt-1 text-xs text-text-faint">{t("dim.reviewNote")}: {tpl.review_note}</p> : null}
 
                 {tpl.review_status !== "rejected" ? (
                   editing === tpl.id ? (
-                    <fetcher.Form method="post" className="mt-2 space-y-2 rounded-s border border-border bg-surface-tint p-3">
+                    <fetcher.Form method="post" className="mt-2 space-y-2 rounded-sm border border-border bg-surface-tint p-3">
                       <input type="hidden" name="id" value={tpl.id} />
                       <input type="hidden" name="action" value="adjust" />
                       <label className="block text-xs font-bold text-text" htmlFor={`f-${tpl.id}`}>{t("dim.adjustFields")}</label>
                       <textarea id={`f-${tpl.id}`} name="fields" rows={2} dir="ltr" defaultValue={tpl.fields.join(", ")}
-                        className="w-full rounded-m border border-border bg-surface p-2 text-xs" />
+                        className="w-full rounded-md border border-border bg-surface p-2 text-xs" />
                       <label className="block text-xs font-bold text-text" htmlFor={`a-${tpl.id}`}>{t("dim.adjustAxes")}</label>
                       <input id={`a-${tpl.id}`} name="axes" dir="ltr" defaultValue={tpl.variant_axes.join(", ")}
-                        className="w-full rounded-m border border-border bg-surface p-2 text-xs" />
+                        className="w-full rounded-md border border-border bg-surface p-2 text-xs" />
                       <label className="block text-xs font-bold text-text" htmlFor={`n-${tpl.id}`}>{t("dim.reviewNote")}</label>
                       <input id={`n-${tpl.id}`} name="note" defaultValue={tpl.review_note}
-                        className="w-full rounded-m border border-border bg-surface p-2 text-xs" />
+                        className="w-full rounded-md border border-border bg-surface p-2 text-xs" />
                       <div className="flex items-center gap-2">
                         <Button type="submit" size="sm" disabled={busy}>{t("dim.save")}</Button>
                         <Button type="button" size="sm" variant="outline" onClick={() => setEditing(null)}>{t("dim.cancel")}</Button>

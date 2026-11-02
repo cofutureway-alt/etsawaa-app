@@ -114,33 +114,33 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
 
       <ul className="mt-3 flex flex-col gap-2">
         {(loaderData.levels as LevelRow[]).map((l) => (
-          <li key={l.id} className="rounded-m border border-border bg-surface p-3">
+          <li key={l.id} className="rounded-md border border-border bg-surface p-3">
             <fetcher.Form method="post" className="flex flex-wrap items-end gap-2 text-[13px]">
               <input type="hidden" name="intent" value="save" />
               <input type="hidden" name="id" value={l.id} />
               <label className="flex flex-col gap-1 text-xs font-bold text-text">
                 {t("pn.nameAr")}
-                <input name="name_ar" defaultValue={l.name_ar} className="w-36 rounded-m border border-border bg-surface px-2 py-1.5" />
+                <input name="name_ar" defaultValue={l.name_ar} className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
               </label>
               <label className="flex flex-col gap-1 text-xs font-bold text-text">
                 {t("pn.nameEn")}
-                <input name="name_en" defaultValue={l.name_en} dir="ltr" className="w-36 rounded-m border border-border bg-surface px-2 py-1.5" />
+                <input name="name_en" defaultValue={l.name_en} dir="ltr" className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
               </label>
               <label className="flex flex-col gap-1 text-xs font-bold text-text">
                 {t("lv.minOrders")}
                 <input name="min_orders" type="number" min={0} defaultValue={l.min_successful_orders} dir="ltr"
-                  className="w-20 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  className="w-20 rounded-md border border-border bg-surface px-2 py-1.5" />
               </label>
               <label className="flex flex-col gap-1 text-xs font-bold text-text">
                 {t("lv.commissionPercent")}
                 <input name="commission_percent" type="number" min={0} max={100} step="0.1"
                   defaultValue={l.rewards.commission_percent ?? 5} dir="ltr"
-                  className="w-20 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  className="w-20 rounded-md border border-border bg-surface px-2 py-1.5" />
               </label>
               <label className="flex flex-col gap-1 text-xs font-bold text-text">
                 {t("lv.holdDays")}
                 <input name="hold_days" type="number" min={0} defaultValue={l.rewards.hold_days ?? 14} dir="ltr"
-                  className="w-16 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  className="w-16 rounded-md border border-border bg-surface px-2 py-1.5" />
               </label>
               <label className="flex items-center gap-1.5 text-xs font-bold text-text">
                 <input type="checkbox" name="is_active" defaultChecked={l.is_active} className="size-4 accent-[var(--color-action)]" />
@@ -162,11 +162,11 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
             <label className="flex flex-col gap-1 text-xs font-bold text-text">
               {t("lv.vendorId")}
               {/* owner email → vendor resolution happens in the E2E; here raw id for precision */}
-              <input name="vendor_id" required dir="ltr" placeholder="uuid" className="w-64 rounded-m border border-border bg-surface px-2 py-1.5" />
+              <input name="vendor_id" required dir="ltr" placeholder="uuid" className="w-64 rounded-md border border-border bg-surface px-2 py-1.5" />
             </label>
             <label className="flex flex-col gap-1 text-xs font-bold text-text">
               {t("lv.toLevel")}
-              <select name="to_level" className="rounded-m border border-border bg-surface px-2 py-1.5">
+              <select name="to_level" className="rounded-md border border-border bg-surface px-2 py-1.5">
                 {(loaderData.levels as LevelRow[]).map((l) => (
                   <option key={l.id} value={l.id}>{en ? l.name_en : l.name_ar}</option>
                 ))}
@@ -175,7 +175,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
           </>
           <label className="flex flex-col gap-1 text-xs font-bold text-text">
             {t("wd.reason")}
-            <input name="reason" required minLength={3} className="w-52 rounded-m border border-border bg-surface px-2 py-1.5" />
+            <input name="reason" required minLength={3} className="w-52 rounded-md border border-border bg-surface px-2 py-1.5" />
           </label>
           <Button type="submit" size="sm" disabled={busy}>{t("lv.apply")}</Button>
           {fetcher.data && !fetcher.data.ok ? (
@@ -187,7 +187,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
       {/* history */}
       <section className="mt-5" aria-label={t("lv.history")}>
         <h2 className="text-sm font-extrabold text-text">{t("lv.history")}</h2>
-        <ul className="mt-2 flex flex-col divide-y divide-border rounded-m border border-border bg-surface text-[13px]">
+        <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface text-[13px]">
           {(loaderData.history as Array<{ id: string; reason: string | null; created_at: string; vendors: { store_name_ar: string; store_name_en: string } | null }>).map((h) => (            <li key={h.id} className="flex items-center justify-between gap-2 p-2.5">
               <span className="font-bold text-text">{h.vendors ? (en ? h.vendors.store_name_en : h.vendors.store_name_ar) : "—"}</span>
               <span className="flex-1 truncate text-text-muted">{h.reason ?? "—"}</span>

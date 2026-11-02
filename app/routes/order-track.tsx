@@ -69,12 +69,12 @@ export default function TrackPage({ loaderData }: Route.ComponentProps) {
           const updates = history.filter((h) => h.group_id === g.id);
           const idx = FLOW.indexOf(g.status as (typeof FLOW)[number]);
           return (
-            <section key={g.id} className="rounded-m border border-border bg-surface p-4">
+            <section key={g.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-sm font-extrabold text-text">
                   {en ? g.vendor.store_name_en : g.vendor.store_name_ar}
                 </h2>
-                <span className={`rounded-m px-2 py-1 text-xs font-bold ${g.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
+                <span className={`rounded-md px-2 py-1 text-xs font-bold ${g.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
                   {statusLabel(g.status)}
                 </span>
               </div>

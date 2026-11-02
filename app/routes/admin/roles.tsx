@@ -76,7 +76,7 @@ export default function AdminRoles({ loaderData }: Route.ComponentProps) {
 
       <div className="mt-3 flex flex-col gap-3">
         {(loaderData.roles as RoleRow[]).map((r) => (
-          <div key={r.slug} className="rounded-m border border-border bg-surface p-3">
+          <div key={r.slug} className="rounded-md border border-border bg-surface p-3">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-extrabold text-text">{en ? r.name_en : r.name_ar}</h2>
               <span dir="ltr"><Badge tone={r.slug === "admin" ? "danger" : r.slug === "staff" ? "info" : "neutral"}>{r.slug}</Badge></span>

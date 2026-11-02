@@ -126,7 +126,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
               [w.id, en ? w.vendor_en : w.vendor_ar, w.amount_piastres, w.method, w.status, w.created_at].join(","),
             ).join("\n"))}`}
           download="withdrawals.csv"
-          className="rounded-m border border-border bg-surface px-3 py-1.5 text-xs font-bold text-text hover:bg-surface-tint shadow-1"
+          className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-bold text-text hover:bg-surface-tint shadow-1"
         >
           {t("wd.export")}
         </a>
@@ -139,25 +139,25 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
           { key: "approved", label: t("wd.tabApproved"), value: loaderData.stats.approved, moneyVal: loaderData.stats.approvedSum, tone: "text-success-strong", border: "border-t-success" },
           { key: "cancelled", label: t("wd.tabCancelled"), value: loaderData.stats.cancelled, moneyVal: null, tone: "text-danger", border: "border-t-danger" },
         ].map((s) => (
-          <div key={s.key} className={`rounded-l border border-border border-t-[3px] ${s.border} bg-surface p-4 shadow-1`}>
+          <div key={s.key} className={`rounded-lg border border-border border-t-[3px] ${s.border} bg-surface p-4 shadow-1`}>
             <dt className="text-xs font-bold text-text-muted">{s.label}</dt>
             <dd className={`num mt-1 text-xl font-black ${s.tone}`}>{s.value}</dd>
             {s.moneyVal != null ? <dd className="num mt-0.5 text-xs font-bold text-text" dir="ltr">{money(s.moneyVal)}</dd> : null}
           </div>
         ))}
-        <div className="rounded-l border border-border bg-surface p-4 shadow-1">
+        <div className="rounded-lg border border-border bg-surface p-4 shadow-1">
           <dt className="text-xs font-bold text-text-muted">{t("wd.statShowing")}</dt>
           <dd className="num mt-1 text-xl font-black text-text">{loaderData.wd.length}</dd>
           <dd className="mt-0.5 text-[11px] text-text-faint">{t("wd.statShowingHint")}</dd>
         </div>
       </dl>
 
-      <nav className="flex flex-wrap gap-1.5 rounded-l border border-border bg-surface p-2 shadow-1" aria-label={t("wd.title")}>
+      <nav className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" aria-label={t("wd.title")}>
         {tabs.map((tab) => (
           <a key={tab.key}
             href={`/${lang}/admin/withdrawals?tab=${tab.key}`}
             aria-current={loaderData.tab === tab.key ? "page" : undefined}
-            className={`rounded-m border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
+            className={`rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.tab === tab.key
                 ? "border-action bg-action text-on-action shadow-sm"
                 : "border-transparent text-text-muted hover:bg-surface-tint hover:text-text"
@@ -203,7 +203,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
                             <Button type="submit" size="sm" disabled={busy}>{t("wd.approve")}</Button>
                           </fetcher.Form>
                           <button type="button" onClick={() => { setCancelTarget(w); setReason(""); }}
-                            className="cursor-pointer rounded-m border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                            className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
                             {t("wd.cancel")}
                           </button>
                         </div>
@@ -216,7 +216,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
           </div>
           <ul className="mt-3 flex flex-col gap-3 md:hidden">
             {loaderData.wd.map((w) => (
-              <li key={w.id} className="rounded-m border border-border bg-surface p-3 text-[13px]">
+              <li key={w.id} className="rounded-md border border-border bg-surface p-3 text-[13px]">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-text">{en ? w.vendor_en : w.vendor_ar}</span>
                   <span className="tabular-nums" dir="ltr">{money(w.amount_piastres)}</span>
@@ -232,7 +232,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
                       <Button type="submit" size="sm" disabled={busy} className="w-full">{t("wd.approve")}</Button>
                     </fetcher.Form>
                     <button type="button" onClick={() => { setCancelTarget(w); setReason(""); }}
-                      className="flex-1 cursor-pointer rounded-m border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger">
+                      className="flex-1 cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger">
                       {t("wd.cancel")}
                     </button>
                   </div>
@@ -252,7 +252,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
             <label htmlFor="cancel-reason" className="text-[13px] font-bold text-text">{t("wd.reason")}</label>
             <textarea id="cancel-reason" name="reason" rows={3} required minLength={3} value={reason}
               onChange={(e) => setReason(e.target.value)}
-              className="mt-1 w-full rounded-m border border-border bg-surface p-2 text-[13px] text-text"
+              className="mt-1 w-full rounded-md border border-border bg-surface p-2 text-[13px] text-text"
               placeholder={t("wd.reasonPlaceholder")} />
             <p className="mt-1 text-xs text-text-muted">{t("wd.cancelNote")}</p>
             <div className="mt-3 flex justify-end gap-2">

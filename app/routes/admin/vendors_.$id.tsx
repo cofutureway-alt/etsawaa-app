@@ -146,7 +146,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
       {/* header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint">
+          <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
             {v.logo_path ? (
               <MediaImage path={v.logo_path} alt="" width={56} height={56} supabaseUrl={loaderData.supabaseUrl} className="size-full object-cover" />
             ) : (
@@ -166,7 +166,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
         </div>
         <Link
           to={`/${loaderData.lang}/admin/vendors/${v.id}/edit`}
-          className="rounded-m bg-action px-4 py-2 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+          className="rounded-md bg-action px-4 py-2 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
         >
           {t("vd.editSettings")}
         </Link>
@@ -180,7 +180,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
           { label: t("vd.statSales"), value: null, money: s.sales },
           { label: t("vd.statRating"), value: s.ratingAvg != null ? s.ratingAvg : "—", money: null },
         ].map((tile) => (
-          <div key={tile.label} className="rounded-m border border-border bg-surface p-3">
+          <div key={tile.label} className="rounded-md border border-border bg-surface p-3">
             <dt className="text-xs font-bold text-text-muted">{tile.label}</dt>
             <dd className="num mt-1 text-lg font-extrabold text-text">{tile.value ?? money(tile.money)}</dd>
             {tile.label === t("vd.statRating") && s.ratingCount > 0 ? (
@@ -191,7 +191,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
       </dl>
 
       {/* basic info grid */}
-      <section aria-label={t("vd.infoTitle")} className="rounded-m border border-border bg-surface p-4">
+      <section aria-label={t("vd.infoTitle")} className="rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("vd.infoTitle")}</h2>
         <dl className="mt-3 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
           {infoRows.map((row) => (
@@ -205,7 +205,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
           <div className="mt-3 flex flex-wrap gap-2">
             {Object.entries(socials).filter(([, url]) => url).map(([key, url]) => (
               <a key={key} href={url} target="_blank" rel="noreferrer"
-                className="rounded-m border border-border px-2.5 py-1 text-xs font-bold text-primary hover:bg-surface-tint" dir="ltr">
+                className="rounded-md border border-border px-2.5 py-1 text-xs font-bold text-primary hover:bg-surface-tint" dir="ltr">
                 {key}
               </a>
             ))}
@@ -215,7 +215,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
 
       {/* wallet + penalties + ads (summary; full control lives on the edit page) */}
       <div className="grid gap-4 lg:grid-cols-3">
-        <section aria-label={t("vd.wallet")} className="rounded-m border border-border bg-surface p-4">
+        <section aria-label={t("vd.wallet")} className="rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("vd.wallet")}</h2>
           <p className="num mt-2 text-lg font-extrabold text-text" dir="ltr">{money(loaderData.wallet.available_piastres)}</p>
           <p className="mt-0.5 text-[11px] text-text-faint">
@@ -223,7 +223,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
           </p>
         </section>
 
-        <section aria-label={t("vd.penalties")} className="rounded-m border border-border bg-surface p-4">
+        <section aria-label={t("vd.penalties")} className="rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("vd.penalties")}</h2>
           {loaderData.penalties.length === 0 ? (
             <p className="mt-2 text-[13px] text-text-muted">{t("vd.none")}</p>
@@ -232,7 +232,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
               {loaderData.penalties.map((p: { id: string; amount_piastres: number; reason: string; status: string; created_at: string }) => (
                 <li key={p.id} className="py-1.5 text-[13px]">
                   <span className="num font-bold text-text" dir="ltr">{money(p.amount_piastres)}</span>
-                  <span className="ms-2 rounded-m bg-surface-tint px-1.5 py-0.5 text-[10px] font-bold text-text-muted">{t(`pen.status_${p.status}`)}</span>
+                  <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-[10px] font-bold text-text-muted">{t(`pen.status_${p.status}`)}</span>
                   <span className="block truncate text-xs text-text-muted" title={p.reason}>{p.reason}</span>
                 </li>
               ))}
@@ -240,7 +240,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
           )}
         </section>
 
-        <section aria-label={t("vd.ads")} className="rounded-m border border-border bg-surface p-4">
+        <section aria-label={t("vd.ads")} className="rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("vd.ads")}</h2>
           {loaderData.ads.length === 0 ? (
             <p className="mt-2 text-[13px] text-text-muted">{t("vd.none")}</p>
@@ -249,7 +249,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
               {loaderData.ads.map((a: { id: string; source: string; status: string; started_at: string; ad_packages?: { name_ar: string; name_en: string } | null }) => (
                 <li key={a.id} className="py-1.5 text-[13px]">
                   <span className="font-bold text-text">{a.ad_packages ? (en ? a.ad_packages.name_en : a.ad_packages.name_ar) : "—"}</span>
-                  <span className="ms-2 rounded-m bg-surface-tint px-1.5 py-0.5 text-[10px] font-bold text-text-muted">{t(`ads.source_${a.source}`)}</span>
+                  <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-[10px] font-bold text-text-muted">{t(`ads.source_${a.source}`)}</span>
                   <span className="block text-xs text-text-muted" dir="ltr">{a.started_at?.slice(0, 10)} · {a.status}</span>
                 </li>
               ))}
@@ -259,7 +259,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
       </div>
 
       {/* recent orders */}
-      <section aria-label={t("vd.ordersTitle")} className="rounded-m border border-border bg-surface">
+      <section aria-label={t("vd.ordersTitle")} className="rounded-md border border-border bg-surface">
         <h2 className="border-b border-border px-4 py-3 text-sm font-extrabold text-text">{t("vd.ordersTitle")}</h2>
         {loaderData.recentOrders.length === 0 ? (
           <p className="px-4 py-6 text-center text-[13px] text-text-muted">{t("vd.noOrders")}</p>

@@ -183,7 +183,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       {banner ? (
         <div
           role="status"
-          className={`mt-4 rounded-m border p-4 text-sm font-bold ${
+          className={`mt-4 rounded-md border p-4 text-sm font-bold ${
             liveStatus.status === "cancelled" || (awaitingWebhook && loaderData.flags.kashierRetry)
               ? "border-danger bg-surface text-text"
               : "border-primary bg-surface-tint text-text"
@@ -209,7 +209,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           to={`/${lang}/order/${encodeURIComponent(order.number)}/track`}
-          className="rounded-m border border-action px-4 py-2 text-[13px] font-bold text-action transition-colors duration-150 hover:bg-surface-tint"
+          className="rounded-md border border-action px-4 py-2 text-[13px] font-bold text-action transition-colors duration-150 hover:bg-surface-tint"
         >
           {t("order.track")}
         </Link>
@@ -219,7 +219,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
             <input
               name="reason" required maxLength={500}
               placeholder={t("order.cancelReasonPlaceholder")}
-              className="w-56 rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text outline-none focus:border-primary focus:shadow-focus"
+              className="w-56 rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text outline-none focus:border-primary focus:shadow-focus"
             />
             <Button variant="outline" type="submit" loading={cancelFetcher.state !== "idle"}>
               {t("order.cancel")}
@@ -238,12 +238,12 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       {/* groups */}
       <div className="mt-6 flex flex-col gap-4">
         {groups.map((g) => (
-          <section key={g.id} className="rounded-m border border-border bg-surface p-4">
+          <section key={g.id} className="rounded-md border border-border bg-surface p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-sm font-extrabold text-text">
                 {en ? g.vendor.store_name_en : g.vendor.store_name_ar}
               </h2>
-              <span className={`rounded-m px-2 py-1 text-xs font-bold ${
+              <span className={`rounded-md px-2 py-1 text-xs font-bold ${
                 g.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"
               }`}>
                 {statusLabel(g.status)}
@@ -255,7 +255,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
                   <MediaImg
                     path={it.image_path ?? ""}
                     alt={en ? it.product_name_en : it.product_name_ar}
-                    className="size-12 shrink-0 rounded-m border border-border object-cover"
+                    className="size-12 shrink-0 rounded-md border border-border object-cover"
                   />
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px] font-bold text-text">
@@ -283,7 +283,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* totals */}
-      <section className="mt-4 rounded-m border border-border bg-surface p-4">
+      <section className="mt-4 rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("order.summary")}</h2>
         <dl className="mt-2 flex flex-col gap-1.5 text-sm">
           <div className="flex justify-between"><dt className="text-text-muted">{t("cart.subtotal")}</dt><dd className="font-bold text-text">{money(order.subtotal_piastres)}</dd></div>
@@ -303,7 +303,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       </section>
 
       {/* delivery snapshot */}
-      <section className="mt-4 rounded-m border border-border bg-surface p-4">
+      <section className="mt-4 rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("order.deliveryDetails")}</h2>
         <p className="mt-1.5 text-[13px] text-text">
           {order.ship_name} — <span dir="ltr">{order.phone_primary}</span> · <span dir="ltr">{order.phone_alternate}</span>
@@ -314,7 +314,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
         <p className="mt-1 text-xs text-text-faint">{t("order.emailSnapshot")}: <span dir="ltr">{order.email}</span></p>
       </section>
 
-      <details className="mt-4 rounded-m border border-border bg-surface p-4">
+      <details className="mt-4 rounded-md border border-border bg-surface p-4">
         <summary className="cursor-pointer text-sm font-extrabold text-text">{t("order.historyTitle")}</summary>
         <ol className="mt-3 flex flex-col gap-2">
           {history.length === 0 ? (

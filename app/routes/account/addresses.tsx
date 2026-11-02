@@ -262,7 +262,7 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
       ) : (
         <ul className="mt-3 grid gap-3 sm:grid-cols-2">
           {(loaderData.addresses as Address[]).map((a) => (
-            <li key={a.id} className={`rounded-l border bg-surface p-4 ${a.is_default ? "border-primary/50" : "border-border"}`}>
+            <li key={a.id} className={`rounded-lg border bg-surface p-4 ${a.is_default ? "border-primary/50" : "border-border"}`}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="flex flex-wrap items-center gap-2 font-extrabold text-text">
@@ -334,7 +334,7 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
           <input type="hidden" name="geo_accuracy" value={pin?.accuracyM ?? ""} />
 
           {/* email: shown for context, read-only (H-21; never edited here) */}
-          <div className="rounded-m bg-surface-tint p-3">
+          <div className="rounded-md bg-surface-tint p-3">
             <p className="text-xs font-bold text-text">{t("checkout.emailLabel")}</p>
             <p className="num text-sm text-text-muted" dir="ltr">{loaderData.profile.email}</p>
             <p className="mt-0.5 text-[11px] text-text-faint">{t("checkout.emailReadOnly")}</p>

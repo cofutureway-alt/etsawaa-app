@@ -139,7 +139,7 @@ export function GovernateAreaSelects({
           {loading ? (
             /* stable skeleton over the exact select box — no layout shift, no
                flashing spinner (design skill: feedback matches expected wait) */
-            <span aria-hidden="true" className="absolute inset-0 z-10 animate-pulse rounded-m border border-border bg-surface-tint motion-reduce:animate-none" />
+            <span aria-hidden="true" className="absolute inset-0 z-10 animate-pulse rounded-md border border-border bg-surface-tint motion-reduce:animate-none" />
           ) : null}
           <select
             id={`${namePrefix}area`}
@@ -151,7 +151,7 @@ export function GovernateAreaSelects({
             aria-invalid={areaError ? true : undefined}
             aria-describedby={areaError ? `${namePrefix}area-error` : undefined}
             onChange={(e) => onAreaChange(e.target.value)}
-            className={`w-full cursor-pointer appearance-none rounded-m border bg-surface px-3.5 py-2.5 pe-9 text-sm text-text outline-none transition-colors duration-150 focus:shadow-focus disabled:cursor-not-allowed disabled:opacity-70 ${
+            className={`w-full cursor-pointer appearance-none rounded-md border bg-surface px-3.5 py-2.5 pe-9 text-sm text-text outline-none transition-colors duration-150 focus:shadow-focus disabled:cursor-not-allowed disabled:opacity-70 ${
               areaError ? "border-danger" : "border-border focus:border-primary"
             }`}
           >

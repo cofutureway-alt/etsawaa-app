@@ -151,8 +151,8 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
         <h2 className="text-sm font-extrabold text-text">{t("bl.cats")}</h2>
         <fetcher.Form method="post" className="mt-1.5 flex flex-wrap items-center gap-1.5">
           <input type="hidden" name="intent" value="cat_add" />
-          <input name="name_ar" required placeholder={t("pn.nameAr")} className="w-40 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px]" />
-          <input name="name_en" required dir="ltr" placeholder={t("pn.nameEn")} className="w-40 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px]" />
+          <input name="name_ar" required placeholder={t("pn.nameAr")} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
+          <input name="name_en" required dir="ltr" placeholder={t("pn.nameEn")} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
           <Button type="submit" size="sm" variant="outline" disabled={busy}>{t("cp.create")}</Button>
         </fetcher.Form>
         <ul className="mt-1.5 flex flex-wrap gap-1.5">
@@ -168,7 +168,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
         {loaderData.posts.length === 0 ? (
           <div className="mt-2"><EmptyState title={t("bl.empty")} body={t("bl.emptyHint")} /></div>
         ) : (
-          <ul className="mt-2 flex flex-col divide-y divide-border rounded-m border border-border bg-surface">
+          <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
             {(loaderData.posts as PostRow[]).map((p) => (
               <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-[13px]">
                 <span className="font-bold text-text">{p.title_ar || p.title_en}</span>
@@ -277,7 +277,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
   );
 }
 
-const inp = "w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text";
+const inp = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
 
 
 /** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */

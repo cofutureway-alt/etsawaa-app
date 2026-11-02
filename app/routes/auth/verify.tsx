@@ -193,7 +193,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
         </div>
 
         {failure ? (
-          <div role="alert" className="flex items-start gap-1.5 rounded-m border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
+          <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
             <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
             <span className="font-bold">
               {failure.reason === "too_many"
@@ -234,7 +234,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
                   autoComplete="one-time-code"
                   maxLength={6}
                   aria-label={t("auth.verify.digit", { index: index + 1 })}
-                  className={`num size-12 rounded-m border-2 text-center text-lg font-extrabold text-text outline-none transition-colors duration-150 focus:shadow-focus ${
+                  className={`num size-12 rounded-md border-2 text-center text-lg font-extrabold text-text outline-none transition-colors duration-150 focus:shadow-focus ${
                     digit ? "border-primary bg-surface-tint" : "border-border bg-surface"
                   }`}
                 />

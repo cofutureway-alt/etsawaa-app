@@ -49,7 +49,7 @@ export function PhaseSection({
 }) {
   return (
     <SectionBlock title={title} action={action} id={id}>
-      <div className="flex flex-col items-center justify-center gap-2 rounded-l border border-dashed border-border-strong bg-surface px-6 py-10 text-center">
+      <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-strong bg-surface px-6 py-10 text-center">
         <Badge tone="warning">{`Phase ${phase}`}</Badge>
         <p className="max-w-md text-[13px] leading-relaxed text-text-muted">{note}</p>
       </div>

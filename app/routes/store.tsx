@@ -93,7 +93,7 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
       />
 
       {/* banner + identity */}
-      <header className="overflow-hidden rounded-l border border-border bg-surface">
+      <header className="overflow-hidden rounded-lg border border-border bg-surface">
         <div className="h-28 bg-surface-tint sm:h-40">
           {store.banner_path ? (
             <MediaImg path={store.banner_path} alt={name} width={1200} height={240} eager className="h-full w-full" sizes="100vw" />
@@ -133,14 +133,14 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
 
       {/* suspended notice (US-08 edge): shell visible, nothing purchasable */}
       {suspended ? (
-        <div className="rounded-l border-2 border-danger bg-danger-soft px-4 py-3 text-[13px] font-extrabold text-danger" role="alert">
+        <div className="rounded-lg border-2 border-danger bg-danger-soft px-4 py-3 text-[13px] font-extrabold text-danger" role="alert">
           {t("store.suspendedNotice")}
         </div>
       ) : null}
 
       {/* event refusal notice: these products stay visible HERE only (S-06) */}
       {eventRefused ? (
-        <div className="rounded-l border-2 border-warning bg-warning-soft px-4 py-3 text-[13px] font-bold text-warning-strong">
+        <div className="rounded-lg border-2 border-warning bg-warning-soft px-4 py-3 text-[13px] font-bold text-warning-strong">
           {t("store.eventRefusedNotice", { event: eventName ?? "" })}
         </div>
       ) : null}
@@ -158,7 +158,7 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
               <li key={product.id} className="relative min-w-0">
                 <ProductCard card={product} lang={lang} wished={loaderData.wishedIds.has(product.id)} />
                 {!product.is_listable ? (
-                  <span className="pointer-events-none absolute inset-x-2 top-2 z-10 rounded-m bg-ink/80 px-2 py-1 text-center text-[10px] font-extrabold text-white">
+                  <span className="pointer-events-none absolute inset-x-2 top-2 z-10 rounded-md bg-ink/80 px-2 py-1 text-center text-[10px] font-extrabold text-white">
                     {product.is_event_hidden ? t("store.eventHiddenBadge") : t("store.eventRefusedBadge")}
                   </span>
                 ) : null}

@@ -211,7 +211,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
               <button
                 type="button"
                 onClick={() => setSearch({ cat: leaf.id })}
-                className="flex w-full cursor-pointer items-center justify-between rounded-m border border-border bg-surface px-3 py-2.5 text-start transition-colors duration-150 hover:bg-surface-tint"
+                className="flex w-full cursor-pointer items-center justify-between rounded-md border border-border bg-surface px-3 py-2.5 text-start transition-colors duration-150 hover:bg-surface-tint"
               >
                 <span className="min-w-0">
                   <span className="block truncate text-[13px] font-bold text-text">{leaf.name_ar}</span>
@@ -222,7 +222,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
             </li>
           ))}
         </ul>
-        {leaves.length === 0 ? <p className="rounded-l border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noLeaves")}</p> : null}
+        {leaves.length === 0 ? <p className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noLeaves")}</p> : null}
       </div>
     );
   }
@@ -240,7 +240,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* template preview (US-10) */}
-      <details className="rounded-l border border-border bg-surface p-3">
+      <details className="rounded-lg border border-border bg-surface p-3">
         <summary className="cursor-pointer text-[13px] font-extrabold text-text">{t("catalog.preview")}</summary>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {visibleDefs.map((d) => (
@@ -258,7 +258,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
 
       <ul className="flex flex-col gap-2">
         {visibleDefs.map((d) => (
-          <li key={d.id} className="rounded-m border border-border bg-surface px-3 py-2.5">
+          <li key={d.id} className="rounded-md border border-border bg-surface px-3 py-2.5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="min-w-0 flex-1 truncate text-[13px] font-extrabold text-text">
                 {d.code} {d.unit ? <span className="font-normal text-text-muted">({d.unit})</span> : null}
@@ -294,7 +294,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
             )}
           </li>
         ))}
-        {visibleDefs.length === 0 ? <li className="rounded-l border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noAttributes")}</li> : null}
+        {visibleDefs.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noAttributes")}</li> : null}
       </ul>
 
       {/* def create/edit dialog */}
@@ -307,7 +307,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
             <Input label={t("catalog.code")} name="code" defaultValue={defDialog.mode === "edit" ? defDialog.def.code : ""} required pattern="[a-z0-9_]{2,40}" dir="ltr" disabled={defDialog.mode === "edit"} hint={t("catalog.codeHint")} inputClassName="bg-surface disabled:opacity-50" />
             <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
               {t("catalog.type")}
-              <select name="type" defaultValue={defDialog.mode === "edit" ? defDialog.def.type : "enum"} className="rounded-m border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none">
+              <select name="type" defaultValue={defDialog.mode === "edit" ? defDialog.def.type : "enum"} className="rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none">
                 <option value="enum">{t("catalog.typeEnum")}</option>
                 <option value="color">{t("catalog.typeColor")}</option>
                 <option value="bool">{t("catalog.typeBool")}</option>
@@ -373,7 +373,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
             {leaves.filter((l) => l.id !== selected.id).map((leaf) => {
               const linked = links.some((l) => l.attribute_id === linkDialog.id && l.category_id === leaf.id);
               return (
-                <fetcher.Form key={leaf.id} method="post" className="flex items-center justify-between gap-2 rounded-m border border-border px-3 py-2">
+                <fetcher.Form key={leaf.id} method="post" className="flex items-center justify-between gap-2 rounded-md border border-border px-3 py-2">
                   <input type="hidden" name="attribute_id" value={linkDialog.id} />
                   <span className="text-[13px] font-bold text-text">{leaf.name_ar} <span className="font-normal text-text-muted">/ {leaf.name_en}</span></span>
                   {linked ? (
@@ -437,7 +437,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
 }
 
 function TemplateField({ def, options }: { def: DefRow; options: OptionRow[] }) {
-  const base = "rounded-m border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none";
+  const base = "rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none";
   if (def.type === "enum") {
     return <select className={base} disabled><option value="">{options.map((o) => o.label_ar).join(" · ") || "—"}</option></select>;
   }

@@ -61,7 +61,7 @@ export function Rating({ value, count, onChange, size = "md" }: RatingProps) {
           aria-label={`${star} / 5`}
           onMouseEnter={() => setHovered(star)}
           onClick={() => onChange(star)}
-          className="cursor-pointer rounded-m p-0.5 transition-transform duration-150 hover:scale-110"
+          className="cursor-pointer rounded-md p-0.5 transition-transform duration-150 hover:scale-110"
         >
           <span className="sr-only">{star}</span>
         </button>

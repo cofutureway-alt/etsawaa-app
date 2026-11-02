@@ -197,7 +197,7 @@ export default function AdminCustomers({ loaderData }: Route.ComponentProps) {
               {loaderData.page > 1 ? (
                 <a
                   href={`/${lang}/admin/customers?page=${loaderData.page - 1}${loaderData.q ? `&q=${encodeURIComponent(loaderData.q)}` : ""}`}
-                  className="rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
+                  className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
                 >
                   {t("common.prev")}
                 </a>
@@ -208,7 +208,7 @@ export default function AdminCustomers({ loaderData }: Route.ComponentProps) {
               {loaderData.page < loaderData.totalPages ? (
                 <a
                   href={`/${lang}/admin/customers?page=${loaderData.page + 1}${loaderData.q ? `&q=${encodeURIComponent(loaderData.q)}` : ""}`}
-                  className="rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
+                  className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
                 >
                   {t("common.next")}
                 </a>

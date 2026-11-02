@@ -109,7 +109,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
       <h1 className="mt-1 text-lg font-extrabold text-text">{t("returns.wizardTitle")}</h1>
 
       {fetcher.data && !fetcher.data.ok ? (
-        <p role="alert" className="mt-3 rounded-m border border-danger bg-surface p-3 text-[13px] font-bold text-danger">
+        <p role="alert" className="mt-3 rounded-md border border-danger bg-surface p-3 text-[13px] font-bold text-danger">
           {fetcher.data.reason === "window_expired" ? t("returns.windowExpired")
             : fetcher.data.reason === "qty_exceeded" ? t("returns.qtyExceeded")
             : fetcher.data.reason === "no_items" ? t("returns.noItems")
@@ -118,21 +118,21 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
       ) : null}
 
       {!anyRemaining ? (
-        <p className="mt-4 rounded-m border border-border bg-surface-tint p-3 text-[13px] text-text-muted">{t("returns.fullyRequestedAll")}</p>
+        <p className="mt-4 rounded-md border border-border bg-surface-tint p-3 text-[13px] text-text-muted">{t("returns.fullyRequestedAll")}</p>
       ) : (
         <fetcher.Form method="post" preventScrollReset className="mt-4 flex flex-col gap-5">
           {/* step 1 — kind */}
           <fieldset>
             <legend className="text-sm font-bold text-text">{t("returns.kindTitle")}</legend>
             <div className="mt-2 flex flex-col gap-2">
-              <label className={`flex cursor-pointer items-start gap-3 rounded-m border p-3 ${kind === "return" ? "border-action bg-surface-tint" : "border-border"}`}>
+              <label className={`flex cursor-pointer items-start gap-3 rounded-md border p-3 ${kind === "return" ? "border-action bg-surface-tint" : "border-border"}`}>
                 <input type="radio" name="kind" value="return" checked={kind === "return"} onChange={() => setKind("return")} className="mt-1 size-4 accent-[var(--color-action)]" />
                 <span className="text-[13px]">
                   <span className="block font-bold text-text">{t("returns.kindReturn")}</span>
                   <span className="block text-text-muted">{t("returns.returnWindow", { days: returnDaysLeft })}</span>
                 </span>
               </label>
-              <label className={`flex cursor-pointer items-start gap-3 rounded-m border p-3 ${kind === "warranty" ? "border-action bg-surface-tint" : "border-border"}`}>
+              <label className={`flex cursor-pointer items-start gap-3 rounded-md border p-3 ${kind === "warranty" ? "border-action bg-surface-tint" : "border-border"}`}>
                 <input type="radio" name="kind" value="warranty" checked={kind === "warranty"} onChange={() => setKind("warranty")} className="mt-1 size-4 accent-[var(--color-action)]" />
                 <span className="text-[13px]">
                   <span className="block font-bold text-text">{t("returns.kindWarranty")}</span>
@@ -154,7 +154,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
                 const group = loaderData.groups.find((g: { id: string }) => g.id === it.group_id);
                 const checked = selected.includes(it.id);
                 return (
-                  <div key={it.id} className={`rounded-m border p-3 ${checked ? "border-action bg-surface-tint" : "border-border"}`}>
+                  <div key={it.id} className={`rounded-md border p-3 ${checked ? "border-action bg-surface-tint" : "border-border"}`}>
                     <label className="flex items-start gap-3">
                       <input
                         type="checkbox"
@@ -179,12 +179,12 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
                           {t("returns.qtyLabel")} ({remaining})
                           <input
                             type="number" name={`qty_${it.id}`} min={1} max={remaining} defaultValue={remaining}
-                            className="ms-2 w-20 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px] text-text"
+                            className="ms-2 w-20 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px] text-text"
                           />
                         </label>
                         <label className="text-xs font-bold text-text">
                           {t("returns.reasonLabel")}
-                          <select name={`reason_${it.id}`} className="ms-2 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
+                          <select name={`reason_${it.id}`} className="ms-2 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
                             {REASONS.map((r) => (
                               <option key={r} value={r}>{t(`returns.reason_${r}`)}</option>
                             ))}
@@ -205,7 +205,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
             <textarea
               name="description" rows={3} maxLength={2000} required
               placeholder={t("returns.descriptionPlaceholder")}
-              className="mt-2 w-full rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text outline-none focus:border-primary focus:shadow-focus"
+              className="mt-2 w-full rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text outline-none focus:border-primary focus:shadow-focus"
             />
             <div className="mt-2">
               <EvidenceUploader onChange={setEvidence} />
@@ -217,7 +217,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
           <button
             type="submit"
             disabled={selected.length === 0 || fetcher.state !== "idle"}
-            className="w-fit cursor-pointer rounded-m bg-action px-6 py-3 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-fit cursor-pointer rounded-md bg-action px-6 py-3 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             {t("returns.submitButton")}
           </button>

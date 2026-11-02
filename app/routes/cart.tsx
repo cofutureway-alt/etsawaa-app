@@ -124,7 +124,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="flex min-w-0 flex-col gap-4">
             {Array.from({ length: 2 }, (_, i) => (
-              <div key={i} className="rounded-l border border-border bg-surface">
+              <div key={i} className="rounded-lg border border-border bg-surface">
                 <div className="border-b border-border px-4 py-3">
                   <Skeleton className="h-3.5 w-32" />
                 </div>
@@ -139,7 +139,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
               </div>
             ))}
           </div>
-          <aside className="flex h-fit flex-col gap-3 rounded-l border border-border bg-surface p-4 lg:sticky lg:top-32">
+          <aside className="flex h-fit flex-col gap-3 rounded-lg border border-border bg-surface p-4 lg:sticky lg:top-32">
             <Skeleton className="h-4 w-28" />
             <div className="flex flex-col gap-2">
               <Skeleton className="h-3.5 w-full" />
@@ -164,7 +164,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
           action={
             <Link
               to={`/${lang}/products`}
-              className="inline-block rounded-m bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="inline-block rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.empty.browse")}
             </Link>
@@ -187,7 +187,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
               ? vendorLines[0]?.store_name_ar || vendorLines[0]?.store_name_en
               : vendorLines[0]?.store_name_en || vendorLines[0]?.store_name_ar;
             return (
-              <section key={vendorId || "unknown"} className="rounded-l border border-border bg-surface" aria-label={storeName ?? t("cart.group")}>
+              <section key={vendorId || "unknown"} className="rounded-lg border border-border bg-surface" aria-label={storeName ?? t("cart.group")}>
                 <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
                   <h2 className="truncate text-[13px] font-extrabold text-text">{storeName ?? t("cart.group")}</h2>
                   <Link
@@ -202,7 +202,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                     const name = lang === "ar" ? line.name_ar || line.name_en : line.name_en || line.name_ar;
                     return (
                       <li key={line.variant_id} className="flex gap-3 border-b border-border p-4 last:border-none">
-                        <div className="size-20 shrink-0 overflow-hidden rounded-m border border-border">
+                        <div className="size-20 shrink-0 overflow-hidden rounded-md border border-border">
                           {line.image_path ? (
                             <MediaImg path={line.image_path} alt={name ?? ""} width={80} height={80} className="size-20" />
                           ) : (
@@ -224,7 +224,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                               aria-label={t("cart.remove")}
                               disabled={working === line.variant_id}
                               onClick={() => void removeLine(line)}
-                              className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-danger disabled:cursor-not-allowed disabled:opacity-40"
+                              className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-danger disabled:cursor-not-allowed disabled:opacity-40"
                             >
                               <TrashIcon className="size-4" />
                             </button>
@@ -239,7 +239,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                             </span>
                           ) : null}
                           <div className="mt-1 flex items-center gap-3">
-                            <div className="flex items-center rounded-m border border-border">
+                            <div className="flex items-center rounded-md border border-border">
                               <button
                                 type="button"
                                 aria-label={t("cart.decrease")}
@@ -276,7 +276,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* summary */}
-        <aside className="flex h-fit flex-col gap-3 rounded-l border border-border bg-surface p-4 lg:sticky lg:top-32" aria-label={t("cart.summary")}>
+        <aside className="flex h-fit flex-col gap-3 rounded-lg border border-border bg-surface p-4 lg:sticky lg:top-32" aria-label={t("cart.summary")}>
           <h2 className="text-[13px] font-extrabold text-text">{t("cart.summary")}</h2>
 
           <div className="flex items-center justify-between text-[13px]">
@@ -317,7 +317,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void applyCouponCode(); } }}
                   maxLength={40}
                   placeholder={t("cart.coupon.placeholder")}
-                  className="min-w-0 flex-1 rounded-m border border-border bg-surface px-3 py-2 text-[13px] outline-none focus:border-action"
+                  className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2 text-[13px] outline-none focus:border-action"
                 />
                 <Button type="button" size="sm" disabled={checkingCoupon || !couponInput.trim()} onClick={() => void applyCouponCode()}>
                   {checkingCoupon ? t("common.loading") : t("cart.coupon.apply")}
@@ -331,14 +331,14 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
           {loaderData.signedIn ? (
             <Link
               to={`/${lang}/checkout`}
-              className="flex min-h-11 items-center justify-center rounded-m bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="flex min-h-11 items-center justify-center rounded-md bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.checkout")}
             </Link>
           ) : (
             <Link
               to={`/${lang}/auth/register?next=${encodeURIComponent(`/${lang}/cart`)}`}
-              className="flex min-h-11 items-center justify-center rounded-m bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="flex min-h-11 items-center justify-center rounded-md bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.registerToCheckout")}
             </Link>

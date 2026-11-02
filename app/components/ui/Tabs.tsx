@@ -39,7 +39,7 @@ export function Tabs({ items }: { items: TabItem[] }) {
               aria-controls={`${baseId}-panel-${item.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(item.id)}
-              className={`cursor-pointer rounded-t-m border-b-2 px-4 py-2.5 text-[13px] font-bold transition-colors duration-150 ${
+              className={`cursor-pointer rounded-t-md border-b-2 px-4 py-2.5 text-[13px] font-bold transition-colors duration-150 ${
                 selected
                   ? "border-action text-action"
                   : "border-transparent text-text-muted hover:bg-surface-tint hover:text-text"

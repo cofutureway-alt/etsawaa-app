@@ -320,13 +320,13 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
           <label htmlFor="cp-code" className="text-[13px] font-bold text-text">{t("cp.code")}</label>
           <div className="mt-1 flex gap-2">
             <input id="cp-code" name="code" value={code} onChange={(e) => setCode(e.target.value)} dir="ltr" required
-              className="w-40 rounded-m border border-border bg-surface p-2.5 text-[13px] text-text" />
+              className="w-40 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
             <Button type="button" size="sm" variant="ghost" onClick={() => setCode(genCode())}>{t("cp.generate")}</Button>
           </div>
 
           <label htmlFor="cp-type" className="mt-3 block text-[13px] font-bold text-text">{t("cp.type")}</label>
           <select id="cp-type" name="type" value={type} onChange={(e) => setType(e.target.value)}
-            className="mt-1 w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text">
+            className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text">
             <option value="percent">{t("cp.type_percent")}</option>
             <option value="fixed">{t("cp.type_fixed")}</option>
             <option value="commission_percent">{t("cp.type_commission_percent")}</option>
@@ -338,13 +338,13 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
           </label>
           <input id="cp-value" name="value" type="number" min={1} max={type === "fixed" ? 100000000 : 100} required dir="ltr"
             defaultValue={editing?.value}
-            className="mt-1 w-32 rounded-m border border-border bg-surface p-2.5 text-[13px] text-text" />
+            className="mt-1 w-32 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
 
           {type === "commission_percent" ? (
             <>
               <label htmlFor="cp-pairs" className="mt-3 block text-[13px] font-bold text-text">{t("cp.pairsWith")}</label>
               <input id="cp-pairs" name="pairs_with" dir="ltr" placeholder={t("cp.pairsPlaceholder")}
-                className="mt-1 w-40 rounded-m border border-border bg-surface p-2.5 text-[13px] text-text" />
+                className="mt-1 w-40 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
             </>
           ) : null}
 
@@ -366,27 +366,27 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
           <div className="mt-3 grid grid-cols-2 gap-2">
             <label htmlFor="cp-min" className="text-[13px] font-bold text-text">{t("cp.minSubtotal")}
               <input id="cp-min" name="min_subtotal_piastres" type="number" min={0} dir="ltr" defaultValue={editing?.min_subtotal_piastres}
-                className="mt-1 w-full rounded-m border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
             </label>
             <label htmlFor="cp-maxd" className="text-[13px] font-bold text-text">{t("cp.maxDiscount")}
               <input id="cp-maxd" name="max_discount_piastres" type="number" min={1} dir="ltr" defaultValue={editing?.max_discount_piastres ?? undefined}
-                className="mt-1 w-full rounded-m border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
             </label>
             <label htmlFor="cp-maxt" className="text-[13px] font-bold text-text">{t("cp.maxTotal")}
               <input id="cp-maxt" name="max_uses_total" type="number" min={1} dir="ltr" defaultValue={editing?.max_uses_total ?? undefined}
-                className="mt-1 w-full rounded-m border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
             </label>
             <label htmlFor="cp-maxu" className="text-[13px] font-bold text-text">{t("cp.maxPerUser")}
               <input id="cp-maxu" name="max_uses_per_user" type="number" min={1} dir="ltr" defaultValue={editing?.max_uses_per_user ?? undefined}
-                className="mt-1 w-full rounded-m border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
             </label>
           </div>
           <label htmlFor="cp-ends" className="mt-2 block text-[13px] font-bold text-text">{t("cp.endsAt")}</label>
           <input id="cp-ends" name="ends_at" type="date" dir="ltr" defaultValue={editing?.ends_at?.slice(0, 10)}
-            className="mt-1 w-40 rounded-m border border-border bg-surface p-2.5 text-[13px] text-text" />
+            className="mt-1 w-40 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
 
           {/* scopes — written to coupon_scopes, which c_scope_ok reads in fn_apply_coupon */}
-          <fieldset className="mt-3 rounded-m border border-border p-2.5">
+          <fieldset className="mt-3 rounded-md border border-border p-2.5">
             <legend className="px-1 text-[13px] font-bold text-text">{t("cp.scopes")}</legend>
             <p className="mb-2 text-xs text-text-muted">{t("cp.scopesHint")}</p>
             <div className="flex flex-col gap-1.5">
@@ -446,19 +446,19 @@ function ScopeAdder({ onAdd }: { onAdd: (sc: CouponScope) => void }) {
   return (
     <div className="mt-2 flex flex-wrap items-end gap-1.5">
       <select value={mode} onChange={(e) => setMode(e.target.value as CouponScope["mode"])}
-        aria-label={t("cp.mode")} className="rounded-m border border-border bg-surface p-1.5 text-[12px]">
+        aria-label={t("cp.mode")} className="rounded-md border border-border bg-surface p-1.5 text-[12px]">
         <option value="include">{t("cp.mode_include")}</option>
         <option value="exclude">{t("cp.mode_exclude")}</option>
       </select>
       <select value={kind} onChange={(e) => setKind(e.target.value as CouponScope["scope"])}
-        aria-label={t("cp.scope")} className="rounded-m border border-border bg-surface p-1.5 text-[12px]">
+        aria-label={t("cp.scope")} className="rounded-md border border-border bg-surface p-1.5 text-[12px]">
         {(["category", "brand", "product", "vendor"] as const).map((k) => (
           <option key={k} value={k}>{t(`cp.scope_${k}`)}</option>
         ))}
       </select>
       <input value={ref} onChange={(e) => setRef(e.target.value)} dir="ltr" placeholder={t("cp.scopeRef")}
         aria-label={t("cp.scopeRef")}
-        className="w-64 rounded-m border border-border bg-surface p-1.5 font-mono text-[11px]" />
+        className="w-64 rounded-md border border-border bg-surface p-1.5 font-mono text-[11px]" />
       <Button type="button" size="sm" variant="ghost"
         onClick={() => { onAdd({ mode, scope: kind, ref_id: ref.trim() }); setRef(""); }}>
         {t("common.add")}

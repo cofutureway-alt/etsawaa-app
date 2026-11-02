@@ -96,7 +96,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
       <Card className="border-t-[3px] border-t-action">
         <CardBody className="flex flex-wrap items-center justify-between gap-4 p-5">
           <div className="flex items-center gap-3.5 min-w-0">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-m bg-ink text-white font-black text-lg shadow-sm">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-ink text-white font-black text-lg shadow-sm">
               {storeName.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
@@ -128,7 +128,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
           <Link
             key={card.label}
             to={card.to}
-            className={`rounded-l border border-border border-t-[3px] ${toneBorders[card.tone]} bg-surface p-4 shadow-1 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-2`}
+            className={`rounded-lg border border-border border-t-[3px] ${toneBorders[card.tone]} bg-surface p-4 shadow-1 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-2`}
           >
             <div className="flex items-center justify-between">
               <p className="num text-2xl font-black text-text">{card.value}</p>
@@ -151,9 +151,9 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
         <CardBody className="grid gap-3 sm:grid-cols-3">
           <Link
             to={`/${lang}/vendor/products`}
-            className="flex items-center gap-3 rounded-m border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:border-action/40 hover:bg-surface-tint"
+            className="flex items-center gap-3 rounded-md border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:border-action/40 hover:bg-surface-tint"
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-m bg-primary-soft text-action">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary-soft text-action">
               <PackageIcon aria-hidden="true" className="size-4" />
             </div>
             <div>
@@ -164,9 +164,9 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
 
           <Link
             to={`/${lang}/vendor/store`}
-            className="flex items-center gap-3 rounded-m border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:border-action/40 hover:bg-surface-tint"
+            className="flex items-center gap-3 rounded-md border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:border-action/40 hover:bg-surface-tint"
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-m bg-primary-soft text-action">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary-soft text-action">
               <StoreIcon aria-hidden="true" className="size-4" />
             </div>
             <div>
@@ -177,9 +177,9 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
 
           <Link
             to={`/${lang}/vendor/media`}
-            className="flex items-center gap-3 rounded-m border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:border-action/40 hover:bg-surface-tint"
+            className="flex items-center gap-3 rounded-md border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:border-action/40 hover:bg-surface-tint"
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-m bg-primary-soft text-action">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary-soft text-action">
               <UploadIcon aria-hidden="true" className="size-4" />
             </div>
             <div>

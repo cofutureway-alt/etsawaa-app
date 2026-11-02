@@ -15,7 +15,7 @@ export function VendorCard({ store, lang }: { store: StoreCard; lang: string }) 
   const desc = lang === "ar" ? store.short_desc_ar : store.short_desc_en;
   return (
     <article
-      className={`flex flex-col items-center gap-2 rounded-l border bg-surface p-4 text-center transition-shadow duration-200 hover:shadow-1 ${
+      className={`flex flex-col items-center gap-2 rounded-lg border bg-surface p-4 text-center transition-shadow duration-200 hover:shadow-1 ${
         store.is_featured ? "border-featured border-2" : "border-border"
       }`}
     >

@@ -59,7 +59,7 @@ export default function AccountRecentPage({ loaderData }: Route.ComponentProps) 
         <fetcher.Form method="post" preventScrollReset>
           <button
             type="submit"
-            className="cursor-pointer rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint"
+            className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint"
           >
             {t("recent.clear")}
           </button>
@@ -76,11 +76,11 @@ export default function AccountRecentPage({ loaderData }: Route.ComponentProps) 
           {loaderData.items.map((it: { product_id: string; product: ProductCard | null }) => {
             const p = it.product;
             return (
-              <li key={it.product_id} className="rounded-m border border-border bg-surface p-3">
+              <li key={it.product_id} className="rounded-md border border-border bg-surface p-3">
                 {p ? (
                   <>
                     <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`}>
-                      <MediaImg path={p.main_image_path ?? ""} alt={en ? p.name_en : p.name_ar} className="aspect-square w-full rounded-m border border-border object-cover" />
+                      <MediaImg path={p.main_image_path ?? ""} alt={en ? p.name_en : p.name_ar} className="aspect-square w-full rounded-md border border-border object-cover" />
                     </Link>
                     <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="mt-2 block truncate text-[13px] font-bold text-text hover:text-action">
                       {en ? p.name_en : p.name_ar}

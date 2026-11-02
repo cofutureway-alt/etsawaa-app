@@ -125,21 +125,21 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
         <h2 className="text-sm font-extrabold text-text">{t("pn.rules")}</h2>
         <ul className="mt-2 flex flex-col gap-2">
           {(loaderData.rules as RuleRow[]).map((r) => (
-            <li key={r.id} className={`rounded-m border border-border bg-surface p-3 text-[13px] ${r.deleted_at ? "opacity-60" : ""}`}>
+            <li key={r.id} className={`rounded-md border border-border bg-surface p-3 text-[13px] ${r.deleted_at ? "opacity-60" : ""}`}>
               <fetcher.Form method="post" className="flex flex-wrap items-end gap-2">
                 <input type="hidden" name="intent" value="rule_save" />
                 <input type="hidden" name="id" value={r.id} />
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("pn.nameAr")}
-                  <input name="name_ar" defaultValue={r.name_ar} className="w-40 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  <input name="name_ar" defaultValue={r.name_ar} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("pn.nameEn")}
-                  <input name="name_en" defaultValue={r.name_en} dir="ltr" className="w-40 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  <input name="name_en" defaultValue={r.name_en} dir="ltr" className="w-40 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("pn.trigger")}
-                  <select name="trigger_type" defaultValue={r.trigger_type} className="rounded-m border border-border bg-surface px-2 py-1.5">
+                  <select name="trigger_type" defaultValue={r.trigger_type} className="rounded-md border border-border bg-surface px-2 py-1.5">
                     {["manual", "returns_count", "defect_order", "low_rating", "packaging"].map((tt) => (
                       <option key={tt} value={tt}>{t(`pn.trigger_${tt}`)}</option>
                     ))}
@@ -147,11 +147,11 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
                 </label>
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("pn.threshold")}
-                  <input name="threshold" type="number" min={1} defaultValue={r.threshold} dir="ltr" className="w-16 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  <input name="threshold" type="number" min={1} defaultValue={r.threshold} dir="ltr" className="w-16 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("pn.amount")}
-                  <input name="amount_piastres" type="number" min={1} defaultValue={r.amount_piastres} dir="ltr" className="w-24 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  <input name="amount_piastres" type="number" min={1} defaultValue={r.amount_piastres} dir="ltr" className="w-24 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex items-center gap-1.5 text-xs font-bold text-text">
                   <input type="checkbox" name="is_active" defaultChecked={r.is_active} className="size-4 accent-[var(--color-action)]" />
@@ -160,7 +160,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
                 <Button type="submit" size="sm" disabled={busy}>{t("ve.save")}</Button>
                 {!r.deleted_at ? (
                   <button type="submit" name="intent" value="rule_soft_delete"
-                    className="cursor-pointer rounded-m border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                    className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
                     {t("pn.softDelete")}
                   </button>
                 ) : <Badge tone="neutral">{t("pn.deleted")}</Badge>}
@@ -176,7 +176,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
         {loaderData.applications.length === 0 ? (
           <div className="mt-2"><EmptyState title={t("pn.empty")} body={t("pn.emptyHint")} /></div>
         ) : (
-          <ul className="mt-2 flex flex-col divide-y divide-border rounded-m border border-border bg-surface">
+          <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
             {(loaderData.applications as PenRow[]).map((p) => (
               <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-[13px]">
                 <span className="font-bold text-text">{en ? p.vendor_en : p.vendor_ar}</span>
@@ -189,7 +189,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
                     <input type="hidden" name="intent" value="waive" />
                     <input type="hidden" name="id" value={p.id} />
                     <input name="reason" required minLength={3} placeholder={t("pn.waiveReason")}
-                      className="w-40 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px]" />
+                      className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
                     <Button type="submit" size="sm" variant="outline" disabled={busy}>{t("pn.waive")}</Button>
                   </fetcher.Form>
                 ) : null}

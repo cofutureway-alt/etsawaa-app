@@ -86,7 +86,7 @@ export function FileUpload({
           setDragOver(false);
           if (!disabled) handleFiles(event.dataTransfer.files);
         }}
-        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-l border-2 border-dashed px-6 py-8 text-center transition-colors duration-150 ${
+        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed px-6 py-8 text-center transition-colors duration-150 ${
           dragOver ? "border-primary bg-surface-tint" : "border-border-strong bg-surface-alt hover:bg-surface-tint"
         } ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
       >

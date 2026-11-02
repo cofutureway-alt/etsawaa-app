@@ -164,7 +164,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
                     type="button"
                     onClick={() => onChange({ category: selected ? null : c.id, page: 1 })}
                     aria-pressed={selected}
-                    className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-m px-2 py-1.5 text-[13px] transition-colors duration-150 ${
+                    className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${
                       selected ? "bg-surface-tint font-extrabold text-action" : "text-text hover:bg-surface-tint"
                     }`}
                   >
@@ -186,7 +186,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               const selected = state.brand === b.id;
               return (
                 <li key={b.id}>
-                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-m px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
+                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
                     <span className="flex min-w-0 items-center gap-2">
                       <input
                         type="checkbox"
@@ -213,7 +213,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               const selected = selectedCount(attributeId).includes(option.option_id);
               return (
                 <li key={option.option_id}>
-                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-m px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
+                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
                     <span className="flex min-w-0 items-center gap-2">
                       <input
                         type="checkbox"
@@ -242,7 +242,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
             const selected = state.rating === min;
             return (
               <li key={min}>
-                <label className={`flex cursor-pointer items-center gap-2 rounded-m px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
+                <label className={`flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
                   <input
                     type="radio"
                     name="facet-rating"
@@ -270,7 +270,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               value={priceDraft.min}
               onChange={(e) => setPriceDraft((d) => ({ ...d, min: e.target.value }))}
               placeholder={t("store.filters.priceFrom")}
-              className="w-full rounded-m border border-border bg-surface px-2 py-2 text-[13px] outline-none focus:border-action"
+              className="w-full rounded-md border border-border bg-surface px-2 py-2 text-[13px] outline-none focus:border-action"
             />
           </label>
           <span aria-hidden="true" className="text-text-faint">–</span>
@@ -283,14 +283,14 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               value={priceDraft.max}
               onChange={(e) => setPriceDraft((d) => ({ ...d, max: e.target.value }))}
               placeholder={t("store.filters.priceTo")}
-              className="w-full rounded-m border border-border bg-surface px-2 py-2 text-[13px] outline-none focus:border-action"
+              className="w-full rounded-md border border-border bg-surface px-2 py-2 text-[13px] outline-none focus:border-action"
             />
           </label>
         </div>
         <button
           type="button"
           onClick={applyPrice}
-          className="mx-1 mt-2 w-[calc(100%-8px)] cursor-pointer rounded-m border border-border bg-surface px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+          className="mx-1 mt-2 w-[calc(100%-8px)] cursor-pointer rounded-md border border-border bg-surface px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
         >
           {t("store.filters.applyPrice")}
         </button>

@@ -68,7 +68,7 @@ function Toast({ toast, onDismiss }: { toast: ToastItem; onDismiss: () => void }
   return (
     <div
       role={toast.tone === "error" ? "alert" : "status"}
-      className={`pointer-events-auto flex w-full max-w-sm items-center gap-2.5 rounded-m border px-4 py-3 text-sm font-bold shadow-2 ${toneStyles[toast.tone]}`}
+      className={`pointer-events-auto flex w-full max-w-sm items-center gap-2.5 rounded-md border px-4 py-3 text-sm font-bold shadow-2 ${toneStyles[toast.tone]}`}
     >
       {toneIcons[toast.tone]}
       <span className="flex-1">{toast.message}</span>
@@ -76,7 +76,7 @@ function Toast({ toast, onDismiss }: { toast: ToastItem; onDismiss: () => void }
         type="button"
         onClick={onDismiss}
         aria-label={t("a11y.dismissToast")}
-        className="flex size-6 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
+        className="flex size-6 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
       >
         <XIcon />
       </button>

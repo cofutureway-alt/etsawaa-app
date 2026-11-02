@@ -29,7 +29,7 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
   return (
     <div>
       {loaderData.submitted ? (
-        <p role="status" className="mb-4 rounded-m border border-primary bg-surface-tint p-3 text-[13px] font-bold text-text">
+        <p role="status" className="mb-4 rounded-md border border-primary bg-surface-tint p-3 text-[13px] font-bold text-text">
           {t("returns.submittedNotice")}
         </p>
       ) : null}
@@ -41,7 +41,7 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
             id: string; order: { number: string } | null; kind: string; status: string;
             created_at: string; decision_note: string | null;
           }) => (
-            <li key={r.id} className="rounded-m border border-border bg-surface p-4">
+            <li key={r.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="text-sm font-bold text-text" dir="ltr">{r.order?.number ?? "—"}</p>
@@ -50,10 +50,10 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="rounded-m bg-surface-tint px-2 py-1 text-xs font-bold text-text">
+                  <span className="rounded-md bg-surface-tint px-2 py-1 text-xs font-bold text-text">
                     {r.kind === "return" ? t("returns.kindReturn") : t("returns.kindWarranty")}
                   </span>
-                  <span className="rounded-m bg-surface-tint px-2 py-1 text-xs font-bold text-text">
+                  <span className="rounded-md bg-surface-tint px-2 py-1 text-xs font-bold text-text">
                     {t(`returns.status_${r.status}`)}
                   </span>
                 </div>

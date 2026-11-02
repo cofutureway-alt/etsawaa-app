@@ -82,7 +82,7 @@ export function DataTable<Row>({
           {/* Mobile: cards */}
           <ul className="flex flex-col gap-2 md:hidden">
             {visibleRows.map((row) => (
-              <li key={rowKey(row)} className="rounded-m border border-border bg-surface p-3">
+              <li key={rowKey(row)} className="rounded-md border border-border bg-surface p-3">
                 <div className="font-bold text-text">{cardTitle(row)}</div>
                 <dl className="mt-2 flex flex-col gap-1 text-[13px]">
                   {columns.map((column) => (

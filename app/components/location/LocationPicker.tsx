@@ -25,7 +25,7 @@ export function LocationPicker({
     return (
       <div
         aria-hidden="true"
-        className="h-64 w-full animate-pulse rounded-m border border-border bg-surface-tint motion-reduce:animate-none"
+        className="h-64 w-full animate-pulse rounded-md border border-border bg-surface-tint motion-reduce:animate-none"
       />
     );
   }

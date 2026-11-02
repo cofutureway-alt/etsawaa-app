@@ -67,13 +67,13 @@ export default function AccountNotifications({ loaderData }: Route.ComponentProp
         <div className="flex gap-2">
           <Link
             to={`/${loaderData.lang}/account/notifications`}
-            className={`rounded-m border px-3 py-1.5 text-[13px] font-bold ${loaderData.filter === "all" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
+            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${loaderData.filter === "all" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
           >
             {t("notifications.filterAll")}
           </Link>
           <Link
             to={`/${loaderData.lang}/account/notifications?filter=unread`}
-            className={`rounded-m border px-3 py-1.5 text-[13px] font-bold ${loaderData.filter === "unread" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
+            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${loaderData.filter === "unread" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
           >
             {t("notifications.filterUnread")} {loaderData.unread > 0 ? `(${loaderData.unread})` : ""}
           </Link>
@@ -96,7 +96,7 @@ export default function AccountNotifications({ loaderData }: Route.ComponentProp
               en ? "en" : "ar",
             );
             return (
-              <li key={r.id} className={`rounded-m border p-3.5 ${r.read_at === null ? "border-action bg-surface-tint" : "border-border bg-surface"}`}>
+              <li key={r.id} className={`rounded-md border p-3.5 ${r.read_at === null ? "border-action bg-surface-tint" : "border-border bg-surface"}`}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-[13px] font-bold text-text">{text.title}</p>
                   <span className="text-xs text-text-faint" dir="ltr">

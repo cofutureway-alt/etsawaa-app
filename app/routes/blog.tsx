@@ -109,7 +109,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
       <nav aria-label={t("pubBlog.cats")} className="mt-3 flex flex-wrap gap-1.5">
         <Link to={`/${lang}/blog`}
           aria-current={!loaderData.activeCat ? "page" : undefined}
-          className={`rounded-m border px-3 py-1.5 text-[13px] font-bold ${
+          className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${
             !loaderData.activeCat ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
           }`}>
           {t("common.all")}
@@ -117,7 +117,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
         {loaderData.cats.map((c) => (
           <Link key={c.id} to={`/${lang}/blog?cat=${c.id}`}
             aria-current={loaderData.activeCat === c.id ? "page" : undefined}
-            className={`rounded-m border px-3 py-1.5 text-[13px] font-bold ${
+            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${
               loaderData.activeCat === c.id ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
             }`}>
             {en ? c.name_en : c.name_ar}
@@ -144,7 +144,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
           {loaderData.posts.map((p) => (
             <li key={p.slug_en} className="flex">
               <Link to={`/${lang}/blog/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`}
-                className="flex h-full w-full flex-col overflow-hidden rounded-m border border-border bg-surface transition-colors duration-150 hover:border-primary/40 hover:bg-surface-tint">
+                className="flex h-full w-full flex-col overflow-hidden rounded-md border border-border bg-surface transition-colors duration-150 hover:border-primary/40 hover:bg-surface-tint">
                 {p.cover_path ? (
                   <img src={publicMediaUrl(supabaseUrl, p.cover_path)} alt="" width={600} height={315}
                     loading="lazy" decoding="async" className="aspect-[600/315] w-full object-cover" />

@@ -42,9 +42,13 @@
   --font-sans: var(--font-body);
   --font-heading: var(--font-heading);
 
-  --radius-s: var(--radius-s);
-  --radius-m: var(--radius-m);
-  --radius-l: var(--radius-l);
+  /* NOTE: --radius-s/-m/-l collided with Tailwind's logical `rounded-s`
+     (start) and `rounded-l` (left) utilities, which emitted left-only 4px
+     corners and overrode the token. Renamed to -sm/-md/-lg so the token is
+     the only source of truth. */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
   --radius-full: var(--radius-full);
 
   --shadow-1: var(--shadow-1);

@@ -146,11 +146,11 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
 
       <ul className="flex flex-col gap-2">
         {brands.map((b, i) => (
-          <li key={b.id} className="flex items-center gap-2 rounded-m border border-border bg-surface px-2.5 py-2">
+          <li key={b.id} className="flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-2">
             {b.thumb_path ? (
-              <img src={`${supabaseUrl}/storage/v1/object/public/media/${b.thumb_path}`} alt="" width={40} height={40} loading="lazy" className="size-10 rounded-m bg-surface-tint object-cover" />
+              <img src={`${supabaseUrl}/storage/v1/object/public/media/${b.thumb_path}`} alt="" width={40} height={40} loading="lazy" className="size-10 rounded-md bg-surface-tint object-cover" />
             ) : (
-              <span className="flex size-10 items-center justify-center rounded-m bg-surface-tint text-[11px] font-bold text-text-faint">{b.name_en.slice(0, 2)}</span>
+              <span className="flex size-10 items-center justify-center rounded-md bg-surface-tint text-[11px] font-bold text-text-faint">{b.name_en.slice(0, 2)}</span>
             )}
             <span className="min-w-0 flex-1 truncate text-[13px] font-bold text-text">
               {b.name_ar} <span className="font-normal text-text-faint">/ {b.name_en}</span>
@@ -162,7 +162,7 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
             <span className="hidden">{i}</span>
           </li>
         ))}
-        {brands.length === 0 ? <li className="rounded-l border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noBrands")}</li> : null}
+        {brands.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noBrands")}</li> : null}
       </ul>
 
       <Dialog open={dialogOpen} onClose={() => { setCreating(false); setEditing(null); }} title={current ? t("catalog.editBrand") : t("catalog.addBrand")}>
@@ -177,9 +177,9 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
           </div>
           <div className="flex items-center gap-3">
             {thumb ? (
-              <img src={`${supabaseUrl}/storage/v1/object/public/media/${thumb}`} alt="" width={48} height={48} className="size-12 rounded-m bg-surface-tint object-cover" />
+              <img src={`${supabaseUrl}/storage/v1/object/public/media/${thumb}`} alt="" width={48} height={48} className="size-12 rounded-md bg-surface-tint object-cover" />
             ) : (
-              <span className="flex size-12 items-center justify-center rounded-m border border-dashed border-border text-[11px] text-text-faint">{t("catalog.logo")}</span>
+              <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-[11px] text-text-faint">{t("catalog.logo")}</span>
             )}
             <input type="hidden" name="thumb_path" value={thumb ?? ""} />
             <Button type="button" size="sm" variant="outline" onClick={() => setPickerOpen(true)}>{t("media.choose")}</Button>

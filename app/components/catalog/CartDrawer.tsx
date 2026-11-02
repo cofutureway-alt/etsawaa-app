@@ -65,7 +65,7 @@ export function CartDrawer() {
               const name = lang === "ar" ? line.name_ar || line.name_en : line.name_en || line.name_ar;
               return (
                 <li key={line.variant_id} className="flex gap-2.5 border-b border-border pb-3 last:border-none">
-                  <div className="size-16 shrink-0 overflow-hidden rounded-m border border-border">
+                  <div className="size-16 shrink-0 overflow-hidden rounded-md border border-border">
                     {line.image_path ? (
                       <MediaImg path={line.image_path} alt={name ?? ""} width={64} height={64} className="size-16" />
                     ) : (
@@ -94,7 +94,7 @@ export function CartDrawer() {
                       <span className="text-[11px] font-bold text-warning-strong">{t("cart.cappedNotice")}</span>
                     ) : null}
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center rounded-m border border-border">
+                      <div className="flex items-center rounded-md border border-border">
                         <button
                           type="button"
                           aria-label={t("cart.decrease")}
@@ -121,7 +121,7 @@ export function CartDrawer() {
                         aria-label={t("cart.remove")}
                         disabled={working === line.variant_id}
                         onClick={() => void removeLine(line)}
-                        className="flex size-8 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-danger disabled:cursor-not-allowed disabled:opacity-40"
+                        className="flex size-8 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-danger disabled:cursor-not-allowed disabled:opacity-40"
                       >
                         <TrashIcon className="size-4" />
                       </button>
@@ -133,7 +133,7 @@ export function CartDrawer() {
           </ul>
 
           {anyCapped ? (
-            <p className="mt-3 rounded-m bg-warning-soft px-3 py-2 text-[12px] font-bold text-warning-strong">
+            <p className="mt-3 rounded-md bg-warning-soft px-3 py-2 text-[12px] font-bold text-warning-strong">
               {t("cart.cappedSummary")}
             </p>
           ) : null}
@@ -148,14 +148,14 @@ export function CartDrawer() {
             <Link
               to={`/${lang}/checkout`}
               onClick={cart.closeDrawer}
-              className="flex min-h-11 items-center justify-center rounded-m bg-action text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="flex min-h-11 items-center justify-center rounded-md bg-action text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.checkout")}
             </Link>
             <Link
               to={`/${lang}/cart`}
               onClick={cart.closeDrawer}
-              className="flex min-h-11 items-center justify-center rounded-m border border-border text-[13px] font-extrabold text-text transition-colors duration-150 hover:bg-surface-tint"
+              className="flex min-h-11 items-center justify-center rounded-md border border-border text-[13px] font-extrabold text-text transition-colors duration-150 hover:bg-surface-tint"
             >
               {t("cart.viewCart")}
             </Link>

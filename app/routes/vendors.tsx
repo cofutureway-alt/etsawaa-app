@@ -93,7 +93,7 @@ export default function VendorsPage({ loaderData }: Route.ComponentProps) {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="min-h-9 cursor-pointer rounded-m border border-border bg-surface px-2 text-[13px] font-bold outline-none focus:border-action"
+                className="min-h-9 cursor-pointer rounded-md border border-border bg-surface px-2 text-[13px] font-bold outline-none focus:border-action"
               >
                 <option value="">{t("store.vendor.filterAll")}</option>
                 {loaderData.categories.filter((c) => c.depth === 1).map((c) => (
@@ -106,7 +106,7 @@ export default function VendorsPage({ loaderData }: Route.ComponentProps) {
               <select
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="min-h-9 cursor-pointer rounded-m border border-border bg-surface px-2 text-[13px] font-bold outline-none focus:border-action"
+                className="min-h-9 cursor-pointer rounded-md border border-border bg-surface px-2 text-[13px] font-bold outline-none focus:border-action"
               >
                 <option value="">{t("store.vendor.filterAll")}</option>
                 {levels.map((name) => (

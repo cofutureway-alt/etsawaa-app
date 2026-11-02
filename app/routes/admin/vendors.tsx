@@ -249,7 +249,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 rounded-l border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminVendors.filter")}>
+      <div className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminVendors.filter")}>
         {FILTERS.map((filter) => (
           <button
             key={filter || "all"}
@@ -263,7 +263,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
               window.history.replaceState(null, "", url.toString());
               window.location.reload();
             }}
-            className={`cursor-pointer rounded-m border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
+            className={`cursor-pointer rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.status === filter
                 ? "border-action bg-action text-on-action shadow-sm"
                 : "border-transparent bg-transparent text-text-muted hover:bg-surface-tint hover:text-text"
@@ -295,7 +295,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
               text: (row) => `${row.store_name_ar} ${row.store_name_en} ${row.slug}`,
               render: (row) => (
                 <div className="flex items-center gap-2.5">
-                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint">
+                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
                     {row.logo_path ? (
                       <MediaImage path={row.logo_path} alt="" width={40} height={40} supabaseUrl={loaderData.supabaseUrl} className="size-full object-cover" />
                     ) : null}
@@ -359,33 +359,33 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
                   ) : null}
                   {row.status === "active" || row.status === "suspended" ? (
                     <>
-                      <Link to={`vendors/${row.id}/edit`} className="rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                      <Link to={`vendors/${row.id}/edit`} className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                         {t("adminVendors.edit")}
                       </Link>
                       {row.status === "active" ? (
                         <button type="button" onClick={() => { setBanTarget(row); setReason(""); setActionError(null); }}
-                          className="cursor-pointer rounded-m border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                          className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
                           {t("adminVendors.ban")}
                         </button>
                       ) : (
                         <button type="button" onClick={() => submitIntent("unban", row)}
-                          className="cursor-pointer rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                           {t("adminVendors.unban")}
                         </button>
                       )}
                       {row.hidden_from_listings ? (
                         <button type="button" onClick={() => submitIntent("unhide", row)}
-                          className="cursor-pointer rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                           {t("adminVendors.unhide")}
                         </button>
                       ) : (
                         <button type="button" onClick={() => { setHideTarget(row); setReason(""); setActionError(null); }}
-                          className="cursor-pointer rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                           {t("adminVendors.hide")}
                         </button>
                       )}
                       <button type="button" onClick={() => { setPenaltyTarget(row); setReason(""); setPenaltyAmount(""); setActionError(null); }}
-                        className="cursor-pointer rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                        className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                         {t("adminVendors.penalty")}
                       </button>
                     </>
@@ -409,7 +409,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
             <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
               {t("adminProducts.reason")}
               <textarea
-                className={`min-h-20 rounded-m border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus ${
+                className={`min-h-20 rounded-md border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus ${
                   reasonError ? "border-danger" : "border-border"
                 }`}
                 value={reason}
@@ -442,7 +442,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
             </p>
             <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
               {t("adminProducts.reason")}
-              <textarea className="min-h-16 rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
+              <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
             </label>
             {actionError ? <p role="alert" className="text-xs font-bold text-danger">{actionError}</p> : null}
@@ -461,7 +461,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
             <p className="text-[13px] text-text">{t("adminVendors.hideNote")}</p>
             <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
               {t("adminProducts.reason")}
-              <textarea className="min-h-16 rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
+              <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
             </label>
             {actionError ? <p role="alert" className="text-xs font-bold text-danger">{actionError}</p> : null}
@@ -481,11 +481,11 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
               {t("adminVendors.penaltyAmount")}
               <input id="penalty-amount" type="number" min={1} step={1} dir="ltr" value={penaltyAmount}
                 onChange={(e) => setPenaltyAmount(e.target.value)}
-                className="rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" />
+                className="rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" />
             </label>
             <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
               {t("adminProducts.reason")}
-              <textarea className="min-h-16 rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
+              <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
             </label>
             {actionError ? <p role="alert" className="text-xs font-bold text-danger">{actionError}</p> : null}

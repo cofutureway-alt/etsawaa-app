@@ -59,13 +59,13 @@ export default function AccountWishlistPage({ loaderData }: Route.ComponentProps
         const p = it.product;
         const unavailable = p === null || !p.is_listable;
         return (
-          <li key={it.product_id} className="flex gap-3 rounded-m border border-border bg-surface p-3">
+          <li key={it.product_id} className="flex gap-3 rounded-md border border-border bg-surface p-3">
             {p ? (
               <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="shrink-0">
-                <MediaImg path={p.main_image_path ?? ""} alt={en ? p.name_en : p.name_ar} className="size-20 rounded-m border border-border object-cover" />
+                <MediaImg path={p.main_image_path ?? ""} alt={en ? p.name_en : p.name_ar} className="size-20 rounded-md border border-border object-cover" />
               </Link>
             ) : (
-              <div className="flex size-20 shrink-0 items-center justify-center rounded-m border border-border bg-surface-tint text-xs text-text-faint">
+              <div className="flex size-20 shrink-0 items-center justify-center rounded-md border border-border bg-surface-tint text-xs text-text-faint">
                 {t("wishlist.gone")}
               </div>
             )}

@@ -94,7 +94,7 @@ export function NotificationBell({
         aria-expanded={open}
         aria-haspopup="true"
         aria-label={t("a11y.notifications")}
-        className="relative flex size-10 cursor-pointer items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+        className="relative flex size-10 cursor-pointer items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
       >
         <BellIcon />
         {unread > 0 ? (
@@ -104,7 +104,7 @@ export function NotificationBell({
         ) : null}
       </button>
       {open ? (
-        <div className="absolute end-0 top-full z-50 mt-1 w-80 rounded-m border border-border bg-surface shadow-2">
+        <div className="absolute end-0 top-full z-50 mt-1 w-80 rounded-md border border-border bg-surface shadow-2">
           <div className="flex items-center justify-between border-b border-border px-3 py-2">
             <span className="text-[13px] font-extrabold text-text">{t("notifications.title")}</span>
             {list && list.length > 0 ? (

@@ -172,7 +172,7 @@ function ErrorSummary({ items }: { items: Array<{ field: string; label: string }
       tabIndex={-1}
       role="alert"
       aria-labelledby="wizard-error-title"
-      className="rounded-m border border-danger/40 bg-danger-soft p-3"
+      className="rounded-md border border-danger/40 bg-danger-soft p-3"
     >
       <p id="wizard-error-title" className="text-[13px] font-extrabold text-danger">
         {t("common.errorSummary", { count: items.length })}
@@ -222,7 +222,7 @@ function MediaField({
       <span className="text-[13px] font-bold text-text">{label}</span>
       <div className="flex items-center gap-3">
         <div
-          className={`flex items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint ${
+          className={`flex items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint ${
             kind === "logo" ? "size-16" : "h-16 w-32"
           }`}
         >
@@ -354,7 +354,7 @@ function DocumentUploader({
 
   const statusTone = existing?.status === "verified" ? "success" : existing?.status === "rejected" ? "danger" : "warning";
   return (
-    <div className="flex flex-col gap-2 rounded-l border border-border bg-surface p-3.5">
+    <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-3.5">
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-[13px] font-extrabold text-text">{label}</span>
         {existing ? (
@@ -422,11 +422,11 @@ function CategoryMultiSelect({
   return (
     <fieldset className="flex flex-col gap-2">
       <legend className="text-[13px] font-bold text-text">{t("vendorOnboarding.step1.categories")}</legend>
-      <div className="grid max-h-72 gap-1.5 overflow-y-auto rounded-m border border-border bg-surface p-3 sm:grid-cols-2">
+      <div className="grid max-h-72 gap-1.5 overflow-y-auto rounded-md border border-border bg-surface p-3 sm:grid-cols-2">
         {roots.map((root) => {
           const subs = categories.filter((c) => c.parent_id === root.id);
           return (
-            <details key={root.id} className="rounded-m bg-surface-tint p-2">
+            <details key={root.id} className="rounded-md bg-surface-tint p-2">
               <summary className="cursor-pointer list-none text-[13px] font-bold text-text">
                 {t("vendorOnboarding.locale") === "ar" ? root.name_ar : root.name_en}
               </summary>
@@ -726,7 +726,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
               {direct ? t("vendorOnboarding.done.direct") : t("vendorOnboarding.done.pending")}
             </p>
             {vendor?.grace_until && vendor.verification_status === "unverified" ? (
-              <p className="rounded-m bg-warning-soft p-3 text-[12px] font-bold text-warning">
+              <p className="rounded-md bg-warning-soft p-3 text-[12px] font-bold text-warning">
                 {t("vendorOnboarding.done.grace", { until: new Date(vendor.grace_until).toLocaleDateString(isAr ? "ar-EG" : "en-GB") })}
               </p>
             ) : null}
@@ -943,7 +943,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
 
             {step === 3 ? (
               <>
-                <div className="flex items-start gap-2 rounded-m border border-warning/40 bg-warning-soft p-3.5">
+                <div className="flex items-start gap-2 rounded-md border border-warning/40 bg-warning-soft p-3.5">
                   <ShieldIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-warning" />
                   <div className="text-[13px] leading-relaxed text-text">
                     <p className="font-extrabold">{t("vendorOnboarding.step3.optionalTitle")}</p>
@@ -986,7 +986,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
 
             {step === 4 ? (
               <>
-                <details open className="rounded-m border border-border bg-surface-tint p-4">
+                <details open className="rounded-md border border-border bg-surface-tint p-4">
                   <summary className="cursor-pointer text-[13px] font-extrabold text-text">
                     {t("vendorOnboarding.step4.contractTitle")}
                   </summary>
@@ -1093,7 +1093,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
 function ReviewBlock({ title, rows, onEdit }: { title: string; rows: string[][]; onEdit: () => void }) {
   const { t } = useTranslation();
   return (
-    <div className="rounded-m border border-border bg-surface-tint p-3.5">
+    <div className="rounded-md border border-border bg-surface-tint p-3.5">
       <div className="flex items-center justify-between gap-2">
         <p className="text-[13px] font-extrabold text-text">{title}</p>
         <button type="button" onClick={onEdit} className="cursor-pointer text-[12px] font-bold text-action hover:underline">

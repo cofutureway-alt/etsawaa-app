@@ -89,7 +89,7 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
     return (
       <div className="flex flex-col gap-4">
         <Breadcrumbs label={t("a11y.breadcrumbs")} items={[{ label: t("nav.home"), href: `/${lang}` }, { label: t("nav.contact") }]} />
-        <div className="mx-auto flex max-w-lg flex-col items-center gap-3 rounded-l border border-border bg-surface p-8 text-center">
+        <div className="mx-auto flex max-w-lg flex-col items-center gap-3 rounded-lg border border-border bg-surface p-8 text-center">
           <span className="flex size-14 items-center justify-center rounded-full bg-success-soft text-success-strong">
             <CheckIcon className="size-7" />
           </span>
@@ -111,7 +111,7 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
           <p className="mt-1 text-[13px] text-text-muted">{t("contact.subtitle")}</p>
         </header>
 
-        <fetcher.Form method="post" noValidate onSubmit={() => setTouched(true)} className="flex flex-col gap-3 rounded-l border border-border bg-surface p-5">
+        <fetcher.Form method="post" noValidate onSubmit={() => setTouched(true)} className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
           <Input label={t("contact.name")} name="name" value={form.name} onChange={set("name")} required maxLength={80} error={err("name") ?? undefined} inputClassName="bg-surface" />
           <Input label={t("contact.email")} name="email" type="email" value={form.email} onChange={set("email")} required maxLength={120} error={err("email") ?? undefined} inputClassName="bg-surface" />
           <Input label={t("contact.phone")} name="phone" type="tel" value={form.phone} onChange={set("phone")} maxLength={20} hint={t("contact.phoneHint")} error={err("phone") ?? undefined} inputClassName="bg-surface" />
@@ -126,17 +126,17 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
               rows={5}
               maxLength={2000}
               aria-invalid={fieldError === "message"}
-              className="rounded-m border border-border bg-surface px-3 py-2.5 text-[13px] outline-none transition-colors duration-150 focus:border-action"
+              className="rounded-md border border-border bg-surface px-3 py-2.5 text-[13px] outline-none transition-colors duration-150 focus:border-action"
             />
             {err("message") ? <span className="text-[12px] font-bold text-danger">{err("message")}</span> : null}
           </label>
           {serverReason === "db" ? (
-            <p className="rounded-m bg-danger-soft px-3 py-2 text-[12px] font-bold text-danger" role="alert">{t("contact.error.db")}</p>
+            <p className="rounded-md bg-danger-soft px-3 py-2 text-[12px] font-bold text-danger" role="alert">{t("contact.error.db")}</p>
           ) : null}
           <button
             type="submit"
             disabled={fetcher.state !== "idle"}
-            className="mt-1 flex min-h-11 cursor-pointer items-center justify-center rounded-m bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-1 flex min-h-11 cursor-pointer items-center justify-center rounded-md bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             {fetcher.state !== "idle" ? t("common.loading") : t("contact.send")}
           </button>

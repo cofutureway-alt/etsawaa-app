@@ -357,7 +357,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
   if (loaderData.guest) {
     return (
       <div className="mx-auto w-full max-w-lg px-4 py-10">
-        <div className="rounded-m border border-border bg-surface p-6 text-center">
+        <div className="rounded-md border border-border bg-surface p-6 text-center">
           <h1 className="text-lg font-extrabold text-text">{t("checkout.gateTitle")}</h1>
           <p className="mt-2 text-sm text-text-muted">{t("checkout.gateBody")}</p>
           <p className="mt-1 text-sm text-text-muted">
@@ -496,7 +496,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           id="checkout-error-summary"
           role="alert"
           tabIndex={-1}
-          className="mb-4 rounded-m border border-danger bg-surface p-4 outline-none"
+          className="mb-4 rounded-md border border-danger bg-surface p-4 outline-none"
         >
           <p className="text-sm font-bold text-danger">{t("checkout.placeFailed")}</p>
           <p className="mt-1 text-[13px] text-text-muted">
@@ -523,7 +523,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
       ) : null}
 
       {quote && quote.blockedNames.length > 0 ? (
-        <div role="status" className="mb-4 rounded-m border border-border bg-surface p-4">
+        <div role="status" className="mb-4 rounded-md border border-border bg-surface p-4">
           <p className="text-sm font-bold text-text">{t("checkout.unavailableTitle")}</p>
           <p className="mt-1 text-[13px] text-text-muted">{t("checkout.unavailableBody", { names: quote.blockedNames.join("، ") })}</p>
           <Link to={`/${lang}/cart`} className="mt-2 inline-block text-[13px] font-bold text-action hover:underline">
@@ -536,12 +536,12 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
         {/* ---------------- accordion ---------------- */}
         <div className="flex flex-col gap-3">
           {/* Step 1 — account & address */}
-          <section className="overflow-hidden rounded-m border border-border bg-surface">
+          <section className="overflow-hidden rounded-md border border-border bg-surface">
             {stepHeader("address", 0)}
             {step === "address" ? (
               <div className="border-t border-border p-4">
                 {/* email: displayed read-only, never an input (AGENT §29) */}
-                <div className="mb-4 rounded-m bg-surface-tint p-3">
+                <div className="mb-4 rounded-md bg-surface-tint p-3">
                   <p className="text-[13px] font-bold text-text">{t("checkout.emailLabel")}</p>
                   <p className="text-sm text-text-muted">{loaderData.viewerEmail}</p>
                   <p className="mt-1 text-xs text-text-faint">{t("checkout.emailReadOnly")}</p>
@@ -554,7 +554,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                       {loaderData.addresses.map((a) => (
                         <label
                           key={a.id}
-                          className={`flex cursor-pointer items-start gap-3 rounded-m border p-3 transition-colors duration-150 ${
+                          className={`flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-150 ${
                             addressMode === "saved" && selectedAddressId === a.id ? "border-action bg-surface-tint" : "border-border hover:border-primary"
                           }`}
                         >
@@ -568,7 +568,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                           <span className="text-sm">
                             <span className="font-bold text-text">
                               {a.full_name}
-                              {a.is_default ? <span className="ms-2 rounded-m bg-surface-tint px-1.5 py-0.5 text-[11px] font-bold text-text-muted">{t("checkout.defaultAddress")}</span> : null}
+                              {a.is_default ? <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-[11px] font-bold text-text-muted">{t("checkout.defaultAddress")}</span> : null}
                             </span>
                             <span className="mt-0.5 block text-[13px] text-text-muted" dir="ltr">
                               {a.phone}
@@ -580,7 +580,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                           </span>
                         </label>
                       ))}
-                      <label className={`flex cursor-pointer items-center gap-3 rounded-m border p-3 transition-colors duration-150 ${addressMode === "new" ? "border-action bg-surface-tint" : "border-border hover:border-primary"}`}>
+                      <label className={`flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-colors duration-150 ${addressMode === "new" ? "border-action bg-surface-tint" : "border-border hover:border-primary"}`}>
                         <input
                           type="radio"
                           name="saved-address"
@@ -694,13 +694,13 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Step 2 — shipping */}
-          <section className="overflow-hidden rounded-m border border-border bg-surface">
+          <section className="overflow-hidden rounded-md border border-border bg-surface">
             {stepHeader("shipping", 1)}
             {step === "shipping" ? (
               <div className="border-t border-border p-4">
                 {activeGov ? (
                   <div className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between rounded-m bg-surface-tint p-3">
+                    <div className="flex items-center justify-between rounded-md bg-surface-tint p-3">
                       <span className="text-sm font-bold text-text">{t("checkout.shippingFee")}</span>
                       <span className="text-sm font-extrabold text-text">
                         {totals?.free_shipping ? t("checkout.freeShipping") : money(totals?.shipping_piastres ?? activeGov.shipping_fee_piastres)}
@@ -723,12 +723,12 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Step 3 — payment */}
-          <section className="overflow-hidden rounded-m border border-border bg-surface">
+          <section className="overflow-hidden rounded-md border border-border bg-surface">
             {stepHeader("payment", 2)}
             {step === "payment" ? (
               <div className="border-t border-border p-4">
                 <div role="radiogroup" aria-label={t("checkout.stepPayment")} className="flex flex-col gap-2">
-                  <label className={`flex cursor-pointer items-start gap-3 rounded-m border p-3.5 transition-colors duration-150 ${
+                  <label className={`flex cursor-pointer items-start gap-3 rounded-md border p-3.5 transition-colors duration-150 ${
                     paymentMethod === "kashier" ? "border-action bg-surface-tint" : "border-border hover:border-primary"
                   } ${loaderData.kashier ? "" : "opacity-60"}`}>
                     <input
@@ -746,7 +746,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                     </span>
                   </label>
 
-                  <label className={`flex items-start gap-3 rounded-m border p-3.5 transition-colors duration-150 ${
+                  <label className={`flex items-start gap-3 rounded-md border p-3.5 transition-colors duration-150 ${
                     paymentMethod === "cod" ? "border-action bg-surface-tint" : "border-border"
                   } ${codState.allowed ? "cursor-pointer hover:border-primary" : "opacity-60"}`}>
                     <input
@@ -779,7 +779,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Step 4 — confirm */}
-          <section className="overflow-hidden rounded-m border border-border bg-surface">
+          <section className="overflow-hidden rounded-md border border-border bg-surface">
             {stepHeader("confirm", 3)}
             {step === "confirm" ? (
               <div className="border-t border-border p-4">
@@ -816,7 +816,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
 
         {/* ---------------- sticky summary ---------------- */}
         <aside className="lg:sticky lg:top-24">
-          <div className="rounded-m border border-border bg-surface p-4">
+          <div className="rounded-md border border-border bg-surface p-4">
             <h2 className="text-sm font-extrabold text-text">{t("checkout.summaryTitle")}</h2>
             {groups.length === 0 ? (
               <p className="mt-3 text-[13px] text-text-muted">{t("cart.empty")}</p>
@@ -832,7 +832,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                         <MediaImg
                           path={l.image_path ?? ""}
                           alt={i18n.language?.startsWith("en") ? l.name_en : l.name_ar}
-                          className="size-11 shrink-0 rounded-m border border-border object-cover"
+                          className="size-11 shrink-0 rounded-md border border-border object-cover"
                         />
                         <span className="min-w-0 flex-1">
                           <Link to={`/${lang}/product/${encodeURIComponent(i18n.language?.startsWith("en") ? l.slug_en : l.slug_ar)}`} className="block truncate text-[13px] font-bold text-text hover:text-action">
@@ -858,7 +858,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                   id="ck-coupon"
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
-                  className="w-full rounded-m border border-border bg-surface px-3 py-2 text-sm text-text outline-none transition-colors duration-150 focus:border-primary focus:shadow-focus"
+                  className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-text outline-none transition-colors duration-150 focus:border-primary focus:shadow-focus"
                   placeholder={t("cart.coupon.placeholder")}
                 />
                 <Button

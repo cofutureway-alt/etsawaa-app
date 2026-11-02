@@ -83,7 +83,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 }
 
 const BOOL = "size-4 accent-[var(--color-action)]";
-const INPUT = "w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text";
+const INPUT = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
 
 function SectionCard({ title, hint, section, children }: {
   title: string; hint?: string; section: string; children: React.ReactNode;
@@ -347,11 +347,11 @@ export default function AdminSettingsSections({ loaderData }: Route.ComponentPro
 
       {/* links to the specialised setting pages */}
       <div className="mt-4 flex flex-wrap gap-2 text-[13px] font-bold">
-        <a href={`/${lang}/admin/zones`} className="rounded-m border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkZones")}</a>
-        <a href={`/${lang}/admin/document-settings`} className="rounded-m border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkDocs")}</a>
-        <a href={`/${lang}/admin/email-templates`} className="rounded-m border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkEmails")}</a>
-        <a href={`/${lang}/admin/media-settings`} className="rounded-m border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkMedia")}</a>
-        <a href={`/${lang}/admin/settings`} className="rounded-m border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkIdentity")}</a>
+        <a href={`/${lang}/admin/zones`} className="rounded-md border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkZones")}</a>
+        <a href={`/${lang}/admin/document-settings`} className="rounded-md border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkDocs")}</a>
+        <a href={`/${lang}/admin/email-templates`} className="rounded-md border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkEmails")}</a>
+        <a href={`/${lang}/admin/media-settings`} className="rounded-md border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkMedia")}</a>
+        <a href={`/${lang}/admin/settings`} className="rounded-md border border-border px-3 py-2 text-text hover:bg-surface-tint">{t("st.linkIdentity")}</a>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ export interface TableProps {
 /** Semantic table; container scrolls on narrow screens so the page never does (G5). */
 export function Table({ columns, caption, children }: TableProps) {
   return (
-    <div className="w-full overflow-x-auto rounded-m border border-border bg-surface">
+    <div className="w-full overflow-x-auto rounded-md border border-border bg-surface">
       <table className="w-full min-w-max border-collapse text-start text-sm">
         {caption ? <caption className="sr-only">{caption}</caption> : null}
         <thead>

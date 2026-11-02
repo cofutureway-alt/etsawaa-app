@@ -288,7 +288,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           )}
 
           {/* price block */}
-          <div className="flex flex-wrap items-center gap-3 rounded-l border border-border bg-surface p-3.5">
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface p-3.5">
             {effective != null ? (
               <PriceTag
                 pricePiastres={eventPrice ?? effective}
@@ -329,7 +329,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
 
           {/* qty + add */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center rounded-m border border-border">
+            <div className="flex items-center rounded-md border border-border">
               <button
                 type="button"
                 aria-label={t("cart.decrease")}
@@ -355,7 +355,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                 type="button"
                 disabled
                 title={t("store.product.outOfStock")}
-                className="flex min-h-11 flex-1 cursor-not-allowed items-center justify-center gap-2 rounded-m bg-surface-tint px-6 text-sm font-extrabold text-text-muted opacity-60"
+                className="flex min-h-11 flex-1 cursor-not-allowed items-center justify-center gap-2 rounded-md bg-surface-tint px-6 text-sm font-extrabold text-text-muted opacity-60"
               >
                 <CartIcon aria-hidden="true" />
                 {t("store.product.outOfStockCta")}
@@ -365,7 +365,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                 type="button"
                 onClick={() => void addToCart()}
                 disabled={adding || !selected}
-                className="flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-m bg-action px-6 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-md bg-action px-6 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <CartIcon aria-hidden="true" />
                 {adding ? t("common.loading") : t("store.product.addToCart")}
@@ -375,7 +375,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
               type="button"
               onClick={onCompare}
               aria-label={t("store.compare.add")}
-              className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-m border border-border text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+              className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-action"
             >
               <ScaleIcon className="size-4.5" />
             </button>
@@ -383,11 +383,11 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
 
           {/* assurances */}
           <ul className="grid grid-cols-2 gap-2 text-[12px] font-bold text-text-muted">
-            <li className="flex items-center gap-2 rounded-m border border-border px-3 py-2">
+            <li className="flex items-center gap-2 rounded-md border border-border px-3 py-2">
               <TruckIcon aria-hidden="true" className="text-action" />
               {t("store.product.assureShipping")}
             </li>
-            <li className="flex items-center gap-2 rounded-m border border-border px-3 py-2">
+            <li className="flex items-center gap-2 rounded-md border border-border px-3 py-2">
               <ShieldIcon aria-hidden="true" className="text-action" />
               {t("store.product.assureReturns")}
             </li>
@@ -396,7 +396,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           {/* vendor card */}
           <Link
             to={`/${lang}/store/${encodeURIComponent(card.vendor_slug)}`}
-            className="flex items-center gap-3 rounded-l border border-border bg-surface p-3 transition-colors duration-150 hover:bg-surface-tint"
+            className="flex items-center gap-3 rounded-lg border border-border bg-surface p-3 transition-colors duration-150 hover:bg-surface-tint"
           >
             {card.vendor_logo_path ? (
               <MediaImg path={card.vendor_logo_path} alt={storeName} width={56} height={56} className="size-12 rounded-full border border-border" />
@@ -488,7 +488,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
               <EmptyState title={t("store.reviews.emptyTitle")} body={t("store.reviews.emptyBody")} />
             ) : (
               <div className="flex flex-col gap-5">
-                <div className="flex flex-wrap items-center gap-6 rounded-l border border-border bg-surface p-4">
+                <div className="flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface p-4">
                   <div className="text-center">
                     <p className="num text-3xl font-black text-text">{card.rating_avg?.toFixed(1) ?? "—"}</p>
                     <Rating value={card.rating_avg ?? 0} size="sm" />
@@ -511,7 +511,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                 </div>
                 <ul className="flex flex-col gap-3">
                   {page.reviews.map((review) => (
-                    <li key={review.id} className="rounded-l border border-border bg-surface p-4">
+                    <li key={review.id} className="rounded-lg border border-border bg-surface p-4">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="text-[13px] font-extrabold text-text">{review.author_name}</span>
                         <Rating value={review.rating} size="sm" />
@@ -571,7 +571,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
             <span className="block truncate text-[11px] text-text-muted">{name}</span>
           </div>
           {outOfStock ? (
-            <span className="rounded-m bg-surface-tint px-4 py-2.5 text-[13px] font-extrabold text-text-muted">
+            <span className="rounded-md bg-surface-tint px-4 py-2.5 text-[13px] font-extrabold text-text-muted">
               {t("store.product.outOfStock")}
             </span>
           ) : (
@@ -579,7 +579,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
               type="button"
               onClick={() => void addToCart()}
               disabled={adding}
-              className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-m bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               <CartIcon aria-hidden="true" />
               {t("store.product.addToCart")}

@@ -186,7 +186,7 @@ function DraggableCategory({ row, children }: { row: CategoryRow; children: Reac
 function DroppableCategory({ id, children }: { id: string; children: React.ReactNode }) {
   const { isOver, setNodeRef } = useDroppable({ id });
   return (
-    <div ref={setNodeRef} className={isOver ? "ring-2 ring-action rounded-m" : ""}>
+    <div ref={setNodeRef} className={isOver ? "ring-2 ring-action rounded-md" : ""}>
       {children}
     </div>
   );
@@ -493,7 +493,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
             <Input label={t("catalog.descEn")} name="description_en" defaultValue={editing.row?.description_en} maxLength={300} dir="ltr" inputClassName="bg-surface" />
             <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
               {t("catalog.parent")}
-              <select name="parent_id" defaultValue={editing.row?.parent_id ?? ""} className="rounded-m border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none">
+              <select name="parent_id" defaultValue={editing.row?.parent_id ?? ""} className="rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none">
                 <option value="">{t("catalog.rootLevel")}</option>
                 {categories
                   .filter((c) => c.depth < 3)
@@ -505,9 +505,9 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
             </label>
             <div className="flex items-center gap-3">
               {formThumb ? (
-                <img src={`${supabaseUrl}/storage/v1/object/public/media/${formThumb}`} alt="" width={48} height={48} className="size-12 rounded-m bg-surface-tint object-cover" />
+                <img src={`${supabaseUrl}/storage/v1/object/public/media/${formThumb}`} alt="" width={48} height={48} className="size-12 rounded-md bg-surface-tint object-cover" />
               ) : (
-                <span className="flex size-12 items-center justify-center rounded-m border border-dashed border-border text-[11px] text-text-faint">{t("catalog.thumb")}</span>
+                <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-[11px] text-text-faint">{t("catalog.thumb")}</span>
               )}
               <input type="hidden" name="thumb_path" value={formThumb ?? ""} />
               <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor("form")}>{t("media.choose")}</Button>
@@ -572,7 +572,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                   value={commissionVal}
                   onChange={(e) => setCommissionVal(e.target.value)}
                   placeholder={(() => { const cur = effectiveCommission(commissionFor); return cur != null ? String(cur) : t("commission.levelDefault"); })()}
-                  className="num w-28 rounded-m border border-border bg-surface px-3 py-2 text-sm text-text outline-none focus:border-primary focus:shadow-focus"
+                  className="num w-28 rounded-md border border-border bg-surface px-3 py-2 text-sm text-text outline-none focus:border-primary focus:shadow-focus"
                 />
                 <span className="text-[13px] font-bold text-text-muted">%</span>
               </div>

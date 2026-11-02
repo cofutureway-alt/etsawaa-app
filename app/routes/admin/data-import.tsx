@@ -89,11 +89,11 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
       <p className="mt-1 max-w-[68ch] text-[13px] text-text-muted">{t("dim.hint")}</p>
 
       {batches.length === 0 ? (
-        <div className="mt-4 rounded-m border border-border bg-surface p-6 text-center text-sm text-text-muted">
+        <div className="mt-4 rounded-md border border-border bg-surface p-6 text-center text-sm text-text-muted">
           {t("dim.noBatches")}
         </div>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded-m border border-border bg-surface">
+        <div className="mt-4 overflow-x-auto rounded-md border border-border bg-surface">
           <table className="w-full min-w-[640px] text-start text-[13px]">
             <caption className="sr-only">{t("dim.batches")}</caption>
             <thead>
@@ -133,7 +133,7 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
                         </fetcher.Form>
                       ) : null}
                       {b.rejected_rows > 0 ? (
-                        <a className="ms-2 inline-flex min-h-11 items-center rounded-m border border-border px-3 text-xs font-bold text-primary hover:bg-surface-tint"
+                        <a className="ms-2 inline-flex min-h-11 items-center rounded-md border border-border px-3 text-xs font-bold text-primary hover:bg-surface-tint"
                           href={`/api/admin/import-rejects?batch=${b.id}`} download>
                           {t("dim.rejects")}
                         </a>
@@ -155,7 +155,7 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
       ) : null}
 
       {pendingTemplates ? (
-        <div className="mt-4 rounded-m border border-border bg-surface p-4">
+        <div className="mt-4 rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("dim.publishStatus")}</h2>
           <p className="mt-1 text-[13px] text-text-muted">{t("dim.publishDeferred")}</p>
           <p className="mt-1 text-[13px] text-text-muted">{t("dim.publishGateOn")}</p>
@@ -163,7 +163,7 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
         </div>
       ) : null}
 
-      <details className="mt-4 rounded-m border border-border bg-surface p-4">
+      <details className="mt-4 rounded-md border border-border bg-surface p-4">
         <summary className="cursor-pointer text-sm font-extrabold text-text">{t("dim.sources")}</summary>
         <ul className="mt-2 space-y-1" dir="ltr">
           {batches.flatMap((b) =>

@@ -17,7 +17,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
  * print time → changes apply to the NEXT print without deploy.
  */
 
-const INPUT = "w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text";
+const INPUT = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
 const BOOL = "size-4 accent-[var(--color-action)]";
 
 export async function loader({ request, params }: Route.LoaderArgs) {

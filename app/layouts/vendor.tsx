@@ -174,7 +174,7 @@ function VerificationBanner({
 
   if (verification.status === "pending") {
     return (
-      <div role="status" className="mb-4 flex items-start gap-2 rounded-l border border-info/40 bg-info-soft p-3.5">
+      <div role="status" className="mb-4 flex items-start gap-2 rounded-lg border border-info/40 bg-info-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-info" />
         <p className="text-[13px] leading-relaxed text-text">
           <span className="font-extrabold">{t("vendorStates.pendingTitle")}</span>{" "}
@@ -185,7 +185,7 @@ function VerificationBanner({
   }
   if (verification.status === "rejected") {
     return (
-      <div role="alert" className="mb-4 flex items-start gap-2 rounded-l border border-danger/40 bg-danger-soft p-3.5">
+      <div role="alert" className="mb-4 flex items-start gap-2 rounded-lg border border-danger/40 bg-danger-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" />
         <div className="text-[13px] leading-relaxed text-text">
           <p className="font-extrabold">{t("vendorStates.rejectedTitle")}</p>
@@ -201,7 +201,7 @@ function VerificationBanner({
   }
   if (verification.status === "suspended") {
     return (
-      <div role="alert" className="mb-4 flex items-start gap-2 rounded-l border border-danger/40 bg-danger-soft p-3.5">
+      <div role="alert" className="mb-4 flex items-start gap-2 rounded-lg border border-danger/40 bg-danger-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" />
         <p className="text-[13px] font-extrabold text-text">{t("vendorStates.suspendedTitle")}</p>
       </div>
@@ -209,7 +209,7 @@ function VerificationBanner({
   }
   if (isGraceExpired({ verification_status: verification.verification_status })) {
     return (
-      <div role="alert" className="mb-4 flex items-start gap-2 rounded-l border border-danger/40 bg-danger-soft p-3.5">
+      <div role="alert" className="mb-4 flex items-start gap-2 rounded-lg border border-danger/40 bg-danger-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" />
         <div className="text-[13px] leading-relaxed text-text">
           <p className="font-extrabold">{t("vendorStates.graceExpiredTitle")}</p>
@@ -226,7 +226,7 @@ function VerificationBanner({
     const days = Math.max(Math.floor(ms / 86_400_000), 0);
     const hours = Math.max(Math.floor((ms % 86_400_000) / 3_600_000), 0);
     return (
-      <div role="status" className="mb-4 flex items-start gap-2 rounded-l border border-warning/40 bg-warning-soft p-3.5">
+      <div role="status" className="mb-4 flex items-start gap-2 rounded-lg border border-warning/40 bg-warning-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-warning" />
         <p className="text-[13px] leading-relaxed text-text">
           <span className="font-extrabold">{t("vendorStates.unverifiedTitle")}</span>{" "}

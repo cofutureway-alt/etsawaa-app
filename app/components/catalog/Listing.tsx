@@ -84,7 +84,7 @@ export function Listing({
             type="button"
             onClick={() => setFacetsOpen(true)}
             aria-haspopup="dialog"
-            className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-m border border-border bg-surface px-3 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint lg:hidden"
+            className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-surface px-3 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint lg:hidden"
           >
             <FilterIcon aria-hidden="true" className="size-4" />
             {t("store.filters.title")}
@@ -95,7 +95,7 @@ export function Listing({
               value={state.sort}
               onChange={(e) => apply({ sort: e.target.value, page: 1 })}
               aria-label={t("store.listing.sort")}
-              className="min-h-10 cursor-pointer rounded-m border border-border bg-surface px-2.5 text-[13px] font-bold text-text outline-none focus:border-action"
+              className="min-h-10 cursor-pointer rounded-md border border-border bg-surface px-2.5 text-[13px] font-bold text-text outline-none focus:border-action"
             >
               {SORT_OPTIONS.map((option) => (
                 <option key={option} value={option}>
@@ -108,7 +108,7 @@ export function Listing({
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[250px_minmax(0,1fr)]">
-        <aside className="hidden self-start rounded-l border border-border bg-surface p-3 lg:block" aria-label={t("store.filters.title")}>
+        <aside className="hidden self-start rounded-lg border border-border bg-surface p-3 lg:block" aria-label={t("store.filters.title")}>
           <h2 className="mb-3 flex items-center gap-1.5 px-1 text-[13px] font-extrabold text-text">
             <FilterIcon aria-hidden="true" className="size-4" />
             {t("store.filters.title")}
@@ -134,12 +134,12 @@ export function Listing({
           ) : (
             <>
               {result.items.length === 0 && zeroSuggestion ? (
-                <div className="mb-3 rounded-l border border-border bg-surface p-4 text-center">
+                <div className="mb-3 rounded-lg border border-border bg-surface p-4 text-center">
                   <p className="text-[13px] text-text-muted">{t("store.search.didYouMean")}</p>
                   <button
                     type="button"
                     onClick={() => void navigate(`${basePath}?q=${encodeURIComponent(zeroSuggestion)}`)}
-                    className="mt-2 cursor-pointer rounded-m border-2 border-action px-4 py-2 text-[13px] font-extrabold text-action transition-colors duration-150 hover:bg-surface-tint"
+                    className="mt-2 cursor-pointer rounded-md border-2 border-action px-4 py-2 text-[13px] font-extrabold text-action transition-colors duration-150 hover:bg-surface-tint"
                   >
                     {zeroSuggestion}
                   </button>
@@ -154,7 +154,7 @@ export function Listing({
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="cursor-pointer rounded-m bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+                    className="cursor-pointer rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
                   >
                     {t("store.listing.zeroFiltered.cta")}
                   </button>
@@ -167,7 +167,7 @@ export function Listing({
                 action={
                   <Link
                     to={`/${lang}/products`}
-                    className="inline-block rounded-m bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+                    className="inline-block rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
                   >
                     {t("store.listing.empty.cta")}
                   </Link>
@@ -205,7 +205,7 @@ export function Listing({
         <button
           type="button"
           onClick={() => setFacetsOpen(false)}
-          className="mt-4 w-full cursor-pointer rounded-m bg-action py-2.5 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+          className="mt-4 w-full cursor-pointer rounded-md bg-action py-2.5 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
         >
           {t("store.filters.showResults")}
         </button>

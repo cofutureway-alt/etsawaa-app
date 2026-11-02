@@ -19,7 +19,7 @@ export interface AccordionStepProps {
 export function AccordionStep({ title, summary, open, onToggle, disabled, children }: AccordionStepProps) {
   const id = useId();
   return (
-    <div className="rounded-l border border-border bg-surface">
+    <div className="rounded-lg border border-border bg-surface">
       <h3>
         <button
           type="button"

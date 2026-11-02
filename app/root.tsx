@@ -184,11 +184,11 @@ function StandaloneErrorPage({ status, lang }: { status: number; lang: Locale })
             name="q"
             placeholder={c.searchPlaceholder}
             aria-label={c.searchPlaceholder}
-            className="min-w-0 flex-1 rounded-m border border-border bg-surface px-3 py-2.5 text-sm outline-none focus:border-action"
+            className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2.5 text-sm outline-none focus:border-action"
           />
           <button
             type="submit"
-            className="cursor-pointer rounded-m bg-action px-4 py-2.5 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
+            className="cursor-pointer rounded-md bg-action px-4 py-2.5 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
           >
             {c.search}
           </button>
@@ -197,12 +197,12 @@ function StandaloneErrorPage({ status, lang }: { status: number; lang: Locale })
       <div className="flex items-center gap-3">
         <Link
           to={`/${lang}`}
-          className="rounded-m bg-action px-5 py-2.5 text-sm font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
+          className="rounded-md bg-action px-5 py-2.5 text-sm font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
         >
           {c.home}
         </Link>
         {notFound ? null : (
-          <Link to={`/${lang}`} className="rounded-m border border-border px-5 py-2.5 text-sm font-bold text-text hover:bg-surface-tint">
+          <Link to={`/${lang}`} className="rounded-md border border-border px-5 py-2.5 text-sm font-bold text-text hover:bg-surface-tint">
             {c.refresh}
           </Link>
         )}

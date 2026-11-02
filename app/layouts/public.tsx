@@ -76,7 +76,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
       <div className="flex min-h-dvh flex-col">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-[100] focus:rounded-m focus:bg-action focus:px-4 focus:py-2 focus:text-on-action"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-[100] focus:rounded-md focus:bg-action focus:px-4 focus:py-2 focus:text-on-action"
         >
           {t("nav.skipToContent")}
         </a>
@@ -124,7 +124,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
                 {profile ? null : (
                   <Link
                     to={`/${lang}/auth/login`}
-                    className="ms-1 hidden rounded-m bg-action px-3.5 py-2 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover sm:inline-flex"
+                    className="ms-1 hidden rounded-md bg-action px-3.5 py-2 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover sm:inline-flex"
                   >
                     {t("nav.login")}
                   </Link>
@@ -134,7 +134,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
                   onClick={() => setMenuOpen(true)}
                   aria-label={t("nav.menu")}
                   aria-expanded={menuOpen}
-                  className="ms-1 flex size-10 cursor-pointer items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint md:hidden"
+                  className="ms-1 flex size-10 cursor-pointer items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint md:hidden"
                 >
                   <MenuIcon />
                 </button>
@@ -220,7 +220,7 @@ function CartButton({ lang, signedIn }: { lang: string; signedIn: boolean }) {
       type="button"
       onClick={() => (signedIn || cart.count > 0 ? cart.openDrawer() : navigate(`/${lang}/cart`))}
       aria-label={t("nav.cart")}
-      className="relative flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+      className="relative flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
     >
       <CartIcon />
       <span
@@ -294,7 +294,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
       </button>
       {open ? (
         <div
-          className="absolute start-0 top-full z-50 mt-px flex max-h-[min(520px,70vh)] items-stretch rounded-b-m border border-t-0 border-border bg-surface shadow-2"
+          className="absolute start-0 top-full z-50 mt-px flex max-h-[min(520px,70vh)] items-stretch rounded-b-md border border-t-0 border-border bg-surface shadow-2"
           onMouseLeave={() => { setActiveRoot(null); setActiveSub(null); }}
         >
           {/* column 1: level-1 categories */}
@@ -309,7 +309,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
                     onClick={() => setOpen(false)}
                     onMouseEnter={() => { setActiveRoot(rootCat.id); setActiveSub(null); }}
                     onFocus={() => { setActiveRoot(rootCat.id); setActiveSub(null); }}
-                    className={`flex min-h-11 items-center justify-between gap-2 rounded-m px-3 text-[13px] font-bold transition-colors duration-150 ${
+                    className={`flex min-h-11 items-center justify-between gap-2 rounded-md px-3 text-[13px] font-bold transition-colors duration-150 ${
                       active ? "bg-surface-tint text-action" : "text-text hover:bg-surface-tint hover:text-action"
                     }`}
                   >
@@ -335,7 +335,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
                       onClick={() => setOpen(false)}
                       onMouseEnter={() => setActiveSub(sub.id)}
                       onFocus={() => setActiveSub(sub.id)}
-                      className={`flex min-h-10 items-center justify-between gap-2 rounded-m px-3 text-[13px] font-semibold transition-colors duration-150 ${
+                      className={`flex min-h-10 items-center justify-between gap-2 rounded-md px-3 text-[13px] font-semibold transition-colors duration-150 ${
                         subActive ? "bg-surface-tint text-action" : "text-text hover:bg-surface-tint hover:text-action"
                       }`}
                     >
@@ -357,7 +357,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
                   <Link
                     to={catHref(subSub)}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-10 items-center rounded-m px-3 text-[13px] text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+                    className="flex min-h-10 items-center rounded-md px-3 text-[13px] text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
                   >
                     <span className="truncate">{catName(subSub)}</span>
                   </Link>
@@ -405,7 +405,7 @@ function NavDrawer({
             type="button"
             onClick={onClose}
             aria-label={t("common.close")}
-            className="flex size-10 cursor-pointer items-center justify-center rounded-m text-text hover:bg-surface-tint"
+            className="flex size-10 cursor-pointer items-center justify-center rounded-md text-text hover:bg-surface-tint"
           >
             <XIcon />
           </button>
@@ -459,7 +459,7 @@ function NavDrawer({
           <Link
             to={`/${lang}${profile ? "/account" : "/auth/login"}`}
             onClick={onClose}
-            className="flex min-h-11 items-center justify-center gap-2 rounded-m bg-action text-[13px] font-bold text-on-action"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-md bg-action text-[13px] font-bold text-on-action"
           >
             {profile ? (
               profile.avatar_url ? (
@@ -522,7 +522,7 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
       </button>
       {open ? (
         <div role="menu" aria-label={t("nav.myAccount")}
-          className="absolute top-[calc(100%+6px)] end-0 z-50 w-52 overflow-hidden rounded-l border border-border bg-surface shadow-lg">
+          className="absolute top-[calc(100%+6px)] end-0 z-50 w-52 overflow-hidden rounded-lg border border-border bg-surface shadow-lg">
           <div className="border-b border-border bg-surface-tint px-4 py-2.5">
             <p className="truncate text-[13px] font-extrabold text-text">{name || t("nav.myAccount")}</p>
           </div>
@@ -530,7 +530,7 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
             {items.map((it) => (
               <li key={it.to}>
                 <NavLink to={it.to} role="menuitem" onClick={() => setOpen(false)}
-                  className="flex min-h-11 items-center rounded-m px-3 text-[13px] font-bold text-text hover:bg-surface-tint hover:text-action">
+                  className="flex min-h-11 items-center rounded-md px-3 text-[13px] font-bold text-text hover:bg-surface-tint hover:text-action">
                   {it.label}
                 </NavLink>
               </li>
@@ -539,7 +539,7 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
           <div className="border-t border-border p-1.5">
             <form method="post" action={`/${lang}/auth/logout`}>
               <button type="submit" role="menuitem"
-                className="flex min-h-11 w-full cursor-pointer items-center rounded-m px-3 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                className="flex min-h-11 w-full cursor-pointer items-center rounded-md px-3 text-[13px] font-bold text-danger hover:bg-danger-soft">
                 {t("nav.logout")}
               </button>
             </form>
@@ -565,7 +565,7 @@ function IconLink({
     <NavLink
       to={to}
       aria-label={label}
-      className={`flex size-10 shrink-0 items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action ${className}`}
+      className={`flex size-10 shrink-0 items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action ${className}`}
     >
       {children}
     </NavLink>
@@ -627,10 +627,10 @@ function PublicFooter({
           />
           <p className="max-w-xs text-[13px] leading-relaxed">{t("app.tagline")}</p>
           <div className="mt-1 flex flex-wrap gap-2">
-            <span className="rounded-s border border-white/30 px-2.5 py-1 text-[11px] font-extrabold">
+            <span className="rounded-sm border border-white/30 px-2.5 py-1 text-[11px] font-extrabold">
               {t("footer.cod")}
             </span>
-            <span className="rounded-s border border-white/30 px-2.5 py-1 text-[11px] font-extrabold">
+            <span className="rounded-sm border border-white/30 px-2.5 py-1 text-[11px] font-extrabold">
               Kashier
             </span>
           </div>

@@ -63,7 +63,7 @@ export function VariantSelector({
                     aria-pressed={active}
                     title={available ? label : t("store.product.outOfStockOption")}
                     onClick={() => onSelect(axis.attribute_id, option.id)}
-                    className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-m border-2 px-3 py-2 text-[13px] font-bold transition-colors duration-150 ${
+                    className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-md border-2 px-3 py-2 text-[13px] font-bold transition-colors duration-150 ${
                       active
                         ? "border-action bg-surface-tint text-action"
                         : available

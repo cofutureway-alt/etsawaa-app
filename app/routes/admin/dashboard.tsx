@@ -76,7 +76,7 @@ function Stat({
   };
 
   return (
-    <div className="rounded-m border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:shadow-2">
+    <div className="rounded-md border border-border bg-surface p-3.5 shadow-1 transition-all duration-150 hover:shadow-2">
       <p className="text-xs font-bold text-text-muted">{label}</p>
       <p
         className={`mt-1 truncate text-lg sm:text-xl font-black tabular-nums ${
@@ -146,7 +146,7 @@ function DailyChart({
       {/* a11y fallback: the same data as a table */}
       <details className="mt-2">
         <summary className="cursor-pointer text-xs font-bold text-action hover:underline">{detailsLabel}</summary>
-        <div className="mt-2 max-h-40 overflow-y-auto rounded-m border border-border">
+        <div className="mt-2 max-h-40 overflow-y-auto rounded-md border border-border">
           <table className="w-full text-xs text-text-muted">
             <tbody className="divide-y divide-border">
               {points.slice(-14).map((p) => (
@@ -231,7 +231,7 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
               <Link
                 key={q.to}
                 to={q.to}
-                className={`rounded-l border border-border border-t-[3px] ${borderTones[q.tone]} bg-surface p-4 shadow-1 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-2`}
+                className={`rounded-lg border border-border border-t-[3px] ${borderTones[q.tone]} bg-surface p-4 shadow-1 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-2`}
               >
                 <div className="flex items-center justify-between">
                   <p className="text-2xl font-black tabular-nums text-text">{q.count}</p>
@@ -352,10 +352,10 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
                 {loaderData.vendors.slice(0, 5).map((v) => (
                   <li
                     key={v.id}
-                    className="flex items-center justify-between gap-3 py-3 text-[13px] hover:bg-surface-tint/40 px-2 rounded-m transition-colors"
+                    className="flex items-center justify-between gap-3 py-3 text-[13px] hover:bg-surface-tint/40 px-2 rounded-md transition-colors"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="flex size-8 shrink-0 items-center justify-center rounded-m bg-ink text-white text-xs font-black">
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-ink text-white text-xs font-black">
                         {(en ? v.store_name_en : v.store_name_ar).charAt(0)}
                       </div>
                       <span className="truncate font-bold text-text">
@@ -399,7 +399,7 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
                 {loaderData.products.slice(0, 5).map((p) => (
                   <li
                     key={p.id}
-                    className="flex items-center justify-between gap-3 py-3 text-[13px] hover:bg-surface-tint/40 px-2 rounded-m transition-colors"
+                    className="flex items-center justify-between gap-3 py-3 text-[13px] hover:bg-surface-tint/40 px-2 rounded-md transition-colors"
                   >
                     <span className="truncate font-bold text-text">
                       {en ? p.name_en : p.name_ar}

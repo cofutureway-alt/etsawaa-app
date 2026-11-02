@@ -105,7 +105,7 @@ export default function StaticPageRoute({ loaderData }: Route.ComponentProps) {
       <Breadcrumbs label={t("a11y.breadcrumbs")} items={[{ label: t("nav.home"), href: `/${lang}` }, { label: title }]} />
       {/* U3 — the CARD itself is constrained and centred (a 1200px-wide card
           holding 68ch of prose left a large dead area beside the text) */}
-      <article className="mx-auto w-full max-w-[900px] rounded-l border border-border bg-surface p-5 sm:p-8">
+      <article className="mx-auto w-full max-w-[900px] rounded-lg border border-border bg-surface p-5 sm:p-8">
         <h1 className="mb-4 text-xl font-black text-text">{title}</h1>
         <div className="max-w-[68ch]">
           <ContentBlocks text={content} />
@@ -115,7 +115,7 @@ export default function StaticPageRoute({ loaderData }: Route.ComponentProps) {
         <div className="mt-6 border-t border-border pt-5">
           <Link
             to={`/${lang}/contact`}
-            className="inline-flex min-h-11 items-center justify-center rounded-m bg-action px-5 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+            className="inline-flex min-h-11 items-center justify-center rounded-md bg-action px-5 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
           >
             {t("staticPage.contactCta")}
           </Link>

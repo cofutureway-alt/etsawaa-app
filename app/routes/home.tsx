@@ -159,7 +159,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <div className="grid gap-2 min-[1100px]:grid-cols-[250px_minmax(0,1fr)]">
         <aside
           aria-label={t("home.cats.title")}
-          className="hidden self-stretch rounded-l border border-border bg-surface min-[1100px]:flex min-[1100px]:flex-col"
+          className="hidden self-stretch rounded-lg border border-border bg-surface min-[1100px]:flex min-[1100px]:flex-col"
         >
           <div className="flex items-center gap-2 bg-action px-3.5 py-2.5 text-[13px] font-extrabold text-on-action">
             <GridIcon aria-hidden="true" className="size-4" />
@@ -184,7 +184,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </aside>
 
         <section aria-label={t("home.sections.deals")} className="relative">
-          <div className="overflow-hidden rounded-l border border-border bg-surface">
+          <div className="overflow-hidden rounded-lg border border-border bg-surface">
             <img
               key={current.src}
               src={current.src}
@@ -246,11 +246,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         {ASSURANCES.map(({ key, Icon }, index) => (
           <li
             key={key}
-            className={`flex items-center gap-2.5 rounded-l border border-border bg-surface px-3 py-2.5 ${
+            className={`flex items-center gap-2.5 rounded-lg border border-border bg-surface px-3 py-2.5 ${
               index === ASSURANCES.length - 1 ? "col-span-2 lg:col-span-1" : ""
             }`}
           >
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-m bg-surface-tint text-action">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-surface-tint text-action">
               <Icon aria-hidden="true" className="text-lg" />
             </span>
             <span className="min-w-0">
@@ -267,7 +267,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       {loaderData.event ? (
         <section
           aria-label={lang === "ar" ? loaderData.event.name_ar : loaderData.event.name_en}
-          className="rounded-l border-2 border-action bg-surface p-5"
+          className="rounded-lg border-2 border-action bg-surface p-5"
         >
           <p className="text-[11px] font-extrabold uppercase tracking-wide text-action">{t("home.event.badge")}</p>
           <h2 className="mt-1 text-lg font-black text-text">
@@ -278,7 +278,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           </p>
           <Link
             to={`/${lang}/products`}
-            className="mt-3 inline-flex min-h-10 items-center rounded-m bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+            className="mt-3 inline-flex min-h-10 items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
           >
             {t("home.event.cta")}
           </Link>
@@ -297,12 +297,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <li key={cat.id}>
                 <Link
                   to={`/${lang}/category/${encodeURIComponent(lang === "en" ? cat.slug_en || cat.slug_ar : cat.slug_ar || cat.slug_en)}`}
-                  className="flex flex-col items-center gap-2 rounded-l border border-border bg-surface p-3 text-center transition-colors duration-150 hover:bg-surface-tint"
+                  className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface p-3 text-center transition-colors duration-150 hover:bg-surface-tint"
                 >
                   {cat.thumb_path ? (
-                    <MediaImg path={cat.thumb_path} alt={lang === "ar" ? cat.name_ar : cat.name_en} width={64} height={64} className="size-14 rounded-m" />
+                    <MediaImg path={cat.thumb_path} alt={lang === "ar" ? cat.name_ar : cat.name_en} width={64} height={64} className="size-14 rounded-md" />
                   ) : (
-                    <span className="flex size-14 items-center justify-center rounded-m bg-surface-tint text-lg font-black text-action">
+                    <span className="flex size-14 items-center justify-center rounded-md bg-surface-tint text-lg font-black text-action">
                       {(lang === "ar" ? cat.name_ar : cat.name_en).slice(0, 1)}
                     </span>
                   )}
@@ -361,7 +361,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       {/* The odd-sized banner sits alone as the final section above the footer */}
       <section
         aria-label={t("home.promo.title")}
-        className="overflow-hidden rounded-l border border-border bg-surface"
+        className="overflow-hidden rounded-lg border border-border bg-surface"
       >
         <img
           src="/promo-wide-2.webp"

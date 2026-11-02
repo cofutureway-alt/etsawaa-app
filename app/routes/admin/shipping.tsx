@@ -122,13 +122,13 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-extrabold text-text">{t("vendorShip.queue")}</h2>
         {loaderData.ship.length === 0 ? (
-          <div className="rounded-l border border-border bg-surface p-6 shadow-1">
+          <div className="rounded-lg border border-border bg-surface p-6 shadow-1">
             <EmptyState title={t("vendorShip.empty")} body={t("vendorShip.approveDone")} />
           </div>
         ) : (
           <ul className="flex flex-col gap-3">
             {loaderData.ship.map((g: ShipRow) => (
-              <li key={g.group_id} className="rounded-l border border-border bg-surface p-4 sm:p-5 shadow-1 transition-all duration-150 hover:shadow-2">
+              <li key={g.group_id} className="rounded-lg border border-border bg-surface p-4 sm:p-5 shadow-1 transition-all duration-150 hover:shadow-2">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] border-b border-border pb-3">
                   <span className="font-extrabold text-action text-base" dir="ltr">{g.number}</span>
                   <span className="font-bold text-text">{en ? g.vendor_store_en : g.vendor_store_ar}</span>
@@ -143,12 +143,12 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
                     <label htmlFor={`share-${g.group_id}`} className="text-xs font-bold text-text">{t("vendorShip.shippingShare")}</label>
                     <input id={`share-${g.group_id}`} name="shipping_piastres" type="number" min={0} step={1}
                       defaultValue={g.shipping_fee_piastres}
-                      className="w-28 rounded-m border border-border bg-surface px-2.5 py-1.5 text-[13px] text-text font-bold" dir="ltr" />
+                      className="w-28 rounded-md border border-border bg-surface px-2.5 py-1.5 text-[13px] text-text font-bold" dir="ltr" />
                     <Button type="submit" size="sm" disabled={busy}>{t("vendorShip.approve")}</Button>
                   </fetcher.Form>
                   <button
                     type="button" onClick={() => setRejectTarget(g)}
-                    className="cursor-pointer rounded-m border border-danger/50 px-3 py-1.5 text-xs font-bold text-danger hover:bg-danger-soft transition-colors"
+                    className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-xs font-bold text-danger hover:bg-danger-soft transition-colors"
                   >
                     {t("vendorShip.reject")}
                   </button>
@@ -162,12 +162,12 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
       {/* H-14: withdrawal review moved to its OWN page (US-02: tabs + stats + CSV).
           Link out, never duplicate CRUD surfaces. */}
       <section className="mt-2" aria-label={t("wallet.withdrawals")}>
-        <div className="flex items-center justify-between rounded-l border border-border bg-surface p-4 shadow-1">
+        <div className="flex items-center justify-between rounded-lg border border-border bg-surface p-4 shadow-1">
           <div>
             <p className="text-[13px] font-bold text-text">{t("wd.movedToOwnPage")}</p>
             <p className="text-xs text-text-muted">{en ? "Manage merchant wallet requests and settlements" : "إدارة تسويات ومحافظ التجار وسحب الأرباح"}</p>
           </div>
-          <a href={`/${loaderData.lang}/admin/withdrawals`} className="rounded-m bg-action px-3.5 py-2 text-xs font-black text-on-action hover:bg-action-hover transition-colors shadow-1">
+          <a href={`/${loaderData.lang}/admin/withdrawals`} className="rounded-md bg-action px-3.5 py-2 text-xs font-black text-on-action hover:bg-action-hover transition-colors shadow-1">
             {t("wd.openPage")}
           </a>
         </div>

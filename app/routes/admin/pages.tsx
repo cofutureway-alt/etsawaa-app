@@ -18,7 +18,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
  * returns 404 (existing static-page route respects is_active).
  */
 
-const inp = "w-full rounded-m border border-border bg-surface p-2.5 text-[13px] text-text";
+const inp = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
 
 interface PageRow {
   id: string; slug_ar: string; slug_en: string; title_ar: string; title_en: string;
@@ -90,7 +90,7 @@ export default function AdminPages({ loaderData }: Route.ComponentProps) {
         })}>{t("sp.new")}</Button>
       </div>
 
-      <ul className="mt-3 flex flex-col divide-y divide-border rounded-m border border-border bg-surface">
+      <ul className="mt-3 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
         {(loaderData.pages as PageRow[]).map((p) => (
           <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-[13px]">
             <span className="font-bold text-text">{en ? p.title_en : p.title_ar}</span>

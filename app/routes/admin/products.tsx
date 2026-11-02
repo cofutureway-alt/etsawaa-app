@@ -187,7 +187,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 rounded-l border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminProducts.filter")}>
+      <div className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminProducts.filter")}>
         {FILTERS.map((filter) => (
           <button
             key={filter || "all"}
@@ -195,7 +195,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
             role="tab"
             aria-selected={loaderData.status === filter}
             onClick={() => setSearchParams(filter ? { status: filter } : {})}
-            className={`cursor-pointer rounded-m border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
+            className={`cursor-pointer rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.status === filter
                 ? "border-action bg-action text-on-action shadow-sm"
                 : "border-transparent bg-transparent text-text-muted hover:bg-surface-tint hover:text-text"
@@ -227,7 +227,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
               text: (row) => `${row.name_ar} ${row.name_en} ${row.vendor_name_ar}`,
               render: (row) => (
                 <div className="flex items-center gap-2.5">
-                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint">
+                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
                     {row.media_path ? (
                       <img src={publicMediaUrl(loaderData.supabaseUrl, row.media_path)} alt="" width={40} height={40} loading="lazy" draggable={false} className="size-full object-cover" />
                     ) : null}
@@ -297,7 +297,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
         {reviewTarget ? (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint">
+              <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
                 {reviewTarget.media_path ? (
                   <img src={publicMediaUrl(loaderData.supabaseUrl, reviewTarget.media_path)} alt="" width={56} height={56} draggable={false} className="size-full object-cover" />
                 ) : null}
@@ -313,7 +313,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
             <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
               {t("adminProducts.reason")} <span className="font-normal text-text-faint">{t("adminProducts.reasonHint")}</span>
               <textarea
-                className={`min-h-20 rounded-m border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus ${
+                className={`min-h-20 rounded-md border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus ${
                   reasonError ? "border-danger" : "border-border"
                 }`}
                 value={reason}
@@ -344,7 +344,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
             <p className="text-[13px] text-text">{t("adminProducts.archiveNote")}</p>
             <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
               {t("adminProducts.reason")}
-              <textarea className="min-h-16 rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
+              <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
             </label>
             <div className="flex justify-end gap-2">

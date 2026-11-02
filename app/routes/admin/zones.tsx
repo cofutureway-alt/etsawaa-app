@@ -179,7 +179,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
       {/* governorates — inline edit (fee ≥ 0, audited) */}
       <section className="mt-3" aria-label={t("z.governorates")}>
         <h2 className="text-sm font-extrabold text-text">{t("z.governorates")} (27)</h2>
-        <div className="mt-2 overflow-x-auto rounded-m border border-border">
+        <div className="mt-2 overflow-x-auto rounded-md border border-border">
           <table className="w-full text-[13px]">
             <thead className="bg-surface-tint">
               <tr>
@@ -198,15 +198,15 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
                     <fetcher.Form method="post" className="flex flex-wrap items-center gap-1.5">
                       <input type="hidden" name="intent" value="gov_save" />
                       <input type="hidden" name="id" value={g.id} />
-                      <input name="name_ar" aria-label={t("z.nameAr")} defaultValue={g.name_ar} className="w-28 rounded-m border border-border bg-surface px-2 py-1" />
-                      <input name="name_en" aria-label={t("z.nameEn")} defaultValue={g.name_en} dir="ltr" className="w-28 rounded-m border border-border bg-surface px-2 py-1" />
-                      <input name="fee_piastres" type="number" min={0} aria-label={t("z.shippingFee")} defaultValue={g.shipping_fee_piastres} dir="ltr" className="w-20 rounded-m border border-border bg-surface px-2 py-1 num" />
-                      <input name="sort" type="number" aria-label={t("bn.order")} defaultValue={g.sort} dir="ltr" className="w-14 rounded-m border border-border bg-surface px-2 py-1 num" />
+                      <input name="name_ar" aria-label={t("z.nameAr")} defaultValue={g.name_ar} className="w-28 rounded-md border border-border bg-surface px-2 py-1" />
+                      <input name="name_en" aria-label={t("z.nameEn")} defaultValue={g.name_en} dir="ltr" className="w-28 rounded-md border border-border bg-surface px-2 py-1" />
+                      <input name="fee_piastres" type="number" min={0} aria-label={t("z.shippingFee")} defaultValue={g.shipping_fee_piastres} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1 num" />
+                      <input name="sort" type="number" aria-label={t("bn.order")} defaultValue={g.sort} dir="ltr" className="w-14 rounded-md border border-border bg-surface px-2 py-1 num" />
                       <label className="flex items-center gap-1 text-xs font-bold text-text">
                         <input type="checkbox" name="is_active" defaultChecked={g.is_active} className="size-4 accent-[var(--color-action)]" />
                         {t("pn.active")}
                       </label>
-                      <button type="submit" className="cursor-pointer rounded-m border border-border px-2.5 py-1 font-bold text-text hover:bg-surface-tint">{t("ve.save")}</button>
+                      <button type="submit" className="cursor-pointer rounded-md border border-border px-2.5 py-1 font-bold text-text hover:bg-surface-tint">{t("ve.save")}</button>
                       <span className="num tabular-nums text-xs text-text-muted" dir="ltr">{money(g.shipping_fee_piastres)}</span>
                     </fetcher.Form>
                   </td>
@@ -230,26 +230,26 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
           {loaderData.areas.length === 0 ? (
             <div className="mt-2"><EmptyState title={t("z.noAreas")} body={t("z.importHint")} /></div>
           ) : (
-            <ul className="mt-2 flex flex-col divide-y divide-border rounded-m border border-border bg-surface">
+            <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
               {(loaderData.areas as AreaRow[]).map((a) => (
                 <li key={a.id} className="flex flex-wrap items-center gap-2 p-2.5 text-[13px]">
                   <fetcher.Form method="post" className="flex flex-wrap items-center gap-1.5">
                     <input type="hidden" name="intent" value="area_save" />
                     <input type="hidden" name="id" value={a.id} />
                     <input type="hidden" name="governorate_id" value={selected.id} />
-                    <input name="name_ar" aria-label={t("z.nameAr")} defaultValue={a.name_ar} className="w-36 rounded-m border border-border bg-surface px-2 py-1" />
-                    <input name="name_en" aria-label={t("z.nameEn")} defaultValue={a.name_en} dir="ltr" className="w-36 rounded-m border border-border bg-surface px-2 py-1" />
-                    <input name="pickup_fee_piastres" type="number" min={0} aria-label={t("rf.amount")} defaultValue={a.pickup_fee_piastres} dir="ltr" className="w-20 rounded-m border border-border bg-surface px-2 py-1 num" />
+                    <input name="name_ar" aria-label={t("z.nameAr")} defaultValue={a.name_ar} className="w-36 rounded-md border border-border bg-surface px-2 py-1" />
+                    <input name="name_en" aria-label={t("z.nameEn")} defaultValue={a.name_en} dir="ltr" className="w-36 rounded-md border border-border bg-surface px-2 py-1" />
+                    <input name="pickup_fee_piastres" type="number" min={0} aria-label={t("rf.amount")} defaultValue={a.pickup_fee_piastres} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1 num" />
                     <label className="flex items-center gap-1 text-xs font-bold text-text">
                       <input type="checkbox" name="is_active" defaultChecked={a.is_active} className="size-4 accent-[var(--color-action)]" />
                       {t("pn.active")}
                     </label>
-                    <button type="submit" className="cursor-pointer rounded-m border border-border px-2.5 py-1 font-bold text-text hover:bg-surface-tint">{t("ve.save")}</button>
+                    <button type="submit" className="cursor-pointer rounded-md border border-border px-2.5 py-1 font-bold text-text hover:bg-surface-tint">{t("ve.save")}</button>
                   </fetcher.Form>
                   <fetcher.Form method="post">
                     <input type="hidden" name="intent" value={a.is_active ? "area_disable" : "area_enable"} />
                     <input type="hidden" name="id" value={a.id} />
-                    <button type="submit" className="cursor-pointer rounded-m border border-border px-2.5 py-1 font-bold text-text hover:bg-surface-tint">
+                    <button type="submit" className="cursor-pointer rounded-md border border-border px-2.5 py-1 font-bold text-text hover:bg-surface-tint">
                       {a.is_active ? t("z.disable") : t("z.enable")}
                     </button>
                   </fetcher.Form>
@@ -268,7 +268,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
           <label htmlFor="z-csv" className="text-[13px] font-bold text-text">{t("z.csvLabel")}</label>
           <textarea id="z-csv" rows={8} value={csv} onChange={(e) => setCsv(e.target.value)} dir="ltr"
             placeholder={"1,مدينة نصر,Nasr City,700\n1,العجوزة,Agouza,600"}
-            className="mt-1 w-full rounded-m border border-border bg-surface p-2.5 font-mono text-xs text-text" />
+            className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 font-mono text-xs text-text" />
           <p className="mt-1 text-xs text-text-muted">{t("z.importRules")}</p>
           {fetcher.data && fetcher.data.ok ? (
             <p className="mt-1 text-xs font-bold text-success-strong">

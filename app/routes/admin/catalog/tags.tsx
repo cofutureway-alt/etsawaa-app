@@ -91,7 +91,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
     <div className="flex flex-col gap-4">
       <h1 className="text-lg font-extrabold text-text">{t("catalog.tags")}</h1>
 
-      <fetcher.Form method="post" className="flex flex-wrap items-end gap-2 rounded-l border border-border bg-surface p-3">
+      <fetcher.Form method="post" className="flex flex-wrap items-end gap-2 rounded-lg border border-border bg-surface p-3">
         <input type="hidden" name="intent" value="create" />
         <div className="w-56"><Input label={t("catalog.nameAr")} name="name_ar" value={nameAr} onChange={(e) => setNameAr(e.target.value)} required maxLength={40} inputClassName="bg-surface" /></div>
         <div className="w-56"><Input label={t("catalog.nameEn")} name="name_en" value={nameEn} onChange={(e) => setNameEn(e.target.value)} required maxLength={40} dir="ltr" inputClassName="bg-surface" /></div>
@@ -108,7 +108,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
             </button>
           </li>
         ))}
-        {tags.length === 0 ? <li className="rounded-l border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted w-full">{t("catalog.noTags")}</li> : null}
+        {tags.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted w-full">{t("catalog.noTags")}</li> : null}
       </ul>
 
       <Dialog open={deleting !== null} onClose={() => setDeleting(null)} title={t("common.confirm")}>

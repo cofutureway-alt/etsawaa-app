@@ -155,7 +155,7 @@ export default function ForgotPage({ loaderData }: Route.ComponentProps) {
   });
 
   const ErrorBox = errorData ? (
-    <div role="alert" className="flex items-start gap-1.5 rounded-m border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
+    <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
       <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
       <span className="font-bold">{t(FORM_ERRORS[errorData.formError] ?? "auth.errors.generic")}</span>
     </div>

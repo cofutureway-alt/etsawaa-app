@@ -80,7 +80,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
       </nav>
 
       {/* identity banner — brand-tone card; stacks centred on phones, row ≥sm */}
-      <section aria-label={t("account.title")} className="mb-5 overflow-hidden rounded-l border border-border bg-side text-side-text">
+      <section aria-label={t("account.title")} className="mb-5 overflow-hidden rounded-lg border border-border bg-side text-side-text">
         <div className="flex flex-col items-center gap-3 p-5 text-center sm:flex-row sm:flex-wrap sm:gap-4 sm:p-6 sm:text-start">
           {viewer.profile.avatar_url ? (
             <MediaImg path={viewer.profile.avatar_url} alt="" width={64} height={64} className="size-16 shrink-0 rounded-full border-2 border-white/40 object-cover sm:size-14" />
@@ -105,7 +105,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
             <form method="post" action={`/${lang}/auth/logout`}>
               <button
                 type="submit"
-                className="flex min-h-11 cursor-pointer items-center gap-2 rounded-m border border-white/30 px-4 text-[13px] font-bold text-side-text-strong transition-colors duration-150 hover:bg-white/10"
+                className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-white/30 px-4 text-[13px] font-bold text-side-text-strong transition-colors duration-150 hover:bg-white/10"
               >
                 {t("nav.logout")}
               </button>
@@ -117,14 +117,14 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
         {/* desktop sidebar */}
         <aside className="hidden w-60 shrink-0 lg:block" aria-label={t("account.title")}>
-          <nav className="flex flex-col gap-1 rounded-l border border-border bg-surface p-2">
+          <nav className="flex flex-col gap-1 rounded-lg border border-border bg-surface p-2">
             {nav.map(({ to, label, end, Icon }) => (
               <NavLink
                 key={to}
                 to={to}
                 end={end}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-m border-s-[3px] px-3 py-2.5 text-[13px] font-bold transition-colors duration-150 ${
+                  `flex items-center gap-3 rounded-md border-s-[3px] px-3 py-2.5 text-[13px] font-bold transition-colors duration-150 ${
                     isActive
                       ? "border-action bg-surface-tint text-action"
                       : "border-transparent text-text-muted hover:bg-surface-tint/60 hover:text-text"
@@ -188,7 +188,7 @@ function MobileTabsDropdown({ nav }: { nav: Array<{ to: string; label: string; e
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={t("account.title")}
-        className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-l border-s-4 border-border border-s-action bg-surface px-4 py-2.5 text-[13px] font-extrabold text-text shadow-sm transition-colors duration-150 hover:bg-surface-tint"
+        className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-s-4 border-border border-s-action bg-surface px-4 py-2.5 text-[13px] font-extrabold text-text shadow-sm transition-colors duration-150 hover:bg-surface-tint"
       >
         <span className="flex min-w-0 items-center gap-2.5">
           <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full bg-action/10 text-action">
@@ -200,7 +200,7 @@ function MobileTabsDropdown({ nav }: { nav: Array<{ to: string; label: string; e
       </button>
       {open ? (
         <div role="menu" aria-label={t("account.title")}
-          className="absolute top-[calc(100%+6px)] inset-x-0 z-40 overflow-hidden rounded-l border border-border bg-surface shadow-lg">
+          className="absolute top-[calc(100%+6px)] inset-x-0 z-40 overflow-hidden rounded-lg border border-border bg-surface shadow-lg">
           <ul className="p-2">
             {nav.map(({ to, label, end, Icon }) => (
               <li key={to}>
@@ -227,7 +227,7 @@ function DropdownItem({ to, end, label, Icon, onPick }: {
       role="menuitem"
       onClick={onPick}
       className={({ isActive }) =>
-        `flex min-h-12 items-center gap-3 rounded-m px-2.5 text-[13px] font-bold transition-colors duration-150 ${
+        `flex min-h-12 items-center gap-3 rounded-md px-2.5 text-[13px] font-bold transition-colors duration-150 ${
           isActive ? "bg-action text-on-action" : "text-text hover:bg-surface-tint hover:text-action"
         }`
       }

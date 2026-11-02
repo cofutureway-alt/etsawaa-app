@@ -96,7 +96,7 @@ export default function AdminMediaSettings({ loaderData }: Route.ComponentProps)
       <h1 className="text-lg font-extrabold text-text">{t("mediaSettings.title")}</h1>
       <p className="text-[13px] text-text-muted">{t("mediaSettings.hint")}</p>
 
-      <fetcher.Form method="post" className="flex max-w-2xl flex-col gap-4 rounded-l border border-border bg-surface p-4">
+      <fetcher.Form method="post" className="flex max-w-2xl flex-col gap-4 rounded-lg border border-border bg-surface p-4">
         <input type="hidden" name="intent" value="save" />
         <fieldset className="flex flex-col gap-2">
           <legend className="text-[13px] font-extrabold text-text">{t("mediaSettings.kinds")}</legend>

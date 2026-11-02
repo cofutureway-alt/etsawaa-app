@@ -149,7 +149,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* VO-07 bank-card style wallet card (flat tokens, no gradients) */}
-      <section className="rounded-l bg-ink p-6 text-white shadow-xl relative overflow-hidden" aria-label={t("wallet.title")}>
+      <section className="rounded-lg bg-ink p-6 text-white shadow-xl relative overflow-hidden" aria-label={t("wallet.title")}>
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <p className="text-xs font-bold text-white/70">{t("wallet.available")}</p>
           {level ? (
@@ -185,7 +185,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
 
       {/* US-06 edge: negative balance explained by its cause, not a generic warning */}
       {available < 0 && loaderData.lastDebit ? (
-        <p role="status" className="mt-2 rounded-m border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
+        <p role="status" className="mt-2 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
           {t("wallet.negative")}: {t(`tx.type_${loaderData.lastDebit.type}`)} {money(loaderData.lastDebit.amount_piastres)} — {loaderData.lastDebit.reason}
         </p>
       ) : null}
@@ -198,10 +198,10 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
         ) : (
           <ul className="mt-2 flex flex-col gap-2">
             {loaderData.withdrawals.map((w: Withdrawal) => (
-              <li key={w.id} className="flex flex-wrap items-center justify-between gap-2 rounded-m border border-border bg-surface p-3 text-[13px]">
+              <li key={w.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-surface p-3 text-[13px]">
                 <span className="font-bold tabular-nums text-text">{money(w.amount_piastres)}</span>
                 <span className="text-text-muted">{t(`wallet.method${w.method.charAt(0).toUpperCase()}${w.method.slice(1)}`)}</span>
-                <span className={`rounded-m px-2 py-0.5 text-xs font-bold ${w.status === "approved" ? "bg-surface-tint text-primary" : w.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
+                <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${w.status === "approved" ? "bg-surface-tint text-primary" : w.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
                   {t(`withdrawal.status_${w.status}`)}
                 </span>
                 <span className="num text-xs text-text-muted">{new Date(w.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}</span>
@@ -234,7 +234,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
               window.location.search = next.toString();
             }}
             aria-label={t("wallet.type")}
-            className="rounded-m border border-border bg-surface px-2.5 py-2 text-[13px] text-text"
+            className="rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text"
           >
             <option value="">{t("wallet.allTypes")}</option>
             {TX_TYPES.map((ty) => (
@@ -280,7 +280,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
             {/* mobile cards (VO-16) */}
             <ul className="mt-2 flex flex-col gap-2 md:hidden">
               {loaderData.txs.map((x: WalletTx) => (
-                <li key={x.id} className="rounded-m border border-border bg-surface p-3 text-[13px]">
+                <li key={x.id} className="rounded-md border border-border bg-surface p-3 text-[13px]">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-text">{t(`tx.type_${x.type}`)}</span>
                     <span className={`tabular-nums font-bold ${x.amount_piastres < 0 ? "text-danger" : "text-primary"}`} dir="ltr">
@@ -308,7 +308,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
           <div>
             <label htmlFor="wd-method" className="mb-1 block text-[13px] font-bold text-text">{t("wallet.method")}</label>
             <select id="wd-method" name="method" required defaultValue="bank"
-              className="w-full rounded-m border border-border bg-surface px-2.5 py-2 text-[13px] text-text">
+              className="w-full rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text">
               <option value="bank">{t("wallet.methodBank")}</option>
               <option value="instapay">{t("wallet.methodInstapay")}</option>
               <option value="wallet">{t("wallet.methodWallet")}</option>
@@ -317,7 +317,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
           <Input id="wd-holder" name="holder" required label={t("wallet.details")} />
           <Input id="wd-account" name="account" required label={t("wallet.details")} inputClassName="ltr:text-left" />
           {wdResult && !wdResult.ok ? (
-            <p role="alert" className="rounded-m border border-danger/40 bg-danger-soft p-2.5 text-[13px] font-bold text-danger">
+            <p role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-2.5 text-[13px] font-bold text-danger">
               {wdResult.reason === "insufficient" ? t("wallet.overAvailable")
                 : wdResult.reason === "below_min" ? t("wallet.minWarn", { min: money(wdResult.min_piastres ?? min) })
                 : wdResult.reason === "pending_exists" ? t("wallet.pendingExists")

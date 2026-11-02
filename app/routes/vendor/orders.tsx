@@ -146,14 +146,14 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* VO-01 filters */}
-      <div className="flex flex-wrap items-center gap-2.5 rounded-l border border-border bg-surface p-3 shadow-1">
+      <div className="flex flex-wrap items-center gap-2.5 rounded-lg border border-border bg-surface p-3 shadow-1">
         <div className="relative min-w-48 flex-1">
           <input
             type="search"
             placeholder={t("vendorOrders.search")}
             value={loaderData.filters.q}
             onChange={(e) => setFilter("q", e.target.value)}
-            className="w-full rounded-m border border-border bg-surface-alt px-3 py-2 text-[13px] text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
+            className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-[13px] text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
             aria-label={t("vendorOrders.search")}
           />
         </div>
@@ -161,7 +161,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
           value={loaderData.filters.status}
           onChange={(e) => setFilter("status", e.target.value)}
           aria-label={t("vendorOrders.allStatuses")}
-          className="rounded-m border border-border bg-surface-alt px-3 py-2 text-[13px] font-bold text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
+          className="rounded-md border border-border bg-surface-alt px-3 py-2 text-[13px] font-bold text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
         >
           <option value="">{t("vendorOrders.allStatuses")}</option>
           {GROUP_STATUSES.map((s) => (
@@ -195,7 +195,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
             return (
               <section
                 key={g.id}
-                className="rounded-l border border-border bg-surface p-4 sm:p-5 shadow-1 transition-all duration-150 hover:shadow-2"
+                className="rounded-lg border border-border bg-surface p-4 sm:p-5 shadow-1 transition-all duration-150 hover:shadow-2"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border pb-3">
                   <div>
@@ -217,15 +217,15 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                 {/* vendor-shipping state banner (VO-04/US-03) */}
                 {g.shipping_mode === "vendor" ? (
                   g.vendor_ship_status === "pending_admin" ? (
-                    <p role="status" className="mt-3 rounded-m border border-warning/30 bg-warning-soft p-2.5 text-xs font-bold text-warning-strong">
+                    <p role="status" className="mt-3 rounded-md border border-warning/30 bg-warning-soft p-2.5 text-xs font-bold text-warning-strong">
                       {t("vendorOrders.awaitingAdmin")}
                     </p>
                   ) : g.vendor_ship_status === "rejected" ? (
-                    <p role="status" className="mt-3 rounded-m border border-danger/30 bg-danger-soft p-2.5 text-xs font-bold text-danger">
+                    <p role="status" className="mt-3 rounded-md border border-danger/30 bg-danger-soft p-2.5 text-xs font-bold text-danger">
                       {t("vendorOrders.shipRejected")}
                     </p>
                   ) : g.vendor_ship_status === "approved" ? (
-                    <p role="status" className="mt-3 rounded-m border border-success/30 bg-success-soft p-2.5 text-xs font-bold text-success-strong">
+                    <p role="status" className="mt-3 rounded-md border border-success/30 bg-success-soft p-2.5 text-xs font-bold text-success-strong">
                       {t("vendorOrders.shipApproved")}
                     </p>
                   ) : (
@@ -268,19 +268,19 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
 
                 {/* fulfillment transitions (VO-03; server-validated ladder) */}
                 {next && g.status !== "cancelled" ? (
-                  <fetcher.Form method="post" preventScrollReset className="mt-3 flex flex-wrap items-center gap-2 rounded-m bg-surface-alt p-3 border border-border">
+                  <fetcher.Form method="post" preventScrollReset className="mt-3 flex flex-wrap items-center gap-2 rounded-md bg-surface-alt p-3 border border-border">
                     <input type="hidden" name="intent" value="status" />
                     <input type="hidden" name="group_id" value={g.id} />
                     <input type="hidden" name="status" value={next.to} />
                     <input
                       name="note"
                       placeholder={t("order.notePlaceholder")}
-                      className="min-w-40 flex-1 rounded-m border border-border bg-surface px-3 py-1.5 text-[13px] text-text focus:border-primary focus:outline-none"
+                      className="min-w-40 flex-1 rounded-md border border-border bg-surface px-3 py-1.5 text-[13px] text-text focus:border-primary focus:outline-none"
                     />
                     <button
                       type="submit"
                       disabled={busy || shipBlocked}
-                      className="cursor-pointer rounded-m bg-action px-3.5 py-1.5 text-[13px] font-bold text-on-action hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50 transition-colors shadow-1"
+                      className="cursor-pointer rounded-md bg-action px-3.5 py-1.5 text-[13px] font-bold text-on-action hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50 transition-colors shadow-1"
                     >
                       {t(next.key)}
                     </button>
@@ -299,14 +299,14 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                   <a
                     href={`/order/${encodeURIComponent(g.order.number)}/print/invoice_vendor${printQ}`}
                     target="_blank" rel="noreferrer"
-                    className="rounded-m border border-action px-2.5 py-1.5 text-xs font-bold text-action hover:bg-surface-tint"
+                    className="rounded-md border border-action px-2.5 py-1.5 text-xs font-bold text-action hover:bg-surface-tint"
                   >
                     {t("order.printInvoiceVendor")}
                   </a>
                   <a
                     href={`/order/${encodeURIComponent(g.order.number)}/print/label_vendor${printQ}`}
                     target="_blank" rel="noreferrer"
-                    className="rounded-m border border-action px-2.5 py-1.5 text-xs font-bold text-action hover:bg-surface-tint"
+                    className="rounded-md border border-action px-2.5 py-1.5 text-xs font-bold text-action hover:bg-surface-tint"
                   >
                     {t("order.printLabelVendor")}
                   </a>

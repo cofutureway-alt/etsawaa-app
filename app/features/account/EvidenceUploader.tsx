@@ -47,7 +47,7 @@ export function EvidenceUploader({ onChange }: { onChange: (paths: string[]) => 
 
   return (
     <div>
-      <label className="inline-flex cursor-pointer items-center gap-2 rounded-m border border-border px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint">
+      <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint">
         <input
           ref={inputRef}
           type="file"
@@ -64,7 +64,7 @@ export function EvidenceUploader({ onChange }: { onChange: (paths: string[]) => 
         <ul className="mt-2 flex flex-wrap gap-2">
           {paths.map((p) => (
             <li key={p}>
-              <img src={mediaUrl(p)} alt="" className="size-14 rounded-m border border-border object-cover" />
+              <img src={mediaUrl(p)} alt="" className="size-14 rounded-md border border-border object-cover" />
             </li>
           ))}
         </ul>

@@ -506,7 +506,7 @@ export function ProductWizard({
   }
 
   const errorSummary = stepErrors.length > 0 ? (
-    <div ref={submitRef} tabIndex={-1} role="alert" className="rounded-m border border-danger/40 bg-danger-soft p-3">
+    <div ref={submitRef} tabIndex={-1} role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3">
       <p className="text-[13px] font-extrabold text-danger">{t("common.errorSummary", { count: stepErrors.length })}</p>
       <ul className="mt-1.5 list-inside list-disc">
         {stepErrors.map((error) => (
@@ -536,17 +536,17 @@ export function ProductWizard({
       </div>
 
       {!editable ? (
-        <div role="status" className="rounded-m border border-info/40 bg-info-soft p-3 text-[13px] font-bold text-text">
+        <div role="status" className="rounded-md border border-info/40 bg-info-soft p-3 text-[13px] font-bold text-text">
           {t("productWizard.readOnly")}
         </div>
       ) : null}
       {isRejected && product?.rejection_reason ? (
-        <div role="alert" className="rounded-m border border-danger/40 bg-danger-soft p-3 text-[13px] font-bold text-danger">
+        <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] font-bold text-danger">
           {t("productWizard.rejectionReason")}: {product.rejection_reason}
         </div>
       ) : null}
       {stale ? (
-        <div role="alert" className="rounded-m border border-warning/40 bg-warning-soft p-3 text-[13px] font-bold text-warning-strong">
+        <div role="alert" className="rounded-md border border-warning/40 bg-warning-soft p-3 text-[13px] font-bold text-warning-strong">
           {t("productWizard.staleWarning")}
         </div>
       ) : null}
@@ -565,11 +565,11 @@ export function ProductWizard({
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
                   {t("productWizard.basics.descAr")}
-                  <textarea className="min-h-24 rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" value={form.desc_ar} onChange={(e) => patch({ desc_ar: e.target.value })} />
+                  <textarea className="min-h-24 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" value={form.desc_ar} onChange={(e) => patch({ desc_ar: e.target.value })} />
                 </label>
                 <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
                   {t("productWizard.basics.descEn")}
-                  <textarea className="min-h-24 rounded-m border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" dir="ltr" value={form.desc_en} onChange={(e) => patch({ desc_en: e.target.value })} />
+                  <textarea className="min-h-24 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" dir="ltr" value={form.desc_en} onChange={(e) => patch({ desc_en: e.target.value })} />
                 </label>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -623,7 +623,7 @@ export function ProductWizard({
                 <p className="text-[13px] font-bold text-text">{t("productWizard.classification.media")}</p>
                 <div className="flex flex-wrap gap-2">
                   {form.media.map((item, index) => (
-                    <div key={`${item.path}-${index}`} className="relative size-20 overflow-hidden rounded-m border border-border bg-surface-tint">
+                    <div key={`${item.path}-${index}`} className="relative size-20 overflow-hidden rounded-md border border-border bg-surface-tint">
                       {item.kind === "image" ? (
                         <MediaImage path={item.path} alt="" width={80} height={80} supabaseUrl={supabaseUrl} className="size-full object-cover" />
                       ) : (
@@ -647,7 +647,7 @@ export function ProductWizard({
                   <button
                     type="button"
                     onClick={() => setGalleryPicker(true)}
-                    className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-m border border-dashed border-border-strong bg-surface text-text-muted transition-colors duration-150 hover:bg-surface-tint"
+                    className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border-strong bg-surface text-text-muted transition-colors duration-150 hover:bg-surface-tint"
                   >
                     <span aria-hidden="true" className="text-xl">+</span>
                     <span className="text-[10px] font-bold">{t("media.picker.choose")}</span>
@@ -692,7 +692,7 @@ export function ProductWizard({
                 <Input id="p_sale_end" label={t("productWizard.pricing.saleEnd")} type="datetime-local" dir="ltr" value={form.sale_ends_at} onChange={(e) => patch({ sale_ends_at: e.target.value })} />
               </div>
               {rows.length > 1 ? (
-                <p className="rounded-m bg-surface-tint p-3 text-[12px] text-text-muted">
+                <p className="rounded-md bg-surface-tint p-3 text-[12px] text-text-muted">
                   {t("productWizard.pricing.variantsNote")}
                 </p>
               ) : null}
@@ -717,7 +717,7 @@ export function ProductWizard({
                 ))}
 
               {template.some((attr) => attr.is_variant_axis) ? (
-                <div className="flex flex-col gap-3 rounded-l border border-border bg-surface-tint p-4">
+                <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface-tint p-4">
                   <p className="text-[13px] font-extrabold text-text">{t("productWizard.variants.title")}</p>
                   {template
                     .filter((attr) => attr.is_variant_axis)
@@ -805,7 +805,7 @@ export function ProductWizard({
                   ) : null}
                 </div>
               ) : (
-                <p className="rounded-m bg-surface-tint p-3 text-[12px] text-text-muted">{t("productWizard.variants.noAxes")}</p>
+                <p className="rounded-md bg-surface-tint p-3 text-[12px] text-text-muted">{t("productWizard.variants.noAxes")}</p>
               )}
             </div>
           ) : null}
@@ -842,7 +842,7 @@ export function ProductWizard({
                 ]}
               />
 
-              <div className="rounded-m border border-border bg-surface-tint p-3.5">
+              <div className="rounded-md border border-border bg-surface-tint p-3.5">
                 <p className="text-[13px] font-extrabold text-text">{t("productWizard.review.title")}</p>
                 <dl className="mt-2 grid gap-1.5 sm:grid-cols-2">
                   <ReviewRow label={t("productWizard.basics.nameAr")} value={form.name_ar} />

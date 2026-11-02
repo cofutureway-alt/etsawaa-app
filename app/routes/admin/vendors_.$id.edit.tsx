@@ -227,7 +227,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
         {tabs.map((x) => (
           <button key={x.key} type="button" role="tab" aria-selected={tab === x.key}
             onClick={() => setTab(x.key)}
-            className={`cursor-pointer rounded-t-m px-4 py-2 text-[13px] font-bold ${
+            className={`cursor-pointer rounded-t-md px-4 py-2 text-[13px] font-bold ${
               tab === x.key ? "border-x border-t border-border bg-surface text-primary" : "text-text-muted hover:bg-surface-tint"
             }`}>
             {x.label}
@@ -248,7 +248,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
               <label htmlFor="f-feat-days" className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
                 {t("ve.featuredDays")}
                 <input id="f-feat-days" name="featured_days" type="number" min={0} dir="ltr"
-                  className="w-28 rounded-m border border-border bg-surface p-2.5 text-sm text-text" />
+                  className="w-28 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
               </label>
               <div className="flex items-center gap-3">
                 <Button type="submit" disabled={genFetcher.state !== "idle"}>{t("ve.save")}</Button>
@@ -296,7 +296,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                   {t("ve.fixedPercent")}
                   <input id="f-fixed" name="fixed_percent" type="number" min={0} max={100} step="0.01" dir="ltr"
                     defaultValue={v.commission_fixed_percent ?? ""}
-                    className="w-28 rounded-m border border-border bg-surface p-2.5 text-sm text-text" />
+                    className="w-28 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
                 </label>
               ) : null}
               {mode === "category" ? (
@@ -326,7 +326,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
             {loaderData.overrides.length > 0 ? (
               <ul className="mt-3 flex flex-wrap gap-1.5">
                 {loaderData.overrides.map((o) => (
-                  <li key={o.category_id} className="rounded-m border border-border px-2 py-1 text-xs text-text" dir="ltr">
+                  <li key={o.category_id} className="rounded-md border border-border px-2 py-1 text-xs text-text" dir="ltr">
                     {o.category_id.slice(0, 8)} · {o.percent}%
                   </li>
                 ))}
@@ -348,7 +348,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                   <label key={field as string} htmlFor={`soc-${field}`} className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
                     {label}
                     <input id={`soc-${field}`} name={field} type="url" dir="ltr" defaultValue={v.socials[field as string] ?? ""}
-                      className="rounded-m border border-border bg-surface p-2.5 text-sm text-text" />
+                      className="rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
                   </label>
                 ))}
                 <div className="flex items-center gap-3 sm:col-span-2">
@@ -370,15 +370,15 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("ve.adjustAmount")}
                   <input name="amount_piastres" type="number" required dir="ltr" placeholder="+/−"
-                    className="w-28 rounded-m border border-border bg-surface px-2 py-1.5" />
+                    className="w-28 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex flex-1 flex-col gap-1 text-xs font-bold text-text">
                   {t("wd.reason")}
-                  <input name="reason" required minLength={3} className="w-52 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  <input name="reason" required minLength={3} className="w-52 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("ve.adjustRef")}
-                  <input name="reference" dir="ltr" placeholder="—" className="w-36 rounded-m border border-border bg-surface px-2 py-1.5" />
+                  <input name="reference" dir="ltr" placeholder="—" className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <Button type="submit" size="sm" disabled={adjFetcher.state !== "idle"}>{t("lv.apply")}</Button>
                 {adjFetcher.state === "idle" && adjFetcher.data?.ok ? (
@@ -394,13 +394,13 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
           <Card>
             <CardHeader title={t("ve.wallet")} />
             <CardBody className="grid grid-cols-2 gap-2">
-              <div className="rounded-m border border-border bg-surface px-3 py-2.5">
+              <div className="rounded-md border border-border bg-surface px-3 py-2.5">
                 <p className="text-[11px] font-bold text-text-muted">{t("ve.available")}</p>
                 <p className="text-base font-extrabold tabular-nums text-text" dir="ltr">
                   {formatPiastres(loaderData.wallet?.available_piastres ?? 0, en ? "en" : "ar")}
                 </p>
               </div>
-              <div className="rounded-m border border-border bg-surface px-3 py-2.5">
+              <div className="rounded-md border border-border bg-surface px-3 py-2.5">
                 <p className="text-[11px] font-bold text-text-muted">{t("ve.pending")}</p>
                 <p className="text-base font-extrabold tabular-nums text-text" dir="ltr">
                   {formatPiastres(loaderData.wallet?.pending_piastres ?? 0, en ? "en" : "ar")}

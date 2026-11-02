@@ -23,7 +23,7 @@ export function Select({ label, options, error, className = "", id: idOverride, 
           id={id}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
-          className={`w-full cursor-pointer appearance-none rounded-m border bg-surface px-3.5 py-2.5 pe-9 text-sm text-text outline-none transition-colors duration-150 focus:shadow-focus ${
+          className={`w-full cursor-pointer appearance-none rounded-md border bg-surface px-3.5 py-2.5 pe-9 text-sm text-text outline-none transition-colors duration-150 focus:shadow-focus ${
             error ? "border-danger" : "border-border focus:border-primary"
           }`}
           {...rest}

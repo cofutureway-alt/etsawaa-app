@@ -32,7 +32,7 @@ export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
   return (
     <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4" aria-busy="true">
       {Array.from({ length: count }, (_, i) => (
-        <li key={i} className="overflow-hidden rounded-l border border-border bg-surface">
+        <li key={i} className="overflow-hidden rounded-lg border border-border bg-surface">
           <div className="aspect-square w-full animate-pulse bg-surface-tint" />
           <div className="flex flex-col gap-2 p-2.5">
             <div className="h-3.5 w-full animate-pulse rounded bg-surface-tint" />

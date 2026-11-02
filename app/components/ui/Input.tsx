@@ -50,7 +50,7 @@ export function Input({
           type={actualType}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : hint ? hintId : undefined}
-          className={`w-full rounded-m border bg-surface px-3.5 py-2.5 text-sm text-text transition-colors duration-150 outline-none placeholder:text-text-faint focus:shadow-focus ${
+          className={`w-full rounded-md border bg-surface px-3.5 py-2.5 text-sm text-text transition-colors duration-150 outline-none placeholder:text-text-faint focus:shadow-focus ${
             error ? "border-danger" : "border-border focus:border-primary"
           } ${showPasswordToggle ? "pe-10" : ""} ${inputClassName}`}
           {...rest}
@@ -60,7 +60,7 @@ export function Input({
             type="button"
             onClick={() => setVisible((v) => !v)}
             aria-label={visible ? t("common.hidePassword") : t("common.showPassword")}
-            className="absolute end-2 top-1/2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
+            className="absolute end-2 top-1/2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
           >
             {visible ? <EyeOffIcon /> : <EyeIcon />}
           </button>

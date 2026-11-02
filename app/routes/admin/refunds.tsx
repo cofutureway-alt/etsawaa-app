@@ -157,13 +157,13 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
         </div>
       </div>
 
-      <nav className="flex flex-wrap gap-1.5 rounded-l border border-border bg-surface p-2 shadow-1" aria-label={t("rf.title")}>
+      <nav className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" aria-label={t("rf.title")}>
         {TABS.map((s) => (
           <a
             key={s}
             href={`/${lang}/admin/refunds?status=${s}`}
             aria-current={loaderData.status === s ? "page" : undefined}
-            className={`rounded-m border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
+            className={`rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.status === s
                 ? "border-action bg-action text-on-action shadow-sm"
                 : "border-transparent text-text-muted hover:bg-surface-tint hover:text-text"
@@ -179,7 +179,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
       ) : (
         <ul className="mt-3 flex flex-col gap-3">
           {(loaderData.rfqs as Rfq[]).map((r) => (
-            <li key={r.id} className="rounded-m border border-border bg-surface p-4">
+            <li key={r.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2 text-[13px]">
                 <a href={`/${lang}/admin/orders/${encodeURIComponent(r.order_number)}`} className="font-extrabold text-action hover:underline" dir="ltr">
                   {r.order_number}
@@ -201,21 +201,21 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                     <input type="hidden" name="intent" value="decide" />
                     <input type="hidden" name="request_id" value={r.id} />
                     {r.items.map((it) => (
-                      <fieldset key={it.id} className="rounded-m border border-border/70 p-3 text-[13px]">
+                      <fieldset key={it.id} className="rounded-md border border-border/70 p-3 text-[13px]">
                         <legend className="px-1 font-bold text-text">
                           {en ? it.vendor_en : it.vendor_ar} — {it.product_name} × {it.qty}
                         </legend>
                         <div className="flex flex-wrap items-center gap-2">
                           <label htmlFor={`dec-${it.id}`} className="sr-only">{t("rf.decision")}</label>
                           <select id={`dec-${it.id}`} name={`decision_${it.id}`} defaultValue="approve"
-                            className="rounded-m border border-border bg-surface px-2 py-1.5">
+                            className="rounded-md border border-border bg-surface px-2 py-1.5">
                             <option value="approve">{t("rf.approve")}</option>
                             <option value="partial">{t("rf.partial")}</option>
                             <option value="reject">{t("rf.reject")}</option>
                           </select>
                           <label htmlFor={`fault-${it.id}`} className="sr-only">{t("rf.fault")}</label>
                           <select id={`fault-${it.id}`} name={`fault_${it.id}`} defaultValue="vendor"
-                            className="rounded-m border border-border bg-surface px-2 py-1.5">
+                            className="rounded-md border border-border bg-surface px-2 py-1.5">
                             <option value="vendor">{t("rf.faultVendor")}</option>
                             <option value="shipping">{t("rf.faultShipping")}</option>
                             <option value="customer">{t("rf.faultCustomer")}</option>
@@ -224,7 +224,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                           <label htmlFor={`amt-${it.id}`} className="text-xs text-text-muted">{t("rf.amount")}</label>
                           <input id={`amt-${it.id}`} name={`amount_${it.id}`} type="number" min={0} step={1} dir="ltr"
                             defaultValue={it.line_total_piastres}
-                            className="w-28 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px]" />
+                            className="w-28 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
                           <label className="flex items-center gap-1.5 text-xs text-text">
                             <input type="checkbox" name={`restock_${it.id}`} defaultChecked className="size-4 accent-[var(--color-action)]" />
                             {t("rf.restock")}
@@ -245,7 +245,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                   <fetcher.Form method="post" className="mt-2 flex flex-wrap items-center gap-2">
                     <input type="hidden" name="intent" value="execute" />
                     <input type="hidden" name="request_id" value={r.id} />
-                    <input name="note" placeholder={t("rf.executeNote")} className="w-56 rounded-m border border-border bg-surface px-2.5 py-2 text-[13px]" />
+                    <input name="note" placeholder={t("rf.executeNote")} className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-[13px]" />
                     <Button type="submit" size="sm" disabled={busy}>{t("rf.execute")}</Button>
                   </fetcher.Form>
                 ) : (

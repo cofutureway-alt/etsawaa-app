@@ -48,7 +48,7 @@ export function CompareBar() {
             window.dispatchEvent(new CustomEvent("etsawaa:compare"));
           }}
           aria-label={t("store.compare.clear")}
-          className="flex size-9 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-danger"
+          className="flex size-9 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-danger"
         >
           <XIcon className="size-4" />
         </button>
@@ -56,7 +56,7 @@ export function CompareBar() {
           type="button"
           disabled={ids.length < 2}
           onClick={() => void navigate(`/${lang}/compare?ids=${ids.join(",")}`)}
-          className="flex min-h-10 cursor-pointer items-center rounded-m bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex min-h-10 cursor-pointer items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {ids.length < 2 ? t("store.compare.pickSecond") : t("store.compare.go")}
         </button>

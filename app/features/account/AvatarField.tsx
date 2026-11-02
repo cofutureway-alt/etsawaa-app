@@ -51,7 +51,7 @@ export function AvatarField({ initialPath, alt }: { initialPath: string | null; 
         </div>
       )}
       <div>
-        <label className="inline-flex cursor-pointer items-center rounded-m border border-border px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint">
+        <label className="inline-flex cursor-pointer items-center rounded-md border border-border px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint">
           <input
             ref={inputRef}
             type="file"

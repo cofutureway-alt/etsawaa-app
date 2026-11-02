@@ -104,7 +104,7 @@ export default function CompletePage({ loaderData }: Route.ComponentProps) {
           </p>
         </div>
         {errorData?.formError ? (
-          <div role="alert" className="rounded-m border border-danger/40 bg-danger-soft p-3 text-[13px] font-bold text-danger">
+          <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] font-bold text-danger">
             {errorData.formError === "phone_taken" ? t("auth.complete.phoneTaken") : t("auth.errors.generic")}
           </div>
         ) : null}

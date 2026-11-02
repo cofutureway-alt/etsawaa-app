@@ -171,7 +171,7 @@ export default function AdminSettings({ loaderData }: Route.ComponentProps) {
                 />
                 <span
                   aria-hidden="true"
-                  className="mb-1 size-9 shrink-0 rounded-m border border-border"
+                  className="mb-1 size-9 shrink-0 rounded-md border border-border"
                   style={{ backgroundColor: isHexColor(value) ? value : "#FFFFFF" }}
                 />
               </div>

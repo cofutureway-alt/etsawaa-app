@@ -46,7 +46,7 @@ export function Button({
       type={type}
       aria-busy={loading || undefined}
       disabled={isDisabled}
-      className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-m font-bold leading-tight transition-colors duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-50 ${variantClasses[variant]} ${sizeClasses[size]} ${block ? "w-full" : ""} ${className}`}
+      className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-md font-bold leading-tight transition-colors duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-50 ${variantClasses[variant]} ${sizeClasses[size]} ${block ? "w-full" : ""} ${className}`}
       {...rest}
     >
       {loading ? <SpinnerIcon aria-hidden="true" /> : null}

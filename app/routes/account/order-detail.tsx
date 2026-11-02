@@ -102,13 +102,13 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
       </p>
       <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-lg font-extrabold text-text"><span dir="ltr">{order.number}</span></h1>
-        <span className={`rounded-m px-2 py-1 text-xs font-bold ${order.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
+        <span className={`rounded-md px-2 py-1 text-xs font-bold ${order.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
           {t(`order.status_${order.status}`)}
         </span>
       </div>
 
       {delivered && !withinReturn && !withinWarranty ? (
-        <p className="mt-3 rounded-m border border-border bg-surface-tint p-3 text-[13px] text-text-muted">
+        <p className="mt-3 rounded-md border border-border bg-surface-tint p-3 text-[13px] text-text-muted">
           {t("returns.windowsClosed")}
         </p>
       ) : null}
@@ -117,10 +117,10 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
         {groups.map((g: { id: string; status: string; items_subtotal_piastres: number; discount_piastres: number; cancel_reason: string | null; vendor: { store_name_ar: string; store_name_en: string } }) => {
           const own = items.filter((it: { group_id: string }) => it.group_id === g.id);
           return (
-            <section key={g.id} className="rounded-m border border-border bg-surface p-4">
+            <section key={g.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-sm font-extrabold text-text">{en ? g.vendor.store_name_en : g.vendor.store_name_ar}</h2>
-                <span className="rounded-m bg-surface-tint px-2 py-1 text-xs font-bold text-text">{t(`order.status_${g.status}`)}</span>
+                <span className="rounded-md bg-surface-tint px-2 py-1 text-xs font-bold text-text">{t(`order.status_${g.status}`)}</span>
               </div>
               <ul className="mt-2 flex flex-col divide-y divide-border">
                 {own.map((it: {
@@ -165,22 +165,22 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
                         {delivered && remaining === 0 ? <span className="text-text-faint">{t("returns.fullyRequested")}</span> : null}
                       </div>
                       {delivered && !isReviewed ? (
-                        <details id={`review-${it.id}`} className="mt-2 rounded-m border border-border p-3">
+                        <details id={`review-${it.id}`} className="mt-2 rounded-md border border-border p-3">
                           <summary className="cursor-pointer text-[13px] font-bold text-text">{t("reviews.write")}</summary>
                           <reviewFetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
                             <input type="hidden" name="intent" value="review" />
                             <input type="hidden" name="order_item_id" value={it.id} />
                             <label className="text-xs font-bold text-text">
                               {t("reviews.rating")}
-                              <select name="rating" defaultValue="5" className="ms-2 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
+                              <select name="rating" defaultValue="5" className="ms-2 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
                                 {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((v) => (
                                   <option key={v} value={v}>{v} / 5</option>
                                 ))}
                               </select>
                             </label>
-                            <input name="title" maxLength={200} placeholder={t("reviews.titlePlaceholder")} className="rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text" />
-                            <textarea name="body" maxLength={2000} rows={3} placeholder={t("reviews.bodyPlaceholder")} className="rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text" />
-                            <button type="submit" className="w-fit cursor-pointer rounded-m bg-action px-4 py-2 text-[13px] font-bold text-on-action hover:bg-action-hover">
+                            <input name="title" maxLength={200} placeholder={t("reviews.titlePlaceholder")} className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text" />
+                            <textarea name="body" maxLength={2000} rows={3} placeholder={t("reviews.bodyPlaceholder")} className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text" />
+                            <button type="submit" className="w-fit cursor-pointer rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action hover:bg-action-hover">
                               {t("reviews.submit")}
                             </button>
                           </reviewFetcher.Form>
@@ -200,7 +200,7 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
         })}
       </div>
 
-      <section className="mt-4 rounded-m border border-border bg-surface p-4">
+      <section className="mt-4 rounded-md border border-border bg-surface p-4">
         <dl className="flex flex-col gap-1.5 text-[13px]">
           <div className="flex justify-between"><dt className="text-text-muted">{t("cart.subtotal")}</dt><dd className="font-bold">{money(order.subtotal_piastres)}</dd></div>
           <div className="flex justify-between"><dt className="text-text-muted">{t("cart.discount")}</dt><dd className="font-bold">−{money(order.discount_piastres)}</dd></div>
@@ -220,9 +220,9 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
           <input type="hidden" name="intent" value="cancel" />
           <input
             name="reason" required maxLength={500} placeholder={t("order.cancelReasonPlaceholder")}
-            className="w-56 rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text"
+            className="w-56 rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text"
           />
-          <button type="submit" className="cursor-pointer rounded-m border border-danger px-3 py-2 text-[13px] font-bold text-danger hover:bg-surface-tint">
+          <button type="submit" className="cursor-pointer rounded-md border border-danger px-3 py-2 text-[13px] font-bold text-danger hover:bg-surface-tint">
             {t("order.cancel")}
           </button>
         </cancelFetcher.Form>

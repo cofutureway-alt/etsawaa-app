@@ -69,7 +69,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
 
   return (
     <div ref={boxRef} className={`relative ${compact ? "w-full" : "min-w-0 flex-1"}`}>
-      <div className="flex items-center overflow-hidden rounded-m border-2 border-primary bg-surface focus-within:shadow-focus">
+      <div className="flex items-center overflow-hidden rounded-md border-2 border-primary bg-surface focus-within:shadow-focus">
         <SearchIcon aria-hidden="true" className="ms-3 shrink-0 text-text-faint" />
         <input
           type="search"
@@ -104,7 +104,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
           id="search-suggestions"
           role="listbox"
           aria-label={t("store.search.suggestions")}
-          className="absolute inset-x-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-m border border-border bg-surface shadow-2"
+          className="absolute inset-x-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-md border border-border bg-surface shadow-2"
         >
           {loading ? (
             <p className="px-4 py-3 text-[13px] text-text-muted" role="status">{t("common.loading")}</p>

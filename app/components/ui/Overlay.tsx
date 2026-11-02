@@ -76,7 +76,7 @@ export function Dialog({ open, onClose, title, children }: OverlayProps) {
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="relative w-full max-w-md rounded-t-l border border-border bg-surface p-5 shadow-2 outline-none sm:rounded-m"
+        className="relative w-full max-w-md rounded-t-lg border border-border bg-surface p-5 shadow-2 outline-none sm:rounded-md"
       >
         <div className="mb-3 flex items-start justify-between gap-3">
           <h2 id={titleId} className="text-base font-extrabold text-text">
@@ -86,7 +86,7 @@ export function Dialog({ open, onClose, title, children }: OverlayProps) {
             type="button"
             onClick={onClose}
             aria-label={t("common.close")}
-            className="flex size-8 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
+            className="flex size-8 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
           >
             <XIcon />
           </button>
@@ -127,7 +127,7 @@ export function Drawer({
               type="button"
               onClick={onClose}
               aria-label={t("common.close")}
-              className="flex size-8 cursor-pointer items-center justify-center rounded-m text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
+              className="flex size-8 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-text"
             >
               <XIcon />
             </button>

@@ -72,7 +72,7 @@ export default function VendorReviews({ loaderData }: Route.ComponentProps) {
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="text-lg font-extrabold text-text">{t("vr.title")}</h1>
         {loaderData.avg !== null ? (
-          <span className="flex items-center gap-2 rounded-m border border-border bg-surface px-2.5 py-1">
+          <span className="flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1">
             <Rating value={loaderData.avg} size="sm" />
             <span className="num text-sm font-black text-text" dir="ltr">
               {loaderData.avg.toFixed(1)}
@@ -89,7 +89,7 @@ export default function VendorReviews({ loaderData }: Route.ComponentProps) {
       ) : (
         <ul className="mt-4 flex flex-col gap-2">
           {rows.map((r) => (
-            <li key={r.id} className="rounded-m border border-border bg-surface p-3">
+            <li key={r.id} className="rounded-md border border-border bg-surface p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="flex items-center gap-2">
                   <Rating value={Number(r.rating)} size="sm" />

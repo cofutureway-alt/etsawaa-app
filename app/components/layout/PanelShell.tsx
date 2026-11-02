@@ -56,7 +56,7 @@ export function PanelShell({
           onClick={() => setCollapsed((value) => !value)}
           aria-label={t("nav.menu")}
           aria-pressed={collapsed}
-          className="ms-auto hidden size-8 cursor-pointer items-center justify-center rounded-s text-side-text transition-colors duration-150 hover:bg-side-hover hover:text-white lg:flex"
+          className="ms-auto hidden size-8 cursor-pointer items-center justify-center rounded-sm text-side-text transition-colors duration-150 hover:bg-side-hover hover:text-white lg:flex"
         >
           <PanelLeftIcon />
         </button>
@@ -66,7 +66,7 @@ export function PanelShell({
         <Link
           to={`/${lang}`}
           title={collapsed ? subtitle : undefined}
-          className={`flex items-center gap-2.5 rounded-s bg-white/5 px-2.5 py-2.5 text-[12.5px] font-bold text-white transition-colors duration-150 hover:bg-white/10 ${
+          className={`flex items-center gap-2.5 rounded-sm bg-white/5 px-2.5 py-2.5 text-[12.5px] font-bold text-white transition-colors duration-150 hover:bg-white/10 ${
             collapsed ? "justify-center" : ""
           }`}
         >
@@ -97,7 +97,7 @@ export function PanelShell({
               onClick={() => setDrawerOpen(true)}
               aria-label={t("nav.menu")}
               aria-haspopup="dialog"
-              className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint lg:hidden"
+              className="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint lg:hidden"
             >
               <MenuIcon />
             </button>
@@ -129,7 +129,7 @@ export function PanelShell({
               type="button"
               onClick={() => setDrawerOpen(false)}
               aria-label={t("common.close")}
-              className="ms-auto flex size-9 cursor-pointer items-center justify-center rounded-s text-side-text transition-colors duration-150 hover:bg-side-hover hover:text-white"
+              className="ms-auto flex size-9 cursor-pointer items-center justify-center rounded-sm text-side-text transition-colors duration-150 hover:bg-side-hover hover:text-white"
             >
               <XIcon aria-hidden="true" />
             </button>

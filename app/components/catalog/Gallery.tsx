@@ -24,7 +24,7 @@ export function Gallery({
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-square w-full items-center justify-center rounded-l border border-border bg-surface-tint">
+      <div className="flex aspect-square w-full items-center justify-center rounded-lg border border-border bg-surface-tint">
         <span className="text-sm font-bold text-text-faint">{t("store.noImage")}</span>
       </div>
     );
@@ -32,7 +32,7 @@ export function Gallery({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="overflow-hidden rounded-l border border-border bg-surface">
+      <div className="overflow-hidden rounded-lg border border-border bg-surface">
         <MediaImg
           key={selectedPath ?? images[0]?.path ?? "none"}
           path={selectedPath ?? images[0]?.path ?? ""}
@@ -56,7 +56,7 @@ export function Gallery({
                   aria-selected={active}
                   aria-label={t("store.gallery.thumb", { index: images.indexOf(img) + 1 })}
                   onClick={() => onSelect(img.path)}
-                  className={`block cursor-pointer overflow-hidden rounded-m border-2 transition-colors duration-150 ${
+                  className={`block cursor-pointer overflow-hidden rounded-md border-2 transition-colors duration-150 ${
                     active ? "border-action" : "border-border hover:border-border-strong"
                   }`}
                 >

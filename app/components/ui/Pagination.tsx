@@ -33,7 +33,7 @@ export function Pagination({ page, total, perPage, hrefFor, window: span = 5 }: 
           to={hrefFor(page - 1)}
           rel="prev"
           aria-label={t("common.back")}
-          className="flex size-10 items-center justify-center rounded-m border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
+          className="flex size-10 items-center justify-center rounded-md border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
         >
           <ChevronRightIcon aria-hidden="true" className="mirr" />
         </Link>
@@ -44,7 +44,7 @@ export function Pagination({ page, total, perPage, hrefFor, window: span = 5 }: 
           to={hrefFor(p)}
           aria-current={p === page ? "page" : undefined}
           aria-label={t("store.listing.pageN", { page: p })}
-          className={`num flex size-10 items-center justify-center rounded-m border text-[13px] font-bold transition-colors duration-150 ${
+          className={`num flex size-10 items-center justify-center rounded-md border text-[13px] font-bold transition-colors duration-150 ${
             p === page
               ? "border-action bg-action text-on-action"
               : "border-border bg-surface text-text hover:bg-surface-tint"
@@ -58,7 +58,7 @@ export function Pagination({ page, total, perPage, hrefFor, window: span = 5 }: 
           to={hrefFor(page + 1)}
           rel="next"
           aria-label={t("common.next")}
-          className="flex size-10 items-center justify-center rounded-m border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
+          className="flex size-10 items-center justify-center rounded-md border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
         >
           <ChevronLeftIcon aria-hidden="true" className="mirr" />
         </Link>

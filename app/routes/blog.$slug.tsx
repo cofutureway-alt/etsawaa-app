@@ -236,14 +236,14 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
               src={publicMediaUrl(supabaseUrl, p.cover_path)}
               alt={en ? p.title_en : p.title_ar}
               width={1200} height={630} loading="eager" decoding="async"
-              className="mt-4 aspect-[1200/630] w-full rounded-m border border-border object-cover"
+              className="mt-4 aspect-[1200/630] w-full rounded-md border border-border object-cover"
             />
           ) : (
             /* U2 — no empty hero: the same deterministic cover, larger */
             <FallbackCover
               title={en ? p.title_en : p.title_ar}
               seed={p.slug_en}
-              className="mt-4 aspect-[1200/630] rounded-m border"
+              className="mt-4 aspect-[1200/630] rounded-md border"
             />
           )}
 
@@ -251,7 +251,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
               no JS, keyboard accessible, closed by default so the article
               starts right under the title) */}
           {toc.length >= 2 ? (
-            <details className="group mt-5 rounded-m border border-border bg-surface-tint lg:hidden">
+            <details className="group mt-5 rounded-md border border-border bg-surface-tint lg:hidden">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-3 text-[13px] font-bold text-text marker:content-none">
                 {t("pubBlog.toc")}
                 <span aria-hidden="true" className="text-text-muted transition-transform duration-150 group-open:rotate-180">▾</span>
@@ -278,12 +278,12 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
             <span className="text-[13px] font-bold text-text">{t("pubBlog.share")}</span>
             {shareTargets.map((s) => (
               <a key={s.key} href={s.href} target="_blank" rel="noreferrer"
-                className="rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                 {t(`pubBlog.share_${s.key}`)}
               </a>
             ))}
             <button type="button" onClick={() => void navigator.clipboard?.writeText(url)}
-              className="cursor-pointer rounded-m border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+              className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
               {t("pubBlog.copyLink")}
             </button>
           </div>
@@ -292,7 +292,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
         {/* desktop TOC rail — sticky inside the article grid */}
         {toc.length >= 2 ? (
           <aside className="hidden lg:block">
-            <nav aria-label={t("pubBlog.toc")} className="sticky top-24 rounded-m border border-border bg-surface p-3">
+            <nav aria-label={t("pubBlog.toc")} className="sticky top-24 rounded-md border border-border bg-surface p-3">
               <p className="text-[13px] font-bold text-text">{t("pubBlog.toc")}</p>
               <ol className="mt-1.5 flex flex-col gap-1 border-s border-border ps-3 text-[13px]">
                 {toc.map((item) => (
@@ -316,7 +316,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
           <h2 className="text-lg font-extrabold text-text">{t("pubBlog.related")}</h2>
           <ul className="mt-3 grid gap-3 sm:grid-cols-3">
             {loaderData.related.map((r: { slug_ar: string; slug_en: string; title_ar: string; title_en: string; excerpt_ar: string; excerpt_en: string; cover_path: string | null }) => (
-              <li key={r.slug_en} className="overflow-hidden rounded-m border border-border bg-surface">
+              <li key={r.slug_en} className="overflow-hidden rounded-md border border-border bg-surface">
                 <Link to={`/${lang}/blog/${encodeURIComponent(en ? r.slug_en : r.slug_ar)}`} className="block">
                   {r.cover_path ? (
                     <img src={publicMediaUrl(supabaseUrl, r.cover_path)} alt="" width={600} height={315}

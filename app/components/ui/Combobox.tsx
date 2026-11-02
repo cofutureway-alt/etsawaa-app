@@ -100,7 +100,7 @@ export function Combobox({ label, options, placeholder, value, onChange, disable
           }}
           onKeyDown={onKeyDown}
           onBlur={() => setOpen(false)}
-          className="w-full cursor-pointer rounded-m border border-border bg-surface px-3.5 py-2.5 pe-9 text-sm text-text outline-none transition-colors duration-150 placeholder:text-text-faint focus:border-primary focus:shadow-focus"
+          className="w-full cursor-pointer rounded-md border border-border bg-surface px-3.5 py-2.5 pe-9 text-sm text-text outline-none transition-colors duration-150 placeholder:text-text-faint focus:border-primary focus:shadow-focus"
         />
         <ChevronDownIcon
           aria-hidden="true"
@@ -110,7 +110,7 @@ export function Combobox({ label, options, placeholder, value, onChange, disable
           <ul
             id={listId}
             role="listbox"
-            className="absolute inset-x-0 top-full z-30 mt-1 max-h-60 overflow-auto rounded-m border border-border bg-surface py-1 shadow-2"
+            className="absolute inset-x-0 top-full z-30 mt-1 max-h-60 overflow-auto rounded-md border border-border bg-surface py-1 shadow-2"
           >
             {filtered.map((option, index) => (
               <li key={option.value} role="none">

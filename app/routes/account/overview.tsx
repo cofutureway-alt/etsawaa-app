@@ -64,9 +64,9 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
   return (
     <div className="flex flex-col gap-5">
       {loaderData.missingProfile ? (
-        <div role="status" className="flex flex-wrap items-center justify-between gap-2 rounded-m border border-primary/40 bg-primary-soft p-4 text-[13px]">
+        <div role="status" className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-primary/40 bg-primary-soft p-4 text-[13px]">
           <p className="font-bold text-text">{t("overview.completeProfile")}</p>
-          <Link to={`/${lang}/account/profile`} className="inline-flex min-h-11 items-center rounded-m bg-action px-4 font-extrabold text-on-action hover:bg-action-hover">
+          <Link to={`/${lang}/account/profile`} className="inline-flex min-h-11 items-center rounded-md bg-action px-4 font-extrabold text-on-action hover:bg-action-hover">
             {t("account.profile")}
           </Link>
         </div>
@@ -75,7 +75,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
       {/* quick stats */}
       <section aria-label={t("account.overview")} className="grid grid-cols-3 gap-3">
         {stats.map((s) => (
-          <Link key={s.label} to={s.to} className="rounded-l border border-border bg-surface p-4 transition-colors duration-150 hover:border-primary/40">
+          <Link key={s.label} to={s.to} className="rounded-lg border border-border bg-surface p-4 transition-colors duration-150 hover:border-primary/40">
             <p className="num text-2xl font-black text-text">{s.value}</p>
             <p className="mt-1 truncate text-xs font-bold text-text-muted">{s.label}</p>
           </Link>
@@ -91,9 +91,9 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
           </Link>
         </div>
         {orders.length === 0 ? (
-          <div className="mt-2 rounded-l border border-dashed border-border-strong bg-surface px-5 py-8 text-center">
+          <div className="mt-2 rounded-lg border border-dashed border-border-strong bg-surface px-5 py-8 text-center">
             <p className="text-sm font-bold text-text">{t("orders.empty")}</p>
-            <Link to={`/${lang}/products`} className="mt-2 inline-flex min-h-11 items-center rounded-m bg-action px-4 text-[13px] font-extrabold text-on-action hover:bg-action-hover">
+            <Link to={`/${lang}/products`} className="mt-2 inline-flex min-h-11 items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action hover:bg-action-hover">
               {t("nav.allProducts")}
             </Link>
           </div>
@@ -103,7 +103,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
               <li key={o.id}>
                 <Link
                   to={`/${lang}/account/orders/${encodeURIComponent(o.number)}`}
-                  className="flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-m border border-border bg-surface p-4 transition-colors duration-150 hover:border-primary/40"
+                  className="flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-md border border-border bg-surface p-4 transition-colors duration-150 hover:border-primary/40"
                 >
                   <span className="min-w-0">
                     <span className="block font-extrabold text-text" dir="ltr">{o.number}</span>
@@ -131,13 +131,13 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
           </Link>
         </div>
         {refunds.length === 0 ? (
-          <div className="mt-2 rounded-l border border-dashed border-border-strong bg-surface px-5 py-8 text-center">
+          <div className="mt-2 rounded-lg border border-dashed border-border-strong bg-surface px-5 py-8 text-center">
             <p className="text-sm text-text-muted">{t("returns.empty")}</p>
           </div>
         ) : (
           <ul className="mt-2 flex flex-col gap-2.5">
             {refunds.map((r) => (
-              <li key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-m border border-border bg-surface p-4 text-[13px]">
+              <li key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-md border border-border bg-surface p-4 text-[13px]">
                 <span className="font-extrabold text-text" dir="ltr">{r.order?.number ?? "—"}</span>
                 <span className="ms-auto rounded-full bg-surface-tint px-3 py-1 text-xs font-extrabold text-text-muted">
                   {t(`returns.status_${r.status}`)}

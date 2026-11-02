@@ -65,7 +65,7 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
             id: string; rating: number; title: string; body: string; status: string; created_at: string;
             product: { name_ar: string; name_en: string; slug_ar: string; slug_en: string } | null;
           }) => (
-            <li key={r.id} className="rounded-m border border-border bg-surface p-4">
+            <li key={r.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-[13px] font-bold text-text">
                   {r.product ? (
@@ -79,7 +79,7 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
                 </span>
                 <span className="flex items-center gap-2 text-xs">
                   <span className="font-extrabold text-text">{r.rating} / 5</span>
-                  <span className={`rounded-m px-2 py-0.5 font-bold ${r.status === "published" ? "bg-surface-tint text-text" : "bg-surface-tint text-text-muted"}`}>
+                  <span className={`rounded-md px-2 py-0.5 font-bold ${r.status === "published" ? "bg-surface-tint text-text" : "bg-surface-tint text-text-muted"}`}>
                     {t(`reviews.status_${r.status}`)}
                   </span>
                 </span>
@@ -92,15 +92,15 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
                 <fetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
                   <input type="hidden" name="intent" value="edit" />
                   <input type="hidden" name="id" value={r.id} />
-                  <select name="rating" defaultValue={String(r.rating)} className="w-32 rounded-m border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
+                  <select name="rating" defaultValue={String(r.rating)} className="w-32 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
                     {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((v) => (
                       <option key={v} value={v}>{v} / 5</option>
                     ))}
                   </select>
-                  <input name="title" defaultValue={r.title} maxLength={200} className="rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text" />
-                  <textarea name="body" defaultValue={r.body} rows={3} maxLength={2000} className="rounded-m border border-border bg-surface px-3 py-2 text-[13px] text-text" />
+                  <input name="title" defaultValue={r.title} maxLength={200} className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text" />
+                  <textarea name="body" defaultValue={r.body} rows={3} maxLength={2000} className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text" />
                   <div className="flex gap-2">
-                    <button type="submit" className="cursor-pointer rounded-m bg-action px-4 py-2 text-[13px] font-bold text-on-action hover:bg-action-hover">
+                    <button type="submit" className="cursor-pointer rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action hover:bg-action-hover">
                       {t("reviews.saveEdit")}
                     </button>
                   </div>

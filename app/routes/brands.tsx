@@ -54,12 +54,12 @@ export default function BrandsPage({ loaderData }: Route.ComponentProps) {
               <li key={brand.id}>
                 <Link
                   to={`/${lang}/brand/${encodeURIComponent(slug)}`}
-                  className="flex h-full flex-col items-center gap-2 rounded-l border border-border bg-surface p-4 text-center transition-colors duration-150 hover:bg-surface-tint"
+                  className="flex h-full flex-col items-center gap-2 rounded-lg border border-border bg-surface p-4 text-center transition-colors duration-150 hover:bg-surface-tint"
                 >
                   {brand.thumb_path ? (
-                    <MediaImg path={brand.thumb_path} alt={name} width={72} height={72} className="size-16 rounded-m border border-border" />
+                    <MediaImg path={brand.thumb_path} alt={name} width={72} height={72} className="size-16 rounded-md border border-border" />
                   ) : (
-                    <span className="flex size-16 items-center justify-center rounded-m bg-surface-tint text-xl font-black text-action">
+                    <span className="flex size-16 items-center justify-center rounded-md bg-surface-tint text-xl font-black text-action">
                       {name.slice(0, 1)}
                     </span>
                   )}

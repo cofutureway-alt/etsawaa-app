@@ -125,13 +125,13 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="grid max-w-3xl gap-6">
       {isVendor ? (
-        <section className="rounded-m border border-border bg-surface-tint p-4 text-[13px]">
+        <section className="rounded-md border border-border bg-surface-tint p-4 text-[13px]">
           <p className="font-bold text-text">{t("profile.storeName")}: {loaderData.role === "vendor" ? loaderData.vendor.store_name_ar : ""}</p>
           <p className="text-text-muted">{t("profile.storeNameNote")}</p>
         </section>
       ) : null}
 
-      <section className="rounded-m border border-border bg-surface p-4">
+      <section className="rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("profile.details")}</h2>
         <fetcher.Form method="post" preventScrollReset className="mt-3 flex flex-col gap-3">
           <input type="hidden" name="intent" value="details" />
@@ -161,7 +161,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
         ) : null}
       </section>
 
-      <section className="rounded-m border border-border bg-surface p-4">
+      <section className="rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{isVendor ? t("profile.storeLogo") : t("profile.avatar")}</h2>
         <div className="mt-3">
           <AvatarField
@@ -171,7 +171,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      <section className="rounded-m border border-border bg-surface p-4">
+      <section className="rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("profile.email")}</h2>
         <p className="mt-1.5 text-[13px] text-text-muted" dir="ltr">{loaderData.email}</p>
         <fetcher.Form method="post" preventScrollReset className="mt-3 flex flex-col gap-3">
@@ -190,7 +190,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
         ) : null}
       </section>
 
-      <section className="rounded-m border border-border bg-surface p-4">
+      <section className="rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("profile.password")}</h2>
         <fetcher.Form method="post" preventScrollReset className="mt-3 flex flex-col gap-3">
           <input type="hidden" name="intent" value="password" />

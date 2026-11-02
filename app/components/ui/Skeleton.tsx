@@ -15,7 +15,7 @@ export function Skeleton({ className = "h-4 w-full", label }: SkeletonProps) {
   return (
     <span className="inline-flex flex-col gap-1" aria-busy="true">
       {label ? <span className="sr-only">{label}</span> : null}
-      <span aria-hidden="true" className={`block animate-pulse rounded-m bg-border motion-reduce:animate-none ${className}`} />
+      <span aria-hidden="true" className={`block animate-pulse rounded-md bg-border motion-reduce:animate-none ${className}`} />
     </span>
   );
 }
@@ -29,7 +29,7 @@ export function SkeletonText({ lines = 1, className = "" }: { lines?: number; cl
         <span
           key={i}
           aria-hidden="true"
-          className={`block h-3.5 animate-pulse rounded-m bg-border motion-reduce:animate-none ${widths[Math.min(i, widths.length - 1)]}`}
+          className={`block h-3.5 animate-pulse rounded-md bg-border motion-reduce:animate-none ${widths[Math.min(i, widths.length - 1)]}`}
         />
       ))}
     </span>
@@ -50,7 +50,7 @@ export function SkeletonCircle({ size = 40 }: { size?: number }) {
 /** Card (loading a product/order/address tile). */
 export function SkeletonCard() {
   return (
-    <div className="rounded-l border border-border bg-surface p-4" aria-busy="true">
+    <div className="rounded-lg border border-border bg-surface p-4" aria-busy="true">
       <Skeleton className="h-4 w-1/3" />
       <div className="mt-3">
         <SkeletonText lines={3} />
@@ -62,8 +62,8 @@ export function SkeletonCard() {
 /** Product-card tile: fixed aspect-ratio image + two text lines. */
 export function SkeletonProductCard() {
   return (
-    <div className="rounded-l border border-border bg-surface p-3" aria-busy="true">
-      <div aria-hidden="true" className="aspect-square w-full animate-pulse rounded-m bg-border motion-reduce:animate-none" />
+    <div className="rounded-lg border border-border bg-surface p-3" aria-busy="true">
+      <div aria-hidden="true" className="aspect-square w-full animate-pulse rounded-md bg-border motion-reduce:animate-none" />
       <div className="mt-2.5">
         <SkeletonText lines={2} />
       </div>
@@ -75,7 +75,7 @@ export function SkeletonProductCard() {
 /** Data-table skeleton: header + N rows + pagination bar (fixed heights). */
 export function SkeletonTable({ rows = 8, cols = 4 }: { rows?: number; cols?: number }) {
   return (
-    <div className="overflow-hidden rounded-l border border-border bg-surface" aria-busy="true">
+    <div className="overflow-hidden rounded-lg border border-border bg-surface" aria-busy="true">
       <div className="flex items-center gap-3 border-b border-border bg-surface-tint px-4 py-3">
         {Array.from({ length: cols }, (_, i) => (
           <Skeleton key={i} className={`h-3.5 ${i === 0 ? "w-24" : "w-16"}`} />
@@ -126,7 +126,7 @@ export function SkeletonForm({ fields = 4, twoCols = true }: { fields?: number; 
 export function SkeletonChart({ height = 220 }: { height?: number }) {
   const bars = [38, 62, 46, 80, 58, 70, 52];
   return (
-    <div className="rounded-l border border-border bg-surface p-4" aria-busy="true" style={{ minHeight: height }}>
+    <div className="rounded-lg border border-border bg-surface p-4" aria-busy="true" style={{ minHeight: height }}>
       <Skeleton className="h-4 w-32" />
       <div className="mt-4 flex items-end gap-2" style={{ height: height - 80 }}>
         {bars.map((h, i) => (
@@ -134,7 +134,7 @@ export function SkeletonChart({ height = 220 }: { height?: number }) {
             key={i}
             aria-hidden="true"
             style={{ height: `${h}%` }}
-            className="flex-1 animate-pulse rounded-t-m bg-border motion-reduce:animate-none"
+            className="flex-1 animate-pulse rounded-t-md bg-border motion-reduce:animate-none"
           />
         ))}
       </div>
@@ -151,7 +151,7 @@ export function SkeletonPage() {
     <div className="mx-auto w-full max-w-page px-4 py-6" aria-busy="true">
       <div className="flex flex-col gap-3">
         <Skeleton className="h-4 w-40" />
-        <div className="rounded-l border border-border bg-surface p-5">
+        <div className="rounded-lg border border-border bg-surface p-5">
           <div className="flex items-center gap-3">
             <SkeletonCircle size={56} />
             <div className="flex-1">

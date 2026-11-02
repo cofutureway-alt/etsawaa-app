@@ -162,7 +162,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
         </Link>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 rounded-l border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("vendor.products.filter")}>
+      <div className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("vendor.products.filter")}>
         {STATUS_FILTERS.map((filter) => (
           <button
             key={filter || "all"}
@@ -170,7 +170,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
             role="tab"
             aria-selected={status === filter}
             onClick={() => setSearchParams(filter ? { status: filter } : {})}
-            className={`cursor-pointer rounded-m border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
+            className={`cursor-pointer rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               status === filter
                 ? "border-action bg-action text-on-action shadow-sm"
                 : "border-transparent bg-transparent text-text-muted hover:bg-surface-tint hover:text-text"
@@ -210,7 +210,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
               text: (row) => (row.name_ar + " " + row.name_en),
               render: (row) => (
                 <div className="flex items-center gap-2.5">
-                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-m border border-border bg-surface-tint">
+                  <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
                     {row.media_path ? (
                       <img
                         src={publicMediaUrl(loaderData.supabaseUrl, row.media_path)}
@@ -267,7 +267,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
                       to={`/${lang}/vendor/products/${row.id}/edit`}
                       aria-label={t("common.edit")}
                       title={t("common.edit")}
-                      className="flex size-8 cursor-pointer items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint"
+                      className="flex size-8 cursor-pointer items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint"
                     >
                       <PencilIcon aria-hidden="true" />
                     </Link>
@@ -279,7 +279,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
                       type="submit"
                       aria-label={t("vendor.products.clone")}
                       title={t("vendor.products.clone")}
-                      className="flex size-8 cursor-pointer items-center justify-center rounded-m text-text transition-colors duration-150 hover:bg-surface-tint"
+                      className="flex size-8 cursor-pointer items-center justify-center rounded-md text-text transition-colors duration-150 hover:bg-surface-tint"
                     >
                       <CopyIcon aria-hidden="true" />
                     </button>
@@ -289,7 +289,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
                     aria-label={t("vendor.products.archive")}
                     title={t("vendor.products.archive")}
                     onClick={() => setConfirmArchive(row)}
-                    className="flex size-8 cursor-pointer items-center justify-center rounded-m text-danger transition-colors duration-150 hover:bg-danger-soft"
+                    className="flex size-8 cursor-pointer items-center justify-center rounded-md text-danger transition-colors duration-150 hover:bg-danger-soft"
                   >
                     <TrashIcon aria-hidden="true" />
                   </button>

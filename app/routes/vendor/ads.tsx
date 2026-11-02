@@ -92,7 +92,7 @@ export default function VendorAds({ loaderData }: Route.ComponentProps) {
           {rows.map((c) => {
             const ctr = c.impressions > 0 ? ((c.clicks / c.impressions) * 100).toFixed(1) : "—";
             return (
-              <li key={c.id} className="flex flex-wrap items-center justify-between gap-2 rounded-m border border-border bg-surface p-3 text-[13px]">
+              <li key={c.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-surface p-3 text-[13px]">
                 <span className="font-extrabold text-text">
                   {c.product_id ? names[c.product_id] ?? "—" : t("va.storeWide")}
                 </span>
@@ -120,7 +120,7 @@ export default function VendorAds({ loaderData }: Route.ComponentProps) {
           <p className="mt-1 text-xs text-text-muted">{t("va.packagesHint")}</p>
           <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {pkgs.map((p) => (
-              <li key={p.id} className="rounded-m border border-border bg-surface p-3">
+              <li key={p.id} className="rounded-md border border-border bg-surface p-3">
                 <p className="text-[13px] font-extrabold text-text">{en ? p.name_en || p.name_ar : p.name_ar || p.name_en}</p>
                 <p className="text-xs text-text-muted">{t(`ad.placement_${p.placement}`)}</p>
                 <p className="num mt-1 text-sm font-black text-action" dir="ltr">
