@@ -96,7 +96,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
       <Card className="border-t-[3px] border-t-action">
         <CardBody className="flex flex-wrap items-center justify-between gap-4 p-5">
           <div className="flex items-center gap-3.5 min-w-0">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-ink text-white font-black text-lg shadow-sm">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-md bg-ink text-white font-black text-lg shadow-1">
               {storeName.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">

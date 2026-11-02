@@ -10,6 +10,7 @@ import { Badge } from "~/components/ui/Badge";
 import { Dialog } from "~/components/ui/Overlay";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -82,13 +83,14 @@ export default function AdminPages({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-extrabold text-text">{t("sp.title")}</h1>
-        <Button size="sm" onClick={() => setEdit({
+      <PageHeader
+        title={t("sp.title")}
+        count={loaderData.pages.length}
+        actions={<Button size="sm" onClick={() => setEdit({
           id: "", slug_ar: "", slug_en: "", title_ar: "", title_en: "",
           content_ar: "", content_en: "", show_in_header: false, is_active: true,
-        })}>{t("sp.new")}</Button>
-      </div>
+        })}>{t("sp.new")}</Button>}
+      />
 
       <ul className="mt-3 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
         {(loaderData.pages as PageRow[]).map((p) => (

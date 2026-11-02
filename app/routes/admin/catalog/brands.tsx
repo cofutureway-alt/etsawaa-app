@@ -14,6 +14,7 @@ import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 interface BrandRow {
@@ -140,10 +141,11 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-lg font-extrabold text-text">{t("catalog.brands")}</h1>
-        <Button type="button" onClick={() => { setCreating(true); setEditing(null); setThumb(null); }}>{t("catalog.addBrand")}</Button>
-      </div>
+      <PageHeader
+        title={t("catalog.brands")}
+        count={loaderData.brands.length}
+        actions={<Button type="button" onClick={() => { setCreating(true); setEditing(null); setThumb(null); }}>{t("catalog.addBrand")}</Button>}
+      />
 
       <ul className="flex flex-col gap-2">
         {brands.map((b, i) => (

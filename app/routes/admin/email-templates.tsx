@@ -19,6 +19,7 @@ import { Badge } from "~/components/ui/Badge";
 import { Card, CardBody, CardHeader } from "~/components/ui";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -197,15 +198,18 @@ export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-extrabold text-text">{t("et.title")}</h1>
-        {/* provider state — honest banner, never a fake success path */}
-        <Badge tone={loaderData.providerConfigured ? "success" : "warning"}>
-          {loaderData.providerConfigured
-            ? t("et.providerReady", { from: loaderData.emailFrom })
-            : t("et.providerMissing")}
-        </Badge>
-      </div>
+      <PageHeader
+        title={t("et.title")}
+        count={loaderData.templates.length}
+        actions={
+          /* provider state — honest banner, never a fake success path */
+          <Badge tone={loaderData.providerConfigured ? "success" : "warning"}>
+            {loaderData.providerConfigured
+              ? t("et.providerReady", { from: loaderData.emailFrom })
+              : t("et.providerMissing")}
+          </Badge>
+        }
+      />
 
       <div className="grid gap-4 xl:grid-cols-[300px_1fr]">
         {/* template list */}

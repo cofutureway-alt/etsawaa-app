@@ -10,6 +10,7 @@ import { Badge } from "~/components/ui/Badge";
 import { TagIcon, StoreIcon, CheckIcon, CashIcon, PlusIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -113,18 +114,11 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("ad.title")}</h1>
-            <Badge tone="featured" dot>{loaderData.packages.length} باقات</Badge>
-            <Badge tone="neutral">{loaderData.campaigns.length} حملات نشطة</Badge>
-          </div>
-          <p className="text-xs text-text-muted">
-            إدارة باقات الإعلانات المميزة وتخصيص الحملات والمنح الإدارية للتجار
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("ad.title")}
+        subtitle={t("ad.hint")}
+        count={t("ad.counts", { packages: loaderData.packages.length, campaigns: loaderData.campaigns.length })}
+      />
 
       {/* Packages Section */}
       <section className="space-y-4" aria-label={t("ad.packages")}>
@@ -137,7 +131,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {(loaderData.packages as PkgRow[]).map((p) => (
-            <div key={p.id} className="rounded-xl border border-border/80 bg-surface p-4 sm:p-5 shadow-sm space-y-4">
+            <div key={p.id} className="rounded-lg border border-border bg-surface p-4 sm:p-5 shadow-1 space-y-4">
               <div className="flex items-center justify-between border-b border-border/50 pb-3">
                 <div>
                   <h3 className="text-sm font-black text-text">
@@ -167,7 +161,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     <input
                       name="name_ar"
                       defaultValue={p.name_ar}
-                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                     />
                   </label>
 
@@ -177,7 +171,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                       name="name_en"
                       defaultValue={p.name_en}
                       dir="ltr"
-                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                     />
                   </label>
 
@@ -186,7 +180,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     <select
                       name="placement"
                       defaultValue={p.placement}
-                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                     >
                       {PLACEMENTS.map((pl) => (
                         <option key={pl} value={pl}>
@@ -204,7 +198,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                       min={1}
                       defaultValue={p.duration_days}
                       dir="ltr"
-                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                     />
                   </label>
 
@@ -216,7 +210,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                       min={0}
                       defaultValue={p.price_piastres}
                       dir="ltr"
-                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                     />
                   </label>
 
@@ -228,7 +222,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                       min={1}
                       defaultValue={p.slots}
                       dir="ltr"
-                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                      className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                     />
                   </label>
                 </div>
@@ -255,7 +249,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* New Package Card */}
-        <details className="rounded-xl border border-border/80 bg-surface shadow-sm overflow-hidden">
+        <details className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden">
           <summary className="cursor-pointer px-4 sm:px-6 py-3.5 text-xs font-bold text-action hover:bg-surface-tint/50 flex items-center gap-1.5">
             <PlusIcon className="size-4" />
             <span>{t("ad.newPkg")}</span>
@@ -270,7 +264,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                   <input
                     name="name_ar"
                     required
-                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                   />
                 </label>
 
@@ -280,7 +274,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     name="name_en"
                     required
                     dir="ltr"
-                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                   />
                 </label>
 
@@ -288,7 +282,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                   {t("ad.placement")}
                   <select
                     name="placement"
-                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                   >
                     {PLACEMENTS.map((pl) => (
                       <option key={pl} value={pl}>
@@ -306,7 +300,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     min={1}
                     defaultValue={7}
                     dir="ltr"
-                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                   />
                 </label>
 
@@ -318,7 +312,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     min={0}
                     defaultValue={0}
                     dir="ltr"
-                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                    className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                   />
                 </label>
 
@@ -338,7 +332,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
       </section>
 
       {/* Admin Grant Section */}
-      <section className="rounded-xl border border-border/80 border-t-4 border-t-primary bg-surface p-4 sm:p-6 shadow-sm space-y-4" aria-label={t("ad.grant")}>
+      <section className="rounded-lg border border-border bg-surface p-4 shadow-1 space-y-4 sm:p-6" aria-label={t("ad.grant")}>
         <div className="space-y-1">
           <h2 className="text-sm font-extrabold text-text flex items-center gap-2">
             <StoreIcon className="size-4 text-action" />
@@ -359,7 +353,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
               required
               dir="ltr"
               placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
-              className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+              className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
             />
           </label>
 
@@ -367,7 +361,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
             {t("ad.pkg")}
             <select
               name="package_id"
-              className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+              className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
             >
               {(loaderData.packages as PkgRow[]).filter((p) => p.is_active).map((p) => (
                 <option key={p.id} value={p.id}>
@@ -385,7 +379,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
               min={1}
               dir="ltr"
               placeholder="افتراضي"
-              className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+              className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
             />
           </label>
 
@@ -412,15 +406,15 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
         </div>
 
         {loaderData.campaigns.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-xs text-text-muted">
+          <div className="rounded-lg border border-dashed border-border bg-surface p-8 text-center text-xs text-text-muted">
             {t("ve.none")}
           </div>
         ) : (
-          <div className="rounded-xl border border-border/80 bg-surface shadow-sm overflow-hidden divide-y divide-border/50">
+          <div className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden divide-y divide-border/50">
             {(loaderData.campaigns as CampRow[]).map((c) => (
               <div key={c.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-surface-tint/20 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="flex size-9 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-sm">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-1">
                     <StoreIcon className="size-4" />
                   </div>
                   <div>

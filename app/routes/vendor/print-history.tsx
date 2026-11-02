@@ -8,6 +8,7 @@ import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 /**
  * VO-20 print history — every render of a vendor document writes an
@@ -44,8 +45,7 @@ export default function VendorPrintHistory({ loaderData }: Route.ComponentProps)
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("vph.title")}</h1>
-      <p className="mt-1 text-xs text-text-muted">{t("vph.hint")}</p>
+      <PageHeader title={t("vph.title")} subtitle={t("vph.hint")} />
 
       {rows.length === 0 ? (
         <div className="mt-6">

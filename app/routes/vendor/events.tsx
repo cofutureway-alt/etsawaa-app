@@ -9,6 +9,7 @@ import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 /**
  * Vendor events (ARCHITECTURE §7 lists /vendor/events; the route was missing).
@@ -86,8 +87,7 @@ export default function VendorEvents({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("vev.title")}</h1>
-      <p className="mt-1 text-xs text-text-muted">{t("vev.hint")}</p>
+      <PageHeader title={t("vev.title")} subtitle={t("vev.hint")} />
 
       {events.length === 0 ? (
         <div className="mt-6">

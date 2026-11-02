@@ -12,6 +12,7 @@ import { Card, CardBody } from "~/components/ui";
 import { ReceiptIcon, CashIcon, TruckIcon, StoreIcon, FilterIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -75,22 +76,13 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("report.title")}</h1>
-            <Badge tone="featured" dot>دفتر الأستاذ المالي</Badge>
-          </div>
-          <p className="text-xs text-text-muted">
-            تقارير المبيعات وصافي الأرباح المستحقة محسوبة بدقة من دفتر تسويات المحفظة
-          </p>
-        </div>
-
-        {/* Date Filter Bar */}
-        <form
-          className="flex flex-wrap items-center gap-2 pt-2 md:pt-0 border-t border-border/40 md:border-t-0"
-          onSubmit={(e) => e.preventDefault()}
-        >
+      <PageHeader
+        title={t("report.title")}
+        subtitle={t("report.hint")}
+        count={t("report.ledger")}
+        actions={
+          /* Date Filter Bar */
+          <form className="flex flex-wrap items-center gap-2" onSubmit={(e) => e.preventDefault()}>
           <div className="flex items-center gap-1.5">
             <label htmlFor="rp-from" className="text-xs font-bold text-text-muted">{t("report.from")}:</label>
             <input
@@ -98,7 +90,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
               type="date"
               value={loaderData.from}
               onChange={(e) => setRange("from", e.target.value)}
-              className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+              className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
             />
           </div>
 
@@ -109,7 +101,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
               type="date"
               value={loaderData.to}
               onChange={(e) => setRange("to", e.target.value)}
-              className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+              className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
             />
           </div>
 
@@ -124,12 +116,13 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             {t("report.apply")}
           </Button>
         </form>
-      </div>
+        }
+      />
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Sales */}
-        <Card className="border-t-4 border-t-primary shadow-sm hover:shadow-md transition-shadow">
+        <Card className="border-t-4 border-t-primary shadow-1 hover:shadow-2 transition-shadow">
           <CardBody className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-text-muted">{t("report.sales")}</span>
@@ -145,7 +138,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
         </Card>
 
         {/* Commission */}
-        <Card className="border-t-4 border-t-danger shadow-sm hover:shadow-md transition-shadow">
+        <Card className="border-t-4 border-t-danger shadow-1 hover:shadow-2 transition-shadow">
           <CardBody className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-text-muted">{t("report.commission")}</span>
@@ -161,7 +154,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
         </Card>
 
         {/* Logistics / Shipping */}
-        <Card className="border-t-4 border-t-info shadow-sm hover:shadow-md transition-shadow">
+        <Card className="border-t-4 border-t-info shadow-1 hover:shadow-2 transition-shadow">
           <CardBody className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-text-muted">اللوجستيات والشحن</span>
@@ -177,7 +170,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
         </Card>
 
         {/* Net */}
-        <Card className="border-t-4 border-t-success shadow-sm hover:shadow-md transition-shadow bg-success-soft/20">
+        <Card className="border-t-4 border-t-success shadow-1 hover:shadow-2 transition-shadow bg-success-soft/20">
           <CardBody className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-success-strong">{t("report.net")}</span>
@@ -195,13 +188,13 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
 
       {/* Reconciled Breakdown Table */}
       {!loaderData.hasData ? (
-        <div className="rounded-xl border border-dashed border-border bg-surface p-12 text-center shadow-sm">
+        <div className="rounded-lg border border-dashed border-border bg-surface p-12 text-center shadow-1">
           <ReceiptIcon className="mx-auto size-8 text-text-muted" />
           <p className="mt-3 text-sm font-bold text-text">{t("report.empty")}</p>
           <p className="mt-1 text-xs text-text-muted">لا توجد معاملات مكتملة في هذه الفترة المحددة</p>
         </div>
       ) : (
-        <div className="rounded-xl border border-border/80 bg-surface shadow-sm overflow-hidden">
+        <div className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden">
           <div className="border-b border-border/60 bg-surface-tint/30 px-4 sm:px-6 py-4">
             <h2 className="text-sm font-extrabold text-text">تفاصيل التسوية المالية للفترة</h2>
             <p className="text-xs text-text-muted mt-0.5">مطابقة حسابية دقيقة متصلة بسجل المعاملات المباشر</p>

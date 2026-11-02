@@ -13,6 +13,7 @@ import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { MediaPickerDialog } from "~/features/media/components/media-ui";
 import { parseMediaSettings } from "~/lib/media.shared";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -136,15 +137,16 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-extrabold text-text">{t("bl.title")}</h1>
-        <Button size="sm" onClick={() => openEditor({
+      <PageHeader
+        title={t("bl.title")}
+        count={loaderData.posts.length}
+        actions={<Button size="sm" onClick={() => openEditor({
           id: "", title_ar: "", title_en: "", slug_ar: "", slug_en: "",
           status: "draft", published_at: null, category_id: null,
           excerpt_ar: "", excerpt_en: "", content_ar: "", content_en: "",
           seo_title_ar: "", seo_title_en: "", seo_desc_ar: "", seo_desc_en: "", cover_path: null,
-        })}>{t("bl.new")}</Button>
-      </div>
+        })}>{t("bl.new")}</Button>}
+      />
 
       {/* categories — quick add */}
       <section className="mt-3" aria-label={t("bl.cats")}>

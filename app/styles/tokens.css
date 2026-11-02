@@ -108,7 +108,7 @@
   --color-side: var(--color-ink);
   --color-side-text: #e2b8b8;
   --color-side-text-strong: #ffffff;
-  --color-side-muted: rgba(255, 255, 255, 0.45);
+  --color-side-muted: rgba(255, 255, 255, 0.72);
   --color-side-line: rgba(255, 255, 255, 0.1);
   --color-side-hover: rgba(255, 255, 255, 0.08);
   --color-footer: #2e0302;

@@ -304,7 +304,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                   <span className="size-6 shrink-0" />
                 )}
 
-                <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-2.5 rounded-xl border border-border/80 bg-surface px-3.5 py-2.5 shadow-sm hover:border-action/40 transition-colors">
+                <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-2.5 rounded-lg border border-border bg-surface px-3.5 py-2.5 shadow-1 hover:border-action/40 transition-colors">
                   <div className="flex items-center gap-2.5 min-w-0">
                     {node.row.thumb_path ? (
                       <img
@@ -424,7 +424,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <h1 className="text-xl sm:text-2xl font-black text-text">{t("catalog.categories")}</h1>
@@ -447,10 +447,10 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* Interactive Drag & Drop Categories Tree */}
-      <div className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm">
+      <div className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1">
         <DndContext sensors={sensors} onDragEnd={onDragEnd}>
           {tree.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-surface py-12 text-center text-xs text-text-muted">
+            <div className="rounded-lg border border-dashed border-border bg-surface py-12 text-center text-xs text-text-muted">
               {t("catalog.noCategories")}
             </div>
           ) : (

@@ -288,7 +288,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           )}
 
           {/* price block */}
-          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface p-3.5">
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-tint p-3.5">
             {effective != null ? (
               <PriceTag
                 pricePiastres={eventPrice ?? effective}
@@ -383,13 +383,17 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
 
           {/* assurances */}
           <ul className="grid grid-cols-2 gap-2 text-xs font-bold text-text-muted">
-            <li className="flex items-center gap-2 rounded-md border border-border px-3 py-2">
-              <TruckIcon aria-hidden="true" className="text-action" />
-              {t("store.product.assureShipping")}
+            <li className="flex items-center gap-2.5 rounded-lg border border-border bg-surface px-3 py-2.5">
+              <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-md bg-surface-tint text-action">
+                <TruckIcon />
+              </span>
+              <span className="min-w-0">{t("store.product.assureShipping")}</span>
             </li>
-            <li className="flex items-center gap-2 rounded-md border border-border px-3 py-2">
-              <ShieldIcon aria-hidden="true" className="text-action" />
-              {t("store.product.assureReturns")}
+            <li className="flex items-center gap-2.5 rounded-lg border border-border bg-surface px-3 py-2.5">
+              <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-md bg-surface-tint text-action">
+                <ShieldIcon />
+              </span>
+              <span className="min-w-0">{t("store.product.assureReturns")}</span>
             </li>
           </ul>
 
@@ -429,7 +433,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
             content: (
               <div className="flex flex-col gap-5">
                 {(lang === "ar" ? page.desc_ar : page.desc_en) ? (
-                  <p className="whitespace-pre-line text-[13.5px] leading-relaxed text-text">
+                  <p className="whitespace-pre-line text-sm leading-relaxed text-text">
                     {lang === "ar" ? page.desc_ar : page.desc_en}
                   </p>
                 ) : null}

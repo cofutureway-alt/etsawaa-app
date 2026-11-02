@@ -14,6 +14,7 @@ import { DataTable } from "~/components/ui/DataTable";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { parseScopes, scopeConflict, type CouponScope } from "~/features/settings/coupon-scopes";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -244,23 +245,15 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("cp.title")}</h1>
-            <Badge tone="neutral" dot>{loaderData.coupons.length}</Badge>
-          </div>
-          <p className="text-xs text-text-muted">
-            إدارة كوبونات الخصم وقسائم الشحن المجاني والتسويق
-          </p>
-        </div>
-        <Button size="sm" onClick={openCreate} className="cursor-pointer shrink-0">
-          {t("cp.new")}
-        </Button>
-      </div>
+      <PageHeader
+        title={t("cp.title")}
+        subtitle={t("cp.hint")}
+        count={loaderData.coupons.length}
+        actions={<Button size="sm" onClick={openCreate} className="cursor-pointer">{t("cp.new")}</Button>}
+      />
 
       {loaderData.coupons.length === 0 ? (
-        <div className="mt-4"><EmptyState title={t("cp.empty")} body={t("cp.emptyHint")} /></div>
+        <div className="mt-4"><EmptyState title={t("cp.empty")} body={t("cp.emptyHint")} action={<Button size="sm" onClick={openCreate}>{t("cp.new")}</Button>} /></div>
       ) : (
         <div className="mt-3">
           <DataTable<CouponRow>

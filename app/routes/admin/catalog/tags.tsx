@@ -12,6 +12,7 @@ import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 interface TagRow {
@@ -90,7 +91,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-lg font-extrabold text-text">{t("catalog.tags")}</h1>
+      <PageHeader title={t("catalog.tags")} count={loaderData.tags.length} />
 
       <fetcher.Form method="post" className="flex flex-wrap items-end gap-2 rounded-lg border border-border bg-surface p-3">
         <input type="hidden" name="intent" value="create" />

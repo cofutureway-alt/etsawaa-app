@@ -172,7 +172,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
             onClick={() => setSearchParams(filter ? { status: filter } : {})}
             className={`cursor-pointer rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               status === filter
-                ? "border-action bg-action text-on-action shadow-sm"
+                ? "border-action bg-action text-on-action shadow-1"
                 : "border-transparent bg-transparent text-text-muted hover:bg-surface-tint hover:text-text"
             }`}
           >

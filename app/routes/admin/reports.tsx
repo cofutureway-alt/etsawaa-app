@@ -12,6 +12,7 @@ import { Badge } from "~/components/ui/Badge";
 import { ChartIcon, CashIcon, ReceiptIcon, UsersIcon, PackageIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -128,18 +129,11 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="space-y-6">
-      {/* Executive Header Banner */}
-      <div className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("rpt.title")}</h1>
-            <Badge tone="featured" dot>{t("rpt.period30")}</Badge>
-          </div>
-          <p className="text-xs text-text-muted">
-            مؤشرات الأداء التشغيلي والمالي لمنصة إتسوق مع سجل التدقيق والمطابقة الشاملة
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("rpt.title")}
+        subtitle="مؤشرات الأداء التشغيلي والمالي لمنصة اتسوء مع سجل التدقيق والمطابقة الشاملة"
+        actions={<Badge tone="featured" dot>{t("rpt.period30")}</Badge>}
+      />
 
       {/* Tab 1: 30-day Period KPI Cards */}
       <section aria-label={t("rpt.tabPeriod")} className="space-y-3">
@@ -150,7 +144,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
           {/* Net Sales */}
-          <div className="rounded-xl border border-border/80 border-t-4 border-t-primary bg-surface p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1 transition-shadow hover:shadow-2">
             <p className="text-xs font-bold text-text-muted">{t("rpt.netSales")}</p>
             <p className="mt-1.5 text-lg font-black font-mono text-text tabular-nums" dir="ltr">
               {money(c.net_sales)}
@@ -158,7 +152,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* Commission */}
-          <div className="rounded-xl border border-border/80 border-t-4 border-t-action bg-surface p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1 transition-shadow hover:shadow-2">
             <p className="text-xs font-bold text-text-muted">{t("rpt.commission")}</p>
             <p className="mt-1.5 text-lg font-black font-mono text-action tabular-nums" dir="ltr">
               {money(c.commission)}
@@ -166,7 +160,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* Orders */}
-          <div className="rounded-xl border border-border/80 border-t-4 border-t-info bg-surface p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1 transition-shadow hover:shadow-2">
             <p className="text-xs font-bold text-text-muted">{t("rpt.orders")}</p>
             <p className="mt-1.5 text-lg font-black font-mono text-text tabular-nums" dir="ltr">
               {c.orders_count}
@@ -174,7 +168,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* Vendors Signed */}
-          <div className="rounded-xl border border-border/80 border-t-4 border-t-success bg-surface p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1 transition-shadow hover:shadow-2">
             <p className="text-xs font-bold text-text-muted">{t("rpt.vendorsSigned")}</p>
             <p className="mt-1.5 text-lg font-black font-mono text-text tabular-nums" dir="ltr">
               {c.vendors_signed}
@@ -182,7 +176,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* Products Created */}
-          <div className="rounded-xl border border-border/80 border-t-4 border-t-warning bg-surface p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1 transition-shadow hover:shadow-2">
             <p className="text-xs font-bold text-text-muted">{t("rpt.productsCreated")}</p>
             <p className="mt-1.5 text-lg font-black font-mono text-text tabular-nums" dir="ltr">
               {c.products_created}
@@ -190,7 +184,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* Awaiting Withdrawals */}
-          <div className="rounded-xl border border-border/80 border-t-4 border-t-danger bg-surface p-4 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1 transition-shadow hover:shadow-2">
             <p className="text-xs font-bold text-text-muted">{t("rpt.awaitingWd")}</p>
             <p className="mt-1.5 text-lg font-black font-mono text-danger tabular-nums" dir="ltr">
               {c.awaiting_withdrawals}
@@ -199,7 +193,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* Daily Sales Bar Chart */}
-        <Card className="shadow-sm">
+        <Card className="shadow-1">
           <CardHeader title={t("rpt.salesByDay")} />
           <CardBody>
             <div className="flex h-36 items-end gap-1 pt-4 pb-2 px-2" role="img" aria-label={t("rpt.salesByDay")}>
@@ -215,7 +209,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
                       className="w-full rounded-t bg-action/80 hover:bg-action transition-all cursor-pointer"
                       style={{ height: `${heightPct}%` }}
                     />
-                    <div className="absolute -top-7 hidden group-hover:block z-10 whitespace-nowrap rounded bg-surface border border-border px-1.5 py-0.5 text-2xs font-mono font-bold shadow-md">
+                    <div className="absolute -top-7 hidden group-hover:block z-10 whitespace-nowrap rounded bg-surface border border-border px-1.5 py-0.5 text-2xs font-mono font-bold shadow-2">
                       {d.day}: {money(d.sales)}
                     </div>
                   </div>
@@ -238,25 +232,25 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
         </h2>
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          <div className="rounded-xl border border-border/80 bg-surface p-4 shadow-sm">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1">
             <p className="text-xs font-bold text-text-muted">{t("rpt.commission")}</p>
             <p className="mt-1 text-lg font-black font-mono text-action tabular-nums" dir="ltr">
               {money(e.commission)}
             </p>
           </div>
-          <div className="rounded-xl border border-border/80 bg-surface p-4 shadow-sm">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1">
             <p className="text-xs font-bold text-text-muted">{t("rpt.clawbacks")}</p>
             <p className="mt-1 text-lg font-black font-mono text-warning tabular-nums" dir="ltr">
               {money(e.refund_clawback)}
             </p>
           </div>
-          <div className="rounded-xl border border-border/80 bg-surface p-4 shadow-sm">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1">
             <p className="text-xs font-bold text-text-muted">{t("rpt.penalties")}</p>
             <p className="mt-1 text-lg font-black font-mono text-danger tabular-nums" dir="ltr">
               {money(e.penalties)}
             </p>
           </div>
-          <div className="rounded-xl border border-border/80 bg-surface p-4 shadow-sm">
+          <div className="rounded-lg border border-border bg-surface p-4 shadow-1">
             <p className="text-xs font-bold text-text-muted">{t("rpt.adjustments")}</p>
             <p className="mt-1 text-lg font-black font-mono text-info tabular-nums" dir="ltr">
               {money(e.adjustments)}
@@ -275,7 +269,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
           <Badge tone="neutral">{loaderData.logs.length}</Badge>
         </div>
 
-        <div className="rounded-xl border border-border/80 bg-surface shadow-sm overflow-hidden p-2">
+        <div className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden p-2">
           <DataTable<LogRow>
             columns={[
               {

@@ -3,7 +3,7 @@ import { Badge } from "~/components/ui";
 
 /**
  * Section shell for storefront content blocks — the reference "section-head"
- * pattern: a 4px brand bar, the title, and an optional action link.
+ * pattern: a 6x24 brand bar, the title, and an optional action link.
  */
 export function SectionBlock({
   title,
@@ -18,8 +18,8 @@ export function SectionBlock({
 }) {
   return (
     <section aria-labelledby={id} className="flex flex-col gap-3">
-      <div className="flex items-center gap-2.5">
-        <span aria-hidden="true" className="h-4 w-1 rounded-full bg-action" />
+      <div className="flex items-center gap-3">
+        <span aria-hidden="true" className="h-6 w-1.5 shrink-0 rounded-sm bg-primary" />
         <h2 id={id} className="text-lg font-extrabold text-text">
           {title}
         </h2>

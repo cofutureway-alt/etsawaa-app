@@ -21,7 +21,7 @@ export function PriceTag({ pricePiastres, comparePricePiastres, locale, size = "
   const onSale = typeof comparePricePiastres === "number" && comparePricePiastres > pricePiastres;
   return (
     <span className="inline-flex items-center gap-2">
-      <span className={`num font-extrabold text-text ${sizeClasses[size]}`}>
+      <span className={`num font-extrabold ${size === "lg" ? "text-action" : "text-text"} ${sizeClasses[size]}`}>
         {formatPiastres(pricePiastres, locale)}
       </span>
       {onSale ? (

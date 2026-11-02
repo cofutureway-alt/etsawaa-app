@@ -213,7 +213,7 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
               {rows.map((row, index) => (
                 <div key={`${row.label}-${index}`} className="flex items-start justify-between gap-3 py-2">
                   <dt className="text-xs font-bold text-text-muted">{row.label}</dt>
-                  <dd className="text-end text-[12.5px] text-text">{row.a === undefined ? "" : p.id === productA.id ? row.a : row.b}</dd>
+                  <dd className="text-end text-xs text-text">{row.a === undefined ? "" : p.id === productA.id ? row.a : row.b}</dd>
                 </div>
               ))}
             </dl>

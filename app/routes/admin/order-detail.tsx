@@ -180,7 +180,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-6">
       {/* Header Bar */}
-      <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-text-muted">
             <Link
@@ -239,7 +239,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
             href={print("invoice_admin")}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-bold text-text hover:bg-surface-tint transition-colors shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-bold text-text hover:bg-surface-tint transition-colors shadow-1"
           >
             <ReceiptIcon className="size-4 text-action" />
             {t("order.printInvoiceA4")}
@@ -248,7 +248,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
             href={print("label_carrier")}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-action px-3 py-2 text-xs font-bold text-on-action hover:bg-action-hover transition-colors shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-action px-3 py-2 text-xs font-bold text-on-action hover:bg-action-hover transition-colors shadow-1"
           >
             <TruckIcon className="size-4" />
             {t("order.printCarrierA5")}
@@ -279,12 +279,12 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
               return (
                 <section
                   key={g.id}
-                  className="overflow-hidden rounded-xl border border-border/80 bg-surface shadow-sm transition-all"
+                  className="overflow-hidden rounded-lg border border-border bg-surface shadow-1 transition-all"
                 >
                   {/* Group Header */}
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-surface-tint/30 px-4 sm:px-6 py-3.5">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex size-8 items-center justify-center rounded-lg bg-surface border border-border/80 text-action font-black text-xs shadow-sm">
+                      <div className="flex size-8 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-1">
                         {storeName ? storeName.charAt(0).toUpperCase() : <StoreIcon className="size-4" />}
                       </div>
                       <div>
@@ -359,7 +359,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                         <div className="flex-1 min-w-[140px]">
                           <select
                             name="status"
-                            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-xs font-semibold text-text shadow-sm focus:border-action focus:outline-none focus:ring-1 focus:ring-action"
+                            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-xs font-semibold text-text shadow-1 focus:border-action focus:outline-none focus:ring-1 focus:ring-action"
                             defaultValue={g.status === "pending" ? "preparing" : "handed_to_carrier"}
                           >
                             {GROUP_TARGETS.map((s) => (
@@ -374,13 +374,13 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                           <input
                             name="note"
                             placeholder={t("order.notePlaceholder")}
-                            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm placeholder:text-text-faint focus:border-action focus:outline-none focus:ring-1 focus:ring-action"
+                            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 placeholder:text-text-faint focus:border-action focus:outline-none focus:ring-1 focus:ring-action"
                           />
                         </div>
 
                         <button
                           type="submit"
-                          className="cursor-pointer rounded-lg border border-action bg-surface px-3.5 py-2 text-xs font-bold text-action hover:bg-action hover:text-on-action transition-colors shadow-sm shrink-0"
+                          className="cursor-pointer rounded-lg border border-action bg-surface px-3.5 py-2 text-xs font-bold text-action hover:bg-action hover:text-on-action transition-colors shadow-1 shrink-0"
                         >
                           {t("order.updateStatus")}
                         </button>
@@ -399,14 +399,14 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* Activity & History Timeline */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm">
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1">
             <h2 className="text-sm font-extrabold text-text flex items-center gap-2">
               <ReceiptIcon className="size-4 text-action" />
               {t("order.historyTitle")}
             </h2>
 
             <div className="mt-4 flow-root">
-              <ol className="relative border-s border-border/80 ms-3 space-y-4">
+              <ol className="relative border-s border-border ms-3 space-y-4">
                 {history.map((h: { id: string; status: string; note: string; created_at: string }, idx: number) => (
                   <li key={h.id || idx} className="ms-5">
                     <span className="absolute -start-2 flex size-4 items-center justify-center rounded-full bg-surface border-2 border-action ring-2 ring-surface" />
@@ -430,7 +430,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Internal / Public Order Notes (A-15) */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm">
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-extrabold text-text flex items-center gap-2">
                 <FileIcon className="size-4 text-action" />
@@ -450,7 +450,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                   required
                   maxLength={2000}
                   placeholder={t("note.placeholder")}
-                  className="w-full rounded-lg border border-border bg-surface p-3 text-xs text-text placeholder:text-text-faint focus:border-action focus:outline-none focus:ring-1 focus:ring-action shadow-sm"
+                  className="w-full rounded-lg border border-border bg-surface p-3 text-xs text-text placeholder:text-text-faint focus:border-action focus:outline-none focus:ring-1 focus:ring-action shadow-1"
                 />
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <label className="flex items-center gap-2 text-xs text-text font-medium cursor-pointer">
@@ -466,7 +466,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
 
                   <button
                     type="submit"
-                    className="cursor-pointer rounded-lg bg-action px-4 py-2 text-xs font-bold text-on-action hover:bg-action-hover transition-colors shadow-sm"
+                    className="cursor-pointer rounded-lg bg-action px-4 py-2 text-xs font-bold text-on-action hover:bg-action-hover transition-colors shadow-1"
                   >
                     {t("note.save")}
                   </button>
@@ -505,7 +505,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
         {/* Right Column (4 cols): Order Financial Summary, Delivery Info, Print Center */}
         <aside className="space-y-6 lg:col-span-4">
           {/* Financial Summary */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm space-y-4">
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 space-y-4">
             <h2 className="text-sm font-extrabold text-text flex items-center gap-2 border-b border-border/60 pb-3">
               <ReceiptIcon className="size-4 text-action" />
               {t("order.summary")}
@@ -524,7 +524,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                 <dt className="text-text-muted">{t("cart.shipping")}</dt>
                 <dd className="font-bold font-mono text-text">{money(order.shipping_fee_piastres)}</dd>
               </div>
-              <div className="flex justify-between border-t border-border/80 pt-3 text-sm">
+              <div className="flex justify-between border-t border-border pt-3 text-sm">
                 <dt className="font-black text-text">{t("cart.total")}</dt>
                 <dd className="font-black font-mono text-action text-base">{money(order.total_piastres)}</dd>
               </div>
@@ -566,7 +566,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                 <input type="hidden" name="intent" value="cod_collect" />
                 <button
                   type="submit"
-                  className="w-full cursor-pointer rounded-lg bg-action px-4 py-2.5 text-xs font-extrabold text-on-action hover:bg-action-hover transition-colors shadow-sm"
+                  className="w-full cursor-pointer rounded-lg bg-action px-4 py-2.5 text-xs font-extrabold text-on-action hover:bg-action-hover transition-colors shadow-1"
                 >
                   {t("order.codCollect")}
                 </button>
@@ -583,7 +583,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Delivery & Customer Info */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm space-y-3.5 text-xs">
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 space-y-3.5 text-xs">
             <h2 className="text-sm font-extrabold text-text flex items-center gap-2 border-b border-border/60 pb-3">
               <UserIcon className="size-4 text-action" />
               {t("order.deliveryDetails")}
@@ -627,7 +627,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Print Center */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm space-y-4">
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 space-y-4">
             <h2 className="text-sm font-extrabold text-text flex items-center gap-2 border-b border-border/60 pb-3">
               <FileIcon className="size-4 text-action" />
               {t("order.printCenter")}
@@ -642,7 +642,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                   max={50}
                   value={copies}
                   onChange={(e) => setCopies(Math.max(1, Math.min(50, Number(e.target.value) || 1)))}
-                  className="w-20 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-center font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                  className="w-20 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-center font-mono text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
 
@@ -655,7 +655,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                     max={999}
                     value={pieces === "auto" ? piecesAuto : pieces}
                     onChange={(e) => setPieces(Math.max(1, Math.min(999, Number(e.target.value) || 1)))}
-                    className="w-20 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-center font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                    className="w-20 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-center font-mono text-text shadow-1 focus:border-action focus:outline-none"
                   />
                   <button
                     type="button"
@@ -672,7 +672,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                   href={print("invoice_admin")}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-1.5 rounded-lg border border-action bg-surface px-3 py-2 text-center text-xs font-bold text-action hover:bg-surface-tint transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-1.5 rounded-lg border border-action bg-surface px-3 py-2 text-center text-xs font-bold text-action hover:bg-surface-tint transition-colors shadow-1"
                 >
                   <ReceiptIcon className="size-4" />
                   {t("order.printInvoiceA4")}
@@ -682,7 +682,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                   href={print("label_carrier")}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-1.5 rounded-lg border border-action bg-surface px-3 py-2 text-center text-xs font-bold text-action hover:bg-surface-tint transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-1.5 rounded-lg border border-action bg-surface px-3 py-2 text-center text-xs font-bold text-action hover:bg-surface-tint transition-colors shadow-1"
                 >
                   <TruckIcon className="size-4" />
                   {t("order.printCarrierA5")}
@@ -694,7 +694,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                     href={print("label_vendor", g.vendor_id)}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-2 text-center text-xs font-semibold text-text hover:bg-surface-tint transition-colors shadow-sm"
+                    className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-2 text-center text-xs font-semibold text-text hover:bg-surface-tint transition-colors shadow-1"
                   >
                     <PackageIcon className="size-3.5 text-text-muted" />
                     <span>{t("order.printVendorLabel")} — {en ? g.vendor.store_name_en : g.vendor.store_name_ar}</span>

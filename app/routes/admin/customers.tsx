@@ -15,6 +15,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -120,29 +121,24 @@ export default function AdminCustomers({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("cu.title")}</h1>
-            <Badge tone="neutral" dot>{loaderData.total}</Badge>
-          </div>
-          <p className="text-xs text-text-muted">
-            قاعدة بيانات العملاء وسجل المشتريات والحسابات
-          </p>
-        </div>
-
-        <form method="get" className="flex items-center gap-2">
-          <input
-            name="q"
-            defaultValue={loaderData.q}
-            placeholder={t("admin.users.search")}
-            className="w-48 sm:w-64 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
-          />
-          <Button type="submit" size="sm" variant="outline" className="cursor-pointer">
-            {t("common.search")}
-          </Button>
-        </form>
-      </div>
+      <PageHeader
+        title={t("cu.title")}
+        subtitle={t("cu.hint")}
+        count={loaderData.total}
+        actions={
+          <form method="get" className="flex items-center gap-2">
+            <input
+              name="q"
+              defaultValue={loaderData.q}
+              placeholder={t("admin.users.search")}
+              className="w-48 rounded-md border border-border bg-surface px-3 py-1.5 text-xs text-text focus:border-action focus:outline-none sm:w-64"
+            />
+            <Button type="submit" size="sm" variant="outline" className="cursor-pointer">
+              {t("common.search")}
+            </Button>
+          </form>
+        }
+      />
 
       {loaderData.customers.length === 0 ? (
         <div className="mt-4"><EmptyState title={t("cu.empty")} body={t("admin.users.empty")} /></div>

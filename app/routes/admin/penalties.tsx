@@ -14,6 +14,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -124,7 +125,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("pn.title")}</h1>
+      <PageHeader title={t("pn.title")} />
 
       {/* rules */}
       <section className="mt-3" aria-label={t("pn.rules")}>
@@ -162,7 +163,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
 
         {(loaderData.rules as RuleRow[]).length === 0 ? (
           <div className="mt-3">
-            <EmptyState title={t("pn.noRules")} body={t("pn.noRulesHint")} />
+            <EmptyState title={t("pn.noRules")} body={t("pn.noRulesHint")} action={<Button size="sm" onClick={() => setCreating(true)}>{t("pn.newRule")}</Button>} />
           </div>
         ) : (
         <ul className="mt-2 flex flex-col gap-2">

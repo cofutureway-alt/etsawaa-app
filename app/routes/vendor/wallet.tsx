@@ -149,7 +149,7 @@ export default function WalletPage({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* VO-07 bank-card style wallet card (flat tokens, no gradients) */}
-      <section className="rounded-lg bg-ink p-6 text-white shadow-xl relative overflow-hidden" aria-label={t("wallet.title")}>
+      <section className="rounded-lg bg-ink p-6 text-white shadow-2 relative overflow-hidden" aria-label={t("wallet.title")}>
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
           <p className="text-xs font-bold text-white/70">{t("wallet.available")}</p>
           {level ? (

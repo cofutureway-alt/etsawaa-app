@@ -215,7 +215,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                           <div className="flex items-start justify-between gap-2">
                             <Link
                               to={`/${lang}/product/${encodeURIComponent((lang === "en" ? line.slug_en || line.slug_ar : line.slug_ar || line.slug_en) ?? "")}`}
-                              className="line-clamp-2 text-[13.5px] font-bold text-text transition-colors duration-150 hover:text-action"
+                              className="line-clamp-2 text-sm font-bold text-text transition-colors duration-150 hover:text-action"
                             >
                               {name}
                             </Link>

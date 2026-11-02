@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/Button";
 import { Card, CardBody, CardHeader } from "~/components/ui";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -122,8 +123,7 @@ export default function AdminSettingsSections({ loaderData }: Route.ComponentPro
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("st.title")}</h1>
-      <p className="mt-1 text-sm text-text-muted">{t("st.hint")}</p>
+      <PageHeader title={t("st.title")} subtitle={t("st.hint")} />
 
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
         {/* 2) GENERAL */}

@@ -536,7 +536,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
         {/* ---------------- accordion ---------------- */}
         <div className="flex flex-col gap-3">
           {/* Step 1 — account & address */}
-          <section className="overflow-hidden rounded-md border border-border bg-surface">
+          <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-1">
             {stepHeader("address", 0)}
             {step === "address" ? (
               <div className="border-t border-border p-4">
@@ -694,7 +694,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Step 2 — shipping */}
-          <section className="overflow-hidden rounded-md border border-border bg-surface">
+          <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-1">
             {stepHeader("shipping", 1)}
             {step === "shipping" ? (
               <div className="border-t border-border p-4">
@@ -723,7 +723,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Step 3 — payment */}
-          <section className="overflow-hidden rounded-md border border-border bg-surface">
+          <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-1">
             {stepHeader("payment", 2)}
             {step === "payment" ? (
               <div className="border-t border-border p-4">
@@ -779,7 +779,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Step 4 — confirm */}
-          <section className="overflow-hidden rounded-md border border-border bg-surface">
+          <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-1">
             {stepHeader("confirm", 3)}
             {step === "confirm" ? (
               <div className="border-t border-border p-4">

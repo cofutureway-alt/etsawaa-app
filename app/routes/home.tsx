@@ -254,7 +254,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <Icon aria-hidden="true" className="text-lg" />
             </span>
             <span className="min-w-0">
-              <b className="block text-[12.5px] font-extrabold text-text">{t(`home.assure.${key}`)}</b>
+              <b className="block text-xs font-extrabold text-text">{t(`home.assure.${key}`)}</b>
               <small className="block text-2xs leading-snug text-text-muted">
                 {t(`home.assure.${key}Note`)}
               </small>
@@ -267,29 +267,32 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       {loaderData.event ? (
         <section
           aria-label={lang === "ar" ? loaderData.event.name_ar : loaderData.event.name_en}
-          className="rounded-lg border-2 border-action bg-surface p-5"
+          className="flex flex-col gap-1 rounded-lg border border-border bg-surface-tint p-5"
         >
-          <p className="text-2xs font-extrabold uppercase tracking-wide text-action">{t("home.event.badge")}</p>
-          <h2 className="mt-1 text-lg font-black text-text">
+          <span className="w-fit rounded-full bg-action px-2.5 py-0.5 text-2xs font-extrabold text-on-action">
+            {t("home.event.badge")}
+          </span>
+          <h2 className="text-lg font-black text-text">
             {lang === "ar" ? loaderData.event.name_ar : loaderData.event.name_en}
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-text-muted">
+          <p className="max-w-2xl text-sm text-text-muted">
             {lang === "ar" ? loaderData.event.desc_ar : loaderData.event.desc_en}
           </p>
           <Link
             to={`/${lang}/products`}
-            className="mt-3 inline-flex min-h-10 items-center rounded-md bg-action px-4 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+            className="mt-2 inline-flex min-h-10 w-fit items-center rounded-md bg-action px-4 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
           >
             {t("home.event.cta")}
           </Link>
         </section>
       ) : null}
 
-      {/* Categories strip */}
-      {level1.length > 0 ? (
+      {/* Categories strip — the hero panel on desktop already lists the same
+          level-1 categories, so this grid starts at two (phone: no panel). */}
+      {level1.length > 1 ? (
         <section aria-label={t("home.cats.title")} className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-base font-extrabold text-text">{t("home.cats.title")}</h2>
+            <h2 className="text-lg font-extrabold text-text">{t("home.cats.title")}</h2>
             {viewAll("/products")}
           </div>
           <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 lg:grid-cols-6">
@@ -320,7 +323,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       {loaderData.stores.length > 0 ? (
         <section aria-label={t("home.sections.vendors")} className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-base font-extrabold text-text">{t("home.sections.vendors")}</h2>
+            <h2 className="text-lg font-extrabold text-text">{t("home.sections.vendors")}</h2>
             {viewAll("/vendors")}
           </div>
           <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
@@ -337,7 +340,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       {loaderData.featured.length > 0 ? (
         <section aria-label={t("home.sections.featured")} className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-base font-extrabold text-text">{t("home.sections.featured")}</h2>
+            <h2 className="text-lg font-extrabold text-text">{t("home.sections.featured")}</h2>
             {viewAll("/products")}
           </div>
           <ProductGrid cards={loaderData.featured.slice(0, 8)} lang={lang} eagerFirst={4} />
@@ -348,7 +351,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       {loaderData.topRated.length > 0 ? (
         <section aria-label={t("home.sections.bestSellers")} className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-base font-extrabold text-text">{t("home.sections.topRated")}</h2>
+            <h2 className="text-lg font-extrabold text-text">{t("home.sections.topRated")}</h2>
             {viewAll("/products")}
           </div>
           <ProductGrid cards={loaderData.topRated.slice(0, 8)} lang={lang} />

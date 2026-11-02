@@ -14,6 +14,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -112,7 +113,7 @@ export default function AdminReviews({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("rv.title")}</h1>
+      <PageHeader title={t("rv.title")} />
       <nav className="mt-3 flex flex-wrap gap-2" aria-label={t("rv.title")}>
         {TABS.map((s) => (
           <a key={s || "all"} href={`/${lang}/admin/reviews?status=${s}`}

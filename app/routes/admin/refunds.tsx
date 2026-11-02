@@ -7,6 +7,7 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
+import { PageHeader } from "~/components/layout/PageHeader";
 import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
@@ -145,21 +146,15 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl font-black text-text">{t("rf.title")}</h1>
-            <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {loaderData.rfqs.length}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-text-muted">
-            {en
-              ? "Review customer return requests, inspect defects, and process refunds."
-              : "متابعة طلبات الإرجاع، فحص المنتجات، واتخاذ قرارات الاسترداد المالي والتسوية."}
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("rf.title")}
+        count={loaderData.rfqs.length}
+        subtitle={
+          en
+            ? "Review customer return requests, inspect defects, and process refunds."
+            : "متابعة طلبات الإرجاع، فحص المنتجات، واتخاذ قرارات الاسترداد المالي والتسوية."
+        }
+      />
 
       <nav className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" aria-label={t("rf.title")}>
         {TABS.map((s) => (
@@ -169,7 +164,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
             aria-current={loaderData.status === s ? "page" : undefined}
             className={`rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.status === s
-                ? "border-action bg-action text-on-action shadow-sm"
+                ? "border-action bg-action text-on-action shadow-1"
                 : "border-transparent text-text-muted hover:bg-surface-tint hover:text-text"
             }`}
           >

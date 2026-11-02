@@ -15,6 +15,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -106,21 +107,15 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl font-black text-text">{t("vendorShip.title")}</h1>
-            <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {loaderData.ship.length} {en ? "Pending" : "معلق"}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-text-muted">
-            {en
-              ? "Review vendor self-shipping requests, approve shipping fee shares, or reject non-eligible packages."
-              : "متابعة طلبات الشحن الذاتي من التجار، اعتماد نسب مصاريف التوصيل، وفحص الطلبات المؤهلة."}
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("vendorShip.title")}
+        count={loaderData.ship.length}
+        subtitle={
+          en
+            ? "Review vendor self-shipping requests, approve shipping fee shares, or reject non-eligible packages."
+            : "متابعة طلبات الشحن الذاتي من التجار، اعتماد نسب مصاريف التوصيل، وفحص الطلبات المؤهلة."
+        }
+      />
 
       {/* shipping queue */}
       <section className="flex flex-col gap-3">

@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/Button";
 import { Card, CardBody, CardHeader } from "~/components/ui";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -69,8 +70,7 @@ export default function AdminDocSettings({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("ds.title")}</h1>
-      <p className="mt-1 text-sm text-text-muted">{t("ds.hint")}</p>
+      <PageHeader title={t("ds.title")} subtitle={t("ds.hint")} />
 
       <Card className="mt-3">
         <CardHeader title={t("ds.paperCopies")} />

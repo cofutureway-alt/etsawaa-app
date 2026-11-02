@@ -12,6 +12,7 @@ import { Dialog } from "~/components/ui/Overlay";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -173,10 +174,11 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-extrabold text-text">{t("z.title")}</h1>
-        <Button size="sm" variant="outline" onClick={() => setImportOpen(true)}>{t("z.import")}</Button>
-      </div>
+      <PageHeader
+        title={t("z.title")}
+        count={loaderData.govs.length}
+        actions={<Button size="sm" variant="outline" onClick={() => setImportOpen(true)}>{t("z.import")}</Button>}
+      />
 
       {/* governorates — inline edit (fee ≥ 0, audited) */}
       <section className="mt-3" aria-label={t("z.governorates")}>

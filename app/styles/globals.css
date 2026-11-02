@@ -114,8 +114,43 @@
     outline-offset: 2px;
   }
 
+  /* Browser surfaces carry the design too — they ship with defaults that
+     belong to no palette. Selection, caret and scrollbar are themed from the
+     brand rather than left at UA blue/grey. */
   ::selection {
-    background-color: var(--color-accent-soft);
+    background-color: var(--color-primary-soft);
+    color: var(--color-ink);
+  }
+
+  :root {
+    caret-color: var(--color-action);
+    accent-color: var(--color-action);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+
+  /* WebKit/Blink scrollbars (Windows is the primary ship target here) */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: var(--radius-full);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-text-faint);
+    background-clip: content-box;
+  }
+
+  /* Underline offset so link underlines never collide with Arabic descenders */
+  a {
+    text-underline-offset: 2px;
   }
 
   /* Numeric container: digits render Western glyphs and keep tabular rhythm,
@@ -187,9 +222,12 @@
     color: var(--color-primary);
     text-decoration: underline;
   }
+  /* Flat blockquote: a tinted surface carries the quote, so the article keeps
+     one visual language instead of a stripe the card system never uses. */
   .pubProse blockquote {
-    border-inline-start: 3px solid var(--color-border);
-    padding-inline-start: calc(var(--spacing) * 4);
+    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-tint);
     color: var(--color-text-muted);
   }
   .pubProse :is(h2, h3) {

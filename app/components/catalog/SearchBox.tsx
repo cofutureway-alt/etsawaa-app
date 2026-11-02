@@ -68,8 +68,8 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
   const hasAny = items.products.length > 0 || items.stores.length > 0 || items.categories.length > 0;
 
   return (
-    <div ref={boxRef} className={`relative ${compact ? "w-full" : "min-w-0 flex-1"}`}>
-      <div className="flex items-center overflow-hidden rounded-md border-2 border-primary bg-surface focus-within:shadow-focus">
+    <div ref={boxRef} className={`relative ${compact ? "w-full" : "min-w-0 flex-1 max-w-[560px]"}`}>
+      <div className="flex items-center overflow-hidden rounded-md border-2 border-primary bg-surface transition-shadow duration-200 focus-within:shadow-focus">
         <SearchIcon aria-hidden="true" className="ms-3 shrink-0 text-text-faint" />
         <input
           type="search"

@@ -10,6 +10,7 @@ import { Badge } from "~/components/ui/Badge";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { EmptyState } from "~/components/ui/EmptyState";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -112,17 +113,17 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-lg font-extrabold text-text">{t("lv.title")}</h1>
-          <p className="mt-1 text-sm text-text-muted">{t("lv.hint")}</p>
-        </div>
-        {/* The action always accepted an empty id (= insert); no form ever sent
-            one, so creating a level was impossible from the UI. */}
-        <Button type="button" size="sm" onClick={() => setCreating((v) => !v)}>
-          {creating ? t("common.cancel") : t("lv.new")}
-        </Button>
-      </div>
+      <PageHeader
+        title={t("lv.title")}
+        subtitle={t("lv.hint")}
+        actions={
+          /* The action always accepted an empty id (= insert); no form ever sent
+             one, so creating a level was impossible from the UI. */
+          <Button type="button" size="sm" onClick={() => setCreating((v) => !v)}>
+            {creating ? t("common.cancel") : t("lv.new")}
+          </Button>
+        }
+      />
 
       {creating ? (
         <fetcher.Form method="post" className="mt-3 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-sm">
@@ -158,7 +159,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
 
       {(loaderData.levels as LevelRow[]).length === 0 ? (
         <div className="mt-4">
-          <EmptyState title={t("lv.empty")} body={t("lv.emptyHint")} />
+          <EmptyState title={t("lv.empty")} body={t("lv.emptyHint")} action={<Button size="sm" onClick={() => setCreating(true)}>{t("lv.new")}</Button>} />
         </div>
       ) : (
       <ul className="mt-3 flex flex-col gap-2">

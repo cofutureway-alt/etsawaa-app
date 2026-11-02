@@ -16,6 +16,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -149,23 +150,16 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-4 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("ev.title")}</h1>
+      <PageHeader
+        title={t("ev.title")}
+        subtitle={t("ev.hint")}
+        actions={
+          <div className="flex flex-wrap items-center gap-2">
             {ev ? (
               <Badge tone={ev.status === "active" ? "success" : "neutral"} dot>
                 {t(`ev.st_${ev.status}`)}
               </Badge>
             ) : null}
-          </div>
-          <p className="text-xs text-text-muted">
-            إدارة الفعاليات الموسمية وتخفيضات الفئات وقوائم قبول ورفض المتاجر
-          </p>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 md:pt-0 border-t border-border/40 md:border-t-0">
           <Button
             type="button"
             size="sm"
@@ -190,17 +184,18 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
               {t("ev.bfPreset")}
             </Button>
           </fetcher.Form>
-        </div>
-      </div>
+          </div>
+        }
+      />
 
       {!ev ? (
-        <div className="rounded-xl border border-border/80 bg-surface p-8 shadow-sm">
+        <div className="rounded-lg border border-border bg-surface p-8 shadow-1">
           <EmptyState title={t("ev.empty")} body={t("ev.emptyHint")} />
         </div>
       ) : (
         <div className="space-y-6">
           {/* Active Event Showcase Card */}
-          <section className="rounded-xl border border-border/80 border-t-4 border-t-action bg-surface p-4 sm:p-6 shadow-sm">
+          <section className="rounded-lg border border-border bg-surface p-4 shadow-1 sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
@@ -240,7 +235,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Category Discounts Section */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm space-y-4" aria-label={t("ev.discounts")}>
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 space-y-4" aria-label={t("ev.discounts")}>
             <div className="space-y-1 border-b border-border/50 pb-3">
               <h2 className="text-sm font-extrabold text-text flex items-center gap-2">
                 <TagIcon className="size-4 text-action" />
@@ -260,7 +255,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
                 {t("ev.category")}
                 <select
                   name="category_id"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                 >
                   {(loaderData.categories as Array<{ id: string; name_ar: string; name_en: string }>).map((c) => (
                     <option key={c.id} value={c.id}>
@@ -280,7 +275,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
                   required
                   defaultValue={15}
                   dir="ltr"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
 
@@ -296,7 +291,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
                 {(loaderData.discounts as DiscountRow[]).map((d) => (
                   <div
                     key={d.id}
-                    className="inline-flex items-center gap-2 rounded-lg border border-border/80 bg-surface-tint/40 px-3 py-1.5 text-xs text-text shadow-sm"
+                    className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-tint/40 px-3 py-1.5 text-xs text-text shadow-1"
                   >
                     <span className="font-bold text-text">
                       {catNames.get(d.ref_id) ?? d.ref_id.slice(0, 8)}
@@ -322,7 +317,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
           </section>
 
           {/* Vendors Enrollment & Refusal Section */}
-          <section className="rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm space-y-4" aria-label={t("ev.vendors")}>
+          <section className="rounded-lg border border-border bg-surface p-4 sm:p-6 shadow-1 space-y-4" aria-label={t("ev.vendors")}>
             <div className="flex items-center justify-between border-b border-border/50 pb-3">
               <div className="space-y-0.5">
                 <h2 className="text-sm font-extrabold text-text flex items-center gap-2">
@@ -337,14 +332,14 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
             {loaderData.vendors.length === 0 ? (
               <p className="text-xs text-text-muted py-4 text-center">{t("ve.none")}</p>
             ) : (
-              <div className="rounded-xl border border-border/80 bg-surface shadow-sm overflow-hidden divide-y divide-border/50">
+              <div className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden divide-y divide-border/50">
                 {(loaderData.vendors as VendorRow[]).map((v) => (
                   <div
                     key={v.vendor_id}
                     className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 hover:bg-surface-tint/20 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex size-9 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-sm">
+                      <div className="flex size-9 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-1">
                         <StoreIcon className="size-4" />
                       </div>
                       <div>
@@ -395,7 +390,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
                               required
                               minLength={3}
                               placeholder={t("wd.reason")}
-                              className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs text-text shadow-sm focus:border-action focus:outline-none w-36"
+                              className="rounded-lg border border-border bg-surface px-2.5 py-1 text-xs text-text shadow-1 focus:border-action focus:outline-none w-36"
                             />
                             <Button
                               type="submit"

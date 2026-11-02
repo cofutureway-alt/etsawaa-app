@@ -1,6 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { SearchIcon } from "./icons";
 import { EmptyState } from "./EmptyState";
 import { Input } from "./Input";
 import { TCell, Table, TRow } from "./Table";
@@ -53,14 +52,21 @@ export function DataTable<Row>({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="max-w-xs">
-        <Input
-          label={<span className="sr-only">{searchPlaceholder}</span>}
-          placeholder={searchPlaceholder}
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          type="search"
-        />
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="w-full sm:max-w-xs">
+          <Input
+            label={<span className="sr-only">{searchPlaceholder}</span>}
+            placeholder={searchPlaceholder}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            type="search"
+          />
+        </div>
+        {/* The count lives beside the filter it describes, not in a footer
+            icon row a user has to scroll past the table to reach. */}
+        <p className="num shrink-0 text-xs font-bold text-text-muted" aria-live="polite">
+          {visibleRows.length} / {rows.length}
+        </p>
       </div>
 
       {visibleRows.length === 0 ? (
@@ -82,8 +88,8 @@ export function DataTable<Row>({
           {/* Mobile: cards */}
           <ul className="flex flex-col gap-2 md:hidden">
             {visibleRows.map((row) => (
-              <li key={rowKey(row)} className="rounded-md border border-border bg-surface p-3">
-                <div className="font-bold text-text">{cardTitle(row)}</div>
+              <li key={rowKey(row)} className="rounded-lg border border-border bg-surface p-3 shadow-1">
+                <div className="text-sm font-extrabold text-text">{cardTitle(row)}</div>
                 <dl className="mt-2 flex flex-col gap-1 text-sm">
                   {columns.map((column) => (
                     <div key={column.key} className="flex justify-between gap-3">
@@ -98,15 +104,6 @@ export function DataTable<Row>({
         </>
       )}
 
-      <p aria-live="polite" className="sr-only">
-        {visibleRows.length} / {rows.length}
-      </p>
-      <div className="flex items-center gap-2 text-text-faint">
-        <SearchIcon aria-hidden="true" />
-        <span className="num text-xs">
-          {visibleRows.length} / {rows.length}
-        </span>
-      </div>
     </div>
   );
 }

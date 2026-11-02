@@ -52,7 +52,7 @@ export function SidebarNav({
                 key={item.to}
                 aria-disabled="true"
                 title={collapsed ? item.label : item.phase}
-                className={`flex cursor-not-allowed items-center gap-2.5 rounded-sm border-s-[3px] border-transparent px-2.5 py-2.5 text-sm font-semibold text-side-muted ${
+                className={`flex cursor-not-allowed items-center gap-2.5 rounded-md px-2.5 py-2.5 text-sm font-semibold text-side-muted ${
                   collapsed ? "justify-center" : ""
                 }`}
               >
@@ -77,12 +77,12 @@ export function SidebarNav({
                 end={item.end}
                 title={collapsed ? item.label : undefined}
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 rounded-sm border-s-[3px] py-2.5 text-sm font-semibold transition-colors duration-150 ${
+                  `flex items-center gap-2.5 rounded-md py-2.5 text-sm font-semibold transition-colors duration-150 ${
                     collapsed ? "justify-center px-2.5" : "px-2.5"
                   } ${
                     isActive
-                      ? "border-action bg-action text-white"
-                      : "border-transparent text-side-text hover:bg-side-hover hover:text-white"
+                      ? "bg-action text-white shadow-1"
+                      : "text-side-text hover:bg-side-hover hover:text-white"
                   }`
                 }
               >

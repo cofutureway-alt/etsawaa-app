@@ -8,6 +8,7 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { ORDER_SELECT } from "~/features/orders/api";
+import { PageHeader } from "~/components/layout/PageHeader";
 import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { Dialog } from "~/components/ui/Overlay";
@@ -142,23 +143,17 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Page Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl font-black text-text">{t("adminNav.orders")}</h1>
-            <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {totalCount} {en ? "Orders" : "طلب"}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-text-muted">
-            {en
-              ? "Monitor customer fulfillment, payment status, and order reconciliation in real-time."
-              : "متابعة وتحديث طلبات المتاجر، تأكيد المدفوعات، وإصدار بوالص الشحن والفواتير."}
-          </p>
-        </div>
-
-        {/* Search Bar */}
+      {/* Page Header — the shared PageHeader, so this screen opens exactly
+          like every other admin screen instead of with a bare h1. */}
+      <PageHeader
+        title={t("adminNav.orders")}
+        count={totalCount}
+        subtitle={
+          en
+            ? "Monitor customer fulfillment, payment status, and order reconciliation in real-time."
+            : "متابعة وتحديث طلبات المتاجر، تأكيد المدفوعات، وإصدار بوالص الشحن والفواتير."
+        }
+        actions={
         <form method="get" className="flex items-center gap-2">
           <input type="hidden" name="filter" value={loaderData.filter} />
           <div className="relative">
@@ -183,31 +178,32 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
             <span>{t("common.search")}</span>
           </Button>
         </form>
-      </div>
+        }
+      />
 
       {/* KPI Stat Cards (Real Live Data) */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
-        <div className="rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5">
+        <div className="rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-text-muted">{t("orders.filterAll")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{totalCount}</p>
           <p className="mt-0.5 text-2xs text-text-faint">{en ? "Current query" : "إجمالي المعروض"}</p>
         </div>
-        <div className="rounded-lg border border-warning/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-warning">
+        <div className="rounded-lg border border-warning/30 bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-warning-strong">{t("orders.filterActive")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{activeCount}</p>
           <p className="mt-0.5 text-2xs text-text-muted">{en ? "Requires action" : "تحتاج تجهيز ومتابعة"}</p>
         </div>
-        <div className="rounded-lg border border-success/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-success">
+        <div className="rounded-lg border border-success/30 bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-success-strong">{t("orders.filterCompleted")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{completedCount}</p>
           <p className="mt-0.5 text-2xs text-text-muted">{en ? "Successfully delivered" : "تم التسليم بنجاح"}</p>
         </div>
-        <div className="rounded-lg border border-danger/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-danger">
+        <div className="rounded-lg border border-danger/30 bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-danger">{t("orders.filterCancelled")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{cancelledCount}</p>
           <p className="mt-0.5 text-2xs text-text-muted">{en ? "Returned / voided" : "ملغاة أو مسترجعة"}</p>
         </div>
-        <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-action">
+        <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-text-muted">{t("cart.total")}</p>
           <p className="mt-1 text-lg font-black text-action tabular-nums">{money(totalRevenue)}</p>
           <p className="mt-0.5 text-2xs text-text-faint">{en ? "Gross value" : "إجمالي قيمة الطلبات"}</p>
@@ -256,8 +252,11 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
             />
           </div>
         ) : (
+          // min-w-[860px] stops the browser from squeezing 8 columns into a
+          // phone width and stacking every cell one word per line; the
+          // wrapper scrolls instead.
           <div className="w-full overflow-x-auto">
-            <table className="w-full text-start text-sm">
+            <table className="w-full min-w-[860px] text-start text-sm">
               <thead className="border-b border-border bg-surface-alt text-start text-xs font-black text-text-muted uppercase tracking-wider">
                 <tr>
                   <th className="w-10 px-3.5 py-3 text-start">
@@ -347,7 +346,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
 
                       <td className="px-3.5 py-3">
                         <div className="flex flex-col gap-0.5">
-                          <span className="font-bold text-[12.5px] text-text">
+                          <span className="font-bold text-xs text-text">
                             {o.payment_method === "cod"
                               ? t("checkout.pay_cod")
                               : t("checkout.pay_kashier")}

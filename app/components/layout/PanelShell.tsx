@@ -37,26 +37,30 @@ export function PanelShell({
   const sidebarInner = (
     <>
       <div
-        className={`flex min-h-[72px] items-center gap-2.5 border-b border-side-line px-3.5 ${
+        className={`flex min-h-[72px] items-center gap-2 border-b border-side-line px-3 ${
           collapsed ? "justify-center px-2" : ""
         }`}
       >
-        <Link to={`/${lang}`} aria-label={siteName} className="shrink-0">
-          {collapsed ? (
-            <img src="/logo-symbol.webp" alt={siteName} width={200} height={245} className="h-8 w-auto" />
-          ) : (
-            <img src="/logo-mark.webp" alt={siteName} width={548} height={245} className="h-9 w-auto" />
-          )}
-        </Link>
-        <span className={`truncate text-sm font-black text-white ${collapsed ? "hidden" : ""}`}>
-          {panelTitle}
-        </span>
+        {/* The wordmark already carries the brand name, so the panel title sits
+            beneath it rather than competing for the same line — the two
+            overlapped at every width once the title was long (Arabic). */}
+        <div className={`flex min-w-0 flex-1 flex-col gap-0.5 ${collapsed ? "hidden" : ""}`}>
+          <Link to={`/${lang}`} aria-label={siteName} className="shrink-0 self-start">
+            <img src="/logo-mark.webp" alt="" width={548} height={245} className="h-7 w-auto" />
+          </Link>
+          <span className="truncate text-2xs font-bold text-side-muted">{panelTitle}</span>
+        </div>
+        {collapsed ? (
+          <Link to={`/${lang}`} aria-label={siteName} className="shrink-0">
+            <img src="/logo-symbol.webp" alt="" width={200} height={245} className="h-8 w-auto" />
+          </Link>
+        ) : null}
         <button
           type="button"
           onClick={() => setCollapsed((value) => !value)}
           aria-label={t("nav.menu")}
           aria-pressed={collapsed}
-          className="ms-auto hidden size-8 cursor-pointer items-center justify-center rounded-sm text-side-text transition-colors duration-150 hover:bg-side-hover hover:text-white lg:flex"
+          className="hidden size-8 shrink-0 cursor-pointer items-center justify-center rounded-sm text-side-text transition-colors duration-150 hover:bg-side-hover hover:text-white lg:flex"
         >
           <PanelLeftIcon />
         </button>
@@ -66,7 +70,7 @@ export function PanelShell({
         <Link
           to={`/${lang}`}
           title={collapsed ? subtitle : undefined}
-          className={`flex items-center gap-2.5 rounded-sm bg-white/5 px-2.5 py-2.5 text-[12.5px] font-bold text-white transition-colors duration-150 hover:bg-white/10 ${
+          className={`flex items-center gap-2.5 rounded-sm bg-white/5 px-2.5 py-2.5 text-xs font-bold text-white transition-colors duration-150 hover:bg-white/10 ${
             collapsed ? "justify-center" : ""
           }`}
         >
@@ -91,7 +95,7 @@ export function PanelShell({
 
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Topbar — on phones it carries the brand mark, page title and menu */}
-          <header className="sticky top-0 z-40 flex min-h-[64px] items-center gap-3 border-b border-border bg-surface px-4 sm:px-6 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+          <header className="sticky top-0 z-40 flex min-h-[64px] items-center gap-3 border-b border-border bg-surface px-4 sm:px-6 shadow-1">
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}

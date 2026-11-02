@@ -8,6 +8,7 @@ import { formatPiastres } from "~/lib/money";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -45,7 +46,7 @@ export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("penalties.title")}</h1>
+      <PageHeader title={t("penalties.title")} />
       {loaderData.rows.length === 0 ? (
         <div className="mt-6">
           <EmptyState title={t("penalties.empty")} body={t("report.netHint")} />

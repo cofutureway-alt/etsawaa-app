@@ -11,6 +11,7 @@ import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -100,8 +101,7 @@ export default function AdminMediaSettings({ loaderData }: Route.ComponentProps)
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-lg font-extrabold text-text">{t("mediaSettings.title")}</h1>
-      <p className="text-sm text-text-muted">{t("mediaSettings.hint")}</p>
+      <PageHeader title={t("mediaSettings.title")} subtitle={t("mediaSettings.hint")} />
 
       <fetcher.Form method="post" className="flex max-w-2xl flex-col gap-4 rounded-lg border border-border bg-surface p-4">
         <input type="hidden" name="intent" value="save" />

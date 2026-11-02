@@ -9,6 +9,7 @@ import { Badge } from "~/components/ui/Badge";
 import { Button } from "~/components/ui/Button";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -105,11 +106,11 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
 
   return (
     <div>
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-lg font-extrabold text-text">{t("dim.reviewQueue")}</h1>
-        <Badge tone="warning">{loaderData.pendingTotal} {t("dim.pending")}</Badge>
-      </div>
-      <p className="mt-1 max-w-[68ch] text-sm text-text-muted">{t("dim.reviewHint")}</p>
+      <PageHeader
+        title={t("dim.reviewQueue")}
+        subtitle={t("dim.reviewHint")}
+        count={loaderData.pendingTotal}
+      />
 
       <nav className="mt-3 flex flex-wrap gap-2" aria-label="filter">
         {["pending", "approved", "adjusted", "rejected", "all"].map((s) => (

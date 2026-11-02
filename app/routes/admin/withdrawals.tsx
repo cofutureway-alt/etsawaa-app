@@ -163,7 +163,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
             aria-current={loaderData.tab === tab.key ? "page" : undefined}
             className={`rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.tab === tab.key
-                ? "border-action bg-action text-on-action shadow-sm"
+                ? "border-action bg-action text-on-action shadow-1"
                 : "border-transparent text-text-muted hover:bg-surface-tint hover:text-text"
             }`}>
             {tab.label}

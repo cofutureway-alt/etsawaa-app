@@ -26,6 +26,7 @@ import { Button, Card, CardBody, CardHeader, Input } from "~/components/ui";
 import { useToast } from "~/components/ui";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -120,6 +121,10 @@ export default function AdminSettings({ loaderData }: Route.ComponentProps) {
 
   return (
     <fetcher.Form method="post" className="flex flex-col gap-4">
+      <PageHeader
+        title={t("admin.settings.title")}
+        subtitle={t("admin.settings.subtitle")}
+      />
       <Card>
         <CardHeader title={t("admin.settings.siteIdentity")} />
         <CardBody className="grid gap-4 sm:grid-cols-2">
@@ -159,7 +164,17 @@ export default function AdminSettings({ loaderData }: Route.ComponentProps) {
             const value = designState[token];
             const invalid = value !== "" && !isHexColor(value);
             return (
-              <div key={token} className="flex items-end gap-3">
+              <div
+                key={token}
+                className="flex items-start gap-3 rounded-lg border border-border bg-surface-alt p-3"
+              >
+                {/* The swatch leads: you are choosing a color, and the hex is
+                    the code for it — not the other way round. */}
+                <span
+                  aria-hidden="true"
+                  className="mt-1 size-11 shrink-0 rounded-md border border-border-strong"
+                  style={{ backgroundColor: isHexColor(value) ? value : "#FFFFFF" }}
+                />
                 <Input
                   label={t(TOKEN_LABELS[token])}
                   name={`design_${token}`}
@@ -168,11 +183,6 @@ export default function AdminSettings({ loaderData }: Route.ComponentProps) {
                   dir="ltr"
                   className="num flex-1"
                   error={invalid ? t("admin.settings.invalidHex") : undefined}
-                />
-                <span
-                  aria-hidden="true"
-                  className="mb-1 size-9 shrink-0 rounded-md border border-border"
-                  style={{ backgroundColor: isHexColor(value) ? value : "#FFFFFF" }}
                 />
               </div>
             );
@@ -187,19 +197,24 @@ export default function AdminSettings({ loaderData }: Route.ComponentProps) {
         </CardBody>
       </Card>
 
-      <div className="flex items-center justify-between gap-3">
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => {
-            setSiteState(DEFAULT_SITE_GENERAL);
-            setDesignState(DEFAULT_DESIGN_TOKENS);
-          }}
-        >
-          {t("common.reset")}
-        </Button>
-        <div className="flex items-center gap-2 text-xs text-text-muted">
-          <span className="num hidden sm:inline">{SETTINGS_KEYS.siteGeneral} · {SETTINGS_KEYS.design}</span>
+      {/* Save sits with Reset at the form's end: the two controls act on the
+          same draft, and separating them across a full row of width made the
+          reset read like it belonged to the page rather than this form. */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-surface px-4 py-3 shadow-1">
+        <span className="num hidden text-xs text-text-muted sm:inline">
+          {SETTINGS_KEYS.siteGeneral} · {SETTINGS_KEYS.design}
+        </span>
+        <div className="ms-auto flex items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => {
+              setSiteState(DEFAULT_SITE_GENERAL);
+              setDesignState(DEFAULT_DESIGN_TOKENS);
+            }}
+          >
+            {t("common.reset")}
+          </Button>
           <Button type="submit" loading={busy} disabled={!connected || contrastIssues.length > 0}>
             {t("common.save")}
           </Button>

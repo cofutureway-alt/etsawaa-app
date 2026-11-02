@@ -191,7 +191,7 @@ function MobileTabsDropdown({ nav }: { nav: Array<{ to: string; label: string; e
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={t("account.title")}
-        className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-s-4 border-border border-s-action bg-surface px-4 py-2.5 text-sm font-extrabold text-text shadow-sm transition-colors duration-150 hover:bg-surface-tint"
+        className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-extrabold text-text shadow-1 transition-colors duration-150 hover:bg-surface-tint"
       >
         <span className="flex min-w-0 items-center gap-2.5">
           <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full bg-action/10 text-action">
@@ -203,7 +203,7 @@ function MobileTabsDropdown({ nav }: { nav: Array<{ to: string; label: string; e
       </button>
       {open ? (
         <div role="menu" aria-label={t("account.title")}
-          className="absolute top-[calc(100%+6px)] inset-x-0 z-40 overflow-hidden rounded-lg border border-border bg-surface shadow-lg">
+          className="absolute top-[calc(100%+6px)] inset-x-0 z-40 overflow-hidden rounded-lg border border-border bg-surface shadow-2">
           <ul className="p-2">
             {nav.map(({ to, label, end, Icon }) => (
               <li key={to}>

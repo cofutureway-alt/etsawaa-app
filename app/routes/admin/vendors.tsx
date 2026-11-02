@@ -9,6 +9,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -233,21 +234,15 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl font-black text-text">{t("adminVendors.title")}</h1>
-            <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {loaderData.queue.length}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-text-muted">
-            {isAr
-              ? "متابعة حسابات التجار، التحقق من الوثائق الرسمية، وإدارة صلاحيات الظهور في السوق."
-              : "Review vendor stores, verify commercial documents, and manage marketplace visibility."}
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("adminVendors.title")}
+        count={loaderData.queue.length}
+        subtitle={
+          isAr
+            ? "متابعة حسابات التجار، التحقق من الوثائق الرسمية، وإدارة صلاحيات الظهور في السوق."
+            : "Review vendor stores, verify commercial documents, and manage marketplace visibility."
+        }
+      />
 
       <div className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminVendors.filter")}>
         {FILTERS.map((filter) => (
@@ -265,7 +260,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
             }}
             className={`cursor-pointer rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.status === filter
-                ? "border-action bg-action text-on-action shadow-sm"
+                ? "border-action bg-action text-on-action shadow-1"
                 : "border-transparent bg-transparent text-text-muted hover:bg-surface-tint hover:text-text"
             }`}
           >

@@ -15,6 +15,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { getSupabaseBrowserClient } from "~/lib/supabase/browser";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 interface LeafCategory { id: string; name_ar: string; name_en: string; depth: number }
@@ -432,8 +433,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
   if (!selected) {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="text-lg font-extrabold text-text">{t("catalog.attributes")}</h1>
-        <p className="text-sm text-text-muted">{t("catalog.pickLeaf")}</p>
+        <PageHeader title={t("catalog.attributes")} subtitle={t("catalog.pickLeaf")} />
         <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {leaves.map((leaf) => {
             // showing the count tells the admin which leaves are still empty
@@ -469,15 +469,19 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <button type="button" onClick={() => setSearch({})} className="cursor-pointer text-sm font-bold text-action hover:underline">{t("catalog.allLeaves")}</button>
-          <h1 className="text-lg font-extrabold text-text">{selected.name_ar} <span className="text-sm font-normal text-text-muted">/ {selected.name_en}</span></h1>
-        </div>
-        <Button type="button" onClick={() => setDefDialog({ mode: "create" })}>
-          <PlusIcon className="size-4" aria-hidden="true" /> {t("catalog.addAttribute")}
-        </Button>
-      </div>
+      <PageHeader
+        title={selected.name_ar}
+        subtitle={selected.name_en}
+        count={visibleDefs.length}
+        actions={
+          <Button type="button" onClick={() => setDefDialog({ mode: "create" })}>
+            <PlusIcon className="size-4" aria-hidden="true" /> {t("catalog.addAttribute")}
+          </Button>
+        }
+      />
+      <button type="button" onClick={() => setSearch({})} className="-mt-2 cursor-pointer self-start text-sm font-bold text-action hover:underline">
+        {t("catalog.allLeaves")}
+      </button>
 
       {/* template preview (US-10) */}
       <details className="rounded-lg border border-border bg-surface p-3">

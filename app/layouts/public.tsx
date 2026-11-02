@@ -63,6 +63,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
     (lang === "ar" ? root?.site.site_name_ar : root?.site.site_name_en) ?? t("app.name");
   const profile = loaderData.viewer;
   const [menuOpen, setMenuOpen] = useState(false);
+  const level1 = loaderData.categories.filter((c) => c.depth === 1);
 
   const navItems = [
     { to: `/${lang}`, label: t("nav.home"), end: true },
@@ -145,6 +146,25 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
             <div className="pb-2.5 md:hidden">
               <SearchBox lang={lang} compact />
             </div>
+
+            {/* Category strip — phones only. The desktop nav already carries
+                the الأقسام menu; repeating it here stacked two nav rows. */}
+            {level1.length > 1 ? (
+              <nav aria-label={t("home.cats.title")} className="border-t border-border md:hidden">
+                <ul className="-mx-3 flex gap-1 overflow-x-auto px-3 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {level1.slice(0, 12).map((cat) => (
+                    <li key={cat.id} className="shrink-0">
+                      <Link
+                        to={`/${lang}/category/${encodeURIComponent(lang === "en" ? cat.slug_en || cat.slug_ar : cat.slug_ar || cat.slug_en)}`}
+                        className="flex min-h-8 items-center rounded-full px-3 text-xs font-bold text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+                      >
+                        {lang === "ar" ? cat.name_ar : cat.name_en}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ) : null}
 
             <nav aria-label={t("a11y.mainNav")} className="hidden border-t border-border md:block">
               <ul className="flex items-center gap-0.5">
@@ -525,7 +545,7 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
       </button>
       {open ? (
         <div role="menu" aria-label={t("nav.myAccount")}
-          className="absolute top-[calc(100%+6px)] end-0 z-50 w-52 overflow-hidden rounded-lg border border-border bg-surface shadow-lg">
+          className="absolute top-[calc(100%+6px)] end-0 z-50 w-52 overflow-hidden rounded-lg border border-border bg-surface shadow-2">
           <div className="border-b border-border bg-surface-tint px-4 py-2.5">
             <p className="truncate text-sm font-extrabold text-text">{name || t("nav.myAccount")}</p>
           </div>

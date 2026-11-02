@@ -9,6 +9,7 @@ import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 /**
  * Vendor ad campaigns (ARCHITECTURE §7 lists /vendor/ads; the route was
@@ -80,8 +81,7 @@ export default function VendorAds({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("va.title")}</h1>
-      <p className="mt-1 text-xs text-text-muted">{t("va.hint")}</p>
+      <PageHeader title={t("va.title")} subtitle={t("va.hint")} />
 
       {rows.length === 0 ? (
         <div className="mt-6">

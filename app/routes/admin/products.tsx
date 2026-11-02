@@ -18,6 +18,7 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { publicMediaUrl } from "~/lib/media.shared";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -171,21 +172,15 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl font-black text-text">{t("adminProducts.title")}</h1>
-            <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {loaderData.queue.length}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-text-muted">
-            {isAr
-              ? "مراجعة المنتجات المرفوعة من التجار، اعتماد الجودة، والتحقق من الأسعار والمواصفات."
-              : "Review vendor catalog submissions, verify pricing and details, and approve for marketplace storefront."}
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("adminProducts.title")}
+        count={loaderData.queue.length}
+        subtitle={
+          isAr
+            ? "مراجعة المنتجات المرفوعة من التجار، اعتماد الجودة، والتحقق من الأسعار والمواصفات."
+            : "Review vendor catalog submissions, verify pricing and details, and approve for marketplace storefront."
+        }
+      />
 
       <div className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminProducts.filter")}>
         {FILTERS.map((filter) => (
@@ -197,7 +192,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
             onClick={() => setSearchParams(filter ? { status: filter } : {})}
             className={`cursor-pointer rounded-md border px-3.5 py-1.5 text-xs font-bold transition-all duration-150 ${
               loaderData.status === filter
-                ? "border-action bg-action text-on-action shadow-sm"
+                ? "border-action bg-action text-on-action shadow-1"
                 : "border-transparent bg-transparent text-text-muted hover:bg-surface-tint hover:text-text"
             }`}
           >

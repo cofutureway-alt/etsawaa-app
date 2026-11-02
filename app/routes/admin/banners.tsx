@@ -17,6 +17,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -104,18 +105,14 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface p-4 sm:p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-text">{t("bn.title")}</h1>
-            <Badge tone="featured" dot>{loaderData.banners.length} بانرات</Badge>
-          </div>
-          <p className="text-xs text-text-muted">{t("bn.hint")}</p>
-        </div>
-      </div>
+      <PageHeader
+        title={t("bn.title")}
+        subtitle={t("bn.hint")}
+        count={loaderData.banners.length}
+      />
 
       {loaderData.banners.length === 0 ? (
-        <div className="rounded-xl border border-border/80 bg-surface p-6 shadow-sm">
+        <div className="rounded-lg border border-border bg-surface p-6 shadow-1">
           <EmptyState title={t("bn.empty")} body={t("bn.emptyHint")} />
         </div>
       ) : (
@@ -126,12 +123,12 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
             return (
               <div
                 key={b.id}
-                className="rounded-xl border border-border/80 bg-surface p-4 sm:p-5 shadow-sm space-y-4"
+                className="rounded-lg border border-border bg-surface p-4 sm:p-5 shadow-1 space-y-4"
               >
                 {/* Banner Card Top Row */}
                 <div className="flex items-center justify-between border-b border-border/50 pb-3">
                   <div className="flex items-center gap-2.5">
-                    <div className="flex size-9 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-sm">
+                    <div className="flex size-9 items-center justify-center rounded-lg bg-surface border border-border text-action font-black text-xs shadow-1">
                       <GridIcon className="size-4" />
                     </div>
                     <div>
@@ -169,7 +166,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                       <input
                         name="title_ar"
                         defaultValue={b.title_ar}
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                       />
                     </label>
 
@@ -179,7 +176,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                         name="title_en"
                         defaultValue={b.title_en}
                         dir="ltr"
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                       />
                     </label>
 
@@ -193,7 +190,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                           dir="ltr"
                           required
                           placeholder="u/…"
-                          className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                          className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                         />
                         <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor(b.id)}>
                           {t("media.choose")}
@@ -208,7 +205,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                         defaultValue={b.link_url}
                         dir="ltr"
                         placeholder="https://..."
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                       />
                     </label>
 
@@ -219,7 +216,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                         type="date"
                         defaultValue={b.starts_at?.slice(0, 10) ?? ""}
                         dir="ltr"
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                       />
                     </label>
 
@@ -230,7 +227,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                         type="date"
                         defaultValue={b.ends_at?.slice(0, 10) ?? ""}
                         dir="ltr"
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                       />
                     </label>
 
@@ -241,7 +238,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                         type="number"
                         defaultValue={b.position}
                         dir="ltr"
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                       />
                     </label>
 
@@ -283,7 +280,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
       )}
 
       {/* New Banner Card */}
-      <details className="rounded-xl border border-border/80 bg-surface shadow-sm overflow-hidden">
+      <details className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden">
         <summary className="cursor-pointer px-4 sm:px-6 py-3.5 text-xs font-bold text-action hover:bg-surface-tint/50 flex items-center gap-1.5">
           <PlusIcon className="size-4" />
           <span>{t("bn.new")}</span>
@@ -301,7 +298,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                 <input
                   name="title_ar"
                   required
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
 
@@ -310,7 +307,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                 <input
                   name="title_en"
                   dir="ltr"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
 
@@ -324,7 +321,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                     required
                     dir="ltr"
                     placeholder="u/…"
-                    className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                    className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                   />
                   <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor("new")}>
                     {t("media.choose")}
@@ -338,7 +335,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                   name="link_url"
                   dir="ltr"
                   placeholder="/ar/catalog/electronics"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
 
@@ -348,7 +345,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                   name="starts_at"
                   type="date"
                   dir="ltr"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
 
@@ -358,7 +355,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                   name="ends_at"
                   type="date"
                   dir="ltr"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-1 focus:border-action focus:outline-none"
                 />
               </label>
             </div>

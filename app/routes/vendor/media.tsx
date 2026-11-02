@@ -7,6 +7,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -35,7 +36,7 @@ export default function AccountMedia({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-lg font-extrabold text-text">{t("media.title")}</h1>
+      <PageHeader title={t("media.title")} />
       <MediaLibraryCore
         settings={loaderData.media}
         uid={loaderData.uid}

@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -71,8 +72,7 @@ export default function AdminRoles({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("ro.title")}</h1>
-      <p className="mt-1 text-sm text-text-muted">{t("ro.hint")}</p>
+      <PageHeader title={t("ro.title")} subtitle={t("ro.hint")} />
 
       <div className="mt-3 flex flex-col gap-3">
         {(loaderData.roles as RoleRow[]).map((r) => (

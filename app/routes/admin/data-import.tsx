@@ -8,6 +8,7 @@ import { Badge } from "~/components/ui/Badge";
 import { Button } from "~/components/ui/Button";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { PageHeader } from "~/components/layout/PageHeader";
 
 
 /**
@@ -85,8 +86,7 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("dim.title")}</h1>
-      <p className="mt-1 max-w-[68ch] text-sm text-text-muted">{t("dim.hint")}</p>
+      <PageHeader title={t("dim.title")} subtitle={t("dim.hint")} />
 
       {batches.length === 0 ? (
         <div className="mt-4 rounded-md border border-border bg-surface p-6 text-center text-sm text-text-muted">
