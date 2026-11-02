@@ -1,5 +1,5 @@
 {
- "at": "2026-11-02T00:20:29.257Z",
+ "at": "2026-11-02T04:11:59.841Z",
  "navCount": 30,
  "loggedOut": 0,
  "fiveHundreds": 0,
@@ -8,8 +8,8 @@
  "attrs": {
   "pathOk": true,
   "laxOk": true,
-  "secureOk": true,
-  "httpOnlyOk": false
+  "secureOk": false,
+  "httpOnlyOk": true
  },
  "expirySim": {
   "status": 302,

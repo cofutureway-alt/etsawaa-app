@@ -25,7 +25,25 @@ async function login(email, password) {
   return ck;
 }
 
-const adminCookies = await login(process.env.TEST_ADMIN_EMAIL ?? "", process.env.TEST_ADMIN_PASSWORD ?? "");
+/**
+ * Provision a throwaway admin instead of relying on a hardcoded account.
+ * The service key creates the user, promotes the profile, and the script
+ * deletes it at the end — so the smoke runs on any checkout with no shared
+ * credentials (the old version required TEST_ADMIN_* to be set by hand and
+ * silently failed otherwise, which is why the recorded evidence went stale).
+ */
+const PROBE_EMAIL = `smoke-admin-${Date.now()}@example.invalid`;
+const PROBE_PASS = `Smoke-${Math.random().toString(36).slice(2, 12)}-Aa1`;
+async function provisionAdmin() {
+  const { data: created, error } = await admin.auth.admin.createUser({
+    email: PROBE_EMAIL, password: PROBE_PASS, email_confirm: true,
+  });
+  if (error) throw new Error(`provision admin: ${error.message}`);
+  await admin.from("profiles").update({ role: "admin" }).eq("id", created.user.id);
+  return created.user.id;
+}
+const probeUid = await provisionAdmin();
+const adminCookies = await login(PROBE_EMAIL, PROBE_PASS);
 
 // vendor probe user (created during RLS probes) — may have no store; statuses matter
 let vendorCookies = null;
@@ -127,6 +145,8 @@ const summary = {
 };
 fs.writeFileSync(OUT, JSON.stringify(summary, null, 1));
 console.log(`\n${bad === 0 ? "ALL PASS" : `${bad} FAILURES`} — 500s: ${summary.fiveHundreds.length}`);
+// tear down the throwaway admin so re-runs stay clean
+await admin.auth.admin.deleteUser(probeUid).catch(() => {});
 // keep cookies out of any lingering session
 await anon.auth.signOut().catch(() => {});
 process.exit(bad === 0 ? 0 : 1);

@@ -8,12 +8,23 @@
 // (needs the app running on :3000). Writes evidence/phase-08.5/session-test.json
 import fs from "node:fs";
 
-const BASE = "http://localhost:3000";
+const BASE = process.env.SMOKE_BASE ?? "http://localhost:3000";
 const OUT = "evidence/phase-08.5/session-test.json";
 fs.mkdirSync("evidence/phase-08.5", { recursive: true });
 
 // ---- login like the browser (POST form) → capture REAL cookie
-const form = new URLSearchParams({ identifier: process.env.TEST_ADMIN_EMAIL ?? "", password: process.env.TEST_ADMIN_PASSWORD ?? "" });
+// Self-provision a throwaway admin: the script used hardcoded credentials, so
+// the recorded evidence could never be reproduced from a clean checkout.
+const { createClient } = await import("@supabase/supabase-js");
+const adminDb = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+const PROBE_EMAIL = `sess-admin-${Date.now()}@example.invalid`;
+const PROBE_PASS = `Sess-${Math.random().toString(36).slice(2, 12)}-Aa1`;
+const { data: created, error: createErr } = await adminDb.auth.admin.createUser({
+  email: PROBE_EMAIL, password: PROBE_PASS, email_confirm: true,
+});
+if (createErr) throw new Error(`provision admin: ${createErr.message}`);
+await adminDb.from("profiles").update({ role: "admin" }).eq("id", created.user.id);
+const form = new URLSearchParams({ identifier: PROBE_EMAIL, password: PROBE_PASS });
 const loginRes = await fetch(`${BASE}/ar/auth/login`, {
   method: "POST", body: form,
   headers: { "Content-Type": "application/x-www-form-urlencoded" }, redirect: "manual",
@@ -97,8 +108,14 @@ const result={
   loggedOut, fiveHundreds, failures,
   refreshKept, attrs:attrsOk,
   expirySim:{status:r2.status, recovered, clearAttempt, redirected:loc2||null},
-  pass: loggedOut===0 && fiveHundreds===0 && refreshKept && (recovered || (!clearAttempt && loc2.includes("next="))),
+  // httpOnly/lax/path are part of the H-05 contract — previously the flag was
+  // written but never included, so the file recorded pass:true next to
+  // httpOnlyOk:false.
+  pass: loggedOut===0 && fiveHundreds===0 && refreshKept
+    && attrsOk.pathOk && attrsOk.laxOk && attrsOk.httpOnlyOk
+    && (recovered || (!clearAttempt && loc2.includes("next="))),
 };
 fs.writeFileSync(OUT, JSON.stringify(result,null,1));
+await adminDb.auth.admin.deleteUser(created.user.id).catch(() => {});
 console.log(result.pass?"H-05 PASS":"H-05 FAIL");
 process.exit(result.pass?0:1);
