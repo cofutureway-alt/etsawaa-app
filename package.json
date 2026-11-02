@@ -11,7 +11,7 @@
     "start": "node --env-file=.env node_modules/@react-router/serve/bin.js ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "oxlint app scripts tests",
-    "test": "node --import tsx --test tests/compare.test.ts tests/phone.test.ts tests/permissions.test.ts tests/tokens.test.ts tests/i18n-keys.test.ts tests/auth-schemas.test.ts tests/otp-cooldown.test.ts tests/money.test.ts tests/pricing.test.ts tests/next.test.ts tests/session-headers.test.ts tests/variant.test.ts tests/email-template.test.ts",
+    "test": "node --import tsx --test tests/compare.test.ts tests/phone.test.ts tests/permissions.test.ts tests/tokens.test.ts tests/i18n-keys.test.ts tests/auth-schemas.test.ts tests/otp-cooldown.test.ts tests/money.test.ts tests/pricing.test.ts tests/next.test.ts tests/session-headers.test.ts tests/variant.test.ts tests/coupon-scopes.test.ts tests/email-template.test.ts",
     "verify": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {

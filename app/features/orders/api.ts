@@ -77,7 +77,7 @@ export interface HistoryRow {
   created_at: string;
 }
 
-const ORDER_SELECT = "*";
+export const ORDER_SELECT = "*";
 
 export async function getOwnOrder(client: SupabaseClient, number: string): Promise<OrderRow | null> {
   const { data } = await client

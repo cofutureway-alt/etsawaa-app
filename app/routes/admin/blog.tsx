@@ -10,6 +10,8 @@ import { Badge } from "~/components/ui/Badge";
 import { Dialog } from "~/components/ui/Overlay";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { MediaPickerDialog } from "~/features/media/components/media-ui";
+import { parseMediaSettings } from "~/lib/media.shared";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 
 
@@ -38,10 +40,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     client.from("blog_categories").select("*").order("sort"),
   ]);
   if (posts.error) throw new Error(posts.error.message);
+  const { data: mediaRow } = await client.from("settings").select("value").eq("key", "media").single();
   return {
     lang,
     posts: JSON.parse(JSON.stringify(posts.data ?? [])) as PostRow[],
     cats: JSON.parse(JSON.stringify(cats.data ?? [])) as CatRow[],
+    media: parseMediaSettings(mediaRow?.value),
+    uid: (await client.auth.getUser()).data.user?.id ?? "",
+    supabaseUrl: process.env.SUPABASE_URL ?? "",
   };
 }
 
@@ -118,13 +124,21 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const fetcher = useFetcher<typeof action>();
   const [edit, setEdit] = useState<PostRow | null>(null);
+  const [coverPath, setCoverPath] = useState("");
+  const [pickerOpen, setPickerOpen] = useState(false);
   const busy = fetcher.state !== "idle";
+
+  // The cover field is controlled so the picker can drop a path in.
+  const openEditor = (post: PostRow | null) => {
+    setEdit(post);
+    setCoverPath(post?.cover_path ?? "");
+  };
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-lg font-extrabold text-text">{t("bl.title")}</h1>
-        <Button size="sm" onClick={() => setEdit({
+        <Button size="sm" onClick={() => openEditor({
           id: "", title_ar: "", title_en: "", slug_ar: "", slug_en: "",
           status: "draft", published_at: null, category_id: null,
           excerpt_ar: "", excerpt_en: "", content_ar: "", content_en: "",
@@ -161,7 +175,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
                 <span className="num text-xs text-text-faint" dir="ltr">{p.slug_ar}</span>
                 <Badge tone={p.status === "published" ? "success" : "neutral"}>{p.status === "published" ? t("rv.tab_published") : t("bl.draft")}</Badge>
                 <span className="flex gap-1.5">
-                  <Button size="sm" variant="ghost" onClick={() => setEdit(p)}>{t("adminVendors.edit")}</Button>
+                  <Button size="sm" variant="ghost" onClick={() => openEditor(p)}>{t("adminVendors.edit")}</Button>
                   <fetcher.Form method="post">
                     <input type="hidden" name="intent" value="publish" />
                     <input type="hidden" name="id" value={p.id} />
@@ -204,7 +218,11 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
                 </select>
               </label>
               <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
-                {t("bl.cover")}<input name="cover_path" defaultValue={edit.cover_path ?? ""} dir="ltr" placeholder="media/…" className={inp} />
+                {t("bl.cover")}
+                <div className="flex items-center gap-2">
+                  <input name="cover_path" value={coverPath} onChange={(e) => setCoverPath(e.target.value)} dir="ltr" placeholder="u/…" className={`${inp} min-w-0 flex-1`} />
+                  <Button type="button" size="sm" variant="outline" onClick={() => setPickerOpen(true)}>{t("media.choose")}</Button>
+                </div>
               </label>
             </div>
             <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
@@ -244,6 +262,17 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
           </fetcher.Form>
         ) : null}
       </Dialog>
+      <MediaPickerDialog
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        title={t("media.pickImage")}
+        settings={loaderData.media}
+        uid={loaderData.uid}
+        supabaseUrl={loaderData.supabaseUrl}
+        mode="single"
+        kinds={["image"]}
+        onConfirm={(files) => { setCoverPath(files[0]?.path ?? ""); setPickerOpen(false); }}
+      />
     </div>
   );
 }

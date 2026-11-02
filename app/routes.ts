@@ -96,6 +96,11 @@ export default [
       route("orders", "routes/vendor/orders.tsx"),
       // phase 06 — wallet/withdrawals + penalties + report + profile (VO)
       route("wallet", "routes/vendor/wallet.tsx"),
+      // ARCHITECTURE §7 lists these; they were missing from the panel
+      route("ads", "routes/vendor/ads.tsx"),
+      route("events", "routes/vendor/events.tsx"),
+      route("reviews", "routes/vendor/reviews.tsx"),
+      route("print-history", "routes/vendor/print-history.tsx"),
       route("penalties", "routes/vendor/penalties.tsx"),
       route("reports", "routes/vendor/reports.tsx"),
       route("profile", "routes/vendor/profile.tsx"),

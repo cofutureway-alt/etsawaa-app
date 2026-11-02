@@ -74,6 +74,7 @@ export const MenuIcon = (p: IconProps) => <Icon {...p}><path d="M4 6h16M4 12h16M
 export const UploadIcon = (p: IconProps) => (
   <Icon {...p}><path d="M12 16V4m0 0 -4 4m4-4 4 4" /><path d="M4 20h16" /></Icon>
 );
+export const MegaphoneIcon = (p: IconProps) => <Icon {...p}><path d="m3 11 18-6v14L3 13v-2Z" /><path d="M7 13v5a2 2 0 0 0 4 0v-4" /></Icon>;
 export const StarIcon = (p: IconProps) => (
   <Icon {...p} fill="currentColor" stroke="none"><path d="M12 2.5 14.9 8.6l6.6.8-4.9 4.5 1.3 6.6L12 17.2l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8L12 2.5Z" /></Icon>
 );

@@ -7,13 +7,14 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
-import { listOwnOrders } from "~/features/orders/api";
+import { ORDER_SELECT } from "~/features/orders/api";
 import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { Dialog } from "~/components/ui/Overlay";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { Pagination } from "~/components/ui/Pagination";
 import {
   CopyIcon,
   SearchIcon,
@@ -47,9 +48,25 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     ? (filterParam as "all" | "active" | "completed" | "cancelled")
     : "all";
   const q = url.searchParams.get("q")?.trim() ?? "";
-  let orders = await listOwnOrders(client, filter, 200);
-  if (q) orders = orders.filter((o) => o.number.includes(q) || o.ship_name.includes(q));
-  return { lang, filter, q, orders: JSON.parse(JSON.stringify(orders)) };
+  // Server pagination (20/page, same convention as admin/customers): the old
+  // loader pulled a flat 200 rows. count:exact drives the pager.
+  const PER_PAGE = 20;
+  const page = Math.max(1, Math.min(500, Number(url.searchParams.get("page") ?? 1) || 1));
+  let query = client
+    .from("orders")
+    .select(ORDER_SELECT, { count: "exact" })
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false });
+  if (filter === "active") query = query.in("status", ["pending_payment", "processing", "on_hold"]);
+  else if (filter === "completed") query = query.eq("status", "completed");
+  else if (filter === "cancelled") query = query.eq("status", "cancelled");
+  if (q) query = query.or(`number.ilike.%${q}%,ship_name.ilike.%${q}%`);
+  const { data: rows, error, count } = await query.range((page - 1) * PER_PAGE, page * PER_PAGE - 1);
+  if (error) throw new Error(error.message);
+  return {
+    lang, filter, q, page, perPage: PER_PAGE, total: count ?? 0,
+    orders: JSON.parse(JSON.stringify(rows ?? [])),
+  };
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
@@ -376,6 +393,21 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
             </table>
           </div>
         )}
+
+        {/* server pagination — 20/page, count from the query */}
+        <Pagination
+          page={loaderData.page}
+          perPage={loaderData.perPage}
+          total={loaderData.total}
+          hrefFor={(p) => {
+            const sp = new URLSearchParams();
+            if (loaderData.filter !== "all") sp.set("filter", loaderData.filter);
+            if (loaderData.q) sp.set("q", loaderData.q);
+            if (p > 1) sp.set("page", String(p));
+            const qs = sp.toString();
+            return `/${loaderData.lang}/admin/orders${qs ? `?${qs}` : ""}`;
+          }}
+        />
       </div>
 
       {/* Floating Bulk Action Bar (when rows selected) */}
@@ -396,6 +428,18 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
           >
             {t("orders.bulkStatus")}
           </Button>
+          {/* A-38: print the selected orders' documents in one job. The print
+              route takes ?numbers=a,b,c and emits one page per document. */}
+          <a
+            href={`/order/${encodeURIComponent("bulk")}/print/invoice_admin?numbers=${encodeURIComponent(
+              orders.filter((o) => checked.has(o.id)).map((o) => o.number).join(","),
+            )}&lang=${loaderData.lang}`}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-m border border-white/30 px-3 py-1.5 text-xs font-extrabold text-white transition-colors hover:bg-white/10"
+          >
+            {t("orders.bulkPrint")}
+          </a>
           <button
             type="button"
             onClick={() => setChecked(new Set())}

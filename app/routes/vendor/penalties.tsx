@@ -21,10 +21,22 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   await requirePanelAccess(client, lang, "vendor", request);
   const { data: rows, error } = await client
     .from("vendor_penalties")
-    .select("id, source, rule_key, amount_piastres, reason, reference, status, waived_at, created_at")
+    .select("id, source, rule_key, amount_piastres, reason, reference, status, waived_by, waived_at, created_at")
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return { lang, rows: JSON.parse(JSON.stringify(rows ?? [])) };
+  // Resolve the waiving admin's name — the view showed a blank actor before.
+  const waivedIds = [...new Set(((rows ?? []) as Array<{ waived_by: string | null }>)
+    .map((r) => r.waived_by).filter((x): x is string => Boolean(x)))];
+  const names = new Map<string, string>();
+  if (waivedIds.length > 0) {
+    const { data: profs } = await client.from("profiles").select("id, full_name").in("id", waivedIds);
+    for (const p of (profs ?? []) as Array<{ id: string; full_name: string }>) names.set(p.id, p.full_name);
+  }
+  return {
+    lang,
+    rows: JSON.parse(JSON.stringify(rows ?? [])),
+    waivedNames: Object.fromEntries(names),
+  };
 }
 
 export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
@@ -42,7 +54,7 @@ export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
         <ul className="mt-4 flex flex-col gap-2">
           {(loaderData.rows as Array<{
             id: string; source: string; amount_piastres: number; reason: string;
-            reference: string | null; status: string; waived_at: string | null; created_at: string;
+            reference: string | null; status: string; waived_by: string | null; waived_at: string | null; created_at: string;
           }>).map((p) => (
             <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 rounded-m border border-border bg-surface p-3 text-[13px]">
               <span className={`rounded-m px-2 py-0.5 text-xs font-bold ${p.status === "waived" ? "bg-surface-tint text-primary" : "bg-surface-tint text-danger"}`}>
@@ -53,7 +65,7 @@ export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
               <span className="text-xs text-text-muted" dir="ltr">{p.reference ?? "—"}</span>
               <span className="num text-xs text-text-muted">{new Date(p.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}</span>
               {p.status === "waived" && p.waived_at ? (
-                <span className="text-xs text-text-muted">{t("penalties.waivedBy", { by: "" })} {new Date(p.waived_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}</span>
+                <span className="text-xs text-text-muted">{t("penalties.waivedBy", { by: (loaderData.waivedNames as Record<string, string>)[p.waived_by ?? ""] ?? "—" })} {new Date(p.waived_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}</span>
               ) : null}
             </li>
           ))}

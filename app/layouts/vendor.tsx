@@ -12,7 +12,7 @@ import type { RootLoaderData } from "~/features/settings/api";
 import { PanelShell } from "~/components/layout/PanelShell";
 import type { SidebarGroup } from "~/components/layout/SidebarNav";
 import { LanguageSwitch } from "~/components/layout/LanguageSwitch";
-import { AlertIcon, ChartIcon, ListIcon, PackageIcon, PlusIcon, StoreIcon, TagIcon, UploadIcon } from "~/components/ui/icons";
+import { AlertIcon, ChartIcon, ListIcon, MegaphoneIcon, PackageIcon, PlusIcon, StarIcon, StoreIcon, TagIcon, UploadIcon } from "~/components/ui/icons";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
@@ -79,6 +79,10 @@ export default function VendorLayout({ loaderData }: Route.ComponentProps) {
         { to: "orders", label: t("vendorNav.orders"), icon: <TagIcon /> },
         { to: "wallet", label: t("vendorNav.wallet"), icon: <ListIcon /> },
         { to: `/${lang}/vendor/reports`, label: t("vendorNav.reports"), icon: <ChartIcon /> },
+        { to: `/${lang}/vendor/reviews`, label: t("vr.title"), icon: <StarIcon /> },
+        { to: `/${lang}/vendor/events`, label: t("vev.title"), icon: <TagIcon /> },
+        { to: `/${lang}/vendor/ads`, label: t("va.title"), icon: <MegaphoneIcon /> },
+        { to: `/${lang}/vendor/print-history`, label: t("vph.title"), icon: <ListIcon /> },
         { to: `/${lang}/vendor/penalties`, label: t("penalties.title"), icon: <AlertIcon /> },
         { to: `/${lang}/vendor/profile`, label: t("vendorNav.profile"), icon: <StoreIcon /> },
       ],

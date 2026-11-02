@@ -1,6 +1,7 @@
 import { data, useFetcher } from "react-router";
 import type { Route } from "./+types/banners";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
@@ -9,6 +10,9 @@ import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { PlusIcon, CheckIcon, TrashIcon, GridIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { MediaPickerDialog } from "~/features/media/components/media-ui";
+import { parseMediaSettings } from "~/lib/media.shared";
+import type { MediaFileRow } from "~/features/media/api";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 
 
@@ -31,7 +35,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   await requirePanelAccess(client, lang, "admin", request);
   const { data: rows, error } = await client.from("banners").select("*").order("position");
   if (error) throw new Error(error.message);
-  return { lang, banners: JSON.parse(JSON.stringify(rows ?? [])) as BannerRow[] };
+  const { data: mediaRow } = await client.from("settings").select("value").eq("key", "media").single();
+  return {
+    lang,
+    banners: JSON.parse(JSON.stringify(rows ?? [])) as BannerRow[],
+    media: parseMediaSettings(mediaRow?.value),
+    uid: (await client.auth.getUser()).data.user?.id ?? "",
+    supabaseUrl: process.env.SUPABASE_URL ?? "",
+  };
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
@@ -81,6 +92,10 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const fetcher = useFetcher<typeof action>();
   const busy = fetcher.state !== "idle";
+  // Pickers: "new" targets the create form, any other id targets that row.
+  const [editImages, setEditImages] = useState<Record<string, string>>({});
+  const [newImage, setNewImage] = useState("");
+  const [pickerFor, setPickerFor] = useState<string | null>(null);
 
   return (
     <div className="space-y-6">
@@ -164,17 +179,23 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                       />
                     </label>
 
-                    <label className="flex flex-col gap-1 font-bold text-text sm:col-span-2">
+                    <div className="flex flex-col gap-1 font-bold text-text sm:col-span-2">
                       {t("bn.image")}
-                      <input
-                        name="image_path"
-                        defaultValue={b.image_path}
-                        dir="ltr"
-                        required
-                        placeholder="media/…"
-                        className="rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
-                      />
-                    </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          name="image_path"
+                          value={editImages[b.id] ?? b.image_path}
+                          onChange={(e) => setEditImages((cur) => ({ ...cur, [b.id]: e.target.value }))}
+                          dir="ltr"
+                          required
+                          placeholder="u/…"
+                          className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-2.5 py-1.5 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                        />
+                        <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor(b.id)}>
+                          {t("media.choose")}
+                        </Button>
+                      </div>
+                    </div>
 
                     <label className="flex flex-col gap-1 font-bold text-text sm:col-span-2">
                       {t("bn.link")}
@@ -289,16 +310,23 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                 />
               </label>
 
-              <label className="flex flex-col gap-1 font-bold text-text sm:col-span-2">
+              <div className="flex flex-col gap-1 font-bold text-text sm:col-span-2">
                 {t("bn.image")}
-                <input
-                  name="image_path"
-                  required
-                  dir="ltr"
-                  placeholder="media/banners/example.webp"
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
-                />
-              </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    name="image_path"
+                    value={newImage}
+                    onChange={(e) => setNewImage(e.target.value)}
+                    required
+                    dir="ltr"
+                    placeholder="u/…"
+                    className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-text shadow-sm focus:border-action focus:outline-none"
+                  />
+                  <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor("new")}>
+                    {t("media.choose")}
+                  </Button>
+                </div>
+              </div>
 
               <label className="flex flex-col gap-1 font-bold text-text sm:col-span-2">
                 {t("bn.link")}

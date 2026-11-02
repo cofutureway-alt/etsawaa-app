@@ -19,7 +19,41 @@ import {
  */
 const DOCS: DocType[] = ["invoice_admin", "label_carrier", "label_vendor", "invoice_vendor"];
 
+/**
+ * A-38 bulk print: /order/bulk/print/<doc>?numbers=ETS-26-001,ETS-26-002
+ * renders one document per order, each logged and concatenated into a single
+ * response so the operator prints the whole batch in one job.
+ * Single-order printing keeps the existing path below unchanged.
+ */
 export async function loader({ request, params }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const bulk = url.searchParams.get("numbers");
+  if (bulk && (params.number ?? "") === "bulk") {
+    const numbers = [...new Set(bulk.split(",").map((n) => n.trim()).filter(Boolean))].slice(0, 100);
+    if (numbers.length === 0) throw new Response("Not found", { status: 404 });
+    if (numbers.length > 1) {
+      // Re-run the single-order path per number and join the printable bodies.
+      const outs: string[] = [];
+      for (const n of numbers) {
+        const r = await renderOne(request, { ...params, number: n });
+        outs.push(await r.text());
+      }
+      // Concatenate whole documents; the print bar is repeated per page which
+      // is harmless (window.print() collapses to one dialog).
+      return new Response(outs.join(""), {
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Robots-Tag": "noindex",
+        },
+      });
+    }
+    return renderOne(request, { ...params, number: numbers[0] });
+  }
+  return renderOne(request, params);
+}
+
+async function renderOne(request: Request, params: Record<string, string | undefined>): Promise<Response> {
   // root-level leaf route — lang arrives as ?lang=ar|en (default ar)
   const lang = new URL(request.url).searchParams.get("lang") === "en" ? "en" : "ar";
   const { client } = createSupabaseServerClient(request);
