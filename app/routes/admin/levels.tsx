@@ -1,4 +1,5 @@
 import { data, useFetcher } from "react-router";
+import { useState } from "react";
 import type { Route } from "./+types/levels";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
@@ -8,6 +9,7 @@ import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { EmptyState } from "~/components/ui/EmptyState";
 
 
 /**
@@ -106,12 +108,59 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
   const en = i18n.language?.startsWith("en");
   const fetcher = useFetcher<typeof action>();
   const busy = fetcher.state !== "idle";
+  const [creating, setCreating] = useState(false);
 
   return (
     <div>
-      <h1 className="text-lg font-extrabold text-text">{t("lv.title")}</h1>
-      <p className="mt-1 text-[13px] text-text-muted">{t("lv.hint")}</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-lg font-extrabold text-text">{t("lv.title")}</h1>
+          <p className="mt-1 text-[13px] text-text-muted">{t("lv.hint")}</p>
+        </div>
+        {/* The action always accepted an empty id (= insert); no form ever sent
+            one, so creating a level was impossible from the UI. */}
+        <Button type="button" size="sm" onClick={() => setCreating((v) => !v)}>
+          {creating ? t("common.cancel") : t("lv.new")}
+        </Button>
+      </div>
 
+      {creating ? (
+        <fetcher.Form method="post" className="mt-3 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-[13px]">
+          <input type="hidden" name="intent" value="save" />
+          <input type="hidden" name="id" value="" />
+          <label className="flex flex-col gap-1 text-xs font-bold text-text">
+            {t("pn.nameAr")}
+            <input name="name_ar" required className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
+          </label>
+          <label className="flex flex-col gap-1 text-xs font-bold text-text">
+            {t("pn.nameEn")}
+            <input name="name_en" required dir="ltr" className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
+          </label>
+          <label className="flex flex-col gap-1 text-xs font-bold text-text">
+            {t("lv.minOrders")}
+            <input name="min_orders" type="number" min={0} defaultValue={0} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1.5" />
+          </label>
+          <label className="flex flex-col gap-1 text-xs font-bold text-text">
+            {t("lv.commissionPercent")}
+            <input name="commission_percent" type="number" min={0} max={100} step="0.1" defaultValue={5} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1.5" />
+          </label>
+          <label className="flex flex-col gap-1 text-xs font-bold text-text">
+            {t("lv.holdDays")}
+            <input name="hold_days" type="number" min={0} defaultValue={14} dir="ltr" className="w-16 rounded-md border border-border bg-surface px-2 py-1.5" />
+          </label>
+          <label className="flex items-center gap-1.5 text-xs font-bold text-text">
+            <input type="checkbox" name="is_active" defaultChecked className="size-4 accent-[var(--color-action)]" />
+            {t("pn.active")}
+          </label>
+          <Button type="submit" size="sm" disabled={busy}>{t("lv.create")}</Button>
+        </fetcher.Form>
+      ) : null}
+
+      {(loaderData.levels as LevelRow[]).length === 0 ? (
+        <div className="mt-4">
+          <EmptyState title={t("lv.empty")} body={t("lv.emptyHint")} />
+        </div>
+      ) : (
       <ul className="mt-3 flex flex-col gap-2">
         {(loaderData.levels as LevelRow[]).map((l) => (
           <li key={l.id} className="rounded-md border border-border bg-surface p-3">
@@ -152,6 +201,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
           </li>
         ))}
       </ul>
+      )}
 
       {/* manual promote with reason */}
       <section className="mt-5" aria-label={t("lv.manual")}>

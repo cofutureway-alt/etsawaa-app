@@ -13,6 +13,7 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 
 
 interface BrandRow {
@@ -223,4 +224,13 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
 /** H-24: shown while the client hydrates / while the loader streams — stable shapes, CLS 0. */
 export function HydrateFallback() {
   return <SkeletonTable />;
+}
+
+/**
+ * Without a route boundary a loader throw (or a guard redirect) escaped the
+ * panel layout and rendered the standalone root error document, losing the
+ * sidebar. Every other admin route already had one.
+ */
+export function ErrorBoundary() {
+  return <RouteErrorBoundary />;
 }

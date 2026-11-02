@@ -11,6 +11,9 @@ import { Dialog } from "~/components/ui/Overlay";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+// Surfaces the action result: these pages used to discard {ok:false} and
+// render nothing, so a failed write looked like a dead button.
+import { useActionToast } from "~/components/layout/ActionFeedback";
 
 
 /**
@@ -90,6 +93,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
   const fetcher = useFetcher<typeof action>();
+  useActionToast(fetcher);
   const [cancelTarget, setCancelTarget] = useState<WdRow | null>(null);
   const [reason, setReason] = useState("");
   const busy = fetcher.state !== "idle";

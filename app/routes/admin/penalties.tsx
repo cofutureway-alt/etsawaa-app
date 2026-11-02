@@ -1,4 +1,5 @@
 import { data, useFetcher } from "react-router";
+import { useState } from "react";
 import type { Route } from "./+types/penalties";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
@@ -10,6 +11,9 @@ import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+// Surfaces the action result: these pages used to discard {ok:false} and
+// render nothing, so a failed write looked like a dead button.
+import { useActionToast } from "~/components/layout/ActionFeedback";
 
 
 /**
@@ -114,7 +118,9 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
   const fetcher = useFetcher<typeof action>();
+  useActionToast(fetcher);
   const busy = fetcher.state !== "idle";
+  const [creating, setCreating] = useState(false);
 
   return (
     <div>
@@ -122,7 +128,43 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
 
       {/* rules */}
       <section className="mt-3" aria-label={t("pn.rules")}>
-        <h2 className="text-sm font-extrabold text-text">{t("pn.rules")}</h2>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-sm font-extrabold text-text">{t("pn.rules")}</h2>
+          {/* rule_save inserts when id is empty, but no form ever sent one. */}
+          <Button type="button" size="sm" onClick={() => setCreating((v) => !v)}>
+            {creating ? t("common.cancel") : t("pn.newRule")}
+          </Button>
+        </div>
+
+        {creating ? (
+          <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-[13px]">
+            <input type="hidden" name="intent" value="rule_save" />
+            <input type="hidden" name="id" value="" />
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("pn.nameAr")}
+              <input name="name_ar" required className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("pn.nameEn")}
+              <input name="name_en" required dir="ltr" className="w-36 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("pn.amount")}
+              <input name="amount_piastres" type="number" min={1} defaultValue={5000} dir="ltr" className="w-24 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <label className="flex items-center gap-1.5 text-xs font-bold text-text">
+              <input type="checkbox" name="is_active" defaultChecked className="size-4 accent-[var(--color-action)]" />
+              {t("pn.active")}
+            </label>
+            <Button type="submit" size="sm" disabled={busy}>{t("pn.createRule")}</Button>
+          </fetcher.Form>
+        ) : null}
+
+        {(loaderData.rules as RuleRow[]).length === 0 ? (
+          <div className="mt-3">
+            <EmptyState title={t("pn.noRules")} body={t("pn.noRulesHint")} />
+          </div>
+        ) : (
         <ul className="mt-2 flex flex-col gap-2">
           {(loaderData.rules as RuleRow[]).map((r) => (
             <li key={r.id} className={`rounded-md border border-border bg-surface p-3 text-[13px] ${r.deleted_at ? "opacity-60" : ""}`}>
@@ -168,6 +210,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
             </li>
           ))}
         </ul>
+        )}
       </section>
 
       {/* applications */}

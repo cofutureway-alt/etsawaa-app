@@ -13,6 +13,9 @@ import { Dialog } from "~/components/ui/Overlay";
 import { Input } from "~/components/ui/Input";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+// Surfaces the action result: these pages used to discard {ok:false} and
+// render nothing, so a failed write looked like a dead button.
+import { useActionToast } from "~/components/layout/ActionFeedback";
 
 
 /**
@@ -129,6 +132,7 @@ export default function AdminEvents({ loaderData }: Route.ComponentProps) {
   const { t, i18n } = useTranslation();
   const en = i18n.language?.startsWith("en");
   const fetcher = useFetcher<typeof action>();
+  useActionToast(fetcher);
   const busy = fetcher.state !== "idle";
   const [creating, setCreating] = useState(false);
   const ev = (loaderData.events as EventRow[])[0];

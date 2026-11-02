@@ -167,6 +167,8 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
   const [importOpen, setImportOpen] = useState(false);
   const [csv, setCsv] = useState("");
   const busy = fetcher.state !== "idle";
+  const [creatingGov, setCreatingGov] = useState(false);
+  const nextGovId = Math.max(0, ...(loaderData.govs as GovRow[]).map((g) => g.id)) + 1;
   const selected = (loaderData.govs as GovRow[]).find((g) => g.id === loaderData.govId);
 
   return (
@@ -178,7 +180,39 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
 
       {/* governorates — inline edit (fee ≥ 0, audited) */}
       <section className="mt-3" aria-label={t("z.governorates")}>
-        <h2 className="text-sm font-extrabold text-text">{t("z.governorates")} (27)</h2>
+        <div className="flex items-center justify-between gap-2">
+          {/* heading used to hardcode "(27)" — it now reflects the real count */}
+          <h2 className="text-sm font-extrabold text-text">
+            {t("z.governorates")} ({(loaderData.govs as GovRow[]).length})
+          </h2>
+          <Button type="button" size="sm" onClick={() => setCreatingGov((v) => !v)}>
+            {creatingGov ? t("common.cancel") : t("z.newGov")}
+          </Button>
+        </div>
+
+        {creatingGov ? (
+          <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-[13px]">
+            <input type="hidden" name="intent" value="gov_save" />
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("z.id")}
+              <input name="new_id" type="number" required min={1} dir="ltr" defaultValue={nextGovId}
+                className="w-16 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("z.nameAr")}
+              <input name="name_ar" required className="w-32 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("z.nameEn")}
+              <input name="name_en" required dir="ltr" className="w-32 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <label className="flex flex-col gap-1 text-xs font-bold text-text">
+              {t("z.shippingFee")}
+              <input name="fee_piastres" type="number" min={0} defaultValue={0} dir="ltr" className="w-24 rounded-md border border-border bg-surface px-2 py-1.5" />
+            </label>
+            <Button type="submit" size="sm" disabled={busy}>{t("z.createGov")}</Button>
+          </fetcher.Form>
+        ) : null}
         <div className="mt-2 overflow-x-auto rounded-md border border-border">
           <table className="w-full text-[13px]">
             <thead className="bg-surface-tint">

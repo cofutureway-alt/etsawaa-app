@@ -14,6 +14,7 @@ import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { getSupabaseBrowserClient } from "~/lib/supabase/browser";
+import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 
 
 interface LeafCategory { id: string; name_ar: string; name_en: string; depth: number }
@@ -704,4 +705,13 @@ function TemplateField({ def, options }: { def: DefRow; options: OptionRow[] }) 
 /** H-24: shown while the client hydrates / while the loader streams — stable shapes, CLS 0. */
 export function HydrateFallback() {
   return <SkeletonTable />;
+}
+
+/**
+ * Without a route boundary a loader throw (or a guard redirect) escaped the
+ * panel layout and rendered the standalone root error document, losing the
+ * sidebar. Every other admin route already had one.
+ */
+export function ErrorBoundary() {
+  return <RouteErrorBoundary />;
 }

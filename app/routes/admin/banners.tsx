@@ -14,6 +14,9 @@ import { MediaPickerDialog } from "~/features/media/components/media-ui";
 import { parseMediaSettings } from "~/lib/media.shared";
 import type { MediaFileRow } from "~/features/media/api";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+// Surfaces the action result: these pages used to discard {ok:false} and
+// render nothing, so a failed write looked like a dead button.
+import { useActionToast } from "~/components/layout/ActionFeedback";
 
 
 /**
@@ -91,6 +94,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 export default function AdminBanners({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const fetcher = useFetcher<typeof action>();
+  useActionToast(fetcher);
   const busy = fetcher.state !== "idle";
   // Pickers: "new" targets the create form, any other id targets that row.
   const [editImages, setEditImages] = useState<Record<string, string>>({});

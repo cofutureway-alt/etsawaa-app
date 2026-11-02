@@ -11,6 +11,9 @@ import { Rating } from "~/components/ui/Rating";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+// Surfaces the action result: these pages used to discard {ok:false} and
+// render nothing, so a failed write looked like a dead button.
+import { useActionToast } from "~/components/layout/ActionFeedback";
 
 
 /**
@@ -102,6 +105,7 @@ const TABS = ["pending", "published", "spam", "trash", ""] as const;
 export default function AdminReviews({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const fetcher = useFetcher<typeof action>();
+  useActionToast(fetcher);
   const [reasonFor, setReasonFor] = useState<string | null>(null);
   const [reason, setReason] = useState("");
   const lang = loaderData.lang;
