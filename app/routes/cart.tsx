@@ -164,7 +164,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
           action={
             <Link
               to={`/${lang}/products`}
-              className="inline-block rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="inline-block rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.empty.browse")}
             </Link>
@@ -189,10 +189,10 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
             return (
               <section key={vendorId || "unknown"} className="rounded-lg border border-border bg-surface" aria-label={storeName ?? t("cart.group")}>
                 <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
-                  <h2 className="truncate text-[13px] font-extrabold text-text">{storeName ?? t("cart.group")}</h2>
+                  <h2 className="truncate text-sm font-extrabold text-text">{storeName ?? t("cart.group")}</h2>
                   <Link
                     to={`/${lang}/vendors`}
-                    className="shrink-0 text-[12px] font-bold text-action hover:underline"
+                    className="shrink-0 text-xs font-bold text-action hover:underline"
                   >
                     {t("store.vendor.more")}
                   </Link>
@@ -206,7 +206,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                           {line.image_path ? (
                             <MediaImg path={line.image_path} alt={name ?? ""} width={80} height={80} className="size-20" />
                           ) : (
-                            <div className="flex size-20 items-center justify-center bg-surface-tint text-[10px] text-text-faint">
+                            <div className="flex size-20 items-center justify-center bg-surface-tint text-2xs text-text-faint">
                               {t("store.noImage")}
                             </div>
                           )}
@@ -229,12 +229,12 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                               <TrashIcon className="size-4" />
                             </button>
                           </div>
-                          {line.sku ? <span className="num text-[11px] text-text-faint">SKU: {line.sku}</span> : null}
-                          <span className="num text-[13px] font-extrabold text-text">
+                          {line.sku ? <span className="num text-2xs text-text-faint">SKU: {line.sku}</span> : null}
+                          <span className="num text-sm font-extrabold text-text">
                             {line.price_piastres != null ? formatPiastres(line.price_piastres, lang === "en" ? "en" : "ar") : ""}
                           </span>
                           {line.capped ? (
-                            <span className="text-[11px] font-bold text-warning-strong">
+                            <span className="text-2xs font-bold text-warning-strong">
                               {t("cart.cappedNotice")} ({t("cart.stockIs", { count: line.stock ?? 0 })})
                             </span>
                           ) : null}
@@ -249,7 +249,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                               >
                                 <MinusIcon className="size-3.5" />
                               </button>
-                              <span className="num w-9 text-center text-[13px] font-extrabold">{line.qty}</span>
+                              <span className="num w-9 text-center text-sm font-extrabold">{line.qty}</span>
                               <button
                                 type="button"
                                 aria-label={t("cart.increase")}
@@ -261,7 +261,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                                 <PlusIcon className="size-3.5" />
                               </button>
                             </div>
-                            <span className="num text-[12px] font-bold text-text-muted">
+                            <span className="num text-xs font-bold text-text-muted">
                               {t("cart.lineTotal", { amount: formatPiastres((line.price_piastres ?? 0) * line.qty, lang === "en" ? "en" : "ar") })}
                             </span>
                           </div>
@@ -277,21 +277,21 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
 
         {/* summary */}
         <aside className="flex h-fit flex-col gap-3 rounded-lg border border-border bg-surface p-4 lg:sticky lg:top-32" aria-label={t("cart.summary")}>
-          <h2 className="text-[13px] font-extrabold text-text">{t("cart.summary")}</h2>
+          <h2 className="text-sm font-extrabold text-text">{t("cart.summary")}</h2>
 
-          <div className="flex items-center justify-between text-[13px]">
+          <div className="flex items-center justify-between text-sm">
             <span className="text-text-muted">{t("cart.subtotal")}</span>
             <span className="num font-extrabold text-text">{formatPiastres(subtotal, lang === "en" ? "en" : "ar")}</span>
           </div>
           {coupon ? (
-            <div className="flex items-center justify-between text-[13px]">
+            <div className="flex items-center justify-between text-sm">
               <span className="flex items-center gap-1.5 text-success-strong">
                 {t("cart.coupon.line", { code: coupon.code })}
                 <button
                   type="button"
                   onClick={() => setCoupon(null)}
                   aria-label={t("cart.coupon.remove")}
-                  className="cursor-pointer text-[11px] font-bold text-danger hover:underline"
+                  className="cursor-pointer text-2xs font-bold text-danger hover:underline"
                 >
                   {t("cart.coupon.remove")}
                 </button>
@@ -303,12 +303,12 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
             <span className="font-extrabold text-text">{t("cart.total")}</span>
             <span className="num text-base font-black text-text">{formatPiastres(total, lang === "en" ? "en" : "ar")}</span>
           </div>
-          <p className="text-[11px] text-text-faint">{t("cart.shippingNote")}</p>
+          <p className="text-2xs text-text-faint">{t("cart.shippingNote")}</p>
 
           {/* coupon baseline (S-09) */}
           {coupon ? null : (
             <div className="flex flex-col gap-1.5">
-              <label className="text-[12px] font-bold text-text-muted" htmlFor="coupon-code">{t("cart.coupon.label")}</label>
+              <label className="text-xs font-bold text-text-muted" htmlFor="coupon-code">{t("cart.coupon.label")}</label>
               <div className="flex gap-2">
                 <input
                   id="coupon-code"
@@ -317,13 +317,13 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void applyCouponCode(); } }}
                   maxLength={40}
                   placeholder={t("cart.coupon.placeholder")}
-                  className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2 text-[13px] outline-none focus:border-action"
+                  className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-action"
                 />
                 <Button type="button" size="sm" disabled={checkingCoupon || !couponInput.trim()} onClick={() => void applyCouponCode()}>
                   {checkingCoupon ? t("common.loading") : t("cart.coupon.apply")}
                 </Button>
               </div>
-              {couponError ? <p className="text-[12px] font-bold text-danger" role="alert">{couponError}</p> : null}
+              {couponError ? <p className="text-xs font-bold text-danger" role="alert">{couponError}</p> : null}
             </div>
           )}
 
@@ -343,7 +343,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
               {t("cart.registerToCheckout")}
             </Link>
           )}
-          <p className="text-[11px] leading-relaxed text-text-faint">{t("cart.gateNote")}</p>
+          <p className="text-2xs leading-relaxed text-text-faint">{t("cart.gateNote")}</p>
         </aside>
       </div>
     </div>

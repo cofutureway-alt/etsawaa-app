@@ -302,10 +302,10 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="min-w-0">
                     {/* H-25: the store NAME opens the full detail page */}
-                    <Link to={`/${loaderData.lang}/admin/vendors/${row.id}`} className="block truncate text-[13px] font-bold text-primary hover:underline">
+                    <Link to={`/${loaderData.lang}/admin/vendors/${row.id}`} className="block truncate text-sm font-bold text-primary hover:underline">
                       {isAr ? row.store_name_ar : row.store_name_en}
                     </Link>
-                    <p className="num truncate text-[11px] text-text-muted">{row.owner_email}</p>
+                    <p className="num truncate text-2xs text-text-muted">{row.owner_email}</p>
                   </div>
                 </div>
               ),
@@ -359,33 +359,33 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
                   ) : null}
                   {row.status === "active" || row.status === "suspended" ? (
                     <>
-                      <Link to={`/${loaderData.lang}/admin/vendors/${row.id}/edit`} className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                      <Link to={`/${loaderData.lang}/admin/vendors/${row.id}/edit`} className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                         {t("adminVendors.edit")}
                       </Link>
                       {row.status === "active" ? (
                         <button type="button" onClick={() => { setBanTarget(row); setReason(""); setActionError(null); }}
-                          className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                          className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-sm font-bold text-danger hover:bg-danger-soft">
                           {t("adminVendors.ban")}
                         </button>
                       ) : (
                         <button type="button" onClick={() => submitIntent("unban", row)}
-                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                           {t("adminVendors.unban")}
                         </button>
                       )}
                       {row.hidden_from_listings ? (
                         <button type="button" onClick={() => submitIntent("unhide", row)}
-                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                           {t("adminVendors.unhide")}
                         </button>
                       ) : (
                         <button type="button" onClick={() => { setHideTarget(row); setReason(""); setActionError(null); }}
-                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                          className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                           {t("adminVendors.hide")}
                         </button>
                       )}
                       <button type="button" onClick={() => { setPenaltyTarget(row); setReason(""); setPenaltyAmount(""); setActionError(null); }}
-                        className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                        className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                         {t("adminVendors.penalty")}
                       </button>
                     </>
@@ -400,13 +400,13 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
       <Dialog open={dialog !== null} onClose={() => setDialog(null)} title={dialog?.intent === "verify" ? t("adminVendors.verifyTitle") : t("adminVendors.reviewTitle")}>
         {dialog ? (
           <div className="flex flex-col gap-4">
-            <p className="text-[13px] font-extrabold text-text">
+            <p className="text-sm font-extrabold text-text">
               {isAr ? dialog.row.store_name_ar : dialog.row.store_name_en}
             </p>
-            <p className="text-[13px] text-text-muted">
+            <p className="text-sm text-text-muted">
               {dialog.intent === "verify" ? t("adminVendors.verifyNote") : t("adminVendors.reviewNote")}
             </p>
-            <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminProducts.reason")}
               <textarea
                 className={`min-h-20 rounded-md border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus ${
@@ -437,10 +437,10 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
       <Dialog open={banTarget !== null} onClose={() => setBanTarget(null)} title={t("adminVendors.banTitle")}>
         {banTarget ? (
           <div className="flex flex-col gap-3">
-            <p className="text-[13px] text-text">
+            <p className="text-sm text-text">
               {t("adminVendors.banNote", { name: loaderData.lang === "ar" ? banTarget.store_name_ar : banTarget.store_name_en })}
             </p>
-            <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminProducts.reason")}
               <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
@@ -458,8 +458,8 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
       <Dialog open={hideTarget !== null} onClose={() => setHideTarget(null)} title={t("adminVendors.hideTitle")}>
         {hideTarget ? (
           <div className="flex flex-col gap-3">
-            <p className="text-[13px] text-text">{t("adminVendors.hideNote")}</p>
-            <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <p className="text-sm text-text">{t("adminVendors.hideNote")}</p>
+            <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminProducts.reason")}
               <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
@@ -477,13 +477,13 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
       <Dialog open={penaltyTarget !== null} onClose={() => setPenaltyTarget(null)} title={t("adminVendors.penaltyTitle")}>
         {penaltyTarget ? (
           <div className="flex flex-col gap-3">
-            <label htmlFor="penalty-amount" className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <label htmlFor="penalty-amount" className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminVendors.penaltyAmount")}
               <input id="penalty-amount" type="number" min={1} step={1} dir="ltr" value={penaltyAmount}
                 onChange={(e) => setPenaltyAmount(e.target.value)}
                 className="rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" />
             </label>
-            <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminProducts.reason")}
               <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />

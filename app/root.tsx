@@ -188,7 +188,7 @@ function StandaloneErrorPage({ status, lang }: { status: number; lang: Locale })
           />
           <button
             type="submit"
-            className="cursor-pointer rounded-md bg-action px-4 py-2.5 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
+            className="cursor-pointer rounded-md bg-action px-4 py-2.5 text-sm font-bold text-on-action transition-colors duration-200 hover:bg-action-hover"
           >
             {c.search}
           </button>

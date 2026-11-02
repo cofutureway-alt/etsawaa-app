@@ -53,7 +53,7 @@ export function CartDrawer() {
       {lines.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-10 text-center">
           <p className="text-sm font-extrabold text-text">{t("cart.empty.title")}</p>
-          <p className="text-[13px] text-text-muted">{t("cart.empty.body")}</p>
+          <p className="text-sm text-text-muted">{t("cart.empty.body")}</p>
           <Button type="button" variant="outline" onClick={cart.closeDrawer}>
             {t("cart.empty.browse")}
           </Button>
@@ -69,7 +69,7 @@ export function CartDrawer() {
                     {line.image_path ? (
                       <MediaImg path={line.image_path} alt={name ?? ""} width={64} height={64} className="size-16" />
                     ) : (
-                      <div className="flex size-16 items-center justify-center bg-surface-tint text-[10px] text-text-faint">
+                      <div className="flex size-16 items-center justify-center bg-surface-tint text-2xs text-text-faint">
                         {t("store.noImage")}
                       </div>
                     )}
@@ -78,20 +78,20 @@ export function CartDrawer() {
                     <Link
                       to={`/${lang}/product/${encodeURIComponent((lang === "en" ? line.slug_en || line.slug_ar : line.slug_ar || line.slug_en) ?? "")}`}
                       onClick={cart.closeDrawer}
-                      className="line-clamp-2 text-[13px] font-bold text-text transition-colors duration-150 hover:text-action"
+                      className="line-clamp-2 text-sm font-bold text-text transition-colors duration-150 hover:text-action"
                     >
                       {name}
                     </Link>
                     {line.store_name_ar || line.store_name_en ? (
-                      <span className="truncate text-[11px] text-text-muted">
+                      <span className="truncate text-2xs text-text-muted">
                         {lang === "ar" ? line.store_name_ar || line.store_name_en : line.store_name_en || line.store_name_ar}
                       </span>
                     ) : null}
-                    <span className="num text-[13px] font-extrabold text-text">
+                    <span className="num text-sm font-extrabold text-text">
                       {line.price_piastres != null ? formatPiastres(line.price_piastres, lang) : ""}
                     </span>
                     {line.capped ? (
-                      <span className="text-[11px] font-bold text-warning-strong">{t("cart.cappedNotice")}</span>
+                      <span className="text-2xs font-bold text-warning-strong">{t("cart.cappedNotice")}</span>
                     ) : null}
                     <div className="flex items-center gap-2">
                       <div className="flex items-center rounded-md border border-border">
@@ -104,7 +104,7 @@ export function CartDrawer() {
                         >
                           <MinusIcon className="size-3.5" />
                         </button>
-                        <span className="num w-8 text-center text-[13px] font-extrabold">{line.qty}</span>
+                        <span className="num w-8 text-center text-sm font-extrabold">{line.qty}</span>
                         <button
                           type="button"
                           aria-label={t("cart.increase")}
@@ -133,29 +133,29 @@ export function CartDrawer() {
           </ul>
 
           {anyCapped ? (
-            <p className="mt-3 rounded-md bg-warning-soft px-3 py-2 text-[12px] font-bold text-warning-strong">
+            <p className="mt-3 rounded-md bg-warning-soft px-3 py-2 text-xs font-bold text-warning-strong">
               {t("cart.cappedSummary")}
             </p>
           ) : null}
 
           <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
-            <span className="text-[13px] font-bold text-text-muted">{t("cart.subtotal")}</span>
+            <span className="text-sm font-bold text-text-muted">{t("cart.subtotal")}</span>
             <span className="num text-base font-black text-text">{formatPiastres(subtotal, lang)}</span>
           </div>
-          <p className="mt-1 text-[11px] text-text-faint">{t("cart.shippingNote")}</p>
+          <p className="mt-1 text-2xs text-text-faint">{t("cart.shippingNote")}</p>
 
           <div className="mt-4 flex flex-col gap-2">
             <Link
               to={`/${lang}/checkout`}
               onClick={cart.closeDrawer}
-              className="flex min-h-11 items-center justify-center rounded-md bg-action text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="flex min-h-11 items-center justify-center rounded-md bg-action text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("cart.checkout")}
             </Link>
             <Link
               to={`/${lang}/cart`}
               onClick={cart.closeDrawer}
-              className="flex min-h-11 items-center justify-center rounded-md border border-border text-[13px] font-extrabold text-text transition-colors duration-150 hover:bg-surface-tint"
+              className="flex min-h-11 items-center justify-center rounded-md border border-border text-sm font-extrabold text-text transition-colors duration-150 hover:bg-surface-tint"
             >
               {t("cart.viewCart")}
             </Link>

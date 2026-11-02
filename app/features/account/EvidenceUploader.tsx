@@ -47,7 +47,7 @@ export function EvidenceUploader({ onChange }: { onChange: (paths: string[]) => 
 
   return (
     <div>
-      <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint">
+      <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-bold text-text transition-colors duration-150 hover:bg-surface-tint">
         <input
           ref={inputRef}
           type="file"

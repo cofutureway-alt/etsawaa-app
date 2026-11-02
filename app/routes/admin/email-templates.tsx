@@ -142,8 +142,8 @@ export async function action({ request, params }: Route.ActionArgs) {
   return data<ActionResult>({ ok: false, reason: "bad_intent" }, { status: 400 });
 }
 
-const INPUT = "w-full rounded-md border border-border bg-surface p-2.5 font-mono text-[12px] leading-relaxed text-text";
-const LABEL = "text-[13px] font-bold text-text";
+const INPUT = "w-full rounded-md border border-border bg-surface p-2.5 font-mono text-xs leading-relaxed text-text";
+const LABEL = "text-sm font-bold text-text";
 
 export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
@@ -220,8 +220,8 @@ export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps
                     className={`flex w-full cursor-pointer flex-col gap-0.5 px-3 py-2.5 text-start transition-colors duration-150 ${
                       entry.key === selectedKey ? "bg-primary-soft" : "hover:bg-surface-tint"
                     }`}>
-                    <span className="text-[13px] font-bold text-text">{entry.name_ar ?? entry.key}</span>
-                    <span className="num text-[11px] text-text-muted" dir="ltr">{entry.key} · v{entry.version}</span>
+                    <span className="text-sm font-bold text-text">{entry.name_ar ?? entry.key}</span>
+                    <span className="num text-2xs text-text-muted" dir="ltr">{entry.key} · v{entry.version}</span>
                   </button>
                 </li>
               ))}
@@ -239,7 +239,7 @@ export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps
                   {current.variables.map((name) => (
                     <li key={name}>
                       <button type="button" onClick={() => insertVariable(name)}
-                        className="cursor-pointer rounded-md border border-border px-2 py-1 font-mono text-[11px] text-text hover:bg-surface-tint"
+                        className="cursor-pointer rounded-md border border-border px-2 py-1 font-mono text-2xs text-text hover:bg-surface-tint"
                         dir="ltr" title={t("et.insertHint")}>
                         {`{{${name}}}`}
                       </button>
@@ -261,13 +261,13 @@ export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps
                     <span className={LABEL}>{t("et.subjectAr")}</span>
                     <input name="subject_ar" dir="rtl" value={draft.subjectAr}
                       onChange={(e) => setDraft({ ...draft, subjectAr: e.target.value })}
-                      className="w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
+                      className="w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
                   </label>
                   <label className="flex flex-col gap-1.5">
                     <span className={LABEL}>{t("et.subjectEn")}</span>
                     <input name="subject_en" dir="ltr" value={draft.subjectEn}
                       onChange={(e) => setDraft({ ...draft, subjectEn: e.target.value })}
-                      className="w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
+                      className="w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
                   </label>
                   <label className="flex flex-col gap-1.5">
                     <span className={LABEL}>{t("et.bodyAr")}</span>
@@ -324,11 +324,11 @@ export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps
                       <span className="text-xs font-bold text-text">{t("et.testTo")}</span>
                       <input name="to" type="email" required dir="ltr" value={testTo}
                         onChange={(e) => setTestTo(e.target.value)}
-                        className="w-56 rounded-md border border-border bg-surface p-2 text-[13px] text-text" />
+                        className="w-56 rounded-md border border-border bg-surface p-2 text-sm text-text" />
                     </label>
                     <label className="flex flex-col gap-1">
                       <span className="text-xs font-bold text-text">{t("et.locale")}</span>
-                      <select name="locale" className="rounded-md border border-border bg-surface p-2 text-[13px] text-text">
+                      <select name="locale" className="rounded-md border border-border bg-surface p-2 text-sm text-text">
                         <option value="ar">{t("et.ar")}</option>
                         <option value="en">{t("et.en")}</option>
                       </select>
@@ -368,7 +368,7 @@ export default function AdminEmailTemplates({ loaderData }: Route.ComponentProps
             </Card>
           </div>
         ) : (
-          <p className="text-[13px] text-text-muted">{t("ve.none")}</p>
+          <p className="text-sm text-text-muted">{t("ve.none")}</p>
         )}
       </div>
     </div>

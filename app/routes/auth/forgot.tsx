@@ -155,7 +155,7 @@ export default function ForgotPage({ loaderData }: Route.ComponentProps) {
   });
 
   const ErrorBox = errorData ? (
-    <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
+    <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-sm text-danger">
       <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
       <span className="font-bold">{t(FORM_ERRORS[errorData.formError] ?? "auth.errors.generic")}</span>
     </div>
@@ -190,7 +190,7 @@ export default function ForgotPage({ loaderData }: Route.ComponentProps) {
       <Card className="w-full max-w-md">
         <CardBody className="flex flex-col gap-4 p-6">
           <h1 className="text-lg font-extrabold text-text">{t("auth.forgot.newTitle")}</h1>
-          <p className="text-[13px] text-text-muted">{t("auth.otp.sentToEmail")}</p>
+          <p className="text-sm text-text-muted">{t("auth.otp.sentToEmail")}</p>
           {ErrorBox}
           <fetcher.Form method="post" onSubmit={codeForm.handleSubmit((_values, event) => {
               if (event?.target instanceof HTMLFormElement) fetcher.submit(event.target, { method: "post" });
@@ -215,7 +215,7 @@ export default function ForgotPage({ loaderData }: Route.ComponentProps) {
       <CardBody className="flex flex-col gap-4 p-6">
         <div>
           <h1 className="text-lg font-extrabold text-text">{t("auth.forgot.title")}</h1>
-          <p className="text-[13px] text-text-muted">{t("auth.forgot.subtitle")}</p>
+          <p className="text-sm text-text-muted">{t("auth.forgot.subtitle")}</p>
         </div>
         {ErrorBox}
         <fetcher.Form method="post" onSubmit={sendForm.handleSubmit((_values, event) => {

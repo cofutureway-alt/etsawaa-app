@@ -67,7 +67,7 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
           }) => (
             <li key={r.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-[13px] font-bold text-text">
+                <span className="text-sm font-bold text-text">
                   {r.product ? (
                     <Link
                       to={`/${loaderData.lang}/product/${encodeURIComponent(en ? r.product.slug_en : r.product.slug_ar)}`}
@@ -84,23 +84,23 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
                   </span>
                 </span>
               </div>
-              {r.title ? <p className="mt-1 text-[13px] font-bold text-text">{r.title}</p> : null}
-              {r.body ? <p className="text-[13px] text-text-muted">{r.body}</p> : null}
+              {r.title ? <p className="mt-1 text-sm font-bold text-text">{r.title}</p> : null}
+              {r.body ? <p className="text-sm text-text-muted">{r.body}</p> : null}
 
               <details className="mt-2">
                 <summary className="cursor-pointer text-xs font-bold text-action">{t("reviews.edit")}</summary>
                 <fetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
                   <input type="hidden" name="intent" value="edit" />
                   <input type="hidden" name="id" value={r.id} />
-                  <select name="rating" defaultValue={String(r.rating)} className="w-32 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px] text-text">
+                  <select name="rating" defaultValue={String(r.rating)} className="w-32 rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text">
                     {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((v) => (
                       <option key={v} value={v}>{v} / 5</option>
                     ))}
                   </select>
-                  <input name="title" defaultValue={r.title} maxLength={200} className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text" />
-                  <textarea name="body" defaultValue={r.body} rows={3} maxLength={2000} className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text" />
+                  <input name="title" defaultValue={r.title} maxLength={200} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
+                  <textarea name="body" defaultValue={r.body} rows={3} maxLength={2000} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
                   <div className="flex gap-2">
-                    <button type="submit" className="cursor-pointer rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action hover:bg-action-hover">
+                    <button type="submit" className="cursor-pointer rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action hover:bg-action-hover">
                       {t("reviews.saveEdit")}
                     </button>
                   </div>
@@ -118,7 +118,7 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
         </ul>
       )}
       {fetcher.data && !fetcher.data.ok ? (
-        <p role="alert" className="mt-2 text-[13px] text-danger">{t("reviews.failed")}</p>
+        <p role="alert" className="mt-2 text-sm text-danger">{t("reviews.failed")}</p>
       ) : null}
     </div>
   );

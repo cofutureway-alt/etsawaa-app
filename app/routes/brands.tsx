@@ -63,8 +63,8 @@ export default function BrandsPage({ loaderData }: Route.ComponentProps) {
                       {name.slice(0, 1)}
                     </span>
                   )}
-                  <span className="text-[13px] font-extrabold text-text">{name}</span>
-                  <span className="num text-[11px] font-bold text-text-muted">
+                  <span className="text-sm font-extrabold text-text">{name}</span>
+                  <span className="num text-2xs font-bold text-text-muted">
                     {t("store.brands.productCount", { count: brand.product_count })}
                   </span>
                 </Link>

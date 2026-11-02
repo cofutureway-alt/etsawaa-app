@@ -62,7 +62,7 @@ export function ProductCard({
       }`}
     >
       {card.is_featured ? (
-        <span className="absolute start-2 top-2 z-10 rounded-full bg-featured px-2 py-0.5 text-[11px] font-extrabold text-ink">
+        <span className="absolute start-2 top-2 z-10 rounded-full bg-featured px-2 py-0.5 text-2xs font-extrabold text-ink">
           {t("store.featuredMark")}
         </span>
       ) : null}
@@ -90,7 +90,7 @@ export function ProductCard({
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1.5 p-2.5">
-        <h3 className="line-clamp-2 text-[13px] font-bold leading-snug text-text">
+        <h3 className="line-clamp-2 text-sm font-bold leading-snug text-text">
           <Link to={href} className="transition-colors duration-150 hover:text-action">
             {name}
           </Link>
@@ -99,16 +99,16 @@ export function ProductCard({
         {card.rating_count > 0 && card.rating_avg != null ? (
           <Rating value={card.rating_avg} count={card.rating_count} size="sm" />
         ) : (
-          <span className="text-[11px] text-text-faint">{t("store.noReviews")}</span>
+          <span className="text-2xs text-text-faint">{t("store.noReviews")}</span>
         )}
 
         <Link
           to={`/${lang}/store/${encodeURIComponent(card.vendor_slug)}`}
-          className="flex min-w-0 items-center gap-1.5 text-[11px] text-text-muted transition-colors duration-150 hover:text-action"
+          className="flex min-w-0 items-center gap-1.5 text-2xs text-text-muted transition-colors duration-150 hover:text-action"
         >
           <span className="truncate font-bold">{storeName}</span>
           {level ? (
-            <span className="shrink-0 rounded-full border border-border px-1.5 py-px text-[10px] font-extrabold text-text-muted">
+            <span className="shrink-0 rounded-full border border-border px-1.5 py-px text-2xs font-extrabold text-text-muted">
               {level}
             </span>
           ) : null}
@@ -122,7 +122,7 @@ export function ProductCard({
               <PriceTag pricePiastres={price} locale={locale} size="sm" />
             )}
             {card.event_percent > 0 ? (
-              <span className="mt-0.5 w-fit rounded-full bg-surface-tint px-1.5 py-px text-[10px] font-extrabold text-action">
+              <span className="mt-0.5 w-fit rounded-full bg-surface-tint px-1.5 py-px text-2xs font-extrabold text-action">
                 {t("store.eventDiscount", { percent: card.event_percent })}
               </span>
             ) : null}

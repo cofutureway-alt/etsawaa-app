@@ -125,7 +125,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="grid max-w-3xl gap-6">
       {isVendor ? (
-        <section className="rounded-md border border-border bg-surface-tint p-4 text-[13px]">
+        <section className="rounded-md border border-border bg-surface-tint p-4 text-sm">
           <p className="font-bold text-text">{t("profile.storeName")}: {loaderData.role === "vendor" ? loaderData.vendor.store_name_ar : ""}</p>
           <p className="text-text-muted">{t("profile.storeNameNote")}</p>
         </section>
@@ -150,10 +150,10 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
           <Button type="submit" loading={fetcher.state !== "idle"}>{t("profile.save")}</Button>
         </fetcher.Form>
         {fetcher.data && "ok" in fetcher.data && fetcher.data.ok ? (
-          <p role="status" className="mt-2 text-[13px] text-primary">{t("profile.saved")}</p>
+          <p role="status" className="mt-2 text-sm text-primary">{t("profile.saved")}</p>
         ) : null}
         {fetcher.data && !fetcher.data.ok ? (
-          <p role="alert" className="mt-2 text-[13px] text-danger">
+          <p role="alert" className="mt-2 text-sm text-danger">
             {fetcher.data.reason === "phones_equal" ? t("checkout.errPhonesEqual")
               : fetcher.data.reason === "phone_alternate" ? t("checkout.errPhone")
               : t("profile.failed")}
@@ -173,7 +173,7 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
 
       <section className="rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("profile.email")}</h2>
-        <p className="mt-1.5 text-[13px] text-text-muted" dir="ltr">{loaderData.email}</p>
+        <p className="mt-1.5 text-sm text-text-muted" dir="ltr">{loaderData.email}</p>
         <fetcher.Form method="post" preventScrollReset className="mt-3 flex flex-col gap-3">
           <input type="hidden" name="intent" value="email" />
           <Input
@@ -183,10 +183,10 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
           <Button type="submit" variant="outline" loading={fetcher.state !== "idle"}>{t("profile.requestEmailChange")}</Button>
         </fetcher.Form>
         {fetcher.data && "ok" in fetcher.data && fetcher.data.ok ? (
-          <p role="status" className="mt-2 text-[13px] text-primary">{t("profile.emailPending")}</p>
+          <p role="status" className="mt-2 text-sm text-primary">{t("profile.emailPending")}</p>
         ) : null}
         {fetcher.data && !fetcher.data.ok && fetcher.data.reason === "email_taken" ? (
-          <p role="alert" className="mt-2 text-[13px] text-danger">{t("profile.emailTaken")}</p>
+          <p role="alert" className="mt-2 text-sm text-danger">{t("profile.emailTaken")}</p>
         ) : null}
       </section>
 
@@ -199,10 +199,10 @@ export default function ProfilePage({ loaderData }: Route.ComponentProps) {
           <Button type="submit" variant="outline" loading={fetcher.state !== "idle"}>{t("profile.changePassword")}</Button>
         </fetcher.Form>
         {fetcher.data && "ok" in fetcher.data && fetcher.data.ok && fetcher.data.ok ? (
-          <p role="status" className="mt-2 text-[13px] text-primary">{t("profile.passwordChanged")}</p>
+          <p role="status" className="mt-2 text-sm text-primary">{t("profile.passwordChanged")}</p>
         ) : null}
         {fetcher.data && !fetcher.data.ok ? (
-          <p role="alert" className="mt-2 text-[13px] text-danger">
+          <p role="alert" className="mt-2 text-sm text-danger">
             {fetcher.data.reason === "wrong_current" ? t("profile.wrongCurrent")
               : fetcher.data.reason === "weak" ? t("profile.weakPassword")
               : t("profile.failed")}

@@ -44,7 +44,7 @@ export function Pagination({ page, total, perPage, hrefFor, window: span = 5 }: 
           to={hrefFor(p)}
           aria-current={p === page ? "page" : undefined}
           aria-label={t("store.listing.pageN", { page: p })}
-          className={`num flex size-10 items-center justify-center rounded-md border text-[13px] font-bold transition-colors duration-150 ${
+          className={`num flex size-10 items-center justify-center rounded-md border text-sm font-bold transition-colors duration-150 ${
             p === page
               ? "border-action bg-action text-on-action"
               : "border-border bg-surface text-text hover:bg-surface-tint"

@@ -242,8 +242,8 @@ export function MapPin({
         dir="ltr"
       />
       <p id="map-help" className="text-xs text-text-muted">{t("map.help")}</p>
-      {!ready ? <p className="text-[11px] text-text-faint">{t("map.loading")}</p> : null}
-      <p className="text-[11px] text-text-faint">{t("map.tapHint")}</p>
+      {!ready ? <p className="text-2xs text-text-faint">{t("map.loading")}</p> : null}
+      <p className="text-2xs text-text-faint">{t("map.tapHint")}</p>
     </div>
   );
 }

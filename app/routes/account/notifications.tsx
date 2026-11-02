@@ -67,13 +67,13 @@ export default function AccountNotifications({ loaderData }: Route.ComponentProp
         <div className="flex gap-2">
           <Link
             to={`/${loaderData.lang}/account/notifications`}
-            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${loaderData.filter === "all" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
+            className={`rounded-md border px-3 py-1.5 text-sm font-bold ${loaderData.filter === "all" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
           >
             {t("notifications.filterAll")}
           </Link>
           <Link
             to={`/${loaderData.lang}/account/notifications?filter=unread`}
-            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${loaderData.filter === "unread" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
+            className={`rounded-md border px-3 py-1.5 text-sm font-bold ${loaderData.filter === "unread" ? "border-action text-action" : "border-border text-text-muted hover:text-text"}`}
           >
             {t("notifications.filterUnread")} {loaderData.unread > 0 ? `(${loaderData.unread})` : ""}
           </Link>
@@ -98,15 +98,15 @@ export default function AccountNotifications({ loaderData }: Route.ComponentProp
             return (
               <li key={r.id} className={`rounded-md border p-3.5 ${r.read_at === null ? "border-action bg-surface-tint" : "border-border bg-surface"}`}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-[13px] font-bold text-text">{text.title}</p>
+                  <p className="text-sm font-bold text-text">{text.title}</p>
                   <span className="text-xs text-text-faint" dir="ltr">
                     {new Date(r.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}
                   </span>
                 </div>
-                {text.body ? <p className="mt-0.5 text-[13px] text-text-muted">{text.body}</p> : null}
+                {text.body ? <p className="mt-0.5 text-sm text-text-muted">{text.body}</p> : null}
                 <div className="mt-1.5 flex items-center gap-3">
                   {r.payload.link ? (
-                    <Link to={r.payload.link} className="text-[13px] font-bold text-action hover:underline">
+                    <Link to={r.payload.link} className="text-sm font-bold text-action hover:underline">
                       {t("notifications.open")}
                     </Link>
                   ) : null}

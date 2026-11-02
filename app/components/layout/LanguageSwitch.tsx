@@ -14,7 +14,7 @@ export function LanguageSwitch({ current }: { current: Locale }) {
   return (
     <Link
       to={switchLocalePath(location.pathname, location.search, location.hash, next)}
-      className="flex cursor-pointer items-center gap-1 rounded-md border border-border-strong px-2 py-1.5 text-xs font-bold text-text transition-colors duration-150 hover:border-primary hover:text-action min-[420px]:gap-1.5 min-[420px]:px-3 min-[420px]:py-2 min-[420px]:text-[13px]"
+      className="flex cursor-pointer items-center gap-1 rounded-md border border-border-strong px-2 py-1.5 text-xs font-bold text-text transition-colors duration-150 hover:border-primary hover:text-action min-[420px]:gap-1.5 min-[420px]:px-3 min-[420px]:py-2 min-[420px]:text-sm"
       aria-label={t("common.language")}
     >
       <GlobeIcon aria-hidden="true" />

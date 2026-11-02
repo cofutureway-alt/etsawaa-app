@@ -99,7 +99,7 @@ export default function VendorEvents({ loaderData }: Route.ComponentProps) {
             const participation = mine[e.id] ?? "auto";
             return (
               <li key={e.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-surface p-3">
-                <span className="text-[13px] font-extrabold text-text">
+                <span className="text-sm font-extrabold text-text">
                   {en ? e.name_en || e.name_ar : e.name_ar || e.name_en}
                 </span>
                 <Badge tone={participation === "refused" ? "danger" : participation === "accepted" ? "success" : "warning"}>

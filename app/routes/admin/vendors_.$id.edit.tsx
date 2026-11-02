@@ -179,7 +179,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 function Toggle({ id, label, defaultChecked, name }: { id: string; label: string; defaultChecked: boolean; name: string }) {
   return (
-    <label htmlFor={id} className="flex cursor-pointer items-center gap-2.5 text-[13px] font-bold text-text">
+    <label htmlFor={id} className="flex cursor-pointer items-center gap-2.5 text-sm font-bold text-text">
       <input id={id} type="checkbox" name={name} defaultChecked={defaultChecked}
         className="size-4 accent-[var(--color-action)]" />
       {label}
@@ -208,12 +208,12 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2">
-        <a href={`/${lang}/admin/vendors?status=all`} className="text-[13px] font-bold text-primary hover:underline">
+        <a href={`/${lang}/admin/vendors?status=all`} className="text-sm font-bold text-primary hover:underline">
           {t("ve.back")}
         </a>
       </div>
       <h1 className="mt-1 text-lg font-extrabold text-text">{en ? v.store_name_en : v.store_name_ar}</h1>
-      <div className="mt-1 flex flex-wrap items-center gap-2 text-[13px] text-text-muted">
+      <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-text-muted">
         <Badge tone={v.status === "active" ? "success" : v.status === "suspended" ? "danger" : "neutral"}>
           {t(`vendorStates.status.${v.status}`)}
         </Badge>
@@ -227,7 +227,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
         {tabs.map((x) => (
           <button key={x.key} type="button" role="tab" aria-selected={tab === x.key}
             onClick={() => setTab(x.key)}
-            className={`cursor-pointer rounded-t-md px-4 py-2 text-[13px] font-bold ${
+            className={`cursor-pointer rounded-t-md px-4 py-2 text-sm font-bold ${
               tab === x.key ? "border-x border-t border-border bg-surface text-primary" : "text-text-muted hover:bg-surface-tint"
             }`}>
             {x.label}
@@ -245,7 +245,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
               <Toggle id="f-direct" name="allow_direct_publish" label={t("ve.directPublish")} defaultChecked={v.allow_direct_publish} />
               <Toggle id="f-status" name="can_change_order_status" label={t("ve.changeStatus")} defaultChecked={v.can_change_order_status} />
               <Toggle id="f-feat-perm" name="featured_permanent" label={t("ve.featuredPermanent")} defaultChecked={v.featured_permanent} />
-              <label htmlFor="f-feat-days" className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+              <label htmlFor="f-feat-days" className="flex flex-col gap-1.5 text-sm font-bold text-text">
                 {t("ve.featuredDays")}
                 <input id="f-feat-days" name="featured_days" type="number" min={0} dir="ltr"
                   className="w-28 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
@@ -253,12 +253,12 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
               <div className="flex items-center gap-3">
                 <Button type="submit" disabled={genFetcher.state !== "idle"}>{t("ve.save")}</Button>
                 {genFetcher.state === "idle" && genFetcher.data?.ok ? (
-                  <span className="text-[13px] font-bold text-success">{t("ve.saved")}</span>
+                  <span className="text-sm font-bold text-success">{t("ve.saved")}</span>
                 ) : null}
               </div>
             </genFetcher.Form>
 
-            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-1 text-[13px] md:grid-cols-3">
+            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-1 text-sm md:grid-cols-3">
               <dt className="text-text-muted">{t("ve.area")}</dt><dd className="font-bold text-text">{v.area_name ?? "—"}</dd>
               <dt className="text-text-muted">{t("ve.featuredUntil")}</dt>
               <dd className="font-bold text-text" dir="ltr">
@@ -278,13 +278,13 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
               <input type="hidden" name="intent" value="commission" />
               <input type="hidden" name="mode" value={mode} />
               <fieldset className="flex flex-col gap-2">
-                <legend className="text-[13px] font-bold text-text">{t("ve.commissionMode")}</legend>
+                <legend className="text-sm font-bold text-text">{t("ve.commissionMode")}</legend>
                 {([
                   { key: "inherit", label: t("ve.inherit") },
                   { key: "fixed", label: t("ve.fixed") },
                   { key: "category", label: t("ve.category") },
                 ] as const).map((opt) => (
-                  <label key={opt.key} className="flex cursor-pointer items-center gap-2.5 text-[13px] text-text">
+                  <label key={opt.key} className="flex cursor-pointer items-center gap-2.5 text-sm text-text">
                     <input type="radio" name="mode-radio" checked={mode === opt.key}
                       onChange={() => setMode(opt.key)} className="size-4 accent-[var(--color-action)]" />
                     {opt.label}
@@ -292,7 +292,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 ))}
               </fieldset>
               {mode === "fixed" ? (
-                <label htmlFor="f-fixed" className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+                <label htmlFor="f-fixed" className="flex flex-col gap-1.5 text-sm font-bold text-text">
                   {t("ve.fixedPercent")}
                   <input id="f-fixed" name="fixed_percent" type="number" min={0} max={100} step="0.01" dir="ltr"
                     defaultValue={v.commission_fixed_percent ?? ""}
@@ -300,10 +300,10 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 </label>
               ) : null}
               {mode === "category" ? (
-                <p className="text-[13px] text-text-muted">{t("ve.categoryHint")}</p>
+                <p className="text-sm text-text-muted">{t("ve.categoryHint")}</p>
               ) : null}
               {/* preview: next-order commission at the current selection */}
-              <p className="text-[13px] text-text-muted">
+              <p className="text-sm text-text-muted">
                 {t("ve.preview")}:{" "}
                 <strong className="text-text" dir="ltr">
                   {mode === "fixed"
@@ -316,10 +316,10 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
               <div className="flex items-center gap-3">
                 <Button type="submit" disabled={comFetcher.state !== "idle"}>{t("ve.save")}</Button>
                 {comFetcher.state === "idle" && comFetcher.data?.ok ? (
-                  <span className="text-[13px] font-bold text-success">{t("ve.saved")}</span>
+                  <span className="text-sm font-bold text-success">{t("ve.saved")}</span>
                 ) : null}
                 {comFetcher.state === "idle" && comFetcher.data && !comFetcher.data.ok ? (
-                  <span className="text-[13px] font-bold text-danger">{comFetcher.data.reason}</span>
+                  <span className="text-sm font-bold text-danger">{comFetcher.data.reason}</span>
                 ) : null}
               </div>
             </comFetcher.Form>
@@ -345,7 +345,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
               <socFetcher.Form method="post" className="grid gap-3 sm:grid-cols-2">
                 <input type="hidden" name="intent" value="social" />
                 {[["facebook", "Facebook"], ["instagram", "Instagram"], ["x", "X"], ["tiktok", "TikTok"], ["whatsapp", "WhatsApp"]].map(([field, label]) => (
-                  <label key={field as string} htmlFor={`soc-${field}`} className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+                  <label key={field as string} htmlFor={`soc-${field}`} className="flex flex-col gap-1.5 text-sm font-bold text-text">
                     {label}
                     <input id={`soc-${field}`} name={field} type="url" dir="ltr" defaultValue={v.socials[field as string] ?? ""}
                       className="rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
@@ -354,7 +354,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 <div className="flex items-center gap-3 sm:col-span-2">
                   <Button type="submit" disabled={socFetcher.state !== "idle"}>{t("ve.save")}</Button>
                   {socFetcher.state === "idle" && socFetcher.data?.ok ? (
-                    <span className="text-[13px] font-bold text-success">{t("ve.saved")}</span>
+                    <span className="text-sm font-bold text-success">{t("ve.saved")}</span>
                   ) : null}
                 </div>
               </socFetcher.Form>
@@ -365,7 +365,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
           <Card>
             <CardHeader title={t("ve.adjust")} />
             <CardBody>
-              <adjFetcher.Form method="post" className="flex flex-wrap items-end gap-2 text-[13px]">
+              <adjFetcher.Form method="post" className="flex flex-wrap items-end gap-2 text-sm">
                 <input type="hidden" name="intent" value="adjust" />
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("ve.adjustAmount")}
@@ -382,7 +382,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 </label>
                 <Button type="submit" size="sm" disabled={adjFetcher.state !== "idle"}>{t("lv.apply")}</Button>
                 {adjFetcher.state === "idle" && adjFetcher.data?.ok ? (
-                  <span className="text-[13px] font-bold text-success-strong">{t("ve.saved")}</span>
+                  <span className="text-sm font-bold text-success-strong">{t("ve.saved")}</span>
                 ) : null}
                 {adjFetcher.data && !adjFetcher.data.ok ? (
                   <p role="alert" className="text-xs font-bold text-danger">{String(adjFetcher.data.reason)}</p>
@@ -395,13 +395,13 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
             <CardHeader title={t("ve.wallet")} />
             <CardBody className="grid grid-cols-2 gap-2">
               <div className="rounded-md border border-border bg-surface px-3 py-2.5">
-                <p className="text-[11px] font-bold text-text-muted">{t("ve.available")}</p>
+                <p className="text-2xs font-bold text-text-muted">{t("ve.available")}</p>
                 <p className="text-base font-extrabold tabular-nums text-text" dir="ltr">
                   {formatPiastres(loaderData.wallet?.available_piastres ?? 0, en ? "en" : "ar")}
                 </p>
               </div>
               <div className="rounded-md border border-border bg-surface px-3 py-2.5">
-                <p className="text-[11px] font-bold text-text-muted">{t("ve.pending")}</p>
+                <p className="text-2xs font-bold text-text-muted">{t("ve.pending")}</p>
                 <p className="text-base font-extrabold tabular-nums text-text" dir="ltr">
                   {formatPiastres(loaderData.wallet?.pending_piastres ?? 0, en ? "en" : "ar")}
                 </p>
@@ -413,9 +413,9 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
             <CardHeader title={t("ve.penalties")} />
             <CardBody>
               {loaderData.penalties.length === 0 ? (
-                <p className="text-[13px] text-text-muted">{t("ve.none")}</p>
+                <p className="text-sm text-text-muted">{t("ve.none")}</p>
               ) : (
-                <ul className="flex flex-col divide-y divide-border text-[13px]">
+                <ul className="flex flex-col divide-y divide-border text-sm">
                   {loaderData.penalties.map((p) => (
                     <li key={p.id} className="flex items-center justify-between gap-2 py-1.5">
                       <span className="truncate text-text">{p.reason}</span>
@@ -434,9 +434,9 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
             <CardHeader title={t("ve.ads")} />
             <CardBody>
               {loaderData.ads.length === 0 ? (
-                <p className="text-[13px] text-text-muted">{t("ve.none")}</p>
+                <p className="text-sm text-text-muted">{t("ve.none")}</p>
               ) : (
-                <ul className="flex flex-col divide-y divide-border text-[13px]">
+                <ul className="flex flex-col divide-y divide-border text-sm">
                   {loaderData.ads.map((a) => (
                     <li key={a.id} className="flex items-center justify-between gap-2 py-1.5">
                       <span className="text-text">{a.ad_packages ? (en ? a.ad_packages.name_en : a.ad_packages.name_ar) : "—"}</span>
@@ -455,9 +455,9 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
             <CardHeader title={t("ve.documents")} />
             <CardBody>
               {loaderData.docs.length === 0 ? (
-                <p className="text-[13px] text-text-muted">{t("ve.none")}</p>
+                <p className="text-sm text-text-muted">{t("ve.none")}</p>
               ) : (
-                <ul className="flex flex-col gap-1 text-[13px] text-text">
+                <ul className="flex flex-col gap-1 text-sm text-text">
                   {loaderData.docs.map((d) => (
                     <li key={d.id} className="flex items-center justify-between gap-2">
                       <span>{t(`onboarding.doc_${d.type}`)}</span>

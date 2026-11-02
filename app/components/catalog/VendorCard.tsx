@@ -35,18 +35,18 @@ export function VendorCard({ store, lang }: { store: StoreCard; lang: string }) 
           </Link>
         </h3>
         {level ? (
-          <span className="mt-1 inline-block rounded-full border border-featured bg-surface px-2 py-px text-[10px] font-extrabold text-ink">
+          <span className="mt-1 inline-block rounded-full border border-featured bg-surface px-2 py-px text-2xs font-extrabold text-ink">
             {level}
           </span>
         ) : null}
       </div>
-      {desc ? <p className="line-clamp-2 text-[12px] text-text-muted">{desc}</p> : null}
+      {desc ? <p className="line-clamp-2 text-xs text-text-muted">{desc}</p> : null}
       {store.rating_count > 0 && store.rating_avg != null ? (
         <Rating value={store.rating_avg} count={store.rating_count} size="sm" />
       ) : (
-        <span className="text-[11px] text-text-faint">{t("store.noReviews")}</span>
+        <span className="text-2xs text-text-faint">{t("store.noReviews")}</span>
       )}
-      <span className="num text-[11px] font-bold text-text-muted">
+      <span className="num text-2xs font-bold text-text-muted">
         {t("store.vendor.productCount", { count: store.product_count })}
       </span>
     </article>

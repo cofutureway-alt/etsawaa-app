@@ -117,7 +117,7 @@ export default function AdminReviews({ loaderData }: Route.ComponentProps) {
         {TABS.map((s) => (
           <a key={s || "all"} href={`/${lang}/admin/reviews?status=${s}`}
             aria-current={loaderData.status === s ? "page" : undefined}
-            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${
+            className={`rounded-md border px-3 py-1.5 text-sm font-bold ${
               loaderData.status === s ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
             }`}>
             {s ? t(`rv.tab_${s}`) : t("common.all")}
@@ -130,7 +130,7 @@ export default function AdminReviews({ loaderData }: Route.ComponentProps) {
       ) : (
         <ul className="mt-3 flex flex-col gap-3">
           {(loaderData.reviews as ReviewRow[]).map((r) => (
-            <li key={r.id} className="rounded-md border border-border bg-surface p-4 text-[13px]">
+            <li key={r.id} className="rounded-md border border-border bg-surface p-4 text-sm">
               <div className="flex flex-wrap items-center gap-2">
                 <Rating value={r.rating} size="sm" />
                 <span className="font-bold text-text">{r.title || t("rv.noTitle")}</span>
@@ -154,7 +154,7 @@ export default function AdminReviews({ loaderData }: Route.ComponentProps) {
                   ) : null}
                   <button type="button"
                     onClick={() => { setReasonFor(r.id); setReason(""); }}
-                    className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                    className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                     {t("rv.reject")}
                   </button>
                 </div>
@@ -164,13 +164,13 @@ export default function AdminReviews({ loaderData }: Route.ComponentProps) {
                   className="mt-2 flex flex-wrap items-end gap-2">
                   <input type="hidden" name="id" value={r.id} />
                   <input type="hidden" name="reason" value={reason} />
-                  <select name="decision" defaultValue="spam" className="rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]">
+                  <select name="decision" defaultValue="spam" className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm">
                     <option value="spam">{t("rv.tab_spam")}</option>
                     <option value="trash">{t("rv.tab_trash")}</option>
                   </select>
                   <input value={reason} onChange={(e) => setReason(e.target.value)} required minLength={3}
                     placeholder={t("rv.reasonPlaceholder")}
-                    className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-[13px]" />
+                    className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />
                   <Button type="submit" size="sm" variant="outline" disabled={fetcher.state !== "idle"}>{t("rv.confirm")}</Button>
                   <Button type="button" size="sm" variant="ghost" onClick={() => setReasonFor(null)}>{t("common.cancel")}</Button>
                 </fetcher.Form>

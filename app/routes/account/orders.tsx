@@ -42,7 +42,7 @@ export default function AccountOrdersPage({ loaderData }: Route.ComponentProps) 
           <Link
             key={f.key}
             to={`/${loaderData.lang}/account/orders?filter=${f.key}`}
-            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold transition-colors duration-150 ${
+            className={`rounded-md border px-3 py-1.5 text-sm font-bold transition-colors duration-150 ${
               loaderData.filter === f.key ? "border-action text-action" : "border-border text-text-muted hover:text-text"
             }`}
           >
@@ -76,20 +76,20 @@ export default function AccountOrdersPage({ loaderData }: Route.ComponentProps) 
                   <span className={`rounded-md px-2 py-1 text-xs font-bold ${o.status === "cancelled" ? "bg-surface-tint text-danger" : "bg-surface-tint text-text"}`}>
                     {t(`order.status_${o.status}`)}
                   </span>
-                  <span className="text-[13px] font-extrabold text-text">{money(o.total_piastres)}</span>
+                  <span className="text-sm font-extrabold text-text">{money(o.total_piastres)}</span>
                 </div>
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <Link
                   to={`/${loaderData.lang}/account/orders/${encodeURIComponent(o.number)}`}
-                  className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
+                  className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint"
                 >
                   {t("orders.details")}
                 </Link>
                 <ReorderButton orderNumber={o.number} lang={loaderData.lang} />
                 <Link
                   to={`/${loaderData.lang}/order/${encodeURIComponent(o.number)}/track`}
-                  className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
+                  className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint"
                 >
                   {t("order.track")}
                 </Link>

@@ -132,7 +132,7 @@ export default function AdminUsers({ loaderData }: Route.ComponentProps) {
       <Dialog open={target !== null} onClose={() => setTarget(null)} title={t("admin.users.changeRole")}>
         {target ? (
           <div className="flex flex-col gap-4">
-            <p className="text-[13px] text-text-muted">
+            <p className="text-sm text-text-muted">
               {t("admin.users.changeRoleConfirm", { name: target.user.full_name || target.user.email, from: target.user.role, to: target.role })}
             </p>
             <fetcher.Form method="post" className="flex justify-end gap-2">

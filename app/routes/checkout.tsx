@@ -465,7 +465,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
         <span className="flex items-center gap-3">
           <span
             aria-hidden="true"
-            className={`flex size-7 shrink-0 items-center justify-center rounded-full border text-[13px] font-extrabold ${
+            className={`flex size-7 shrink-0 items-center justify-center rounded-full border text-sm font-extrabold ${
               open ? "border-action bg-action text-on-action" : state.done ? "border-action text-action" : "border-border text-text-faint"
             }`}
           >
@@ -489,7 +489,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="mx-auto w-full max-w-page px-4 py-6">
       <h1 className="mb-1 text-lg font-extrabold text-text">{t("checkout.title")}</h1>
-      <p className="mb-4 text-[13px] text-text-muted">{t("checkout.subtitle")}</p>
+      <p className="mb-4 text-sm text-text-muted">{t("checkout.subtitle")}</p>
 
       {placeError ? (
         <div
@@ -499,7 +499,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           className="mb-4 rounded-md border border-danger bg-surface p-4 outline-none"
         >
           <p className="text-sm font-bold text-danger">{t("checkout.placeFailed")}</p>
-          <p className="mt-1 text-[13px] text-text-muted">
+          <p className="mt-1 text-sm text-text-muted">
             {placeError.reason === "cod_cap" && t("checkout.codCapReason", { cap: money(placeError.cap_piastres ?? loaderData.codCap) })}
             {placeError.reason === "cod_vendor_ship" && t("checkout.codVendorShipReason")}
             {placeError.reason === "items_unavailable" && t("checkout.itemsUnavailable", { names: placeError.names ?? "" })}
@@ -516,7 +516,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
             {placeError.reason === "duplicate" && t("checkout.duplicateAttempt")}
             {!["cod_cap", "cod_vendor_ship", "items_unavailable", "insufficient_stock", "phones_equal", "phone_invalid", "address_incomplete", "area_unavailable", "coupon_expired", "coupon_limit", "coupon_min_subtotal", "coupon_invalid", "payment_unavailable", "duplicate"].includes(placeError.reason) && t("checkout.genericError")}
           </p>
-          <p className="mt-2 text-[13px]">
+          <p className="mt-2 text-sm">
             <Link to={`/${lang}/cart`} className="font-bold text-action hover:underline">{t("checkout.backToCart")}</Link>
           </p>
         </div>
@@ -525,8 +525,8 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
       {quote && quote.blockedNames.length > 0 ? (
         <div role="status" className="mb-4 rounded-md border border-border bg-surface p-4">
           <p className="text-sm font-bold text-text">{t("checkout.unavailableTitle")}</p>
-          <p className="mt-1 text-[13px] text-text-muted">{t("checkout.unavailableBody", { names: quote.blockedNames.join("، ") })}</p>
-          <Link to={`/${lang}/cart`} className="mt-2 inline-block text-[13px] font-bold text-action hover:underline">
+          <p className="mt-1 text-sm text-text-muted">{t("checkout.unavailableBody", { names: quote.blockedNames.join("، ") })}</p>
+          <Link to={`/${lang}/cart`} className="mt-2 inline-block text-sm font-bold text-action hover:underline">
             {t("checkout.reviewCart")}
           </Link>
         </div>
@@ -542,14 +542,14 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
               <div className="border-t border-border p-4">
                 {/* email: displayed read-only, never an input (AGENT §29) */}
                 <div className="mb-4 rounded-md bg-surface-tint p-3">
-                  <p className="text-[13px] font-bold text-text">{t("checkout.emailLabel")}</p>
+                  <p className="text-sm font-bold text-text">{t("checkout.emailLabel")}</p>
                   <p className="text-sm text-text-muted">{loaderData.viewerEmail}</p>
                   <p className="mt-1 text-xs text-text-faint">{t("checkout.emailReadOnly")}</p>
                 </div>
 
                 {loaderData.addresses.length > 0 ? (
                   <fieldset className="mb-4">
-                    <legend className="mb-2 text-[13px] font-bold text-text">{t("checkout.savedAddresses")}</legend>
+                    <legend className="mb-2 text-sm font-bold text-text">{t("checkout.savedAddresses")}</legend>
                     <div className="flex flex-col gap-2">
                       {loaderData.addresses.map((a) => (
                         <label
@@ -568,12 +568,12 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                           <span className="text-sm">
                             <span className="font-bold text-text">
                               {a.full_name}
-                              {a.is_default ? <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-[11px] font-bold text-text-muted">{t("checkout.defaultAddress")}</span> : null}
+                              {a.is_default ? <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-2xs font-bold text-text-muted">{t("checkout.defaultAddress")}</span> : null}
                             </span>
-                            <span className="mt-0.5 block text-[13px] text-text-muted" dir="ltr">
+                            <span className="mt-0.5 block text-sm text-text-muted" dir="ltr">
                               {a.phone}
                             </span>
-                            <span className="mt-0.5 block text-[13px] text-text-muted">
+                            <span className="mt-0.5 block text-sm text-text-muted">
                               {a.address1}{a.address2 ? `، ${a.address2}` : ""}
                               {` — ${loaderData.governorates.find((g) => g.id === a.governorate_id)?.[i18n.language?.startsWith("en") ? "name_en" : "name_ar"] ?? ""} · ${loaderData.areas.find((x) => x.id === a.area_id)?.[i18n.language?.startsWith("en") ? "name_en" : "name_ar"] ?? ""}`}
                             </span>
@@ -655,7 +655,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                 {/* L-20/H-23 — optional delivery pin (both address modes).
                     A saved address with a stored pin pre-places the marker. */}
                 <div className="mt-3">
-                  <p className="mb-1.5 text-[13px] font-bold text-text">
+                  <p className="mb-1.5 text-sm font-bold text-text">
                     {t("map.title")} <span className="font-normal text-text-faint">({t("checkout.optional")})</span>
                   </p>
                   <LocationPicker value={pin} onChange={(v) => { setPinDirty(true); setPin(v); }} onStreet={prefillFromPin} />
@@ -707,9 +707,9 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                       </span>
                     </div>
                     {totals?.free_shipping ? (
-                      <p className="text-[13px] text-text-muted">{t("checkout.freeShippingCoupon", { code: couponCode })}</p>
+                      <p className="text-sm text-text-muted">{t("checkout.freeShippingCoupon", { code: couponCode })}</p>
                     ) : null}
-                    <p className="text-[13px] text-text-muted">{t("checkout.shippingNotice")}</p>
+                    <p className="text-sm text-text-muted">{t("checkout.shippingNotice")}</p>
                   </div>
                 ) : (
                   <p className="text-sm text-text-muted">{t("checkout.chooseGovernorateFirst")}</p>
@@ -741,7 +741,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                     />
                     <span className="text-sm">
                       <span className="block font-bold text-text">{t("checkout.pay_kashier")}</span>
-                      <span className="block text-[13px] text-text-muted">{t("checkout.payKashierDesc")}</span>
+                      <span className="block text-sm text-text-muted">{t("checkout.payKashierDesc")}</span>
                       {!loaderData.kashier ? <span className="mt-1 block text-xs text-danger">{t("checkout.payUnavailable")}</span> : null}
                     </span>
                   </label>
@@ -759,7 +759,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                     />
                     <span className="text-sm">
                       <span className="block font-bold text-text">{t("checkout.pay_cod")}</span>
-                      <span className="block text-[13px] text-text-muted">{t("checkout.payCodDesc")}</span>
+                      <span className="block text-sm text-text-muted">{t("checkout.payCodDesc")}</span>
                       {!codState.allowed ? (
                         <span className="mt-1 block text-xs text-danger">
                           {codState.reason === "cap"
@@ -789,7 +789,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                     payment: paymentMethod ? t(`checkout.pay_${paymentMethod}`) : "—",
                   })}
                 </p>
-                <label className="mt-3 flex items-start gap-2 text-[13px] text-text">
+                <label className="mt-3 flex items-start gap-2 text-sm text-text">
                   <input
                     type="checkbox"
                     className="mt-0.5 size-4 accent-[var(--color-action)]"
@@ -819,7 +819,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           <div className="rounded-md border border-border bg-surface p-4">
             <h2 className="text-sm font-extrabold text-text">{t("checkout.summaryTitle")}</h2>
             {groups.length === 0 ? (
-              <p className="mt-3 text-[13px] text-text-muted">{t("cart.empty")}</p>
+              <p className="mt-3 text-sm text-text-muted">{t("cart.empty")}</p>
             ) : (
               groups.map(([vendorId, lines]) => (
                 <div key={vendorId} className="mt-3">
@@ -835,14 +835,14 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                           className="size-11 shrink-0 rounded-md border border-border object-cover"
                         />
                         <span className="min-w-0 flex-1">
-                          <Link to={`/${lang}/product/${encodeURIComponent(i18n.language?.startsWith("en") ? l.slug_en : l.slug_ar)}`} className="block truncate text-[13px] font-bold text-text hover:text-action">
+                          <Link to={`/${lang}/product/${encodeURIComponent(i18n.language?.startsWith("en") ? l.slug_en : l.slug_ar)}`} className="block truncate text-sm font-bold text-text hover:text-action">
                             {i18n.language?.startsWith("en") ? l.name_en : l.name_ar}
                           </Link>
                           <span className="text-xs text-text-muted">
                             {l.option_key ? `${l.option_key} · ` : ""}{t("cart.qty")} {l.qty}
                           </span>
                         </span>
-                        <span className="text-[13px] font-extrabold text-text">{money(l.unit_piastres * l.qty)}</span>
+                        <span className="text-sm font-extrabold text-text">{money(l.unit_piastres * l.qty)}</span>
                       </li>
                     ))}
                   </ul>
@@ -852,7 +852,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
 
             {/* coupon */}
             <div className="mt-4 border-t border-border pt-3">
-              <label htmlFor="ck-coupon" className="text-[13px] font-bold text-text">{t("cart.coupon.label")}</label>
+              <label htmlFor="ck-coupon" className="text-sm font-bold text-text">{t("cart.coupon.label")}</label>
               <div className="mt-1.5 flex gap-2">
                 <input
                   id="ck-coupon"
@@ -905,7 +905,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
                 <dd className="text-base font-extrabold text-text">{money(totals?.total_piastres ?? 0)}</dd>
               </div>
             </dl>
-            <p className="mt-2 text-[11px] text-text-faint">{t("checkout.totalServerSide")}</p>
+            <p className="mt-2 text-2xs text-text-faint">{t("checkout.totalServerSide")}</p>
           </div>
         </aside>
       </div>

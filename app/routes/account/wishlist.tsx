@@ -72,10 +72,10 @@ export default function AccountWishlistPage({ loaderData }: Route.ComponentProps
             <div className="min-w-0 flex-1">
               {p ? (
                 <>
-                  <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="block truncate text-[13px] font-bold text-text hover:text-action">
+                  <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="block truncate text-sm font-bold text-text hover:text-action">
                     {en ? p.name_en : p.name_ar}
                   </Link>
-                  <p className="text-[13px] font-extrabold text-text">{money(effectivePrice(p))}</p>
+                  <p className="text-sm font-extrabold text-text">{money(effectivePrice(p))}</p>
                   {unavailable ? (
                     <p className="mt-1 text-xs text-danger">{t("wishlist.unavailable")}</p>
                   ) : (
@@ -85,7 +85,7 @@ export default function AccountWishlistPage({ loaderData }: Route.ComponentProps
                   )}
                 </>
               ) : (
-                <p className="text-[13px] text-text-muted">{t("wishlist.goneBody")}</p>
+                <p className="text-sm text-text-muted">{t("wishlist.goneBody")}</p>
               )}
               <RemoveWishButton productId={it.product_id} />
             </div>

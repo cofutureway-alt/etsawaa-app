@@ -98,7 +98,7 @@ export function NotificationBell({
       >
         <BellIcon />
         {unread > 0 ? (
-          <span className="num absolute -top-0.5 -end-0.5 flex min-w-4.5 justify-center rounded-full bg-action px-1 text-[10px] font-extrabold leading-4.5 text-on-action">
+          <span className="num absolute -top-0.5 -end-0.5 flex min-w-4.5 justify-center rounded-full bg-action px-1 text-2xs font-extrabold leading-4.5 text-on-action">
             {unread > 9 ? "9+" : unread}
           </span>
         ) : null}
@@ -106,7 +106,7 @@ export function NotificationBell({
       {open ? (
         <div className="absolute end-0 top-full z-50 mt-1 w-80 rounded-md border border-border bg-surface shadow-2">
           <div className="flex items-center justify-between border-b border-border px-3 py-2">
-            <span className="text-[13px] font-extrabold text-text">{t("notifications.title")}</span>
+            <span className="text-sm font-extrabold text-text">{t("notifications.title")}</span>
             {list && list.length > 0 ? (
               <button type="button" onClick={markAllRead} className="cursor-pointer text-xs font-bold text-action hover:underline">
                 {t("notifications.markAllRead")}
@@ -115,14 +115,14 @@ export function NotificationBell({
           </div>
           <div className="max-h-72 overflow-y-auto">
             {list === null || list.length === 0 ? (
-              <p className="px-3 py-6 text-center text-[13px] text-text-muted">{t("notifications.empty")}</p>
+              <p className="px-3 py-6 text-center text-sm text-text-muted">{t("notifications.empty")}</p>
             ) : (
               <ul>
                 {list.map((row) => {
                   const text = notificationText(row, lang === "en" ? "en" : "ar");
                   return (
                     <li key={row.id} className={`border-b border-border px-3 py-2.5 last:border-b-0 ${row.read_at ? "" : "bg-surface-tint"}`}>
-                      <p className="text-[13px] font-bold text-text">{text.title}</p>
+                      <p className="text-sm font-bold text-text">{text.title}</p>
                       {text.body ? <p className="text-xs text-text-muted">{text.body}</p> : null}
                       {row.read_at ? null : (
                         <button type="button" onClick={() => void markRead(row.id)} className="mt-1 cursor-pointer text-xs font-bold text-action hover:underline">

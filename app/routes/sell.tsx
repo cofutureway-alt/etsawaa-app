@@ -108,7 +108,7 @@ export default function SellPage({ loaderData }: Route.ComponentProps) {
                   encodeURIComponent(isAr ? row.slug_ar || row.slug_en : row.slug_en || row.slug_ar);
                 return (
                   <details key={root.id} className="rounded-lg border border-border bg-surface p-3">
-                    <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[13px] font-extrabold text-text">
+                    <summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm font-extrabold text-text">
                       <ChevronDownIcon aria-hidden="true" className="size-4 text-text-faint" />
                       <Link to={`/${lang}/category/${slug(root)}`} className="hover:text-action">
                         {name(root)}
@@ -119,14 +119,14 @@ export default function SellPage({ loaderData }: Route.ComponentProps) {
                         const subsSubs = children.filter((child) => child.parent_id === sub.id);
                         return (
                           <li key={sub.id}>
-                            <Link to={`/${lang}/category/${slug(sub)}`} className="text-[13px] font-bold text-action hover:underline">
+                            <Link to={`/${lang}/category/${slug(sub)}`} className="text-sm font-bold text-action hover:underline">
                               {name(sub)}
                             </Link>
                             {subsSubs.length > 0 ? (
                               <ul className="mt-1 flex flex-col gap-1 ps-4">
                                 {subsSubs.map((subSub) => (
                                   <li key={subSub.id}>
-                                    <Link to={`/${lang}/category/${slug(subSub)}`} className="text-[12px] text-text-muted hover:text-action">
+                                    <Link to={`/${lang}/category/${slug(subSub)}`} className="text-xs text-text-muted hover:text-action">
                                       {name(subSub)}
                                     </Link>
                                   </li>
@@ -149,8 +149,8 @@ export default function SellPage({ loaderData }: Route.ComponentProps) {
         <CardHeader title={t("sell.termsCard")} />
         <CardBody>
           <details>
-            <summary className="cursor-pointer text-[13px] font-bold text-action">{t("sell.termsOpen")}</summary>
-            <p className="mt-3 whitespace-pre-line text-[13px] leading-relaxed text-text-muted">
+            <summary className="cursor-pointer text-sm font-bold text-action">{t("sell.termsOpen")}</summary>
+            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-text-muted">
               {isAr ? termsAr : termsEn}
             </p>
           </details>

@@ -93,7 +93,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
           <div className="min-w-0 flex-1">
             <h1 className="break-words text-base font-extrabold text-side-text-strong sm:text-lg">{viewer.profile.full_name || t("account.title")}</h1>
             {viewer.profile.phone ? (
-              <p className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-bold text-side-text-strong">
+              <p className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-2xs font-bold text-side-text-strong">
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={11} height={11}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 <span className="num" dir="ltr">{viewer.profile.phone}</span>
               </p>
@@ -106,7 +106,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
             <form method="post" action={`/${lang}/auth/logout`}>
               <button
                 type="submit"
-                className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-white/30 px-4 text-[13px] font-bold text-side-text-strong transition-colors duration-150 hover:bg-white/10"
+                className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-white/30 px-4 text-sm font-bold text-side-text-strong transition-colors duration-150 hover:bg-white/10"
               >
                 {t("nav.logout")}
               </button>
@@ -125,7 +125,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
                 to={to}
                 end={end}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-md border-s-[3px] px-3 py-2.5 text-[13px] font-bold transition-colors duration-150 ${
+                  `flex items-center gap-3 rounded-md border-s-[3px] px-3 py-2.5 text-sm font-bold transition-colors duration-150 ${
                     isActive
                       ? "border-action bg-surface-tint text-action"
                       : "border-transparent text-text-muted hover:bg-surface-tint/60 hover:text-text"
@@ -137,7 +137,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
               </NavLink>
             ))}
           </nav>
-          <p className="mt-3 px-2 text-[11px] leading-relaxed text-text-faint">{t("account.signedInAs")}: {viewer.profile.role}</p>
+          <p className="mt-3 px-2 text-2xs leading-relaxed text-text-faint">{t("account.signedInAs")}: {viewer.profile.role}</p>
         </aside>
 
         {/* content + mobile tab hotbar */}
@@ -191,7 +191,7 @@ function MobileTabsDropdown({ nav }: { nav: Array<{ to: string; label: string; e
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={t("account.title")}
-        className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-s-4 border-border border-s-action bg-surface px-4 py-2.5 text-[13px] font-extrabold text-text shadow-sm transition-colors duration-150 hover:bg-surface-tint"
+        className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-s-4 border-border border-s-action bg-surface px-4 py-2.5 text-sm font-extrabold text-text shadow-sm transition-colors duration-150 hover:bg-surface-tint"
       >
         <span className="flex min-w-0 items-center gap-2.5">
           <span aria-hidden="true" className="flex size-7 shrink-0 items-center justify-center rounded-full bg-action/10 text-action">
@@ -230,7 +230,7 @@ function DropdownItem({ to, end, label, Icon, onPick }: {
       role="menuitem"
       onClick={onPick}
       className={({ isActive }) =>
-        `flex min-h-12 items-center gap-3 rounded-md px-2.5 text-[13px] font-bold transition-colors duration-150 ${
+        `flex min-h-12 items-center gap-3 rounded-md px-2.5 text-sm font-bold transition-colors duration-150 ${
           isActive ? "bg-action text-on-action" : "text-text hover:bg-surface-tint hover:text-action"
         }`
       }

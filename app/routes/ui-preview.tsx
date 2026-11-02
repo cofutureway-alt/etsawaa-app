@@ -50,7 +50,7 @@ export default function UiPreview({ loaderData }: Route.ComponentProps) {
         <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-xl font-extrabold text-text">{t("ui.title")}</h1>
-            <p className="text-[13px] text-text-muted">{t("ui.subtitle")}</p>
+            <p className="text-sm text-text-muted">{t("ui.subtitle")}</p>
           </div>
           <LanguageSwitch current={loaderData.lang} />
         </header>
@@ -146,7 +146,7 @@ function Sections() {
             ]}
           />
           <div>
-            <p className="mb-2 text-[13px] font-bold text-text">{t("ui.stepper.label")}</p>
+            <p className="mb-2 text-sm font-bold text-text">{t("ui.stepper.label")}</p>
             <Stepper
               label={t("ui.stepper.label")}
               current={1}
@@ -172,16 +172,16 @@ function Sections() {
           <Card>
             <CardHeader title={t("ui.card.title")} />
             <CardBody>
-              <p className="text-[13px] text-text-muted">{t("ui.card.body")}</p>
+              <p className="text-sm text-text-muted">{t("ui.card.body")}</p>
             </CardBody>
           </Card>
           <div className="flex flex-col gap-3">
             <div>
-              <p className="mb-1 text-[13px] font-bold text-text">{t("ui.rating.label")}</p>
+              <p className="mb-1 text-sm font-bold text-text">{t("ui.rating.label")}</p>
               <Rating value={rating} onChange={setRating} />
             </div>
             <div>
-              <p className="mb-1 text-[13px] font-bold text-text">{t("ui.price.label")}</p>
+              <p className="mb-1 text-sm font-bold text-text">{t("ui.price.label")}</p>
               <div className="flex flex-col gap-2">
                 <PriceTag pricePiastres={125000} locale="ar" />
                 <PriceTag pricePiastres={99900} comparePricePiastres={149900} locale="ar" />
@@ -205,7 +205,7 @@ function Sections() {
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <p className="text-[13px] font-bold text-text">{t("ui.skeleton.label")}</p>
+            <p className="text-sm font-bold text-text">{t("ui.skeleton.label")}</p>
             <SkeletonCard />
             <Skeleton className="h-3 w-2/3" />
           </div>
@@ -216,7 +216,7 @@ function Sections() {
       <Section title={t("ui.section.data")}>
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-2 text-[13px] font-bold text-text">{t("ui.table.title")}</p>
+            <p className="mb-2 text-sm font-bold text-text">{t("ui.table.title")}</p>
             <Table columns={[t("admin.users.name"), t("admin.users.role")]} caption={t("a11y.tableCaption")}>
               <TRow>
                 <TCell>Admin</TCell>
@@ -233,7 +233,7 @@ function Sections() {
             </Table>
           </div>
           <div>
-            <p className="mb-2 text-[13px] font-bold text-text">{t("ui.datatable.title")}</p>
+            <p className="mb-2 text-sm font-bold text-text">{t("ui.datatable.title")}</p>
             <DataTable
               rows={[
                 { id: "1", name: "أحمد محمود", email: "ahmed@example.com", role: "customer" },
@@ -259,7 +259,7 @@ function Sections() {
               onError={(message) => toast.showToast("error", message)}
             />
             <div>
-              <p className="mb-2 text-[13px] font-bold text-text">{t("ui.timeline.label")}</p>
+              <p className="mb-2 text-sm font-bold text-text">{t("ui.timeline.label")}</p>
               <Timeline
                 label={t("ui.timeline.label")}
                 steps={[

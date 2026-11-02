@@ -346,7 +346,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                             );
                           }}
                           title={t("commission.editHint")}
-                          className={`num shrink-0 cursor-pointer rounded-md border px-2.5 py-1 text-[11px] font-extrabold transition-colors duration-150 ${
+                          className={`num shrink-0 cursor-pointer rounded-md border px-2.5 py-1 text-2xs font-extrabold transition-colors duration-150 ${
                             own
                               ? "border-action/40 bg-action/10 text-action hover:bg-action/20"
                               : eff != null
@@ -492,9 +492,9 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
             </div>
             <Input label={t("catalog.descAr")} name="description_ar" defaultValue={editing.row?.description_ar} maxLength={300} inputClassName="bg-surface" />
             <Input label={t("catalog.descEn")} name="description_en" defaultValue={editing.row?.description_en} maxLength={300} dir="ltr" inputClassName="bg-surface" />
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("catalog.parent")}
-              <select name="parent_id" defaultValue={editing.row?.parent_id ?? ""} className="rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none">
+              <select name="parent_id" defaultValue={editing.row?.parent_id ?? ""} className="rounded-md border border-border bg-surface px-2.5 py-2 text-sm text-text focus:border-action focus:outline-none">
                 <option value="">{t("catalog.rootLevel")}</option>
                 {categories
                   .filter((c) => c.depth < 3)
@@ -508,7 +508,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
               {formThumb ? (
                 <img src={`${supabaseUrl}/storage/v1/object/public/media/${formThumb}`} alt="" width={48} height={48} className="size-12 rounded-md bg-surface-tint object-cover" />
               ) : (
-                <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-[11px] text-text-faint">{t("catalog.thumb")}</span>
+                <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-2xs text-text-faint">{t("catalog.thumb")}</span>
               )}
               <input type="hidden" name="thumb_path" value={formThumb ?? ""} />
               <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor("form")}>{t("media.choose")}</Button>
@@ -516,11 +516,11 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                 <Button type="button" size="sm" variant="ghost" onClick={() => setFormThumb(null)}>{t("common.delete")}</Button>
               ) : null}
             </div>
-            <label className="flex items-center gap-2 text-[13px] font-bold text-text">
+            <label className="flex items-center gap-2 text-sm font-bold text-text">
               <input type="checkbox" name="is_active" defaultChecked={editing.row?.is_active ?? true} className="size-4 accent-[var(--color-action)]" />
               {t("catalog.active")}
             </label>
-            <label className="flex items-center gap-2 text-[13px] font-bold text-text">
+            <label className="flex items-center gap-2 text-sm font-bold text-text">
               <input type="checkbox" name="show_in_header" defaultChecked={editing.row?.show_in_header ?? false} className="size-4 accent-[var(--color-action)]" />
               {t("catalog.showInHeader")}
             </label>
@@ -537,7 +537,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <input type="hidden" name="intent" value="delete" />
             <input type="hidden" name="id" value={deleting.id} />
-            <p className="text-[13px] text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
+            <p className="text-sm text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={() => setDeleting(null)}>{t("common.cancel")}</Button>
               <Button type="submit" loading={busy}>{t("common.confirm")}</Button>
@@ -563,9 +563,9 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
       <Dialog open={commissionFor !== null} onClose={() => setCommissionFor(null)} title={t("commission.title", { name: commissionFor?.name_ar ?? "" })}>
         {commissionFor ? (
           <div className="flex flex-col gap-3">
-            <p className="text-[13px] text-text-muted">{t("commission.help")}</p>
+            <p className="text-sm text-text-muted">{t("commission.help")}</p>
             <div>
-              <label htmlFor="cm-percent" className="text-[13px] font-bold text-text">{t("commission.percentLabel")}</label>
+              <label htmlFor="cm-percent" className="text-sm font-bold text-text">{t("commission.percentLabel")}</label>
               <div className="mt-1 flex items-center gap-2">
                 <input
                   id="cm-percent"
@@ -575,7 +575,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                   placeholder={(() => { const cur = effectiveCommission(commissionFor); return cur != null ? String(cur) : t("commission.levelDefault"); })()}
                   className="num w-28 rounded-md border border-border bg-surface px-3 py-2 text-sm text-text outline-none focus:border-primary focus:shadow-focus"
                 />
-                <span className="text-[13px] font-bold text-text-muted">%</span>
+                <span className="text-sm font-bold text-text-muted">%</span>
               </div>
               <p className="mt-1 text-xs text-text-faint">
                 {commissions[commissionFor.id] != null

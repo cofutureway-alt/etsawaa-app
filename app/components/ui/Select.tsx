@@ -15,7 +15,7 @@ export function Select({ label, options, error, className = "", id: idOverride, 
   const errorId = `${id}-error`;
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
-      <label htmlFor={id} className="relative block text-[13px] font-bold text-text">
+      <label htmlFor={id} className="relative block text-sm font-bold text-text">
         {label}
       </label>
       <div className="relative">

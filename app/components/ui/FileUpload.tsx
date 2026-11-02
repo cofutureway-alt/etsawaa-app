@@ -61,7 +61,7 @@ export function FileUpload({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={inputId} className="text-[13px] font-bold text-text">
+      <label htmlFor={inputId} className="text-sm font-bold text-text">
         {label}
       </label>
       <div
@@ -91,7 +91,7 @@ export function FileUpload({
         } ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
       >
         <UploadIcon aria-hidden="true" className="text-text-muted" width={22} height={22} />
-        <span className="text-[13px] text-text-muted">{t("ui.fileupload.hint")}</span>
+        <span className="text-sm text-text-muted">{t("ui.fileupload.hint")}</span>
         <input
           ref={inputRef}
           id={inputId}

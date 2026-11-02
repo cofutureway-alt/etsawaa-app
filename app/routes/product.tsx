@@ -284,7 +284,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           {card.rating_count > 0 && card.rating_avg != null ? (
             <Rating value={card.rating_avg} count={card.rating_count} />
           ) : (
-            <span className="text-[12px] text-text-faint">{t("store.noReviews")}</span>
+            <span className="text-xs text-text-faint">{t("store.noReviews")}</span>
           )}
 
           {/* price block */}
@@ -297,15 +297,15 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                 size="lg"
               />
             ) : (
-              <span className="text-[13px] text-text-muted">{t("store.product.noPrice")}</span>
+              <span className="text-sm text-text-muted">{t("store.product.noPrice")}</span>
             )}
             {eventPrice != null ? (
-              <span className="rounded-full bg-surface-tint px-2.5 py-1 text-[12px] font-extrabold text-action">
+              <span className="rounded-full bg-surface-tint px-2.5 py-1 text-xs font-extrabold text-action">
                 {t("store.eventDiscount", { percent: card.event_percent })}
               </span>
             ) : null}
             {variantSale != null && regular != null && regular > variantSale ? (
-              <span className="num text-[12px] font-bold text-text-muted">
+              <span className="num text-xs font-bold text-text-muted">
                 {t("store.product.saleUntil", {
                   date: page.sale_ends_at ? new Date(page.sale_ends_at).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-EG") : "",
                 })}
@@ -314,7 +314,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* stock state */}
-          <p className={`text-[13px] font-extrabold ${outOfStock ? "text-danger" : "text-success-strong"}`}>
+          <p className={`text-sm font-extrabold ${outOfStock ? "text-danger" : "text-success-strong"}`}>
             {outOfStock ? t("store.product.outOfStock") : t("store.product.inStock", { count: stock })}
           </p>
 
@@ -382,7 +382,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           </div>
 
           {/* assurances */}
-          <ul className="grid grid-cols-2 gap-2 text-[12px] font-bold text-text-muted">
+          <ul className="grid grid-cols-2 gap-2 text-xs font-bold text-text-muted">
             <li className="flex items-center gap-2 rounded-md border border-border px-3 py-2">
               <TruckIcon aria-hidden="true" className="text-action" />
               {t("store.product.assureShipping")}
@@ -406,8 +406,8 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
               </span>
             )}
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-[13px] font-extrabold text-text">{storeName}</span>
-              <span className="flex items-center gap-2 text-[11px] text-text-muted">
+              <span className="block truncate text-sm font-extrabold text-text">{storeName}</span>
+              <span className="flex items-center gap-2 text-2xs text-text-muted">
                 {card.level_name_ar || card.level_name_en ? (
                   <span className="rounded-full border border-featured px-1.5 py-px font-extrabold text-ink">
                     {lang === "ar" ? card.level_name_ar : card.level_name_en}
@@ -434,7 +434,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                   </p>
                 ) : null}
                 {specRows.length > 0 ? (
-                  <table className="w-full border-collapse text-[13px]">
+                  <table className="w-full border-collapse text-sm">
                     <caption className="sr-only">{t("store.product.tabSpecs")}</caption>
                     <tbody>
                       {specRows.map((attr) => {
@@ -492,11 +492,11 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                   <div className="text-center">
                     <p className="num text-3xl font-black text-text">{card.rating_avg?.toFixed(1) ?? "—"}</p>
                     <Rating value={card.rating_avg ?? 0} size="sm" />
-                    <p className="num mt-1 text-[11px] text-text-muted">{t("store.reviews.count", { count: card.rating_count })}</p>
+                    <p className="num mt-1 text-2xs text-text-muted">{t("store.reviews.count", { count: card.rating_count })}</p>
                   </div>
                   <ul className="min-w-0 flex-1">
                     {ratingDist.map((bucket) => (
-                      <li key={bucket.star} className="flex items-center gap-2 text-[12px]">
+                      <li key={bucket.star} className="flex items-center gap-2 text-xs">
                         <span className="num flex w-8 items-center gap-0.5 text-text-muted">{bucket.star}<StarIcon aria-hidden="true" className="size-3 text-featured" /></span>
                         <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-surface-tint">
                           <span
@@ -513,12 +513,12 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                   {page.reviews.map((review) => (
                     <li key={review.id} className="rounded-lg border border-border bg-surface p-4">
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-[13px] font-extrabold text-text">{review.author_name}</span>
+                        <span className="text-sm font-extrabold text-text">{review.author_name}</span>
                         <Rating value={review.rating} size="sm" />
                       </div>
-                      {review.title ? <p className="mt-1 text-[13px] font-bold text-text">{review.title}</p> : null}
-                      {review.body ? <p className="mt-1 text-[13px] leading-relaxed text-text-muted">{review.body}</p> : null}
-                      <time dateTime={review.created_at} className="num mt-1.5 block text-[11px] text-text-faint">
+                      {review.title ? <p className="mt-1 text-sm font-bold text-text">{review.title}</p> : null}
+                      {review.body ? <p className="mt-1 text-sm leading-relaxed text-text-muted">{review.body}</p> : null}
+                      <time dateTime={review.created_at} className="num mt-1.5 block text-2xs text-text-faint">
                         {new Date(review.created_at).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-EG")}
                       </time>
                     </li>
@@ -568,10 +568,10 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                 {formatPiastres(eventPrice ?? effective, lang === "en" ? "en" : "ar")}
               </span>
             ) : null}
-            <span className="block truncate text-[11px] text-text-muted">{name}</span>
+            <span className="block truncate text-2xs text-text-muted">{name}</span>
           </div>
           {outOfStock ? (
-            <span className="rounded-md bg-surface-tint px-4 py-2.5 text-[13px] font-extrabold text-text-muted">
+            <span className="rounded-md bg-surface-tint px-4 py-2.5 text-sm font-extrabold text-text-muted">
               {t("store.product.outOfStock")}
             </span>
           ) : (
@@ -579,7 +579,7 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
               type="button"
               onClick={() => void addToCart()}
               disabled={adding}
-              className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-md bg-action px-4 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               <CartIcon aria-hidden="true" />
               {t("store.product.addToCart")}

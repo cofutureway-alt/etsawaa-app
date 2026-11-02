@@ -166,7 +166,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               name="q"
               defaultValue={loaderData.q}
               placeholder={t("orders.search")}
-              className="w-56 sm:w-64 rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text shadow-1 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-56 sm:w-64 rounded-md border border-border bg-surface px-3 py-2 text-sm text-text shadow-1 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
             {loaderData.q ? (
               <Link
@@ -190,27 +190,27 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
         <div className="rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5">
           <p className="text-xs font-bold text-text-muted">{t("orders.filterAll")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{totalCount}</p>
-          <p className="mt-0.5 text-[11px] text-text-faint">{en ? "Current query" : "إجمالي المعروض"}</p>
+          <p className="mt-0.5 text-2xs text-text-faint">{en ? "Current query" : "إجمالي المعروض"}</p>
         </div>
         <div className="rounded-lg border border-warning/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-warning">
           <p className="text-xs font-bold text-warning-strong">{t("orders.filterActive")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{activeCount}</p>
-          <p className="mt-0.5 text-[11px] text-text-muted">{en ? "Requires action" : "تحتاج تجهيز ومتابعة"}</p>
+          <p className="mt-0.5 text-2xs text-text-muted">{en ? "Requires action" : "تحتاج تجهيز ومتابعة"}</p>
         </div>
         <div className="rounded-lg border border-success/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-success">
           <p className="text-xs font-bold text-success-strong">{t("orders.filterCompleted")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{completedCount}</p>
-          <p className="mt-0.5 text-[11px] text-text-muted">{en ? "Successfully delivered" : "تم التسليم بنجاح"}</p>
+          <p className="mt-0.5 text-2xs text-text-muted">{en ? "Successfully delivered" : "تم التسليم بنجاح"}</p>
         </div>
         <div className="rounded-lg border border-danger/30 bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-danger">
           <p className="text-xs font-bold text-danger">{t("orders.filterCancelled")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{cancelledCount}</p>
-          <p className="mt-0.5 text-[11px] text-text-muted">{en ? "Returned / voided" : "ملغاة أو مسترجعة"}</p>
+          <p className="mt-0.5 text-2xs text-text-muted">{en ? "Returned / voided" : "ملغاة أو مسترجعة"}</p>
         </div>
         <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-transform hover:-translate-y-0.5 border-t-2 border-t-action">
           <p className="text-xs font-bold text-text-muted">{t("cart.total")}</p>
           <p className="mt-1 text-lg font-black text-action tabular-nums">{money(totalRevenue)}</p>
-          <p className="mt-0.5 text-[11px] text-text-faint">{en ? "Gross value" : "إجمالي قيمة الطلبات"}</p>
+          <p className="mt-0.5 text-2xs text-text-faint">{en ? "Gross value" : "إجمالي قيمة الطلبات"}</p>
         </div>
       </div>
 
@@ -224,7 +224,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               <Link
                 key={f.key}
                 to={`/${lang}/admin/orders?filter=${f.key}${loaderData.q ? `&q=${encodeURIComponent(loaderData.q)}` : ""}`}
-                className={`flex items-center gap-2 border-b-2 px-3.5 py-2.5 text-[13px] font-bold transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2 border-b-2 px-3.5 py-2.5 text-sm font-bold transition-all whitespace-nowrap ${
                   active
                     ? "border-action text-action bg-surface"
                     : "border-transparent text-text-muted hover:text-text hover:bg-surface/50"
@@ -232,7 +232,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               >
                 <span>{f.label}</span>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-[11px] font-black ${
+                  className={`rounded-full px-2 py-0.5 text-2xs font-black ${
                     active ? "bg-primary-soft text-action" : "bg-surface text-text-muted border border-border"
                   }`}
                 >
@@ -257,7 +257,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
           </div>
         ) : (
           <div className="w-full overflow-x-auto">
-            <table className="w-full text-start text-[13px]">
+            <table className="w-full text-start text-sm">
               <thead className="border-b border-border bg-surface-alt text-start text-xs font-black text-text-muted uppercase tracking-wider">
                 <tr>
                   <th className="w-10 px-3.5 py-3 text-start">
@@ -353,7 +353,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
                               : t("checkout.pay_kashier")}
                           </span>
                           <span
-                            className={`text-[11px] font-semibold ${
+                            className={`text-2xs font-semibold ${
                               o.payment_status === "paid"
                                 ? "text-success-strong"
                                 : "text-text-faint"
@@ -414,7 +414,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
       {checked.size > 0 ? (
         <div className="fixed bottom-6 inset-x-0 mx-auto z-50 flex w-fit max-w-[90vw] items-center gap-3 rounded-full border border-border bg-side px-5 py-2.5 text-white shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
           <span className="flex items-center gap-2 text-xs font-extrabold">
-            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-black text-white">
+            <span className="rounded-full bg-primary px-2 py-0.5 text-2xs font-black text-white">
               {checked.size}
             </span>
             <span>{t("orders.selected", { count: checked.size })}</span>
@@ -479,7 +479,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
           <div>
             <label
               htmlFor="bulk-status"
-              className="text-[13px] font-bold text-text block mb-1"
+              className="text-sm font-bold text-text block mb-1"
             >
               {t("orders.newStatus")}
             </label>
@@ -487,7 +487,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               id="bulk-status"
               value={bulkStatus}
               onChange={(e) => setBulkStatus(e.target.value)}
-              className="w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text"
+              className="w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text"
             >
               <option value="processing">{t("order.status_processing")}</option>
               <option value="completed">{t("order.status_completed")}</option>
@@ -498,7 +498,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
           <div>
             <label
               htmlFor="bulk-reason"
-              className="text-[13px] font-bold text-text block mb-1"
+              className="text-sm font-bold text-text block mb-1"
             >
               {t("wd.reason")}
             </label>
@@ -510,7 +510,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder={en ? "Enter the operational reason..." : "اكتب سبب تغيير الحالة الإداري..."}
-              className="w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text"
+              className="w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text"
             />
             <p className="mt-1 text-xs text-text-muted">{t("orders.bulkNote")}</p>
           </div>

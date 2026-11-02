@@ -41,7 +41,7 @@ export function Input({
 
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
-      <label htmlFor={id} className="text-[13px] font-bold text-text">
+      <label htmlFor={id} className="text-sm font-bold text-text">
         {label}
       </label>
       <div className="relative">

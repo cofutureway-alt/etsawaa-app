@@ -38,7 +38,7 @@ export function CompareBar() {
       >
       <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-2.5">
         <ScaleIcon aria-hidden="true" className="shrink-0 text-action" />
-        <span className="num min-w-0 flex-1 truncate text-[13px] font-bold text-text">
+        <span className="num min-w-0 flex-1 truncate text-sm font-bold text-text">
           {t("store.compare.staged", { count: ids.length })}
         </span>
         <button
@@ -56,7 +56,7 @@ export function CompareBar() {
           type="button"
           disabled={ids.length < 2}
           onClick={() => void navigate(`/${lang}/compare?ids=${ids.join(",")}`)}
-          className="flex min-h-10 cursor-pointer items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex min-h-10 cursor-pointer items-center rounded-md bg-action px-4 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {ids.length < 2 ? t("store.compare.pickSecond") : t("store.compare.go")}
         </button>

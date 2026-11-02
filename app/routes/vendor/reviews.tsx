@@ -93,7 +93,7 @@ export default function VendorReviews({ loaderData }: Route.ComponentProps) {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="flex items-center gap-2">
                   <Rating value={Number(r.rating)} size="sm" />
-                  <span className="text-[13px] font-extrabold text-text">
+                  <span className="text-sm font-extrabold text-text">
                     {names[r.product_id] ?? "—"}
                   </span>
                 </span>
@@ -104,8 +104,8 @@ export default function VendorReviews({ loaderData }: Route.ComponentProps) {
                   </span>
                 </span>
               </div>
-              {r.title ? <p className="mt-1.5 text-[13px] font-bold text-text">{r.title}</p> : null}
-              {r.body ? <p className="mt-0.5 text-[13px] leading-relaxed text-text-muted">{r.body}</p> : null}
+              {r.title ? <p className="mt-1.5 text-sm font-bold text-text">{r.title}</p> : null}
+              {r.body ? <p className="mt-0.5 text-sm leading-relaxed text-text-muted">{r.body}</p> : null}
             </li>
           ))}
         </ul>

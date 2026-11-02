@@ -94,7 +94,7 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
             <CheckIcon className="size-7" />
           </span>
           <h1 className="text-lg font-black text-text">{t("contact.sent.title")}</h1>
-          <p className="text-[13px] text-text-muted">{t("contact.sent.body")}</p>
+          <p className="text-sm text-text-muted">{t("contact.sent.body")}</p>
         </div>
       </div>
     );
@@ -108,7 +108,7 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
       <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
         <header>
           <h1 className="text-lg font-black text-text">{t("contact.title")}</h1>
-          <p className="mt-1 text-[13px] text-text-muted">{t("contact.subtitle")}</p>
+          <p className="mt-1 text-sm text-text-muted">{t("contact.subtitle")}</p>
         </header>
 
         <fetcher.Form method="post" noValidate onSubmit={() => setTouched(true)} className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
@@ -116,7 +116,7 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
           <Input label={t("contact.email")} name="email" type="email" value={form.email} onChange={set("email")} required maxLength={120} error={err("email") ?? undefined} inputClassName="bg-surface" />
           <Input label={t("contact.phone")} name="phone" type="tel" value={form.phone} onChange={set("phone")} maxLength={20} hint={t("contact.phoneHint")} error={err("phone") ?? undefined} inputClassName="bg-surface" />
           <Input label={t("contact.subject")} name="subject" value={form.subject} onChange={set("subject")} required maxLength={120} error={err("subject") ?? undefined} inputClassName="bg-surface" />
-          <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+          <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
             {t("contact.message")}
             <textarea
               name="message"
@@ -126,12 +126,12 @@ export default function ContactPage({ loaderData }: Route.ComponentProps) {
               rows={5}
               maxLength={2000}
               aria-invalid={fieldError === "message"}
-              className="rounded-md border border-border bg-surface px-3 py-2.5 text-[13px] outline-none transition-colors duration-150 focus:border-action"
+              className="rounded-md border border-border bg-surface px-3 py-2.5 text-sm outline-none transition-colors duration-150 focus:border-action"
             />
-            {err("message") ? <span className="text-[12px] font-bold text-danger">{err("message")}</span> : null}
+            {err("message") ? <span className="text-xs font-bold text-danger">{err("message")}</span> : null}
           </label>
           {serverReason === "db" ? (
-            <p className="rounded-md bg-danger-soft px-3 py-2 text-[12px] font-bold text-danger" role="alert">{t("contact.error.db")}</p>
+            <p className="rounded-md bg-danger-soft px-3 py-2 text-xs font-bold text-danger" role="alert">{t("contact.error.db")}</p>
           ) : null}
           <button
             type="submit"

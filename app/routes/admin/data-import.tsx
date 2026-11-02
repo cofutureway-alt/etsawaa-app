@@ -86,7 +86,7 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <h1 className="text-lg font-extrabold text-text">{t("dim.title")}</h1>
-      <p className="mt-1 max-w-[68ch] text-[13px] text-text-muted">{t("dim.hint")}</p>
+      <p className="mt-1 max-w-[68ch] text-sm text-text-muted">{t("dim.hint")}</p>
 
       {batches.length === 0 ? (
         <div className="mt-4 rounded-md border border-border bg-surface p-6 text-center text-sm text-text-muted">
@@ -94,7 +94,7 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
         </div>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-md border border-border bg-surface">
-          <table className="w-full min-w-[640px] text-start text-[13px]">
+          <table className="w-full min-w-[640px] text-start text-sm">
             <caption className="sr-only">{t("dim.batches")}</caption>
             <thead>
               <tr className="border-b border-border bg-surface-tint text-text-muted">
@@ -148,17 +148,17 @@ export default function AdminDataImport({ loaderData }: Route.ComponentProps) {
       )}
 
       {fetcher.data && !fetcher.data.ok && !("deferred" in fetcher.data && fetcher.data.deferred) ? (
-        <p role="alert" className="mt-3 text-[13px] font-bold text-danger">{String((fetcher.data as { reason?: string }).reason)}</p>
+        <p role="alert" className="mt-3 text-sm font-bold text-danger">{String((fetcher.data as { reason?: string }).reason)}</p>
       ) : null}
       {fetcher.data && "rolledBack" in fetcher.data && fetcher.data.ok ? (
-        <p role="status" className="mt-3 text-[13px] font-bold text-success-strong">{t("dim.rolledBack")} #{(fetcher.data as { rolledBack?: number }).rolledBack}</p>
+        <p role="status" className="mt-3 text-sm font-bold text-success-strong">{t("dim.rolledBack")} #{(fetcher.data as { rolledBack?: number }).rolledBack}</p>
       ) : null}
 
       {pendingTemplates ? (
         <div className="mt-4 rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("dim.publishStatus")}</h2>
-          <p className="mt-1 text-[13px] text-text-muted">{t("dim.publishDeferred")}</p>
-          <p className="mt-1 text-[13px] text-text-muted">{t("dim.publishGateOn")}</p>
+          <p className="mt-1 text-sm text-text-muted">{t("dim.publishDeferred")}</p>
+          <p className="mt-1 text-sm text-text-muted">{t("dim.publishGateOn")}</p>
           <p className="mt-2 text-xs text-text-faint">{t("dim.reviewQueue")} → <code dir="ltr">/{loaderData.lang}/admin/data-import/templates</code></p>
         </div>
       ) : null}

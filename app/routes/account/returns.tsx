@@ -29,7 +29,7 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
   return (
     <div>
       {loaderData.submitted ? (
-        <p role="status" className="mb-4 rounded-md border border-primary bg-surface-tint p-3 text-[13px] font-bold text-text">
+        <p role="status" className="mb-4 rounded-md border border-primary bg-surface-tint p-3 text-sm font-bold text-text">
           {t("returns.submittedNotice")}
         </p>
       ) : null}
@@ -59,15 +59,15 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
                 </div>
               </div>
               {r.status === "pending_admin" ? (
-                <p className="mt-2 text-[13px] text-text-muted">{t("returns.underReview")}</p>
+                <p className="mt-2 text-sm text-text-muted">{t("returns.underReview")}</p>
               ) : null}
               {r.decision_note ? (
-                <p className="mt-2 text-[13px] text-text-muted">{t("returns.decisionNote")}: {r.decision_note}</p>
+                <p className="mt-2 text-sm text-text-muted">{t("returns.decisionNote")}: {r.decision_note}</p>
               ) : null}
               {r.order ? (
                 <Link
                   to={`/${loaderData.lang}/account/orders/${encodeURIComponent(r.order.number)}`}
-                  className="mt-2 inline-block text-[13px] font-bold text-action hover:underline"
+                  className="mt-2 inline-block text-sm font-bold text-action hover:underline"
                 >
                   {t("orders.details")}
                 </Link>

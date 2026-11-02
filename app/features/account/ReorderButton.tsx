@@ -47,7 +47,7 @@ export function ReorderButton({ orderNumber, lang: _lang }: { orderNumber: strin
         type="button"
         onClick={() => void reorder()}
         disabled={state === "loading"}
-        className="cursor-pointer rounded-md border border-action px-3 py-1.5 text-[13px] font-bold text-action transition-colors duration-150 hover:bg-surface-tint disabled:cursor-not-allowed disabled:opacity-60"
+        className="cursor-pointer rounded-md border border-action px-3 py-1.5 text-sm font-bold text-action transition-colors duration-150 hover:bg-surface-tint disabled:cursor-not-allowed disabled:opacity-60"
       >
         {state === "loading" ? t("orders.reordering") : t("orders.reorder")}
       </button>

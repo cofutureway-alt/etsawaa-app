@@ -140,7 +140,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-text" dir="ltr">
               {money(sales)}
             </p>
-            <p className="mt-1 text-[11px] text-text-faint">إجمالي مبيعات المنتجات المسلمة</p>
+            <p className="mt-1 text-2xs text-text-faint">إجمالي مبيعات المنتجات المسلمة</p>
           </CardBody>
         </Card>
 
@@ -156,7 +156,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-danger" dir="ltr">
               −{money(commission)}
             </p>
-            <p className="mt-1 text-[11px] text-text-faint">نسبة عمولة منصة إتسوق</p>
+            <p className="mt-1 text-2xs text-text-faint">نسبة عمولة منصة إتسوق</p>
           </CardBody>
         </Card>
 
@@ -172,7 +172,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-text" dir="ltr">
               {money(shipping - pickup)}
             </p>
-            <p className="mt-1 text-[11px] text-text-faint">صافي إيرادات ورسوم الشحن</p>
+            <p className="mt-1 text-2xs text-text-faint">صافي إيرادات ورسوم الشحن</p>
           </CardBody>
         </Card>
 
@@ -188,7 +188,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-success-strong" dir="ltr">
               {money(net)}
             </p>
-            <p className="mt-1 text-[11px] text-success-strong/80 font-medium">صافي الرصيد المضاف للمحفظة</p>
+            <p className="mt-1 text-2xs text-success-strong/80 font-medium">صافي الرصيد المضاف للمحفظة</p>
           </CardBody>
         </Card>
       </div>
@@ -227,7 +227,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <div className="flex items-center justify-between bg-surface-tint/40 px-4 sm:px-6 py-4">
               <div>
                 <span className="text-sm font-black text-text">{t("report.net")}</span>
-                <span className="block text-[11px] text-text-muted mt-0.5">{t("report.netHint")}</span>
+                <span className="block text-2xs text-text-muted mt-0.5">{t("report.netHint")}</span>
               </div>
               <span className="font-mono text-lg font-black text-action tabular-nums" dir="ltr">
                 {money(net)}

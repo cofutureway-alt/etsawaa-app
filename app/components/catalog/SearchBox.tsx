@@ -92,7 +92,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
         <button
           type="button"
           onClick={submit}
-          className="flex shrink-0 cursor-pointer items-center gap-1.5 bg-action px-3.5 py-2.5 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+          className="flex shrink-0 cursor-pointer items-center gap-1.5 bg-action px-3.5 py-2.5 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
         >
           <SearchIcon aria-hidden="true" />
           <span className="hidden lg:inline">{t("common.search")}</span>
@@ -107,9 +107,9 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
           className="absolute inset-x-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-md border border-border bg-surface shadow-2"
         >
           {loading ? (
-            <p className="px-4 py-3 text-[13px] text-text-muted" role="status">{t("common.loading")}</p>
+            <p className="px-4 py-3 text-sm text-text-muted" role="status">{t("common.loading")}</p>
           ) : !hasAny ? (
-            <p className="px-4 py-3 text-[13px] text-text-muted">{t("store.search.noSuggestions")}</p>
+            <p className="px-4 py-3 text-sm text-text-muted">{t("store.search.noSuggestions")}</p>
           ) : (
             <>
               {items.products.length > 0 ? (
@@ -126,7 +126,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
                   {items.categories.map((c) => (
                     <SuggestItem key={c.slug_en} to={`/${lang}/category/${encodeURIComponent(lang === "en" ? c.slug_en || c.slug_ar : c.slug_ar || c.slug_en)}`} onPick={() => setOpen(false)}>
                       <span className="truncate font-bold">{lang === "ar" ? c.name_ar : c.name_en}</span>
-                      <span className="text-[11px] text-text-faint">{t("store.search.categoryDepth", { depth: c.depth })}</span>
+                      <span className="text-2xs text-text-faint">{t("store.search.categoryDepth", { depth: c.depth })}</span>
                     </SuggestItem>
                   ))}
                 </SuggestGroup>
@@ -147,7 +147,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
             <Link
               to={`/${lang}/search?q=${encodeURIComponent(q.trim())}`}
               onClick={() => setOpen(false)}
-              className="block border-t border-border px-4 py-2.5 text-[13px] font-extrabold text-action hover:bg-surface-tint"
+              className="block border-t border-border px-4 py-2.5 text-sm font-extrabold text-action hover:bg-surface-tint"
             >
               {t("store.search.seeAll")} "{q.trim()}"
             </Link>
@@ -161,7 +161,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
 function SuggestGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="py-1">
-      <p className="px-4 pb-1 pt-2 text-[11px] font-extrabold uppercase tracking-wide text-text-faint">{title}</p>
+      <p className="px-4 pb-1 pt-2 text-2xs font-extrabold uppercase tracking-wide text-text-faint">{title}</p>
       {children}
     </div>
   );
@@ -173,7 +173,7 @@ function SuggestItem({ to, onPick, children }: { to: string; onPick: () => void;
       role="option"
       to={to}
       onClick={onPick}
-      className="flex items-center gap-2 px-4 py-2 text-[13px] text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+      className="flex items-center gap-2 px-4 py-2 text-sm text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
     >
       {children}
     </Link>

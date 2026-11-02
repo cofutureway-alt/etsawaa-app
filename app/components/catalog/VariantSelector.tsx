@@ -45,7 +45,7 @@ export function VariantSelector({
         const current = selected.get(axis.attribute_id) ?? "";
         return (
           <fieldset key={axis.attribute_id} className="min-w-0">
-            <legend className="mb-2 text-[13px] font-extrabold text-text">
+            <legend className="mb-2 text-sm font-extrabold text-text">
               {t("store.product.selectAxis", { axis: lang === "ar" ? axis.label_ar : axis.label_en })}:
             </legend>
             <div className="flex flex-wrap gap-2">
@@ -63,7 +63,7 @@ export function VariantSelector({
                     aria-pressed={active}
                     title={available ? label : t("store.product.outOfStockOption")}
                     onClick={() => onSelect(axis.attribute_id, option.id)}
-                    className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-md border-2 px-3 py-2 text-[13px] font-bold transition-colors duration-150 ${
+                    className={`flex min-h-11 cursor-pointer items-center gap-2 rounded-md border-2 px-3 py-2 text-sm font-bold transition-colors duration-150 ${
                       active
                         ? "border-action bg-surface-tint text-action"
                         : available

@@ -109,7 +109,7 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
         <h1 className="text-lg font-extrabold text-text">{t("dim.reviewQueue")}</h1>
         <Badge tone="warning">{loaderData.pendingTotal} {t("dim.pending")}</Badge>
       </div>
-      <p className="mt-1 max-w-[68ch] text-[13px] text-text-muted">{t("dim.reviewHint")}</p>
+      <p className="mt-1 max-w-[68ch] text-sm text-text-muted">{t("dim.reviewHint")}</p>
 
       <nav className="mt-3 flex flex-wrap gap-2" aria-label="filter">
         {["pending", "approved", "adjusted", "rejected", "all"].map((s) => (
@@ -139,7 +139,7 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
                   <Badge tone="neutral">{tpl.source === "exact" ? t("dim.exact") : t("dim.newFamily")}</Badge>
                   <span className="text-xs text-text-faint num" dir="ltr">#{tpl.src_row}</span>
                 </div>
-                <dl className="mt-1.5 grid gap-x-4 gap-y-1 text-[13px] sm:grid-cols-2 lg:grid-cols-4">
+                <dl className="mt-1.5 grid gap-x-4 gap-y-1 text-sm sm:grid-cols-2 lg:grid-cols-4">
                   <div><dt className="inline text-text-muted">{t("dim.category")}: </dt><dd className="inline">{catPath}</dd></div>
                   <div><dt className="inline text-text-muted">{t("dim.family")}: </dt><dd className="inline" dir="ltr"><code>{tpl.family || "—"}</code></dd></div>
                   <div><dt className="inline text-text-muted">{t("dim.fieldsCount")}: </dt><dd className="inline num" dir="ltr">{tpl.fields.length}</dd></div>
@@ -200,7 +200,7 @@ export default function AdminTemplateReview({ loaderData }: Route.ComponentProps
       )}
 
       {fetcher.data && !fetcher.data.ok ? (
-        <p role="alert" className="mt-3 text-[13px] font-bold text-danger">{String((fetcher.data as { reason?: string }).reason)}</p>
+        <p role="alert" className="mt-3 text-sm font-bold text-danger">{String((fetcher.data as { reason?: string }).reason)}</p>
       ) : null}
     </div>
   );

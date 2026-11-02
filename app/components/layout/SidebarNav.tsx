@@ -39,7 +39,7 @@ export function SidebarNav({
         <div key={group.label ?? groupIndex} className="flex flex-col gap-0.5">
           {group.label ? (
             <p
-              className={`px-2.5 pb-1 pt-3 text-[10px] font-extrabold uppercase tracking-[1.5px] text-side-muted ${
+              className={`px-2.5 pb-1 pt-3 text-2xs font-extrabold uppercase tracking-[1.5px] text-side-muted ${
                 collapsed ? "sr-only" : ""
               }`}
             >
@@ -52,17 +52,17 @@ export function SidebarNav({
                 key={item.to}
                 aria-disabled="true"
                 title={collapsed ? item.label : item.phase}
-                className={`flex cursor-not-allowed items-center gap-2.5 rounded-sm border-s-[3px] border-transparent px-2.5 py-2.5 text-[13px] font-semibold text-side-muted ${
+                className={`flex cursor-not-allowed items-center gap-2.5 rounded-sm border-s-[3px] border-transparent px-2.5 py-2.5 text-sm font-semibold text-side-muted ${
                   collapsed ? "justify-center" : ""
                 }`}
               >
-                <span aria-hidden="true" className="shrink-0 text-[17px] leading-none">
+                <span aria-hidden="true" className="shrink-0 text-lg leading-none">
                   {item.icon}
                 </span>
                 <span className={collapsed ? "sr-only" : "truncate"}>{item.label}</span>
                 {item.phase ? (
                   <span
-                    className={`ms-auto rounded-full bg-featured px-1.5 text-[10px] font-extrabold text-ink ${
+                    className={`ms-auto rounded-full bg-featured px-1.5 text-2xs font-extrabold text-ink ${
                       collapsed ? "hidden" : ""
                     }`}
                   >
@@ -77,7 +77,7 @@ export function SidebarNav({
                 end={item.end}
                 title={collapsed ? item.label : undefined}
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 rounded-sm border-s-[3px] py-2.5 text-[13px] font-semibold transition-colors duration-150 ${
+                  `flex items-center gap-2.5 rounded-sm border-s-[3px] py-2.5 text-sm font-semibold transition-colors duration-150 ${
                     collapsed ? "justify-center px-2.5" : "px-2.5"
                   } ${
                     isActive
@@ -86,13 +86,13 @@ export function SidebarNav({
                   }`
                 }
               >
-                <span aria-hidden="true" className="shrink-0 text-[17px] leading-none">
+                <span aria-hidden="true" className="shrink-0 text-lg leading-none">
                   {item.icon}
                 </span>
                 <span className={collapsed ? "sr-only" : "truncate"}>{item.label}</span>
                 {item.badge !== undefined && item.badge > 0 ? (
                   <span
-                    className={`num ms-auto rounded-full bg-featured px-1.5 text-[10px] font-extrabold text-ink ${
+                    className={`num ms-auto rounded-full bg-featured px-1.5 text-2xs font-extrabold text-ink ${
                       collapsed ? "hidden" : ""
                     }`}
                   >

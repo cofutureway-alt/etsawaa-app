@@ -64,7 +64,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
   return (
     <div className="flex flex-col gap-5">
       {loaderData.missingProfile ? (
-        <div role="status" className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-primary/40 bg-primary-soft p-4 text-[13px]">
+        <div role="status" className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-primary/40 bg-primary-soft p-4 text-sm">
           <p className="font-bold text-text">{t("overview.completeProfile")}</p>
           <Link to={`/${lang}/account/profile`} className="inline-flex min-h-11 items-center rounded-md bg-action px-4 font-extrabold text-on-action hover:bg-action-hover">
             {t("account.profile")}
@@ -85,7 +85,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
       <section aria-label={t("overview.recentOrders")}>
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-extrabold text-text">{t("overview.recentOrders")}</h2>
-          <Link to={`/${lang}/account/orders`} className="inline-flex min-h-11 items-center gap-1 text-[13px] font-bold text-action hover:underline">
+          <Link to={`/${lang}/account/orders`} className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-action hover:underline">
             {t("overview.viewAll")}
             <ChevronLeftIcon aria-hidden="true" width={13} height={13} className="rtl:rotate-0 ltr:rotate-180" />
           </Link>
@@ -93,7 +93,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
         {orders.length === 0 ? (
           <div className="mt-2 rounded-lg border border-dashed border-border-strong bg-surface px-5 py-8 text-center">
             <p className="text-sm font-bold text-text">{t("orders.empty")}</p>
-            <Link to={`/${lang}/products`} className="mt-2 inline-flex min-h-11 items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action hover:bg-action-hover">
+            <Link to={`/${lang}/products`} className="mt-2 inline-flex min-h-11 items-center rounded-md bg-action px-4 text-sm font-extrabold text-on-action hover:bg-action-hover">
               {t("nav.allProducts")}
             </Link>
           </div>
@@ -125,7 +125,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
       <section aria-label={t("overview.refundStatuses")}>
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-extrabold text-text">{t("overview.refundStatuses")}</h2>
-          <Link to={`/${lang}/account/returns`} className="inline-flex min-h-11 items-center gap-1 text-[13px] font-bold text-action hover:underline">
+          <Link to={`/${lang}/account/returns`} className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-action hover:underline">
             {t("overview.viewAll")}
             <ChevronLeftIcon aria-hidden="true" width={13} height={13} className="rtl:rotate-0 ltr:rotate-180" />
           </Link>
@@ -137,7 +137,7 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
         ) : (
           <ul className="mt-2 flex flex-col gap-2.5">
             {refunds.map((r) => (
-              <li key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-md border border-border bg-surface p-4 text-[13px]">
+              <li key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-md border border-border bg-surface p-4 text-sm">
                 <span className="font-extrabold text-text" dir="ltr">{r.order?.number ?? "—"}</span>
                 <span className="ms-auto rounded-full bg-surface-tint px-3 py-1 text-xs font-extrabold text-text-muted">
                   {t(`returns.status_${r.status}`)}

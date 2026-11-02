@@ -28,7 +28,7 @@ export default function AuthLayout() {
         <Link to={`/${root?.locale ?? "ar"}`} aria-label={t("a11y.logoAlt")}>
           <img src="/logo-transparent.webp" alt={siteName ?? t("app.name")} width={279} height={224} className="h-14 w-auto" />
         </Link>
-        <p className="text-[13px] text-text-muted">{t("auth.login.subtitle")}</p>
+        <p className="text-sm text-text-muted">{t("auth.login.subtitle")}</p>
       </div>
       <RoutePending>
         <Outlet />

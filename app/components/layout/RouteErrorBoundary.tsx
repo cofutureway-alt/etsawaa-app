@@ -34,7 +34,7 @@ export function RouteErrorBoundary({ backHref }: { backHref?: string }) {
     <div role="alert" className="mx-auto my-10 w-full max-w-[560px] rounded-lg border border-border bg-surface p-6 text-center">
       <p className="num text-4xl font-black text-danger" dir="ltr">{status}</p>
       <h1 className="mt-2 text-lg font-extrabold text-text">{title}</h1>
-      <p className="mt-2 text-[13px] text-text-muted">{body}</p>
+      <p className="mt-2 text-sm text-text-muted">{body}</p>
       {status >= 500 ? (
         <p className="mt-3 rounded-md bg-surface-tint px-3 py-2 font-mono text-xs text-text-muted" dir="ltr">
           {correlationId}
@@ -42,11 +42,11 @@ export function RouteErrorBoundary({ backHref }: { backHref?: string }) {
       ) : null}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
         {backHref ? (
-          <Link to={backHref} className="inline-flex min-h-11 items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action hover:bg-action-hover">
+          <Link to={backHref} className="inline-flex min-h-11 items-center rounded-md bg-action px-4 text-sm font-extrabold text-on-action hover:bg-action-hover">
             رجوع
           </Link>
         ) : null}
-        <Link to="/" className="inline-flex min-h-11 items-center rounded-md border border-border px-4 text-[13px] font-extrabold text-text hover:bg-surface-tint">
+        <Link to="/" className="inline-flex min-h-11 items-center rounded-md border border-border px-4 text-sm font-extrabold text-text hover:bg-surface-tint">
           الرئيسية
         </Link>
       </div>

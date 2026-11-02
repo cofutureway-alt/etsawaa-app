@@ -62,7 +62,7 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
   }
 
   if (!data) {
-    return <p className="py-10 text-center text-[13px] font-bold text-text-muted">{t("errors.dataUnavailable")}</p>;
+    return <p className="py-10 text-center text-sm font-bold text-text-muted">{t("errors.dataUnavailable")}</p>;
   }
 
   return (

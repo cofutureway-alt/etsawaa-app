@@ -99,12 +99,12 @@ export default function CompletePage({ loaderData }: Route.ComponentProps) {
       <CardBody className="flex flex-col gap-4 p-6">
         <div>
           <h1 className="text-lg font-extrabold text-text">{t("auth.complete.title")}</h1>
-          <p className="text-[13px] text-text-muted">
+          <p className="text-sm text-text-muted">
             {t("auth.complete.subtitle")} <span className="num">{loaderData.email}</span>
           </p>
         </div>
         {errorData?.formError ? (
-          <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] font-bold text-danger">
+          <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-sm font-bold text-danger">
             {errorData.formError === "phone_taken" ? t("auth.complete.phoneTaken") : t("auth.errors.generic")}
           </div>
         ) : null}
@@ -122,7 +122,7 @@ export default function CompletePage({ loaderData }: Route.ComponentProps) {
             error={errors.phone?.message ?? errorData?.fieldErrors?.phone}
             {...register("phone")}
           />
-          <label className="flex items-start gap-2 text-[13px] text-text">
+          <label className="flex items-start gap-2 text-sm text-text">
             <input type="checkbox" className="mt-0.5 size-4 accent-[var(--color-action)]" {...register("terms")} />
             <span>{t("auth.complete.terms")}</span>
           </label>

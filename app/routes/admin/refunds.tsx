@@ -184,7 +184,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
         <ul className="mt-3 flex flex-col gap-3">
           {(loaderData.rfqs as Rfq[]).map((r) => (
             <li key={r.id} className="rounded-md border border-border bg-surface p-4">
-              <div className="flex flex-wrap items-center justify-between gap-2 text-[13px]">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                 <a href={`/${lang}/admin/orders/${encodeURIComponent(r.order_number)}`} className="font-extrabold text-action hover:underline" dir="ltr">
                   {r.order_number}
                 </a>
@@ -195,20 +195,20 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                 </Badge>
                 <span className="text-xs text-text-muted" dir="ltr">{r.created_at.slice(0, 10)}</span>
               </div>
-              {r.description ? <p className="mt-1.5 text-[13px] text-text-muted">{r.description}</p> : null}
+              {r.description ? <p className="mt-1.5 text-sm text-text-muted">{r.description}</p> : null}
               {/* A-03: the admin rules on money here, so the customer's proof
                   is shown inline rather than left in the database. */}
               <EvidenceStrip paths={r.evidence} />
 
               <details className="mt-2" open={r.status === "pending_admin" && openId === r.id}
                 onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) setOpenId(r.id); }}>
-                <summary className="cursor-pointer text-[13px] font-bold text-primary">{t("rf.items", { count: r.items.length })}</summary>
+                <summary className="cursor-pointer text-sm font-bold text-primary">{t("rf.items", { count: r.items.length })}</summary>
                 {r.status === "pending_admin" ? (
                   <fetcher.Form method="post" className="mt-2 flex flex-col gap-3">
                     <input type="hidden" name="intent" value="decide" />
                     <input type="hidden" name="request_id" value={r.id} />
                     {r.items.map((it) => (
-                      <fieldset key={it.id} className="rounded-md border border-border/70 p-3 text-[13px]">
+                      <fieldset key={it.id} className="rounded-md border border-border/70 p-3 text-sm">
                         <legend className="px-1 font-bold text-text">
                           {en ? it.vendor_en : it.vendor_ar} — {it.product_name} × {it.qty}
                         </legend>
@@ -231,7 +231,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                           <label htmlFor={`amt-${it.id}`} className="text-xs text-text-muted">{t("rf.amount")}</label>
                           <input id={`amt-${it.id}`} name={`amount_${it.id}`} type="number" min={0} step={1} dir="ltr"
                             defaultValue={it.line_total_piastres}
-                            className="w-28 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
+                            className="w-28 rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
                           <label className="flex items-center gap-1.5 text-xs text-text">
                             <input type="checkbox" name={`restock_${it.id}`} defaultChecked className="size-4 accent-[var(--color-action)]" />
                             {t("rf.restock")}
@@ -252,11 +252,11 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                   <fetcher.Form method="post" className="mt-2 flex flex-wrap items-center gap-2">
                     <input type="hidden" name="intent" value="execute" />
                     <input type="hidden" name="request_id" value={r.id} />
-                    <input name="note" placeholder={t("rf.executeNote")} className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-[13px]" />
+                    <input name="note" placeholder={t("rf.executeNote")} className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />
                     <Button type="submit" size="sm" disabled={busy}>{t("rf.execute")}</Button>
                   </fetcher.Form>
                 ) : (
-                  <ul className="mt-2 flex flex-col gap-1.5 text-[13px]">
+                  <ul className="mt-2 flex flex-col gap-1.5 text-sm">
                     {r.items.map((it) => (
                       <li key={it.id} className="flex flex-wrap items-center gap-2">
                         <span className="text-text">{it.product_name} × {it.qty}</span>
@@ -288,11 +288,11 @@ function EvidenceStrip({ paths }: { paths: unknown }) {
   const { t } = useTranslation();
   const list = Array.isArray(paths) ? paths.filter((x): x is string => typeof x === "string") : [];
   if (list.length === 0) {
-    return <p className="mt-1.5 text-[12px] text-text-faint">{t("rfund.noEvidence")}</p>;
+    return <p className="mt-1.5 text-xs text-text-faint">{t("rfund.noEvidence")}</p>;
   }
   return (
     <div className="mt-2">
-      <p className="text-[12px] font-bold text-text-muted">{t("rfund.evidence", { count: list.length })}</p>
+      <p className="text-xs font-bold text-text-muted">{t("rfund.evidence", { count: list.length })}</p>
       <ul className="mt-1 flex flex-wrap gap-1.5">
         {list.map((p) => (
           <li key={p}>

@@ -166,7 +166,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
         </div>
         <Link
           to={`/${loaderData.lang}/admin/vendors/${v.id}/edit`}
-          className="rounded-md bg-action px-4 py-2 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+          className="rounded-md bg-action px-4 py-2 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
         >
           {t("vd.editSettings")}
         </Link>
@@ -184,7 +184,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
             <dt className="text-xs font-bold text-text-muted">{tile.label}</dt>
             <dd className="num mt-1 text-lg font-extrabold text-text">{tile.value ?? money(tile.money)}</dd>
             {tile.label === t("vd.statRating") && s.ratingCount > 0 ? (
-              <dd className="mt-0.5 text-[11px] text-text-faint">{t("vd.ratingCount", { count: s.ratingCount })}</dd>
+              <dd className="mt-0.5 text-2xs text-text-faint">{t("vd.ratingCount", { count: s.ratingCount })}</dd>
             ) : null}
           </div>
         ))}
@@ -197,7 +197,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
           {infoRows.map((row) => (
             <div key={row.label} className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-2">
               <dt className="text-xs font-bold text-text-muted">{row.label}</dt>
-              <dd className="min-w-0 truncate text-[13px] font-bold text-text">{row.value}</dd>
+              <dd className="min-w-0 truncate text-sm font-bold text-text">{row.value}</dd>
             </div>
           ))}
         </dl>
@@ -218,7 +218,7 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
         <section aria-label={t("vd.wallet")} className="rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("vd.wallet")}</h2>
           <p className="num mt-2 text-lg font-extrabold text-text" dir="ltr">{money(loaderData.wallet.available_piastres)}</p>
-          <p className="mt-0.5 text-[11px] text-text-faint">
+          <p className="mt-0.5 text-2xs text-text-faint">
             {t("vd.pending")}: <span className="num" dir="ltr">{money(loaderData.wallet.pending_piastres)}</span>
           </p>
         </section>
@@ -226,13 +226,13 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
         <section aria-label={t("vd.penalties")} className="rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("vd.penalties")}</h2>
           {loaderData.penalties.length === 0 ? (
-            <p className="mt-2 text-[13px] text-text-muted">{t("vd.none")}</p>
+            <p className="mt-2 text-sm text-text-muted">{t("vd.none")}</p>
           ) : (
             <ul className="mt-2 flex flex-col divide-y divide-border/60">
               {loaderData.penalties.map((p: { id: string; amount_piastres: number; reason: string; status: string; created_at: string }) => (
-                <li key={p.id} className="py-1.5 text-[13px]">
+                <li key={p.id} className="py-1.5 text-sm">
                   <span className="num font-bold text-text" dir="ltr">{money(p.amount_piastres)}</span>
-                  <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-[10px] font-bold text-text-muted">{t(`pen.status_${p.status}`)}</span>
+                  <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-2xs font-bold text-text-muted">{t(`pen.status_${p.status}`)}</span>
                   <span className="block truncate text-xs text-text-muted" title={p.reason}>{p.reason}</span>
                 </li>
               ))}
@@ -243,13 +243,13 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
         <section aria-label={t("vd.ads")} className="rounded-md border border-border bg-surface p-4">
           <h2 className="text-sm font-extrabold text-text">{t("vd.ads")}</h2>
           {loaderData.ads.length === 0 ? (
-            <p className="mt-2 text-[13px] text-text-muted">{t("vd.none")}</p>
+            <p className="mt-2 text-sm text-text-muted">{t("vd.none")}</p>
           ) : (
             <ul className="mt-2 flex flex-col divide-y divide-border/60">
               {loaderData.ads.map((a: { id: string; source: string; status: string; started_at: string; ad_packages?: { name_ar: string; name_en: string } | null }) => (
-                <li key={a.id} className="py-1.5 text-[13px]">
+                <li key={a.id} className="py-1.5 text-sm">
                   <span className="font-bold text-text">{a.ad_packages ? (en ? a.ad_packages.name_en : a.ad_packages.name_ar) : "—"}</span>
-                  <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-[10px] font-bold text-text-muted">{t(`ads.source_${a.source}`)}</span>
+                  <span className="ms-2 rounded-md bg-surface-tint px-1.5 py-0.5 text-2xs font-bold text-text-muted">{t(`ads.source_${a.source}`)}</span>
                   <span className="block text-xs text-text-muted" dir="ltr">{a.started_at?.slice(0, 10)} · {a.status}</span>
                 </li>
               ))}
@@ -262,10 +262,10 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
       <section aria-label={t("vd.ordersTitle")} className="rounded-md border border-border bg-surface">
         <h2 className="border-b border-border px-4 py-3 text-sm font-extrabold text-text">{t("vd.ordersTitle")}</h2>
         {loaderData.recentOrders.length === 0 ? (
-          <p className="px-4 py-6 text-center text-[13px] text-text-muted">{t("vd.noOrders")}</p>
+          <p className="px-4 py-6 text-center text-sm text-text-muted">{t("vd.noOrders")}</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-[13px]">
+            <table className="w-full text-sm">
               <thead className="bg-surface-tint">
                 <tr>
                   <th className="p-2.5 text-start font-bold">{t("vd.colNumber")}</th>

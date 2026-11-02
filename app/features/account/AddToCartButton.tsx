@@ -31,7 +31,7 @@ export function AddToCartButton({ productId, label }: { productId: string; label
         type="button"
         onClick={() => void add()}
         disabled={state === "loading"}
-        className="cursor-pointer rounded-md border border-action px-3 py-1.5 text-[13px] font-bold text-action transition-colors duration-150 hover:bg-surface-tint disabled:opacity-60"
+        className="cursor-pointer rounded-md border border-action px-3 py-1.5 text-sm font-bold text-action transition-colors duration-150 hover:bg-surface-tint disabled:opacity-60"
       >
         {label}
       </button>

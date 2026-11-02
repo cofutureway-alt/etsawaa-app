@@ -72,7 +72,7 @@ export default function AdminRoles({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <h1 className="text-lg font-extrabold text-text">{t("ro.title")}</h1>
-      <p className="mt-1 text-[13px] text-text-muted">{t("ro.hint")}</p>
+      <p className="mt-1 text-sm text-text-muted">{t("ro.hint")}</p>
 
       <div className="mt-3 flex flex-col gap-3">
         {(loaderData.roles as RoleRow[]).map((r) => (
@@ -90,7 +90,7 @@ export default function AdminRoles({ loaderData }: Route.ComponentProps) {
                     cat.actions.map((act) => {
                       const perm = `${cat.domain}.${act}`;
                       return (
-                        <label key={perm} className="flex items-center gap-2 text-[13px] text-text">
+                        <label key={perm} className="flex items-center gap-2 text-sm text-text">
                           <input type="checkbox" name="perm" value={perm}
                             defaultChecked={r.permissions.includes(perm)}
                             className="size-4 accent-[var(--color-action)]" />
@@ -103,7 +103,7 @@ export default function AdminRoles({ loaderData }: Route.ComponentProps) {
                 <div className="mt-2 flex items-center gap-3">
                   <Button type="submit" size="sm" disabled={busy}>{t("ve.save")}</Button>
                   {savedSlug === r.slug && fetcher.state === "idle" && fetcher.data?.ok ? (
-                    <span className="text-[13px] font-bold text-success-strong">{t("ve.saved")}</span>
+                    <span className="text-sm font-bold text-success-strong">{t("ve.saved")}</span>
                   ) : null}
                   {fetcher.data && !fetcher.data.ok ? (
                     <p role="alert" className="text-xs font-bold text-danger">{String(fetcher.data.reason)}</p>
@@ -112,7 +112,7 @@ export default function AdminRoles({ loaderData }: Route.ComponentProps) {
                 <p className="mt-1 text-xs text-text-muted">{t("ro.staffNote")}</p>
               </fetcher.Form>
             ) : (
-              <p className="mt-1.5 text-[13px] text-text-muted" dir="ltr">
+              <p className="mt-1.5 text-sm text-text-muted" dir="ltr">
                 {r.slug === "admin" ? "* (full access)" : t("ro.noPanel")}
               </p>
             )}

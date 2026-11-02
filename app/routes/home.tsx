@@ -111,7 +111,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const viewAll = (to: string) => (
     <Link
       to={`/${lang}${to}`}
-      className="inline-flex items-center gap-1 text-[13px] font-bold text-action hover:underline"
+      className="inline-flex items-center gap-1 text-sm font-bold text-action hover:underline"
     >
       {t("home.sections.viewAll")}
       <ChevronRightIcon aria-hidden="true" className="mirr" />
@@ -161,7 +161,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           aria-label={t("home.cats.title")}
           className="hidden self-stretch rounded-lg border border-border bg-surface min-[1100px]:flex min-[1100px]:flex-col"
         >
-          <div className="flex items-center gap-2 bg-action px-3.5 py-2.5 text-[13px] font-extrabold text-on-action">
+          <div className="flex items-center gap-2 bg-action px-3.5 py-2.5 text-sm font-extrabold text-on-action">
             <GridIcon aria-hidden="true" className="size-4" />
             <span>{t("home.cats.title")}</span>
           </div>
@@ -171,7 +171,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 <li key={cat.id}>
                   <Link
                     to={`/${lang}/category/${encodeURIComponent(lang === "en" ? cat.slug_en || cat.slug_ar : cat.slug_ar || cat.slug_en)}`}
-                    className="flex min-h-9 items-center px-3.5 text-[13px] font-semibold text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+                    className="flex min-h-9 items-center px-3.5 text-sm font-semibold text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
                   >
                     {lang === "ar" ? cat.name_ar : cat.name_en}
                   </Link>
@@ -179,7 +179,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               ))}
             </ul>
           ) : (
-            <p className="px-3.5 py-3 text-[12px] text-text-muted">{t("home.cats.empty")}</p>
+            <p className="px-3.5 py-3 text-xs text-text-muted">{t("home.cats.empty")}</p>
           )}
         </aside>
 
@@ -255,7 +255,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             </span>
             <span className="min-w-0">
               <b className="block text-[12.5px] font-extrabold text-text">{t(`home.assure.${key}`)}</b>
-              <small className="block text-[11px] leading-snug text-text-muted">
+              <small className="block text-2xs leading-snug text-text-muted">
                 {t(`home.assure.${key}Note`)}
               </small>
             </span>
@@ -269,16 +269,16 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           aria-label={lang === "ar" ? loaderData.event.name_ar : loaderData.event.name_en}
           className="rounded-lg border-2 border-action bg-surface p-5"
         >
-          <p className="text-[11px] font-extrabold uppercase tracking-wide text-action">{t("home.event.badge")}</p>
+          <p className="text-2xs font-extrabold uppercase tracking-wide text-action">{t("home.event.badge")}</p>
           <h2 className="mt-1 text-lg font-black text-text">
             {lang === "ar" ? loaderData.event.name_ar : loaderData.event.name_en}
           </h2>
-          <p className="mt-1 max-w-2xl text-[13px] text-text-muted">
+          <p className="mt-1 max-w-2xl text-sm text-text-muted">
             {lang === "ar" ? loaderData.event.desc_ar : loaderData.event.desc_en}
           </p>
           <Link
             to={`/${lang}/products`}
-            className="mt-3 inline-flex min-h-10 items-center rounded-md bg-action px-4 text-[13px] font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
+            className="mt-3 inline-flex min-h-10 items-center rounded-md bg-action px-4 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover"
           >
             {t("home.event.cta")}
           </Link>
@@ -306,7 +306,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                       {(lang === "ar" ? cat.name_ar : cat.name_en).slice(0, 1)}
                     </span>
                   )}
-                  <span className="line-clamp-2 text-[12px] font-bold text-text">
+                  <span className="line-clamp-2 text-xs font-bold text-text">
                     {lang === "ar" ? cat.name_ar : cat.name_en}
                   </span>
                 </Link>

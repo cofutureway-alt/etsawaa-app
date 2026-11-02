@@ -282,10 +282,10 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
               { key: "actions", header: t("cp.actions"), text: () => "",
                 render: (r) => (
                   <span className="flex items-center gap-2">
-                    <button type="button" onClick={() => openEdit(r)} className="cursor-pointer text-[12px] font-bold text-action hover:underline">
+                    <button type="button" onClick={() => openEdit(r)} className="cursor-pointer text-xs font-bold text-action hover:underline">
                       {t("common.edit")}
                     </button>
-                    <button type="button" onClick={() => setConfirmDelete(r)} className="cursor-pointer text-[12px] font-bold text-danger hover:underline">
+                    <button type="button" onClick={() => setConfirmDelete(r)} className="cursor-pointer text-xs font-bold text-danger hover:underline">
                       {t("common.delete")}
                     </button>
                   </span>
@@ -296,7 +296,7 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
                     <input type="hidden" name="intent" value="toggle" />
                     <input type="hidden" name="id" value={r.id} />
                     <input type="hidden" name="status" value={r.status} />
-                    <button type="submit" className={`cursor-pointer text-[13px] font-bold hover:underline ${r.status === "active" ? "text-success-strong" : "text-text-muted"}`}>
+                    <button type="submit" className={`cursor-pointer text-sm font-bold hover:underline ${r.status === "active" ? "text-success-strong" : "text-text-muted"}`}>
                       {t(`cp.status_${r.status}`)}
                     </button>
                   </fetcher.Form>
@@ -317,38 +317,38 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
         <fetcher.Form method="post" onSubmit={(e) => { if (code.trim().length < 3) e.preventDefault(); }}>
           <input type="hidden" name="intent" value={editing ? "update" : "create"} />
           {editing ? <input type="hidden" name="id" value={editing.id} /> : null}
-          <label htmlFor="cp-code" className="text-[13px] font-bold text-text">{t("cp.code")}</label>
+          <label htmlFor="cp-code" className="text-sm font-bold text-text">{t("cp.code")}</label>
           <div className="mt-1 flex gap-2">
             <input id="cp-code" name="code" value={code} onChange={(e) => setCode(e.target.value)} dir="ltr" required
-              className="w-40 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
+              className="w-40 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
             <Button type="button" size="sm" variant="ghost" onClick={() => setCode(genCode())}>{t("cp.generate")}</Button>
           </div>
 
-          <label htmlFor="cp-type" className="mt-3 block text-[13px] font-bold text-text">{t("cp.type")}</label>
+          <label htmlFor="cp-type" className="mt-3 block text-sm font-bold text-text">{t("cp.type")}</label>
           <select id="cp-type" name="type" value={type} onChange={(e) => setType(e.target.value)}
-            className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text">
+            className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text">
             <option value="percent">{t("cp.type_percent")}</option>
             <option value="fixed">{t("cp.type_fixed")}</option>
             <option value="commission_percent">{t("cp.type_commission_percent")}</option>
           </select>
           <p className="mt-1 text-xs text-text-muted">{t(`cp.typeHint_${type}`)}</p>
 
-          <label htmlFor="cp-value" className="mt-3 block text-[13px] font-bold text-text">
+          <label htmlFor="cp-value" className="mt-3 block text-sm font-bold text-text">
             {type === "fixed" ? t("cp.valueFixed") : t("cp.valuePercent")}
           </label>
           <input id="cp-value" name="value" type="number" min={1} max={type === "fixed" ? 100000000 : 100} required dir="ltr"
             defaultValue={editing?.value}
-            className="mt-1 w-32 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
+            className="mt-1 w-32 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
 
           {type === "commission_percent" ? (
             <>
-              <label htmlFor="cp-pairs" className="mt-3 block text-[13px] font-bold text-text">{t("cp.pairsWith")}</label>
+              <label htmlFor="cp-pairs" className="mt-3 block text-sm font-bold text-text">{t("cp.pairsWith")}</label>
               <input id="cp-pairs" name="pairs_with" dir="ltr" placeholder={t("cp.pairsPlaceholder")}
-                className="mt-1 w-40 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
+                className="mt-1 w-40 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
             </>
           ) : null}
 
-          <fieldset className="mt-3 flex flex-col gap-1.5 text-[13px] text-text">
+          <fieldset className="mt-3 flex flex-col gap-1.5 text-sm text-text">
             <label className="flex items-center gap-2">
               <input type="checkbox" name="free_shipping" defaultChecked={editing?.free_shipping} className="size-4 accent-[var(--color-action)]" />
               {t("cp.freeShip")} <span className="text-xs text-text-muted">({t("cp.adminOnly")})</span>
@@ -364,30 +364,30 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
           </fieldset>
 
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <label htmlFor="cp-min" className="text-[13px] font-bold text-text">{t("cp.minSubtotal")}
+            <label htmlFor="cp-min" className="text-sm font-bold text-text">{t("cp.minSubtotal")}
               <input id="cp-min" name="min_subtotal_piastres" type="number" min={0} dir="ltr" defaultValue={editing?.min_subtotal_piastres}
-                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm" />
             </label>
-            <label htmlFor="cp-maxd" className="text-[13px] font-bold text-text">{t("cp.maxDiscount")}
+            <label htmlFor="cp-maxd" className="text-sm font-bold text-text">{t("cp.maxDiscount")}
               <input id="cp-maxd" name="max_discount_piastres" type="number" min={1} dir="ltr" defaultValue={editing?.max_discount_piastres ?? undefined}
-                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm" />
             </label>
-            <label htmlFor="cp-maxt" className="text-[13px] font-bold text-text">{t("cp.maxTotal")}
+            <label htmlFor="cp-maxt" className="text-sm font-bold text-text">{t("cp.maxTotal")}
               <input id="cp-maxt" name="max_uses_total" type="number" min={1} dir="ltr" defaultValue={editing?.max_uses_total ?? undefined}
-                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm" />
             </label>
-            <label htmlFor="cp-maxu" className="text-[13px] font-bold text-text">{t("cp.maxPerUser")}
+            <label htmlFor="cp-maxu" className="text-sm font-bold text-text">{t("cp.maxPerUser")}
               <input id="cp-maxu" name="max_uses_per_user" type="number" min={1} dir="ltr" defaultValue={editing?.max_uses_per_user ?? undefined}
-                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-[13px]" />
+                className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm" />
             </label>
           </div>
-          <label htmlFor="cp-ends" className="mt-2 block text-[13px] font-bold text-text">{t("cp.endsAt")}</label>
+          <label htmlFor="cp-ends" className="mt-2 block text-sm font-bold text-text">{t("cp.endsAt")}</label>
           <input id="cp-ends" name="ends_at" type="date" dir="ltr" defaultValue={editing?.ends_at?.slice(0, 10)}
-            className="mt-1 w-40 rounded-md border border-border bg-surface p-2.5 text-[13px] text-text" />
+            className="mt-1 w-40 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
 
           {/* scopes — written to coupon_scopes, which c_scope_ok reads in fn_apply_coupon */}
           <fieldset className="mt-3 rounded-md border border-border p-2.5">
-            <legend className="px-1 text-[13px] font-bold text-text">{t("cp.scopes")}</legend>
+            <legend className="px-1 text-sm font-bold text-text">{t("cp.scopes")}</legend>
             <p className="mb-2 text-xs text-text-muted">{t("cp.scopesHint")}</p>
             <div className="flex flex-col gap-1.5">
               {scopes.map((sc, i) => (
@@ -396,9 +396,9 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
                   <input type="hidden" name="scope_kind" value={sc.scope} />
                   <span className="text-xs font-bold text-text">{t(`cp.mode_${sc.mode}`)}</span>
                   <span className="text-xs text-text-muted">{t(`cp.scope_${sc.scope}`)}</span>
-                  <span className="flex-1 truncate font-mono text-[11px] text-text-muted" dir="ltr">{sc.ref_id}</span>
+                  <span className="flex-1 truncate font-mono text-2xs text-text-muted" dir="ltr">{sc.ref_id}</span>
                   <button type="button" onClick={() => setScopes(scopes.filter((_, j) => j !== i))}
-                    className="cursor-pointer text-[11px] font-bold text-danger hover:underline">{t("common.delete")}</button>
+                    className="cursor-pointer text-2xs font-bold text-danger hover:underline">{t("common.delete")}</button>
                 </div>
               ))}
             </div>
@@ -422,7 +422,7 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
 
       {/* soft delete: coupons are referenced by redemptions and orders */}
       <Dialog open={confirmDelete !== null} onClose={() => setConfirmDelete(null)} title={t("cp.deleteTitle")}>
-        <p className="text-[13px] text-text">{t("cp.deleteBody")}</p>
+        <p className="text-sm text-text">{t("cp.deleteBody")}</p>
         <div className="mt-3 flex justify-end gap-2">
           <Button variant="ghost" onClick={() => setConfirmDelete(null)}>{t("common.cancel")}</Button>
           <fetcher.Form method="post" onSubmit={() => setConfirmDelete(null)}>
@@ -446,19 +446,19 @@ function ScopeAdder({ onAdd }: { onAdd: (sc: CouponScope) => void }) {
   return (
     <div className="mt-2 flex flex-wrap items-end gap-1.5">
       <select value={mode} onChange={(e) => setMode(e.target.value as CouponScope["mode"])}
-        aria-label={t("cp.mode")} className="rounded-md border border-border bg-surface p-1.5 text-[12px]">
+        aria-label={t("cp.mode")} className="rounded-md border border-border bg-surface p-1.5 text-xs">
         <option value="include">{t("cp.mode_include")}</option>
         <option value="exclude">{t("cp.mode_exclude")}</option>
       </select>
       <select value={kind} onChange={(e) => setKind(e.target.value as CouponScope["scope"])}
-        aria-label={t("cp.scope")} className="rounded-md border border-border bg-surface p-1.5 text-[12px]">
+        aria-label={t("cp.scope")} className="rounded-md border border-border bg-surface p-1.5 text-xs">
         {(["category", "brand", "product", "vendor"] as const).map((k) => (
           <option key={k} value={k}>{t(`cp.scope_${k}`)}</option>
         ))}
       </select>
       <input value={ref} onChange={(e) => setRef(e.target.value)} dir="ltr" placeholder={t("cp.scopeRef")}
         aria-label={t("cp.scopeRef")}
-        className="w-64 rounded-md border border-border bg-surface p-1.5 font-mono text-[11px]" />
+        className="w-64 rounded-md border border-border bg-surface p-1.5 font-mono text-2xs" />
       <Button type="button" size="sm" variant="ghost"
         onClick={() => { onAdd({ mode, scope: kind, ref_id: ref.trim() }); setRef(""); }}>
         {t("common.add")}

@@ -29,7 +29,7 @@ export function PriceTag({ pricePiastres, comparePricePiastres, locale, size = "
           <span className="num text-xs text-text-faint line-through">
             {formatPiastres(comparePricePiastres, locale)}
           </span>
-          <span className="rounded-full bg-action px-2 py-0.5 text-[11px] font-bold text-on-action">
+          <span className="rounded-full bg-action px-2 py-0.5 text-2xs font-bold text-on-action">
             {t("ui.price.sale")}
           </span>
         </>

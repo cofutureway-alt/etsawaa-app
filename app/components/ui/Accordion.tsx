@@ -31,7 +31,7 @@ export function AccordionStep({ title, summary, open, onToggle, disabled, childr
           className={`flex w-full items-center justify-between gap-3 px-4 py-3 text-start ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
         >
           <span className="text-sm font-extrabold text-text">{title}</span>
-          <span className="flex items-center gap-2 text-[12px] text-text-muted">
+          <span className="flex items-center gap-2 text-xs text-text-muted">
             {summary}
             <span aria-hidden="true" className={`mirr transition-transform duration-200 ${open ? "rotate-90" : ""}`}>
               ›

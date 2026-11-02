@@ -143,7 +143,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                   <h3 className="text-sm font-black text-text">
                     {en ? p.name_en : p.name_ar}
                   </h3>
-                  <span className="text-[11px] font-mono text-text-muted">
+                  <span className="text-2xs font-mono text-text-muted">
                     {t(`ad.place_${p.placement}`)}
                   </span>
                 </div>
@@ -427,7 +427,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     <p className="text-xs font-bold text-text leading-tight">
                       {en ? c.vendor_en : c.vendor_ar}
                     </p>
-                    <p className="text-[11px] text-text-muted mt-0.5">
+                    <p className="text-2xs text-text-muted mt-0.5">
                       الباقة: {en ? c.pkg_en : c.pkg_ar}
                     </p>
                   </div>
@@ -442,7 +442,7 @@ export default function AdminAds({ loaderData }: Route.ComponentProps) {
                     {t(`ad.camp_${c.status}`)}
                   </Badge>
 
-                  <span className="text-[11px] font-mono text-text-muted" dir="ltr">
+                  <span className="text-2xs font-mono text-text-muted" dir="ltr">
                     ينتهي: {c.ends_at.slice(0, 10)}
                   </span>
                 </div>

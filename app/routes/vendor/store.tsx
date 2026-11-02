@@ -174,18 +174,18 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
             </div>
 
             <div className="flex flex-col gap-2">
-              <p className="text-[13px] font-bold text-text">{t("vendorOnboarding.step1.categories")}</p>
+              <p className="text-sm font-bold text-text">{t("vendorOnboarding.step1.categories")}</p>
               <div className="grid max-h-56 gap-1 overflow-y-auto rounded-md border border-border bg-surface p-3 sm:grid-cols-2">
                 {roots.map((root) => {
                   const subs = loaderData.categories.filter((c) => c.parent_id === root.id);
                   return (
                     <details key={root.id} className="rounded-md bg-surface-tint p-2">
-                      <summary className="cursor-pointer list-none text-[13px] font-bold text-text">
+                      <summary className="cursor-pointer list-none text-sm font-bold text-text">
                         {isAr ? root.name_ar : root.name_en}
                       </summary>
                       <div className="mt-1.5 flex flex-col gap-1 ps-4">
                         {[root, ...subs].map((cat) => (
-                          <label key={cat.id} className="flex items-center gap-2 text-[13px] text-text">
+                          <label key={cat.id} className="flex items-center gap-2 text-sm text-text">
                             <input
                               type="checkbox"
                               name="categoryIds"
@@ -212,14 +212,14 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
-                <span className="text-[13px] font-bold text-text">{t("vendorOnboarding.step1.logo")}</span>
+                <span className="text-sm font-bold text-text">{t("vendorOnboarding.step1.logo")}</span>
                 <input type="hidden" name="logo_path" value={logoPath} />
                 <div className="flex items-center gap-3">
                   <div className="flex size-16 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
                     {logoPath ? (
                       <MediaImage path={logoPath} alt="" width={64} height={64} supabaseUrl={loaderData.supabaseUrl} className="max-h-full max-w-full object-contain" />
                     ) : (
-                      <span className="text-[10px] text-text-faint">—</span>
+                      <span className="text-2xs text-text-faint">—</span>
                     )}
                   </div>
                   <Button type="button" variant="outline" size="sm" onClick={() => setLogoPicker(true)}>
@@ -241,14 +241,14 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <span className="text-[13px] font-bold text-text">{t("vendorOnboarding.step1.banner")}</span>
+                <span className="text-sm font-bold text-text">{t("vendorOnboarding.step1.banner")}</span>
                 <input type="hidden" name="banner_path" value={bannerPath} />
                 <div className="flex items-center gap-3">
                   <div className="flex h-16 w-32 items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint">
                     {bannerPath ? (
                       <MediaImage path={bannerPath} alt="" width={128} height={64} supabaseUrl={loaderData.supabaseUrl} className="max-h-full max-w-full object-contain" />
                     ) : (
-                      <span className="text-[10px] text-text-faint">—</span>
+                      <span className="text-2xs text-text-faint">—</span>
                     )}
                   </div>
                   <Button type="button" variant="outline" size="sm" onClick={() => setBannerPicker(true)}>

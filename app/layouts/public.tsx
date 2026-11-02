@@ -125,7 +125,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
                 {profile ? null : (
                   <Link
                     to={`/${lang}/auth/login`}
-                    className="ms-1 hidden rounded-md bg-action px-3.5 py-2 text-[13px] font-bold text-on-action transition-colors duration-200 hover:bg-action-hover sm:inline-flex"
+                    className="ms-1 hidden rounded-md bg-action px-3.5 py-2 text-sm font-bold text-on-action transition-colors duration-200 hover:bg-action-hover sm:inline-flex"
                   >
                     {t("nav.login")}
                   </Link>
@@ -154,7 +154,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
                       to={item.to}
                       end={item.end}
                       className={({ isActive }) =>
-                        `flex whitespace-nowrap border-b-2 px-3.5 py-2.5 text-[13px] font-semibold transition-colors duration-150 ${
+                        `flex whitespace-nowrap border-b-2 px-3.5 py-2.5 text-sm font-semibold transition-colors duration-150 ${
                           isActive
                             ? "border-action text-action"
                             : "border-transparent text-text hover:bg-surface-tint hover:text-action"
@@ -173,7 +173,7 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
                 <li className="ms-auto">
                   <Link
                     to={`/${lang}/sell`}
-                    className="flex items-center gap-1.5 whitespace-nowrap px-3.5 py-2.5 text-[13px] font-extrabold text-action hover:bg-surface-tint"
+                    className="flex items-center gap-1.5 whitespace-nowrap px-3.5 py-2.5 text-sm font-extrabold text-action hover:bg-surface-tint"
                   >
                     <StoreIcon aria-hidden="true" />
                     {t("nav.sell")}
@@ -228,7 +228,7 @@ function CartButton({ lang, signedIn }: { lang: string; signedIn: boolean }) {
       <CartIcon />
       <span
         aria-hidden="true"
-        className={`num absolute -end-0.5 -top-0.5 min-w-4 rounded-full px-1 text-center text-[10px] font-black leading-4 ${
+        className={`num absolute -end-0.5 -top-0.5 min-w-4 rounded-full px-1 text-center text-2xs font-black leading-4 ${
           cart.count > 0 ? "bg-action text-on-action" : "invisible"
         }`}
       >
@@ -287,7 +287,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="true"
-        className={`flex cursor-pointer items-center gap-1.5 whitespace-nowrap border-b-2 px-3.5 py-2.5 text-[13px] font-semibold transition-colors duration-150 ${
+        className={`flex cursor-pointer items-center gap-1.5 whitespace-nowrap border-b-2 px-3.5 py-2.5 text-sm font-semibold transition-colors duration-150 ${
           open ? "border-action text-action" : "border-transparent text-text hover:bg-surface-tint hover:text-action"
         }`}
       >
@@ -312,7 +312,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
                     onClick={() => setOpen(false)}
                     onMouseEnter={() => { setActiveRoot(rootCat.id); setActiveSub(null); }}
                     onFocus={() => { setActiveRoot(rootCat.id); setActiveSub(null); }}
-                    className={`flex min-h-11 items-center justify-between gap-2 rounded-md px-3 text-[13px] font-bold transition-colors duration-150 ${
+                    className={`flex min-h-11 items-center justify-between gap-2 rounded-md px-3 text-sm font-bold transition-colors duration-150 ${
                       active ? "bg-surface-tint text-action" : "text-text hover:bg-surface-tint hover:text-action"
                     }`}
                   >
@@ -338,7 +338,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
                       onClick={() => setOpen(false)}
                       onMouseEnter={() => setActiveSub(sub.id)}
                       onFocus={() => setActiveSub(sub.id)}
-                      className={`flex min-h-10 items-center justify-between gap-2 rounded-md px-3 text-[13px] font-semibold transition-colors duration-150 ${
+                      className={`flex min-h-10 items-center justify-between gap-2 rounded-md px-3 text-sm font-semibold transition-colors duration-150 ${
                         subActive ? "bg-surface-tint text-action" : "text-text hover:bg-surface-tint hover:text-action"
                       }`}
                     >
@@ -360,7 +360,7 @@ function CategoriesMenu({ lang, categories }: { lang: string; categories: Catego
                   <Link
                     to={catHref(subSub)}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-10 items-center rounded-md px-3 text-[13px] text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+                    className="flex min-h-10 items-center rounded-md px-3 text-sm text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
                   >
                     <span className="truncate">{catName(subSub)}</span>
                   </Link>
@@ -430,7 +430,7 @@ function NavDrawer({
               <Link
                 to={`/${lang}/category/${encodeURIComponent(lang === "en" ? rootCat.slug_en || rootCat.slug_ar : rootCat.slug_ar || rootCat.slug_en)}`}
                 onClick={onClose}
-                className="flex min-h-11 items-center gap-2.5 border-s-[3px] border-transparent px-3 ps-6 text-[13px] font-semibold text-text-muted hover:bg-surface-tint hover:text-action"
+                className="flex min-h-11 items-center gap-2.5 border-s-[3px] border-transparent px-3 ps-6 text-sm font-semibold text-text-muted hover:bg-surface-tint hover:text-action"
               >
                 {lang === "ar" ? rootCat.name_ar : rootCat.name_en}
               </Link>
@@ -441,7 +441,7 @@ function NavDrawer({
               <Link
                 to={`/${lang}/p/${encodeURIComponent(lang === "en" ? page.slug_en : page.slug_ar)}`}
                 onClick={onClose}
-                className="flex min-h-11 items-center border-s-[3px] border-transparent px-3 ps-6 text-[13px] font-semibold text-text-muted hover:bg-surface-tint hover:text-action"
+                className="flex min-h-11 items-center border-s-[3px] border-transparent px-3 ps-6 text-sm font-semibold text-text-muted hover:bg-surface-tint hover:text-action"
               >
                 {lang === "ar" ? page.title_ar : page.title_en}
               </Link>
@@ -462,13 +462,13 @@ function NavDrawer({
           <Link
             to={`/${lang}${profile ? "/account" : "/auth/login"}`}
             onClick={onClose}
-            className="flex min-h-11 items-center justify-center gap-2 rounded-md bg-action text-[13px] font-bold text-on-action"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-md bg-action text-sm font-bold text-on-action"
           >
             {profile ? (
               profile.avatar_url ? (
                 <MediaImg path={profile.avatar_url} alt="" width={20} height={20} className="size-5 rounded-full object-cover" />
               ) : (
-                <span aria-hidden="true" className="flex size-5 items-center justify-center rounded-full bg-surface text-[11px] font-black text-action">
+                <span aria-hidden="true" className="flex size-5 items-center justify-center rounded-full bg-surface text-2xs font-black text-action">
                   {profile.full_name?.trim()?.[0] || "؟"}
                 </span>
               )
@@ -518,7 +518,7 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
         {avatarUrl ? (
           <MediaImg path={avatarUrl} alt="" width={28} height={28} className="size-7 rounded-full border border-border object-cover" />
         ) : (
-          <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-full bg-action text-[13px] font-black text-on-action">
+          <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-full bg-action text-sm font-black text-on-action">
             {name?.trim()?.[0] || "؟"}
           </span>
         )}
@@ -527,13 +527,13 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
         <div role="menu" aria-label={t("nav.myAccount")}
           className="absolute top-[calc(100%+6px)] end-0 z-50 w-52 overflow-hidden rounded-lg border border-border bg-surface shadow-lg">
           <div className="border-b border-border bg-surface-tint px-4 py-2.5">
-            <p className="truncate text-[13px] font-extrabold text-text">{name || t("nav.myAccount")}</p>
+            <p className="truncate text-sm font-extrabold text-text">{name || t("nav.myAccount")}</p>
           </div>
           <ul className="p-1.5">
             {items.map((it) => (
               <li key={it.to}>
                 <NavLink to={it.to} role="menuitem" onClick={() => setOpen(false)}
-                  className="flex min-h-11 items-center rounded-md px-3 text-[13px] font-bold text-text hover:bg-surface-tint hover:text-action">
+                  className="flex min-h-11 items-center rounded-md px-3 text-sm font-bold text-text hover:bg-surface-tint hover:text-action">
                   {it.label}
                 </NavLink>
               </li>
@@ -542,7 +542,7 @@ function UserMenu({ lang, name, avatarUrl }: { lang: string; name: string; avata
           <div className="border-t border-border p-1.5">
             <form method="post" action={`/${lang}/auth/logout`}>
               <button type="submit" role="menuitem"
-                className="flex min-h-11 w-full cursor-pointer items-center rounded-md px-3 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                className="flex min-h-11 w-full cursor-pointer items-center rounded-md px-3 text-sm font-bold text-danger hover:bg-danger-soft">
                 {t("nav.logout")}
               </button>
             </form>
@@ -628,25 +628,25 @@ function PublicFooter({
             decoding="async"
             className="h-10 w-auto self-start"
           />
-          <p className="max-w-xs text-[13px] leading-relaxed">{t("app.tagline")}</p>
+          <p className="max-w-xs text-sm leading-relaxed">{t("app.tagline")}</p>
           <div className="mt-1 flex flex-wrap gap-2">
-            <span className="rounded-sm border border-white/30 px-2.5 py-1 text-[11px] font-extrabold">
+            <span className="rounded-sm border border-white/30 px-2.5 py-1 text-2xs font-extrabold">
               {t("footer.cod")}
             </span>
-            <span className="rounded-sm border border-white/30 px-2.5 py-1 text-[11px] font-extrabold">
+            <span className="rounded-sm border border-white/30 px-2.5 py-1 text-2xs font-extrabold">
               Kashier
             </span>
           </div>
         </div>
         {groups.map((group) => (
           <nav key={group.title} aria-label={group.title} className="min-w-0">
-            <h3 className="mb-3 text-[13px] font-extrabold text-white">{group.title}</h3>
+            <h3 className="mb-3 text-sm font-extrabold text-white">{group.title}</h3>
             <ul className="flex flex-col gap-2">
               {group.links.map((link) => (
                 <li key={`${group.title}-${link.to}`}>
                   <Link
                     to={link.to}
-                    className="block text-[13px] transition-colors duration-150 hover:text-white"
+                    className="block text-sm transition-colors duration-150 hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -658,7 +658,7 @@ function PublicFooter({
       </div>
       {headerPages.length > 0 ? (
         <div className="border-t border-white/10">
-          <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-[12px]">
+          <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-xs">
             {headerPages.map((page) => (
               <Link
                 key={page.slug_en}

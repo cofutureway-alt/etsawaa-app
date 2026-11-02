@@ -54,7 +54,7 @@ export function FallbackCover({
     >
       <span className="text-2xl font-black leading-none tracking-tight">{coverInitials(title)}</span>
       {category ? (
-        <span className="max-w-full truncate text-[11px] font-bold uppercase tracking-wide opacity-80">
+        <span className="max-w-full truncate text-2xs font-bold uppercase tracking-wide opacity-80">
           {category}
         </span>
       ) : null}

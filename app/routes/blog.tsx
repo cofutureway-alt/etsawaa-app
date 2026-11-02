@@ -109,7 +109,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
       <nav aria-label={t("pubBlog.cats")} className="mt-3 flex flex-wrap gap-1.5">
         <Link to={`/${lang}/blog`}
           aria-current={!loaderData.activeCat ? "page" : undefined}
-          className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${
+          className={`rounded-md border px-3 py-1.5 text-sm font-bold ${
             !loaderData.activeCat ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
           }`}>
           {t("common.all")}
@@ -117,7 +117,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
         {loaderData.cats.map((c) => (
           <Link key={c.id} to={`/${lang}/blog?cat=${c.id}`}
             aria-current={loaderData.activeCat === c.id ? "page" : undefined}
-            className={`rounded-md border px-3 py-1.5 text-[13px] font-bold ${
+            className={`rounded-md border px-3 py-1.5 text-sm font-bold ${
               loaderData.activeCat === c.id ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
             }`}>
             {en ? c.name_en : c.name_ar}
@@ -132,7 +132,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
             body={loaderData.activeCat ? t("pubBlog.emptyCat") : t("pubBlog.emptyHint")}
             action={
               loaderData.activeCat ? (
-                <Link to={`/${lang}/blog`} className="text-[13px] font-bold text-primary hover:underline">
+                <Link to={`/${lang}/blog`} className="text-sm font-bold text-primary hover:underline">
                   {t("pubBlog.allPosts")}
                 </Link>
               ) : undefined
@@ -157,10 +157,10 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
                   />
                 )}
                 <div className="flex flex-1 flex-col gap-1.5 p-4">
-                  <h2 className="text-[15px] font-extrabold leading-snug text-text">
+                  <h2 className="text-lg font-extrabold leading-snug text-text">
                     {en ? p.title_en : p.title_ar}
                   </h2>
-                  <p className="line-clamp-3 text-[13px] leading-relaxed text-text-muted">{en ? p.excerpt_en : p.excerpt_ar}</p>
+                  <p className="line-clamp-3 text-sm leading-relaxed text-text-muted">{en ? p.excerpt_en : p.excerpt_ar}</p>
                   {p.published_at ? (
                     <time className="mt-auto pt-2 text-xs text-text-faint" dateTime={p.published_at} dir="ltr">
                       {new Date(p.published_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}

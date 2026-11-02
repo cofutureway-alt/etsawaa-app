@@ -26,7 +26,7 @@ export function NotificationBellLink({
     >
       <BellIcon width={19} height={19} />
       {initialCount > 0 ? (
-        <span className="num absolute -top-1 -end-1 flex min-w-5 justify-center rounded-full bg-white px-1 text-[10px] font-extrabold leading-5 text-action ring-1 ring-action/20">
+        <span className="num absolute -top-1 -end-1 flex min-w-5 justify-center rounded-full bg-white px-1 text-2xs font-extrabold leading-5 text-action ring-1 ring-action/20">
           {initialCount > 9 ? "9+" : shown}
         </span>
       ) : null}

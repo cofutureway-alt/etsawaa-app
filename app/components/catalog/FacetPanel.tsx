@@ -134,7 +134,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
                 key={chip.key}
                 type="button"
                 onClick={() => onChange(chip.clear)}
-                className="flex cursor-pointer items-center gap-1 rounded-full border border-border bg-surface-tint px-2.5 py-1 text-[12px] font-bold text-text transition-colors duration-150 hover:border-action hover:text-action"
+                className="flex cursor-pointer items-center gap-1 rounded-full border border-border bg-surface-tint px-2.5 py-1 text-xs font-bold text-text transition-colors duration-150 hover:border-action hover:text-action"
               >
                 {chip.label}
                 <XIcon aria-hidden="true" className="size-3" />
@@ -143,7 +143,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
             <button
               type="button"
               onClick={onClearAll}
-              className="cursor-pointer px-2 py-1 text-[12px] font-extrabold text-action hover:underline"
+              className="cursor-pointer px-2 py-1 text-xs font-extrabold text-action hover:underline"
             >
               {t("store.filters.clearAll")}
             </button>
@@ -164,12 +164,12 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
                     type="button"
                     onClick={() => onChange({ category: selected ? null : c.id, page: 1 })}
                     aria-pressed={selected}
-                    className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${
+                    className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm transition-colors duration-150 ${
                       selected ? "bg-surface-tint font-extrabold text-action" : "text-text hover:bg-surface-tint"
                     }`}
                   >
                     <span className="truncate">{label}</span>
-                    <span className="num text-[11px] text-text-muted">{c.count}</span>
+                    <span className="num text-2xs text-text-muted">{c.count}</span>
                   </button>
                 </li>
               );
@@ -186,7 +186,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               const selected = state.brand === b.id;
               return (
                 <li key={b.id}>
-                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
+                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
                     <span className="flex min-w-0 items-center gap-2">
                       <input
                         type="checkbox"
@@ -196,7 +196,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
                       />
                       <span className="truncate">{(lang === "ar" ? b.name_ar || b.name_en : b.name_en || b.name_ar) ?? ""}</span>
                     </span>
-                    <span className="num text-[11px] text-text-muted">{b.count}</span>
+                    <span className="num text-2xs text-text-muted">{b.count}</span>
                   </label>
                 </li>
               );
@@ -213,7 +213,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               const selected = selectedCount(attributeId).includes(option.option_id);
               return (
                 <li key={option.option_id}>
-                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
+                  <label className={`flex cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
                     <span className="flex min-w-0 items-center gap-2">
                       <input
                         type="checkbox"
@@ -226,7 +226,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
                       ) : null}
                       <span className="truncate">{option.label}</span>
                     </span>
-                    <span className="num text-[11px] text-text-muted">{option.count}</span>
+                    <span className="num text-2xs text-text-muted">{option.count}</span>
                   </label>
                 </li>
               );
@@ -242,7 +242,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
             const selected = state.rating === min;
             return (
               <li key={min}>
-                <label className={`flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px] transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
+                <label className={`flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors duration-150 ${selected ? "font-extrabold text-action" : "text-text hover:bg-surface-tint"}`}>
                   <input
                     type="radio"
                     name="facet-rating"
@@ -270,7 +270,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               value={priceDraft.min}
               onChange={(e) => setPriceDraft((d) => ({ ...d, min: e.target.value }))}
               placeholder={t("store.filters.priceFrom")}
-              className="w-full rounded-md border border-border bg-surface px-2 py-2 text-[13px] outline-none focus:border-action"
+              className="w-full rounded-md border border-border bg-surface px-2 py-2 text-sm outline-none focus:border-action"
             />
           </label>
           <span aria-hidden="true" className="text-text-faint">–</span>
@@ -283,21 +283,21 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
               value={priceDraft.max}
               onChange={(e) => setPriceDraft((d) => ({ ...d, max: e.target.value }))}
               placeholder={t("store.filters.priceTo")}
-              className="w-full rounded-md border border-border bg-surface px-2 py-2 text-[13px] outline-none focus:border-action"
+              className="w-full rounded-md border border-border bg-surface px-2 py-2 text-sm outline-none focus:border-action"
             />
           </label>
         </div>
         <button
           type="button"
           onClick={applyPrice}
-          className="mx-1 mt-2 w-[calc(100%-8px)] cursor-pointer rounded-md border border-border bg-surface px-3 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+          className="mx-1 mt-2 w-[calc(100%-8px)] cursor-pointer rounded-md border border-border bg-surface px-3 py-2 text-sm font-bold text-text transition-colors duration-150 hover:bg-surface-tint hover:text-action"
         >
           {t("store.filters.applyPrice")}
         </button>
       </FacetSection>
 
       {/* in stock */}
-      <label className="flex cursor-pointer items-center gap-2 px-2 text-[13px] font-bold text-text">
+      <label className="flex cursor-pointer items-center gap-2 px-2 text-sm font-bold text-text">
         <input
           type="checkbox"
           checked={state.inStock}
@@ -313,7 +313,7 @@ export function FacetPanel({ facets, defs, state, lang, hideCategory = false, on
 function FacetSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h3 className="mb-2 px-1 text-[13px] font-extrabold text-text">{title}</h3>
+      <h3 className="mb-2 px-1 text-sm font-extrabold text-text">{title}</h3>
       {children}
     </section>
   );

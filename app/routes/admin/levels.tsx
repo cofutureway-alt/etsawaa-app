@@ -115,7 +115,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-lg font-extrabold text-text">{t("lv.title")}</h1>
-          <p className="mt-1 text-[13px] text-text-muted">{t("lv.hint")}</p>
+          <p className="mt-1 text-sm text-text-muted">{t("lv.hint")}</p>
         </div>
         {/* The action always accepted an empty id (= insert); no form ever sent
             one, so creating a level was impossible from the UI. */}
@@ -125,7 +125,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
       </div>
 
       {creating ? (
-        <fetcher.Form method="post" className="mt-3 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-[13px]">
+        <fetcher.Form method="post" className="mt-3 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-sm">
           <input type="hidden" name="intent" value="save" />
           <input type="hidden" name="id" value="" />
           <label className="flex flex-col gap-1 text-xs font-bold text-text">
@@ -164,7 +164,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
       <ul className="mt-3 flex flex-col gap-2">
         {(loaderData.levels as LevelRow[]).map((l) => (
           <li key={l.id} className="rounded-md border border-border bg-surface p-3">
-            <fetcher.Form method="post" className="flex flex-wrap items-end gap-2 text-[13px]">
+            <fetcher.Form method="post" className="flex flex-wrap items-end gap-2 text-sm">
               <input type="hidden" name="intent" value="save" />
               <input type="hidden" name="id" value={l.id} />
               <label className="flex flex-col gap-1 text-xs font-bold text-text">
@@ -206,7 +206,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
       {/* manual promote with reason */}
       <section className="mt-5" aria-label={t("lv.manual")}>
         <h2 className="text-sm font-extrabold text-text">{t("lv.manual")}</h2>
-        <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 text-[13px]">
+        <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 text-sm">
           <input type="hidden" name="intent" value="promote" />
           <>
             <label className="flex flex-col gap-1 text-xs font-bold text-text">
@@ -237,7 +237,7 @@ export default function AdminLevels({ loaderData }: Route.ComponentProps) {
       {/* history */}
       <section className="mt-5" aria-label={t("lv.history")}>
         <h2 className="text-sm font-extrabold text-text">{t("lv.history")}</h2>
-        <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface text-[13px]">
+        <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface text-sm">
           {(loaderData.history as Array<{ id: string; reason: string | null; created_at: string; vendors: { store_name_ar: string; store_name_en: string } | null }>).map((h) => (            <li key={h.id} className="flex items-center justify-between gap-2 p-2.5">
               <span className="font-bold text-text">{h.vendors ? (en ? h.vendors.store_name_en : h.vendors.store_name_ar) : "—"}</span>
               <span className="flex-1 truncate text-text-muted">{h.reason ?? "—"}</span>

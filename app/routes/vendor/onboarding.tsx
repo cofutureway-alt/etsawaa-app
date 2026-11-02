@@ -174,7 +174,7 @@ function ErrorSummary({ items }: { items: Array<{ field: string; label: string }
       aria-labelledby="wizard-error-title"
       className="rounded-md border border-danger/40 bg-danger-soft p-3"
     >
-      <p id="wizard-error-title" className="text-[13px] font-extrabold text-danger">
+      <p id="wizard-error-title" className="text-sm font-extrabold text-danger">
         {t("common.errorSummary", { count: items.length })}
       </p>
       <ul className="mt-1.5 flex flex-col gap-1">
@@ -182,7 +182,7 @@ function ErrorSummary({ items }: { items: Array<{ field: string; label: string }
           <li key={item.field}>
             <button
               type="button"
-              className="cursor-pointer text-start text-[13px] font-bold text-danger underline underline-offset-2"
+              className="cursor-pointer text-start text-sm font-bold text-danger underline underline-offset-2"
               onClick={() => {
                 const el = document.getElementById(item.field);
                 el?.scrollIntoView({ block: "center" });
@@ -219,7 +219,7 @@ function MediaField({
   const [open, setOpen] = useState(false);
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-[13px] font-bold text-text">{label}</span>
+      <span className="text-sm font-bold text-text">{label}</span>
       <div className="flex items-center gap-3">
         <div
           className={`flex items-center justify-center overflow-hidden rounded-md border border-border bg-surface-tint ${
@@ -236,7 +236,7 @@ function MediaField({
               supabaseUrl={supabaseUrl}
             />
           ) : (
-            <span className="text-[11px] text-text-faint">{t("vendorOnboarding.noImage")}</span>
+            <span className="text-2xs text-text-faint">{t("vendorOnboarding.noImage")}</span>
           )}
         </div>
         <div className="flex flex-col gap-1.5">
@@ -356,7 +356,7 @@ function DocumentUploader({
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-3.5">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[13px] font-extrabold text-text">{label}</span>
+        <span className="text-sm font-extrabold text-text">{label}</span>
         {existing ? (
           <Badge tone={statusTone}>{t(`vendorOnboarding.docs.status.${existing.status}`)}</Badge>
         ) : null}
@@ -365,7 +365,7 @@ function DocumentUploader({
         ) : null}
       </div>
       {existing ? (
-        <div className="flex flex-wrap items-center gap-2 text-[12px] text-text-muted">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-text-muted">
           <span className="num truncate">{existing.original_name}</span>
           <button type="button" onClick={preview} className="cursor-pointer font-bold text-action hover:underline">
             {t("vendorOnboarding.docs.preview")}
@@ -401,7 +401,7 @@ function DocumentUploader({
           if (file) void upload(file);
         }}
       />
-      <p className="text-[11px] text-text-faint">
+      <p className="text-2xs text-text-faint">
         {t("vendorOnboarding.docs.limits", { max: maxMb })}
       </p>
     </div>
@@ -421,18 +421,18 @@ function CategoryMultiSelect({
   const roots = categories.filter((c) => c.parent_id === null);
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="text-[13px] font-bold text-text">{t("vendorOnboarding.step1.categories")}</legend>
+      <legend className="text-sm font-bold text-text">{t("vendorOnboarding.step1.categories")}</legend>
       <div className="grid max-h-72 gap-1.5 overflow-y-auto rounded-md border border-border bg-surface p-3 sm:grid-cols-2">
         {roots.map((root) => {
           const subs = categories.filter((c) => c.parent_id === root.id);
           return (
             <details key={root.id} className="rounded-md bg-surface-tint p-2">
-              <summary className="cursor-pointer list-none text-[13px] font-bold text-text">
+              <summary className="cursor-pointer list-none text-sm font-bold text-text">
                 {t("vendorOnboarding.locale") === "ar" ? root.name_ar : root.name_en}
               </summary>
               <div className="mt-1.5 flex flex-col gap-1 ps-4">
                 {[root, ...subs].map((cat) => (
-                  <label key={cat.id} className="flex items-center gap-2 text-[13px] text-text">
+                  <label key={cat.id} className="flex items-center gap-2 text-sm text-text">
                     <input
                       type="checkbox"
                       className="size-4 accent-[var(--color-action)]"
@@ -448,7 +448,7 @@ function CategoryMultiSelect({
         })}
       </div>
       {selected.length > 0 ? (
-        <p className="text-[12px] text-text-faint">
+        <p className="text-xs text-text-faint">
           {t("vendorOnboarding.step1.selectedCount", { count: selected.length })}
         </p>
       ) : null}
@@ -722,11 +722,11 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
               <CheckIcon width={28} height={28} />
             </span>
             <h1 className="text-lg font-black text-text">{t("vendorOnboarding.done.title")}</h1>
-            <p className="text-[13px] leading-relaxed text-text-muted">
+            <p className="text-sm leading-relaxed text-text-muted">
               {direct ? t("vendorOnboarding.done.direct") : t("vendorOnboarding.done.pending")}
             </p>
             {vendor?.grace_until && vendor.verification_status === "unverified" ? (
-              <p className="rounded-md bg-warning-soft p-3 text-[12px] font-bold text-warning">
+              <p className="rounded-md bg-warning-soft p-3 text-xs font-bold text-warning">
                 {t("vendorOnboarding.done.grace", { until: new Date(vendor.grace_until).toLocaleDateString(isAr ? "ar-EG" : "en-GB") })}
               </p>
             ) : null}
@@ -744,11 +744,11 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
           <h1 className="text-lg font-black text-text">{t("vendorOnboarding.title")}</h1>
-          <p className="text-[13px] text-text-muted">{t("vendorOnboarding.subtitle")}</p>
+          <p className="text-sm text-text-muted">{t("vendorOnboarding.subtitle")}</p>
         </div>
         <Stepper steps={STEP_KEYS.map((key) => t(key))} current={step - 1} label={t("vendorOnboarding.progressLabel")} />
 
-        <div className="flex items-center justify-between text-[12px] text-text-faint" aria-live="polite">
+        <div className="flex items-center justify-between text-xs text-text-faint" aria-live="polite">
           <span>
             {t("vendorOnboarding.stepOf", { current: step, total: 5 })}
           </span>
@@ -945,7 +945,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
               <>
                 <div className="flex items-start gap-2 rounded-md border border-warning/40 bg-warning-soft p-3.5">
                   <ShieldIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-warning" />
-                  <div className="text-[13px] leading-relaxed text-text">
+                  <div className="text-sm leading-relaxed text-text">
                     <p className="font-extrabold">{t("vendorOnboarding.step3.optionalTitle")}</p>
                     <p className="mt-1 text-text-muted">
                       {t("vendorOnboarding.step3.optionalBody", { grace: graceLabel })}
@@ -987,14 +987,14 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
             {step === 4 ? (
               <>
                 <details open className="rounded-md border border-border bg-surface-tint p-4">
-                  <summary className="cursor-pointer text-[13px] font-extrabold text-text">
+                  <summary className="cursor-pointer text-sm font-extrabold text-text">
                     {t("vendorOnboarding.step4.contractTitle")}
                   </summary>
-                  <p className="mt-3 max-h-64 overflow-y-auto whitespace-pre-line text-[13px] leading-relaxed text-text-muted">
+                  <p className="mt-3 max-h-64 overflow-y-auto whitespace-pre-line text-sm leading-relaxed text-text-muted">
                     {isAr ? config.terms_ar : config.terms_en}
                   </p>
                 </details>
-                <label className="flex items-start gap-2 text-start text-[13px] text-text">
+                <label className="flex items-start gap-2 text-start text-sm text-text">
                   <input
                     id="terms_accepted"
                     type="checkbox"
@@ -1015,7 +1015,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
             ) : null}
 
             {step === 5 ? (
-              <div className="flex flex-col gap-3 text-[13px]">
+              <div className="flex flex-col gap-3 text-sm">
                 <ReviewBlock
                   title={t("vendorOnboarding.steps.store")}
                   onEdit={() => setStepAndSave(1)}
@@ -1060,7 +1060,7 @@ export default function OnboardingPage({ loaderData }: Route.ComponentProps) {
                     ],
                   ]}
                 />
-                <p className="text-[12px] text-text-faint">{t("vendorOnboarding.step5.note")}</p>
+                <p className="text-xs text-text-faint">{t("vendorOnboarding.step5.note")}</p>
               </div>
             ) : null}
           </CardBody>
@@ -1095,16 +1095,16 @@ function ReviewBlock({ title, rows, onEdit }: { title: string; rows: string[][];
   return (
     <div className="rounded-md border border-border bg-surface-tint p-3.5">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-[13px] font-extrabold text-text">{title}</p>
-        <button type="button" onClick={onEdit} className="cursor-pointer text-[12px] font-bold text-action hover:underline">
+        <p className="text-sm font-extrabold text-text">{title}</p>
+        <button type="button" onClick={onEdit} className="cursor-pointer text-xs font-bold text-action hover:underline">
           {t("common.edit")}
         </button>
       </div>
       <dl className="mt-2 grid gap-1.5 sm:grid-cols-2">
         {rows.map(([label, value]) => (
           <div key={label} className="flex flex-col">
-            <dt className="text-[11px] font-bold text-text-faint">{label}</dt>
-            <dd className="truncate text-[13px] text-text">{value || "—"}</dd>
+            <dt className="text-2xs font-bold text-text-faint">{label}</dt>
+            <dd className="truncate text-sm text-text">{value || "—"}</dd>
           </div>
         ))}
       </dl>

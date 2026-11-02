@@ -139,7 +139,7 @@ export default function AdminBanners({ loaderData }: Route.ComponentProps) {
                         {b.title_ar || b.title_en || "بانر بدون عنوان"}
                       </h3>
                       {b.link_url ? (
-                        <p className="text-[11px] font-mono text-text-muted truncate max-w-[200px]" dir="ltr">
+                        <p className="text-2xs font-mono text-text-muted truncate max-w-[200px]" dir="ltr">
                           {b.link_url}
                         </p>
                       ) : null}

@@ -56,7 +56,7 @@ export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
             id: string; source: string; amount_piastres: number; reason: string;
             reference: string | null; status: string; waived_by: string | null; waived_at: string | null; created_at: string;
           }>).map((p) => (
-            <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-surface p-3 text-[13px]">
+            <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-surface p-3 text-sm">
               <span className={`rounded-md px-2 py-0.5 text-xs font-bold ${p.status === "waived" ? "bg-surface-tint text-primary" : "bg-surface-tint text-danger"}`}>
                 {p.status === "waived" ? t("penalties.waived") : t("penalties.applied")}
               </span>

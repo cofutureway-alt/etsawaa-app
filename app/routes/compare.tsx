@@ -115,7 +115,7 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
           action={
             <Link
               to={`/${lang}/products`}
-              className="inline-block rounded-md bg-action px-4 py-2 text-[13px] font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+              className="inline-block rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
             >
               {t("store.compare.invalid.cta")}
             </Link>
@@ -157,14 +157,14 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
       <h1 className="text-lg font-black text-text">{t("store.compare.title")}</h1>
 
       {side.differentCategories ? (
-        <p className="rounded-lg border-2 border-warning bg-warning-soft px-4 py-3 text-[13px] font-bold text-warning-strong" role="status">
+        <p className="rounded-lg border-2 border-warning bg-warning-soft px-4 py-3 text-sm font-bold text-warning-strong" role="status">
           {t("store.compare.differentCategories")}
         </p>
       ) : null}
 
       {/* desktop table */}
       <div className="hidden overflow-x-auto rounded-lg border border-border bg-surface md:block">
-        <table className="w-full border-collapse text-[13px]">
+        <table className="w-full border-collapse text-sm">
           <caption className="sr-only">{t("store.compare.title")}</caption>
           <thead>
             <tr className="border-b border-border">
@@ -175,7 +175,7 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
                     {p.image_path ? (
                       <MediaImg path={p.image_path} alt={nameOf(p)} width={56} height={56} className="size-14 rounded-md border border-border" />
                     ) : (
-                      <span className="flex size-14 items-center justify-center rounded-md bg-surface-tint text-[10px] text-text-faint">{t("store.noImage")}</span>
+                      <span className="flex size-14 items-center justify-center rounded-md bg-surface-tint text-2xs text-text-faint">{t("store.noImage")}</span>
                     )}
                     <span className="line-clamp-2 font-extrabold text-text hover:text-action">{nameOf(p)}</span>
                   </Link>
@@ -203,16 +203,16 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
               {p.image_path ? (
                 <MediaImg path={p.image_path} alt={nameOf(p)} width={64} height={64} className="size-16 rounded-md border border-border" />
               ) : (
-                <span className="flex size-16 items-center justify-center rounded-md bg-surface-tint text-[10px] text-text-faint">{t("store.noImage")}</span>
+                <span className="flex size-16 items-center justify-center rounded-md bg-surface-tint text-2xs text-text-faint">{t("store.noImage")}</span>
               )}
-              <Link to={`/${lang}/product/${encodeURIComponent(locale === "ar" ? p.slug_ar || p.slug_en : p.slug_en || p.slug_ar)}`} className="line-clamp-2 text-[13px] font-extrabold text-text hover:text-action">
+              <Link to={`/${lang}/product/${encodeURIComponent(locale === "ar" ? p.slug_ar || p.slug_en : p.slug_en || p.slug_ar)}`} className="line-clamp-2 text-sm font-extrabold text-text hover:text-action">
                 {nameOf(p)}
               </Link>
             </div>
             <dl className="mt-3 flex flex-col divide-y divide-border">
               {rows.map((row, index) => (
                 <div key={`${row.label}-${index}`} className="flex items-start justify-between gap-3 py-2">
-                  <dt className="text-[12px] font-bold text-text-muted">{row.label}</dt>
+                  <dt className="text-xs font-bold text-text-muted">{row.label}</dt>
                   <dd className="text-end text-[12.5px] text-text">{row.a === undefined ? "" : p.id === productA.id ? row.a : row.b}</dd>
                 </div>
               ))}

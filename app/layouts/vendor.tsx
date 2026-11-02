@@ -141,7 +141,7 @@ function VerificationIndicator({
     return (
       <Link
         to={`/${lang}/vendor/onboarding`}
-        className="flex items-center gap-1.5 rounded-full border border-danger/50 bg-danger-soft px-3 py-1 text-[12px] font-extrabold text-danger"
+        className="flex items-center gap-1.5 rounded-full border border-danger/50 bg-danger-soft px-3 py-1 text-xs font-extrabold text-danger"
         aria-label={t("vendorStates.graceExpiredBadge")}
       >
         <AlertIcon aria-hidden="true" className="size-4" />
@@ -153,7 +153,7 @@ function VerificationIndicator({
     return (
       <Link
         to={`/${lang}/vendor/onboarding`}
-        className="flex items-center gap-1.5 rounded-full border border-warning/50 bg-warning-soft px-3 py-1 text-[12px] font-extrabold text-warning-strong"
+        className="flex items-center gap-1.5 rounded-full border border-warning/50 bg-warning-soft px-3 py-1 text-xs font-extrabold text-warning-strong"
         aria-label={t("vendorStates.unverifiedBadge")}
       >
         <AlertIcon aria-hidden="true" className="size-4" />
@@ -179,7 +179,7 @@ function VerificationBanner({
     return (
       <div role="status" className="mb-4 flex items-start gap-2 rounded-lg border border-info/40 bg-info-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-info" />
-        <p className="text-[13px] leading-relaxed text-text">
+        <p className="text-sm leading-relaxed text-text">
           <span className="font-extrabold">{t("vendorStates.pendingTitle")}</span>{" "}
           {t("vendorStates.pendingBody")}
         </p>
@@ -190,7 +190,7 @@ function VerificationBanner({
     return (
       <div role="alert" className="mb-4 flex items-start gap-2 rounded-lg border border-danger/40 bg-danger-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" />
-        <div className="text-[13px] leading-relaxed text-text">
+        <div className="text-sm leading-relaxed text-text">
           <p className="font-extrabold">{t("vendorStates.rejectedTitle")}</p>
           {verification.rejection_reason ? (
             <p className="mt-1 text-text-muted">{verification.rejection_reason}</p>
@@ -206,7 +206,7 @@ function VerificationBanner({
     return (
       <div role="alert" className="mb-4 flex items-start gap-2 rounded-lg border border-danger/40 bg-danger-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" />
-        <p className="text-[13px] font-extrabold text-text">{t("vendorStates.suspendedTitle")}</p>
+        <p className="text-sm font-extrabold text-text">{t("vendorStates.suspendedTitle")}</p>
       </div>
     );
   }
@@ -214,7 +214,7 @@ function VerificationBanner({
     return (
       <div role="alert" className="mb-4 flex items-start gap-2 rounded-lg border border-danger/40 bg-danger-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-danger" />
-        <div className="text-[13px] leading-relaxed text-text">
+        <div className="text-sm leading-relaxed text-text">
           <p className="font-extrabold">{t("vendorStates.graceExpiredTitle")}</p>
           <p className="mt-1 text-text-muted">{t("vendorStates.graceExpiredBody")}</p>
           <Link to={`/${lang}/vendor/onboarding`} className="mt-1 inline-block font-bold text-danger underline underline-offset-2">
@@ -231,7 +231,7 @@ function VerificationBanner({
     return (
       <div role="status" className="mb-4 flex items-start gap-2 rounded-lg border border-warning/40 bg-warning-soft p-3.5">
         <AlertIcon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-warning" />
-        <p className="text-[13px] leading-relaxed text-text">
+        <p className="text-sm leading-relaxed text-text">
           <span className="font-extrabold">{t("vendorStates.unverifiedTitle")}</span>{" "}
           {t("vendorStates.graceCountdown", { days, hours })}{" "}
           {t("vendorStates.unverifiedBody")}{" "}

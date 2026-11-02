@@ -44,7 +44,7 @@ export function DocumentImage({
   if (failed) {
     return (
       <span
-        className={`${className} flex items-center justify-center rounded-md border border-border bg-surface-alt text-[10px] text-text-faint`}
+        className={`${className} flex items-center justify-center rounded-md border border-border bg-surface-alt text-2xs text-text-faint`}
       >
         {t("returns.evidenceUnavailable")}
       </span>

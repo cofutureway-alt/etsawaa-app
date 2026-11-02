@@ -111,7 +111,7 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
             <h1 className="flex flex-wrap items-center gap-2 text-lg font-black text-text">
               {name}
               {level ? (
-                <span className="rounded-full border border-featured bg-surface px-2 py-0.5 text-[11px] font-extrabold text-ink">
+                <span className="rounded-full border border-featured bg-surface px-2 py-0.5 text-2xs font-extrabold text-ink">
                   {level}
                 </span>
               ) : null}
@@ -120,27 +120,27 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
               {store.rating_count > 0 && store.rating_avg != null ? (
                 <Rating value={store.rating_avg} count={store.rating_count} size="sm" />
               ) : (
-                <span className="text-[11px] text-text-faint">{t("store.noReviews")}</span>
+                <span className="text-2xs text-text-faint">{t("store.noReviews")}</span>
               )}
-              <span className="num text-[12px] font-bold text-text-muted">
+              <span className="num text-xs font-bold text-text-muted">
                 {t("store.vendor.productCount", { count: store.product_count })}
               </span>
             </div>
-            {desc ? <p className="mt-1 max-w-2xl text-[13px] text-text-muted">{desc}</p> : null}
+            {desc ? <p className="mt-1 max-w-2xl text-sm text-text-muted">{desc}</p> : null}
           </div>
         </div>
       </header>
 
       {/* suspended notice (US-08 edge): shell visible, nothing purchasable */}
       {suspended ? (
-        <div className="rounded-lg border-2 border-danger bg-danger-soft px-4 py-3 text-[13px] font-extrabold text-danger" role="alert">
+        <div className="rounded-lg border-2 border-danger bg-danger-soft px-4 py-3 text-sm font-extrabold text-danger" role="alert">
           {t("store.suspendedNotice")}
         </div>
       ) : null}
 
       {/* event refusal notice: these products stay visible HERE only (S-06) */}
       {eventRefused ? (
-        <div className="rounded-lg border-2 border-warning bg-warning-soft px-4 py-3 text-[13px] font-bold text-warning-strong">
+        <div className="rounded-lg border-2 border-warning bg-warning-soft px-4 py-3 text-sm font-bold text-warning-strong">
           {t("store.eventRefusedNotice", { event: eventName ?? "" })}
         </div>
       ) : null}
@@ -158,7 +158,7 @@ export default function StorePage({ loaderData }: Route.ComponentProps) {
               <li key={product.id} className="relative min-w-0">
                 <ProductCard card={product} lang={lang} wished={loaderData.wishedIds.has(product.id)} />
                 {!product.is_listable ? (
-                  <span className="pointer-events-none absolute inset-x-2 top-2 z-10 rounded-md bg-ink/80 px-2 py-1 text-center text-[10px] font-extrabold text-white">
+                  <span className="pointer-events-none absolute inset-x-2 top-2 z-10 rounded-md bg-ink/80 px-2 py-1 text-center text-2xs font-extrabold text-white">
                     {product.is_event_hidden ? t("store.eventHiddenBadge") : t("store.eventRefusedBadge")}
                   </span>
                 ) : null}

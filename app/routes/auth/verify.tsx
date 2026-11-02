@@ -185,7 +185,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
           <h1 className="text-lg font-extrabold text-text">
             {otpType === "email_change" ? t("auth.verify.emailChangeTitle") : t("auth.verify.title")}
           </h1>
-          <p className="text-[13px] text-text-muted">
+          <p className="text-sm text-text-muted">
             {otpType === "email_change" ? t("auth.verify.emailChangeSubtitle") : t("auth.verify.subtitle")}
             {" "}
             <span className="num font-bold text-text">{email}</span>
@@ -193,7 +193,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
         </div>
 
         {failure ? (
-          <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
+          <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-sm text-danger">
             <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
             <span className="font-bold">
               {failure.reason === "too_many"
@@ -214,7 +214,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
           <input type="hidden" name="token" value={token} />
           <input type="hidden" name="otp_type" value={otpType} />
           <fieldset>
-            <legend className="mb-2 text-[13px] font-bold text-text">{t("auth.verify.code")}</legend>
+            <legend className="mb-2 text-sm font-bold text-text">{t("auth.verify.code")}</legend>
             <div className="flex justify-center gap-2" dir="ltr">
               {digits.map((digit, index) => (
                 <input
@@ -246,7 +246,7 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
           </Button>
         </fetcher.Form>
 
-        <div className="flex flex-col items-center gap-2 text-[13px]">
+        <div className="flex flex-col items-center gap-2 text-sm">
           {secondsLeft > 0 ? (
             <span className="text-text-muted">{t("auth.verify.resendIn", { seconds: secondsLeft })}</span>
           ) : (

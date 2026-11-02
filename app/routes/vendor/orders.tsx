@@ -153,7 +153,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
             placeholder={t("vendorOrders.search")}
             value={loaderData.filters.q}
             onChange={(e) => setFilter("q", e.target.value)}
-            className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-[13px] text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
+            className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-sm text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
             aria-label={t("vendorOrders.search")}
           />
         </div>
@@ -161,7 +161,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
           value={loaderData.filters.status}
           onChange={(e) => setFilter("status", e.target.value)}
           aria-label={t("vendorOrders.allStatuses")}
-          className="rounded-md border border-border bg-surface-alt px-3 py-2 text-[13px] font-bold text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
+          className="rounded-md border border-border bg-surface-alt px-3 py-2 text-sm font-bold text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
         >
           <option value="">{t("vendorOrders.allStatuses")}</option>
           {GROUP_STATUSES.map((s) => (
@@ -201,7 +201,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                   <div>
                     <div className="flex items-center gap-2">
                       <p className="text-base font-black text-text" dir="ltr">{g.order.number}</p>
-                      <span className="rounded bg-surface-alt px-2 py-0.5 text-[11px] font-bold text-text-muted border border-border">
+                      <span className="rounded bg-surface-alt px-2 py-0.5 text-2xs font-bold text-text-muted border border-border">
                         {t("order.pieces")}: <span className="num">{pieces}</span>
                       </span>
                     </div>
@@ -240,7 +240,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                 ) : null}
 
                 {/* Items List */}
-                <ul className="mt-3 flex flex-col divide-y divide-border text-[13px]">
+                <ul className="mt-3 flex flex-col divide-y divide-border text-sm">
                   {own.map((it: { id: string; product_name_ar: string; product_name_en: string; option_key: string; qty: number; line_total_piastres: number; coupon_discount_piastres: number }) => (
                     <li key={it.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
                       <span className="font-bold text-text">
@@ -257,13 +257,13 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                 </ul>
 
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
-                  <p className="text-[13px]">
+                  <p className="text-sm">
                     <span className="text-text-muted">{t("order.vendorNet")}: </span>
                     <span className="text-base font-black text-text tabular-nums text-action">
                       {money(g.items_subtotal_piastres - g.discount_piastres)}
                     </span>
                   </p>
-                  <p className="text-[11px] text-text-faint">{t("vendorOrders.pickupFeeNote")}</p>
+                  <p className="text-2xs text-text-faint">{t("vendorOrders.pickupFeeNote")}</p>
                 </div>
 
                 {/* fulfillment transitions (VO-03; server-validated ladder) */}
@@ -275,12 +275,12 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                     <input
                       name="note"
                       placeholder={t("order.notePlaceholder")}
-                      className="min-w-40 flex-1 rounded-md border border-border bg-surface px-3 py-1.5 text-[13px] text-text focus:border-primary focus:outline-none"
+                      className="min-w-40 flex-1 rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text focus:border-primary focus:outline-none"
                     />
                     <button
                       type="submit"
                       disabled={busy || shipBlocked}
-                      className="cursor-pointer rounded-md bg-action px-3.5 py-1.5 text-[13px] font-bold text-on-action hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50 transition-colors shadow-1"
+                      className="cursor-pointer rounded-md bg-action px-3.5 py-1.5 text-sm font-bold text-on-action hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50 transition-colors shadow-1"
                     >
                       {t(next.key)}
                     </button>
@@ -313,7 +313,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                 </div>
                 {history.length > 0 ? (
                   <details className="mt-2">
-                    <summary className="cursor-pointer text-[13px] font-bold text-text">{t("vendorOrders.printHistory")} ({history.length})</summary>
+                    <summary className="cursor-pointer text-sm font-bold text-text">{t("vendorOrders.printHistory")} ({history.length})</summary>
                     <ul className="mt-1.5 flex flex-col gap-1 text-xs text-text-muted">
                       {history.slice(0, 8).map((d, i) => (
                         <li key={`${d.created_at}-${i}`} className="flex flex-wrap justify-between gap-2">

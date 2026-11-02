@@ -101,7 +101,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
 
       <ul className="flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <li key={tag.id} className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] font-bold text-text">
+          <li key={tag.id} className="flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-sm font-bold text-text">
             {tag.name_ar}
             <span className="font-normal text-text-faint">/ {tag.name_en}</span>
             <button type="button" aria-label={t("common.delete")} onClick={() => setDeleting(tag)} className="cursor-pointer text-text-muted hover:text-danger">
@@ -109,7 +109,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
             </button>
           </li>
         ))}
-        {tags.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted w-full">{t("catalog.noTags")}</li> : null}
+        {tags.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-sm text-text-muted w-full">{t("catalog.noTags")}</li> : null}
       </ul>
 
       <Dialog open={deleting !== null} onClose={() => setDeleting(null)} title={t("common.confirm")}>
@@ -117,7 +117,7 @@ export default function AdminTags({ loaderData }: Route.ComponentProps) {
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <input type="hidden" name="intent" value="delete" />
             <input type="hidden" name="id" value={deleting.id} />
-            <p className="text-[13px] text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
+            <p className="text-sm text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={() => setDeleting(null)}>{t("common.cancel")}</Button>
               <Button type="submit" loading={busy}>{t("common.confirm")}</Button>

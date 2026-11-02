@@ -24,7 +24,7 @@ export interface VariantMatrixRow {
 }
 
 const CELL_CLASS =
-  "w-full rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text outline-none transition-colors duration-150 placeholder:text-text-faint focus:shadow-focus";
+  "w-full rounded-md border border-border bg-surface px-2.5 py-2 text-sm text-text outline-none transition-colors duration-150 placeholder:text-text-faint focus:shadow-focus";
 
 export interface VariantMatrixProps {
   rows: VariantMatrixRow[];
@@ -51,12 +51,12 @@ export function VariantMatrixEditor({
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-[13px] font-extrabold text-text">
+      <p className="text-sm font-extrabold text-text">
         {t("productWizard.variants.matrixTitle", { count: rows.length })}
       </p>
 
       {skippedKeys.length > 0 ? (
-        <div className="rounded-md border border-warning/40 bg-warning-soft p-3 text-[12px] leading-relaxed text-text">
+        <div className="rounded-md border border-warning/40 bg-warning-soft p-3 text-xs leading-relaxed text-text">
           <p className="font-extrabold text-warning-strong">{t("productWizard.variants.skippedTitle")}</p>
           <p className="mt-1 text-text-muted">{t("productWizard.variants.skippedBody")}</p>
           <div className="mt-2 flex flex-wrap gap-1.5">
@@ -65,7 +65,7 @@ export function VariantMatrixEditor({
                 key={key}
                 type="button"
                 onClick={() => onRestore(key)}
-                className="cursor-pointer rounded-full border border-warning/50 bg-surface px-2.5 py-1 text-[11px] font-bold text-warning-strong hover:bg-surface-tint"
+                className="cursor-pointer rounded-full border border-warning/50 bg-surface px-2.5 py-1 text-2xs font-bold text-warning-strong hover:bg-surface-tint"
               >
                 {t("productWizard.variants.restoreOne")}
               </button>
@@ -76,7 +76,7 @@ export function VariantMatrixEditor({
 
       {/* desktop table (md+) */}
       <div className="hidden overflow-x-auto md:block">
-        <table className="w-full min-w-[900px] border-collapse text-[13px]">
+        <table className="w-full min-w-[900px] border-collapse text-sm">
           <thead>
             <tr className="border-b border-border text-text-muted">
               <th scope="col" className="p-2 text-start font-bold">{t("productWizard.variants.combo")}</th>
@@ -167,7 +167,7 @@ const MatrixRow = memo(function MatrixRow({
             {row.color ? (
               <span aria-hidden="true" className="size-4 shrink-0 rounded-full border border-border" style={{ backgroundColor: row.color }} />
             ) : null}
-            <span className="text-[12px] font-bold text-text">{comboLabel}</span>
+            <span className="text-xs font-bold text-text">{comboLabel}</span>
           </div>
         </td>
         <td className="p-2">
@@ -228,10 +228,10 @@ const MatrixRow = memo(function MatrixRow({
         {row.color ? (
           <span aria-hidden="true" className="size-4 shrink-0 rounded-full border border-border" style={{ backgroundColor: row.color }} />
         ) : null}
-        <p className="text-[13px] font-extrabold text-text">{comboLabel}</p>
+        <p className="text-sm font-extrabold text-text">{comboLabel}</p>
       </div>
       <div className="mt-2 grid grid-cols-2 gap-2">
-        <label className="flex flex-col gap-1 text-[11px] font-bold text-text-faint">
+        <label className="flex flex-col gap-1 text-2xs font-bold text-text-faint">
           {t("productWizard.variants.sku")}
           <input
             className={CELL_CLASS}
@@ -240,7 +240,7 @@ const MatrixRow = memo(function MatrixRow({
             onChange={(e) => onChange(index, { sku: e.target.value })}
           />
         </label>
-        <label className="flex flex-col gap-1 text-[11px] font-bold text-text-faint">
+        <label className="flex flex-col gap-1 text-2xs font-bold text-text-faint">
           {t("productWizard.variants.price")}
           <input
             className={CELL_CLASS}
@@ -253,7 +253,7 @@ const MatrixRow = memo(function MatrixRow({
             onChange={(e) => onChange(index, { price: e.target.value })}
           />
         </label>
-        <label className="flex flex-col gap-1 text-[11px] font-bold text-text-faint">
+        <label className="flex flex-col gap-1 text-2xs font-bold text-text-faint">
           {t("productWizard.variants.sale")}
           <input
             className={CELL_CLASS}
@@ -266,7 +266,7 @@ const MatrixRow = memo(function MatrixRow({
             onChange={(e) => onChange(index, { sale_price: e.target.value })}
           />
         </label>
-        <label className="flex flex-col gap-1 text-[11px] font-bold text-text-faint">
+        <label className="flex flex-col gap-1 text-2xs font-bold text-text-faint">
           {t("productWizard.variants.stock")}
           <input
             className={CELL_CLASS}
@@ -315,14 +315,14 @@ function VariantImageField({
         {row.image_path ? (
           <MediaImage path={row.image_path} alt="" width={44} height={44} supabaseUrl={supabaseUrl} className="size-full object-cover" />
         ) : (
-          <span className="text-[10px] text-text-faint">+</span>
+          <span className="text-2xs text-text-faint">+</span>
         )}
       </button>
       {row.image_path ? (
         <button
           type="button"
           onClick={() => onChange(index, { image_path: "" })}
-          className="cursor-pointer text-[11px] font-bold text-danger hover:underline"
+          className="cursor-pointer text-2xs font-bold text-danger hover:underline"
         >
           {t("common.remove")}
         </button>

@@ -62,6 +62,18 @@
   --font-body: "Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
   --font-heading: var(--font-body);
 
+  /* Type scale — one source of truth.
+     Before this, pages invented sizes inline (273 uses of text-[13px],
+     50 of [11px], 16 of [12px], 4 of [10px]) so nothing lined up across
+     screens and body copy dipped below the 13px readable floor. */
+  --text-2xs: 0.6875rem;   /* 11px — badges, dense meta */
+  --text-xs:  0.75rem;     /* 12px — secondary meta */
+  --text-sm:  0.8125rem;   /* 13px — body (the readable floor) */
+  --text-base:0.875rem;    /* 14px — emphasis, table headers */
+  --text-lg:  1.0625rem;   /* 17px — section titles */
+  --text-xl:  1.25rem;     /* 20px — page titles */
+  --text-2xl: 1.5rem;      /* 24px — hero numbers */
+
   /* Radius */
   --radius-sm: 4px;
   --radius-md: 8px;

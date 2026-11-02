@@ -151,9 +151,9 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
             {b.thumb_path ? (
               <img src={`${supabaseUrl}/storage/v1/object/public/media/${b.thumb_path}`} alt="" width={40} height={40} loading="lazy" className="size-10 rounded-md bg-surface-tint object-cover" />
             ) : (
-              <span className="flex size-10 items-center justify-center rounded-md bg-surface-tint text-[11px] font-bold text-text-faint">{b.name_en.slice(0, 2)}</span>
+              <span className="flex size-10 items-center justify-center rounded-md bg-surface-tint text-2xs font-bold text-text-faint">{b.name_en.slice(0, 2)}</span>
             )}
-            <span className="min-w-0 flex-1 truncate text-[13px] font-bold text-text">
+            <span className="min-w-0 flex-1 truncate text-sm font-bold text-text">
               {b.name_ar} <span className="font-normal text-text-faint">/ {b.name_en}</span>
             </span>
             <button type="button" aria-label={t("catalog.moveUp")} onClick={() => moveStep(b, -1)} className="cursor-pointer text-text-muted hover:text-action"><ChevronRightIcon className="size-4 rotate-90" /></button>
@@ -163,7 +163,7 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
             <span className="hidden">{i}</span>
           </li>
         ))}
-        {brands.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noBrands")}</li> : null}
+        {brands.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-sm text-text-muted">{t("catalog.noBrands")}</li> : null}
       </ul>
 
       <Dialog open={dialogOpen} onClose={() => { setCreating(false); setEditing(null); }} title={current ? t("catalog.editBrand") : t("catalog.addBrand")}>
@@ -180,7 +180,7 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
             {thumb ? (
               <img src={`${supabaseUrl}/storage/v1/object/public/media/${thumb}`} alt="" width={48} height={48} className="size-12 rounded-md bg-surface-tint object-cover" />
             ) : (
-              <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-[11px] text-text-faint">{t("catalog.logo")}</span>
+              <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-2xs text-text-faint">{t("catalog.logo")}</span>
             )}
             <input type="hidden" name="thumb_path" value={thumb ?? ""} />
             <Button type="button" size="sm" variant="outline" onClick={() => setPickerOpen(true)}>{t("media.choose")}</Button>
@@ -197,7 +197,7 @@ export default function AdminBrands({ loaderData }: Route.ComponentProps) {
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <input type="hidden" name="intent" value="delete" />
             <input type="hidden" name="id" value={deleting.id} />
-            <p className="text-[13px] text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
+            <p className="text-sm text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={() => setDeleting(null)}>{t("common.cancel")}</Button>
               <Button type="submit" loading={busy}>{t("common.confirm")}</Button>

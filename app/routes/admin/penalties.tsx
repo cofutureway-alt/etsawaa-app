@@ -137,7 +137,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
         </div>
 
         {creating ? (
-          <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-[13px]">
+          <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-sm">
             <input type="hidden" name="intent" value="rule_save" />
             <input type="hidden" name="id" value="" />
             <label className="flex flex-col gap-1 text-xs font-bold text-text">
@@ -167,7 +167,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
         ) : (
         <ul className="mt-2 flex flex-col gap-2">
           {(loaderData.rules as RuleRow[]).map((r) => (
-            <li key={r.id} className={`rounded-md border border-border bg-surface p-3 text-[13px] ${r.deleted_at ? "opacity-60" : ""}`}>
+            <li key={r.id} className={`rounded-md border border-border bg-surface p-3 text-sm ${r.deleted_at ? "opacity-60" : ""}`}>
               <fetcher.Form method="post" className="flex flex-wrap items-end gap-2">
                 <input type="hidden" name="intent" value="rule_save" />
                 <input type="hidden" name="id" value={r.id} />
@@ -202,7 +202,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
                 <Button type="submit" size="sm" disabled={busy}>{t("ve.save")}</Button>
                 {!r.deleted_at ? (
                   <button type="submit" name="intent" value="rule_soft_delete"
-                    className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-[13px] font-bold text-danger hover:bg-danger-soft">
+                    className="cursor-pointer rounded-md border border-danger/50 px-3 py-1.5 text-sm font-bold text-danger hover:bg-danger-soft">
                     {t("pn.softDelete")}
                   </button>
                 ) : <Badge tone="neutral">{t("pn.deleted")}</Badge>}
@@ -221,7 +221,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
         ) : (
           <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
             {(loaderData.applications as PenRow[]).map((p) => (
-              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-[13px]">
+              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-sm">
                 <span className="font-bold text-text">{en ? p.vendor_en : p.vendor_ar}</span>
                 <span className="min-w-0 flex-1 truncate text-text-muted">{p.reason}</span>
                 <Badge tone={p.source === "rule" ? "neutral" : "info"}>{t(`pn.source_${p.source}`)}</Badge>
@@ -232,7 +232,7 @@ export default function AdminPenalties({ loaderData }: Route.ComponentProps) {
                     <input type="hidden" name="intent" value="waive" />
                     <input type="hidden" name="id" value={p.id} />
                     <input name="reason" required minLength={3} placeholder={t("pn.waiveReason")}
-                      className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
+                      className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
                     <Button type="submit" size="sm" variant="outline" disabled={busy}>{t("pn.waive")}</Button>
                   </fetcher.Form>
                 ) : null}

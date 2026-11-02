@@ -215,14 +215,14 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
                       className="w-full rounded-t bg-action/80 hover:bg-action transition-all cursor-pointer"
                       style={{ height: `${heightPct}%` }}
                     />
-                    <div className="absolute -top-7 hidden group-hover:block z-10 whitespace-nowrap rounded bg-surface border border-border px-1.5 py-0.5 text-[10px] font-mono font-bold shadow-md">
+                    <div className="absolute -top-7 hidden group-hover:block z-10 whitespace-nowrap rounded bg-surface border border-border px-1.5 py-0.5 text-2xs font-mono font-bold shadow-md">
                       {d.day}: {money(d.sales)}
                     </div>
                   </div>
                 );
               })}
             </div>
-            <div className="flex justify-between border-t border-border/40 pt-2 text-[10px] font-mono text-text-muted">
+            <div className="flex justify-between border-t border-border/40 pt-2 text-2xs font-mono text-text-muted">
               <span>{loaderData.daily.slice(-30)[0]?.day ?? "—"}</span>
               <span>{loaderData.daily.slice(-30).slice(-1)[0]?.day ?? "—"}</span>
             </div>

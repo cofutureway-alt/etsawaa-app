@@ -86,7 +86,7 @@ function Stat({
       >
         {value}
       </p>
-      {subtext ? <p className="mt-0.5 text-[11px] text-text-faint truncate">{subtext}</p> : null}
+      {subtext ? <p className="mt-0.5 text-2xs text-text-faint truncate">{subtext}</p> : null}
     </div>
   );
 }
@@ -235,11 +235,11 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
               >
                 <div className="flex items-center justify-between">
                   <p className="text-2xl font-black tabular-nums text-text">{q.count}</p>
-                  <span className="rounded-full bg-surface-alt px-2 py-0.5 text-[11px] font-bold text-text-muted border border-border">
+                  <span className="rounded-full bg-surface-alt px-2 py-0.5 text-2xs font-bold text-text-muted border border-border">
                     {en ? "Pending" : "معلق"}
                   </span>
                 </div>
-                <p className="mt-2 text-[13px] font-bold text-text-muted">{q.label}</p>
+                <p className="mt-2 text-sm font-bold text-text-muted">{q.label}</p>
               </Link>
             );
           })}
@@ -307,7 +307,7 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
         />
         <CardBody>
           {loaderData.daily.length === 0 ? (
-            <p className="text-[13px] text-text-muted">{t("adminDash.noData")}</p>
+            <p className="text-sm text-text-muted">{t("adminDash.noData")}</p>
           ) : (
             <DailyChart
               points={loaderData.daily}
@@ -346,13 +346,13 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
           />
           <CardBody>
             {loaderData.vendors.length === 0 ? (
-              <p className="text-[13px] text-text-muted">{t("adminDash.noData")}</p>
+              <p className="text-sm text-text-muted">{t("adminDash.noData")}</p>
             ) : (
               <ul className="flex flex-col divide-y divide-border">
                 {loaderData.vendors.slice(0, 5).map((v) => (
                   <li
                     key={v.id}
-                    className="flex items-center justify-between gap-3 py-3 text-[13px] hover:bg-surface-tint/40 px-2 rounded-md transition-colors"
+                    className="flex items-center justify-between gap-3 py-3 text-sm hover:bg-surface-tint/40 px-2 rounded-md transition-colors"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-ink text-white text-xs font-black">
@@ -393,13 +393,13 @@ export default function AdminDashboard({ loaderData }: Route.ComponentProps) {
           />
           <CardBody>
             {loaderData.products.length === 0 ? (
-              <p className="text-[13px] text-text-muted">{t("adminDash.noData")}</p>
+              <p className="text-sm text-text-muted">{t("adminDash.noData")}</p>
             ) : (
               <ul className="flex flex-col divide-y divide-border">
                 {loaderData.products.slice(0, 5).map((p) => (
                   <li
                     key={p.id}
-                    className="flex items-center justify-between gap-3 py-3 text-[13px] hover:bg-surface-tint/40 px-2 rounded-md transition-colors"
+                    className="flex items-center justify-between gap-3 py-3 text-sm hover:bg-surface-tint/40 px-2 rounded-md transition-colors"
                   >
                     <span className="truncate font-bold text-text">
                       {en ? p.name_en : p.name_ar}

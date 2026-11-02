@@ -191,7 +191,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
         </div>
 
         {creatingGov ? (
-          <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-[13px]">
+          <fetcher.Form method="post" className="mt-2 flex flex-wrap items-end gap-2 rounded-md border border-action/40 bg-surface-tint p-3 text-sm">
             <input type="hidden" name="intent" value="gov_save" />
             <label className="flex flex-col gap-1 text-xs font-bold text-text">
               {t("z.id")}
@@ -214,7 +214,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
           </fetcher.Form>
         ) : null}
         <div className="mt-2 overflow-x-auto rounded-md border border-border">
-          <table className="w-full text-[13px]">
+          <table className="w-full text-sm">
             <thead className="bg-surface-tint">
               <tr>
                 <th className="p-2 text-start font-bold">#</th>
@@ -266,7 +266,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
           ) : (
             <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
               {(loaderData.areas as AreaRow[]).map((a) => (
-                <li key={a.id} className="flex flex-wrap items-center gap-2 p-2.5 text-[13px]">
+                <li key={a.id} className="flex flex-wrap items-center gap-2 p-2.5 text-sm">
                   <fetcher.Form method="post" className="flex flex-wrap items-center gap-1.5">
                     <input type="hidden" name="intent" value="area_save" />
                     <input type="hidden" name="id" value={a.id} />
@@ -299,7 +299,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
       <Dialog open={importOpen} onClose={() => setImportOpen(false)} title={t("z.importTitle")}>
         <fetcher.Form method="post" onSubmit={(e) => { if (!csv.trim()) e.preventDefault(); }}>
           <input type="hidden" name="intent" value="import" />
-          <label htmlFor="z-csv" className="text-[13px] font-bold text-text">{t("z.csvLabel")}</label>
+          <label htmlFor="z-csv" className="text-sm font-bold text-text">{t("z.csvLabel")}</label>
           <textarea id="z-csv" rows={8} value={csv} onChange={(e) => setCsv(e.target.value)} dir="ltr"
             placeholder={"1,مدينة نصر,Nasr City,700\n1,العجوزة,Agouza,600"}
             className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 font-mono text-xs text-text" />

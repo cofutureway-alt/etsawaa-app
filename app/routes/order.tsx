@@ -176,7 +176,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       <h1 className="text-lg font-extrabold text-text">
         {t("order.title")} <span dir="ltr">{order.number}</span>
       </h1>
-      <p className="mt-1 text-[13px] text-text-muted">
+      <p className="mt-1 text-sm text-text-muted">
         {t("order.createdAt")} {new Date(order.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG", { dateStyle: "long" })}
       </p>
 
@@ -202,14 +202,14 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
           >
             {t("order.retryPayment")}
           </Button>
-          <p className="text-[13px] text-text-muted">{t("order.retryNote")}</p>
+          <p className="text-sm text-text-muted">{t("order.retryNote")}</p>
         </div>
       ) : null}
 
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           to={`/${lang}/order/${encodeURIComponent(order.number)}/track`}
-          className="rounded-md border border-action px-4 py-2 text-[13px] font-bold text-action transition-colors duration-150 hover:bg-surface-tint"
+          className="rounded-md border border-action px-4 py-2 text-sm font-bold text-action transition-colors duration-150 hover:bg-surface-tint"
         >
           {t("order.track")}
         </Link>
@@ -219,7 +219,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
             <input
               name="reason" required maxLength={500}
               placeholder={t("order.cancelReasonPlaceholder")}
-              className="w-56 rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text outline-none focus:border-primary focus:shadow-focus"
+              className="w-56 rounded-md border border-border bg-surface px-3 py-2 text-sm text-text outline-none focus:border-primary focus:shadow-focus"
             />
             <Button variant="outline" type="submit" loading={cancelFetcher.state !== "idle"}>
               {t("order.cancel")}
@@ -228,7 +228,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
         ) : null}
       </div>
       {cancelFetcher.data && !cancelFetcher.data.ok ? (
-        <p role="alert" className="mt-2 text-[13px] text-danger">
+        <p role="alert" className="mt-2 text-sm text-danger">
           {cancelFetcher.data.reason === "already_shipping" ? t("order.cancelBlockedShipping")
             : cancelFetcher.data.reason === "reason_required" ? t("order.cancelReasonPlaceholder")
             : t("order.cancelFailed")}
@@ -258,25 +258,25 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
                     className="size-12 shrink-0 rounded-md border border-border object-cover"
                   />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[13px] font-bold text-text">
+                    <span className="block truncate text-sm font-bold text-text">
                       {en ? it.product_name_en : it.product_name_ar}
                     </span>
                     <span className="text-xs text-text-muted">
                       {it.option_key ? `${it.option_key} · ` : ""}{t("cart.qty")} {it.qty}
                     </span>
                   </span>
-                  <span className="text-[13px] font-extrabold text-text">{money(it.line_total_piastres)}</span>
+                  <span className="text-sm font-extrabold text-text">{money(it.line_total_piastres)}</span>
                 </li>
               ))}
             </ul>
-            <dl className="mt-2 flex flex-col gap-1 border-t border-border pt-2 text-[13px]">
+            <dl className="mt-2 flex flex-col gap-1 border-t border-border pt-2 text-sm">
               <div className="flex justify-between"><dt className="text-text-muted">{t("order.itemsSubtotal")}</dt><dd className="font-bold text-text">{money(g.items_subtotal_piastres)}</dd></div>
               {g.discount_piastres > 0 ? (
                 <div className="flex justify-between"><dt className="text-text-muted">{t("cart.discount")}</dt><dd className="font-bold text-primary">−{money(g.discount_piastres)}</dd></div>
               ) : null}
             </dl>
             {g.status === "cancelled" && g.cancel_reason ? (
-              <p className="mt-2 text-[13px] text-text-muted">{t("order.cancelReason")}: {g.cancel_reason}</p>
+              <p className="mt-2 text-sm text-text-muted">{t("order.cancelReason")}: {g.cancel_reason}</p>
             ) : null}
           </section>
         ))}
@@ -305,10 +305,10 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
       {/* delivery snapshot */}
       <section className="mt-4 rounded-md border border-border bg-surface p-4">
         <h2 className="text-sm font-extrabold text-text">{t("order.deliveryDetails")}</h2>
-        <p className="mt-1.5 text-[13px] text-text">
+        <p className="mt-1.5 text-sm text-text">
           {order.ship_name} — <span dir="ltr">{order.phone_primary}</span> · <span dir="ltr">{order.phone_alternate}</span>
         </p>
-        <p className="text-[13px] text-text-muted">
+        <p className="text-sm text-text-muted">
           {order.address1}{order.address2 ? `، ${order.address2}` : ""} — {en ? loaderData.governorate?.name_en : loaderData.governorate?.name_ar} · {en ? loaderData.area?.name_en : loaderData.area?.name_ar}
         </p>
         <p className="mt-1 text-xs text-text-faint">{t("order.emailSnapshot")}: <span dir="ltr">{order.email}</span></p>
@@ -318,10 +318,10 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
         <summary className="cursor-pointer text-sm font-extrabold text-text">{t("order.historyTitle")}</summary>
         <ol className="mt-3 flex flex-col gap-2">
           {history.length === 0 ? (
-            <li className="text-[13px] text-text-muted">{t("order.preparing")}</li>
+            <li className="text-sm text-text-muted">{t("order.preparing")}</li>
           ) : (
             history.map((h) => (
-              <li key={h.id} className="flex flex-wrap items-center gap-2 text-[13px]">
+              <li key={h.id} className="flex flex-wrap items-center gap-2 text-sm">
                 <span className="font-bold text-text">{statusLabel(h.status)}</span>
                 <span className="text-text-faint" dir="ltr">{new Date(h.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}</span>
                 {h.note && h.note !== "order_created" ? <span className="text-text-muted">— {h.note}</span> : null}

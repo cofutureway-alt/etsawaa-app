@@ -151,8 +151,8 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
         <h2 className="text-sm font-extrabold text-text">{t("bl.cats")}</h2>
         <fetcher.Form method="post" className="mt-1.5 flex flex-wrap items-center gap-1.5">
           <input type="hidden" name="intent" value="cat_add" />
-          <input name="name_ar" required placeholder={t("pn.nameAr")} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
-          <input name="name_en" required dir="ltr" placeholder={t("pn.nameEn")} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-[13px]" />
+          <input name="name_ar" required placeholder={t("pn.nameAr")} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
+          <input name="name_en" required dir="ltr" placeholder={t("pn.nameEn")} className="w-40 rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
           <Button type="submit" size="sm" variant="outline" disabled={busy}>{t("cp.create")}</Button>
         </fetcher.Form>
         <ul className="mt-1.5 flex flex-wrap gap-1.5">
@@ -170,7 +170,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
         ) : (
           <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
             {(loaderData.posts as PostRow[]).map((p) => (
-              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-[13px]">
+              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-sm">
                 <span className="font-bold text-text">{p.title_ar || p.title_en}</span>
                 <span className="num text-xs text-text-faint" dir="ltr">{p.slug_ar}</span>
                 <Badge tone={p.status === "published" ? "success" : "neutral"}>{p.status === "published" ? t("rv.tab_published") : t("bl.draft")}</Badge>
@@ -196,19 +196,19 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
             <input type="hidden" name="intent" value="post_save" />
             <input type="hidden" name="id" value={edit.id} />
             <div className="grid gap-2 sm:grid-cols-2">
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.titleAr")}<input name="title_ar" defaultValue={edit.title_ar} required className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.titleEn")}<input name="title_en" defaultValue={edit.title_en} dir="ltr" className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.slugAr")}<input name="slug_ar" defaultValue={edit.slug_ar} required dir="ltr" className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.slugEn")}<input name="slug_en" defaultValue={edit.slug_en} dir="ltr" className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.cat")}
                 <select name="category_id" defaultValue={edit.category_id ?? ""} className={inp}>
                   <option value="">—</option>
@@ -217,7 +217,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
                   ))}
                 </select>
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.cover")}
                 <div className="flex items-center gap-2">
                   <input name="cover_path" value={coverPath} onChange={(e) => setCoverPath(e.target.value)} dir="ltr" placeholder="u/…" className={`${inp} min-w-0 flex-1`} />
@@ -225,17 +225,17 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
                 </div>
               </label>
             </div>
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("bl.excerptAr")}<textarea name="excerpt_ar" defaultValue={edit.excerpt_ar} className={`${inp} min-h-14`} />
             </label>
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("bl.contentAr")}<textarea name="content_ar" defaultValue={edit.content_ar} className={`${inp} min-h-28`} />
             </label>
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("bl.contentEn")}<textarea name="content_en" defaultValue={edit.content_en} dir="ltr" className={`${inp} min-h-28`} />
             </label>
             <details>
-              <summary className="cursor-pointer text-[13px] font-bold text-primary">{t("bl.seo")}</summary>
+              <summary className="cursor-pointer text-sm font-bold text-primary">{t("bl.seo")}</summary>
               <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
                 <input name="seo_title_ar" defaultValue={edit.seo_title_ar} placeholder={t("bl.seoTitleAr")} className={inp} />
                 <input name="seo_title_en" defaultValue={edit.seo_title_en} dir="ltr" placeholder={t("bl.seoTitleEn")} className={inp} />
@@ -243,7 +243,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
                 <input name="seo_desc_en" defaultValue={edit.seo_desc_en} dir="ltr" placeholder={t("bl.seoDescEn")} className={inp} />
               </div>
             </details>
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("wd.status")}
               <select name="status" defaultValue={edit.status} className={inp}>
                 <option value="draft">{t("bl.draft")}</option>
@@ -277,7 +277,7 @@ export default function AdminBlog({ loaderData }: Route.ComponentProps) {
   );
 }
 
-const inp = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
+const inp = "w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text";
 
 
 /** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */

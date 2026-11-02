@@ -153,18 +153,18 @@ export default function AdminCustomers({ loaderData }: Route.ComponentProps) {
               { key: "name", header: t("admin.users.name"), text: (r) => `${r.full_name} ${r.email ?? ""}`,
                 render: (r) => (
                   <div className="min-w-0">
-                    <p className="truncate text-[13px] font-bold text-text">{r.full_name}</p>
-                    <p className="truncate text-[11px] text-text-muted" dir="ltr">{r.email ?? "—"}</p>
+                    <p className="truncate text-sm font-bold text-text">{r.full_name}</p>
+                    <p className="truncate text-2xs text-text-muted" dir="ltr">{r.email ?? "—"}</p>
                   </div>
                 ) },
               { key: "phone", header: t("admin.users.phone"), text: (r) => r.phone ?? "",
-                render: (r) => <span dir="ltr" className="num text-[13px]">{r.phone ?? "—"}</span> },
+                render: (r) => <span dir="ltr" className="num text-sm">{r.phone ?? "—"}</span> },
               { key: "role", header: t("admin.users.role"), text: (r) => r.role, render: (r) => <Badge tone={r.role === "customer" ? "neutral" : "info"}>{r.role}</Badge> },
               { key: "stats", header: t("cu.orders"), text: (r) => String(r.orders_count),
                 render: (r) => (
-                  <span className="text-[13px]">
+                  <span className="text-sm">
                     <span className="num tabular-nums text-text" dir="ltr">{r.orders_count}</span>
-                    <span className="block text-[11px] text-text-muted num" dir="ltr">{money(r.revenue)}</span>
+                    <span className="block text-2xs text-text-muted num" dir="ltr">{money(r.revenue)}</span>
                   </span>
                 ) },
               { key: "status", header: t("admin.users.status"), text: (r) => r.status,
@@ -203,7 +203,7 @@ export default function AdminCustomers({ loaderData }: Route.ComponentProps) {
               {loaderData.page > 1 ? (
                 <a
                   href={`/${lang}/admin/customers?page=${loaderData.page - 1}${loaderData.q ? `&q=${encodeURIComponent(loaderData.q)}` : ""}`}
-                  className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
+                  className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint"
                 >
                   {t("common.prev")}
                 </a>
@@ -214,7 +214,7 @@ export default function AdminCustomers({ loaderData }: Route.ComponentProps) {
               {loaderData.page < loaderData.totalPages ? (
                 <a
                   href={`/${lang}/admin/customers?page=${loaderData.page + 1}${loaderData.q ? `&q=${encodeURIComponent(loaderData.q)}` : ""}`}
-                  className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint"
+                  className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint"
                 >
                   {t("common.next")}
                 </a>

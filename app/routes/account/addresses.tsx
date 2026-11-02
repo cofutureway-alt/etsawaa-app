@@ -275,14 +275,14 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
                       </Badge>
                     ) : null}
                   </p>
-                  <p className="num mt-0.5 text-[13px] text-text-muted" dir="ltr">{a.phone}</p>
+                  <p className="num mt-0.5 text-sm text-text-muted" dir="ltr">{a.phone}</p>
                   {a.phone_alternate ? (
                     <p className="num mt-0.5 text-xs text-text-faint" dir="ltr">{a.phone_alternate}</p>
                   ) : null}
                 </div>
                 <span aria-hidden="true" className="text-action"><TruckIcon width={18} height={18} /></span>
               </div>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-text-muted">
+              <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
                 {a.address1}{a.address2 ? `، ${a.address2}` : ""}
                 <span className="block text-xs text-text-faint">{areaName(a.area_id)} · {govName(a.governorate_id)}{a.postal_code ? ` · ${a.postal_code}` : ""}</span>
               </p>
@@ -310,7 +310,7 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
       )}
 
       {reason ? (
-        <p role="alert" className="mt-2 text-[13px] font-bold text-danger">
+        <p role="alert" className="mt-2 text-sm font-bold text-danger">
           {reason === "phone" || reason === "alternate" ? t("addresses.error_phone")
             : reason === "phones_equal" ? t("checkout.errPhonesEqual")
             : reason === "area" ? t("addresses.error_area")
@@ -337,7 +337,7 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
           <div className="rounded-md bg-surface-tint p-3">
             <p className="text-xs font-bold text-text">{t("checkout.emailLabel")}</p>
             <p className="num text-sm text-text-muted" dir="ltr">{loaderData.profile.email}</p>
-            <p className="mt-0.5 text-[11px] text-text-faint">{t("checkout.emailReadOnly")}</p>
+            <p className="mt-0.5 text-2xs text-text-faint">{t("checkout.emailReadOnly")}</p>
           </div>
 
           <Input id="ad-label" label={`${t("addresses.label")} (${t("checkout.optional")})`} name="label" value={form.label} onChange={(e) => set("label", e.target.value)} />
@@ -368,14 +368,14 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
 
           {/* H-23: optional saved pin — same picker checkout uses */}
           <div>
-            <p className="mb-1.5 text-[13px] font-bold text-text">
+            <p className="mb-1.5 text-sm font-bold text-text">
               {t("addresses.mapTitle")} <span className="font-normal text-text-faint">({t("checkout.optional")})</span>
             </p>
             <LocationPicker value={pin} onChange={setPin} />
-            <p className="mt-1 text-[11px] text-text-faint">{t("addresses.mapHint")}</p>
+            <p className="mt-1 text-2xs text-text-faint">{t("addresses.mapHint")}</p>
           </div>
 
-          <label className="flex min-h-11 items-center gap-2 text-[13px] text-text">
+          <label className="flex min-h-11 items-center gap-2 text-sm text-text">
             <input type="checkbox" name="is_default" checked={form.is_default} onChange={(e) => set("is_default", e.target.checked)} className="size-4 accent-[var(--color-action)]" />
             {t("addresses.makeDefault")}
           </label>

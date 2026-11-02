@@ -132,7 +132,7 @@ export function GovernateAreaSelects({
         ]}
       />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor={`${namePrefix}area`} className="text-[13px] font-bold text-text">
+        <label htmlFor={`${namePrefix}area`} className="text-sm font-bold text-text">
           {t("checkout.area")}
         </label>
         <div className="relative">

@@ -15,7 +15,7 @@ export function Table({ columns, caption, children }: TableProps) {
         <thead>
           <tr className="border-b border-border bg-surface-alt">
             {columns.map((column) => (
-              <th key={column} scope="col" className="px-4 py-3 text-start text-[13px] font-extrabold text-text-muted">
+              <th key={column} scope="col" className="px-4 py-3 text-start text-sm font-extrabold text-text-muted">
                 {column}
               </th>
             ))}

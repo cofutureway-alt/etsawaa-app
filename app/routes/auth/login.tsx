@@ -136,7 +136,7 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
             ref={summaryRef}
             tabIndex={-1}
             role="alert"
-            className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger outline-none"
+            className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-sm text-danger outline-none"
           >
             <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
             <span className="font-bold">{summaryMessage}</span>
@@ -169,7 +169,7 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
             error={errors.password?.message ?? fieldErrors.password}
             {...register("password")}
           />
-          <div className="flex items-center justify-start text-[13px]">
+          <div className="flex items-center justify-start text-sm">
             <Link to={`/${lang}/auth/forgot`} className="font-bold text-action hover:underline">
               {t("auth.login.forgot")}
             </Link>
@@ -190,7 +190,7 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
           </Button>
         </form>
 
-        <p className="text-center text-[13px] text-text-muted">
+        <p className="text-center text-sm text-text-muted">
           {t("auth.login.noAccount")}{" "}
           <Link to={`/${lang}/auth/register`} className="font-bold text-action hover:underline">
             {t("auth.login.createOne")}

@@ -162,13 +162,13 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
           <h1 className="text-lg font-extrabold text-text">
             {isVendor ? t("vendorOnboarding.register.title") : t("auth.register.title")}
           </h1>
-          <p className="text-[13px] text-text-muted">
+          <p className="text-sm text-text-muted">
             {isVendor ? t("vendorOnboarding.register.subtitle") : t("auth.register.subtitle")}
           </p>
         </div>
 
         {failed?.formError ? (
-          <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] text-danger">
+          <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-sm text-danger">
             <AlertIcon aria-hidden="true" className="mt-0.5 shrink-0" />
             <span className="font-bold">{t(FORM_ERRORS[failed.formError] ?? "auth.errors.generic")}</span>
           </div>
@@ -230,7 +230,7 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
             {...register("confirmPassword")}
           />
           <div className="flex flex-col gap-1">
-            <label className="flex items-start gap-2 text-start text-[13px] text-text">
+            <label className="flex items-start gap-2 text-start text-sm text-text">
               <input type="checkbox" className="mt-0.5 size-4 shrink-0 accent-[var(--color-action)]" {...register("terms")} />
               <span className="min-w-0 leading-relaxed">
                 {t("auth.register.terms")}{" "}
@@ -254,7 +254,7 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
           </Button>
         </fetcher.Form>
 
-        <p className="text-center text-[13px] text-text-muted">
+        <p className="text-center text-sm text-text-muted">
           {t("auth.register.haveAccount")}{" "}
           <Link to={`/${lang}/auth/login`} className="font-bold text-action hover:underline">
             {t("auth.register.signIn")}

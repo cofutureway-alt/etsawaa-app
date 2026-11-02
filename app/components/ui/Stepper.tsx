@@ -27,7 +27,7 @@ export function Stepper({ steps, current, label }: StepperProps) {
             >
               {done ? <CheckIcon width={12} height={12} /> : index + 1}
             </span>
-            <span className={`text-[13px] ${active ? "font-bold text-text" : done ? "text-text" : "text-text-muted"}`}>
+            <span className={`text-sm ${active ? "font-bold text-text" : done ? "text-text" : "text-text-muted"}`}>
               {step}
             </span>
             {index < steps.length - 1 ? (

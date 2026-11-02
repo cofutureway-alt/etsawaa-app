@@ -90,7 +90,7 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
         )}
         <div className="min-w-0">
           <h1 className="text-lg font-black text-text">{name}</h1>
-          {description ? <p className="mt-1 max-w-2xl text-[13px] text-text-muted">{description}</p> : null}
+          {description ? <p className="mt-1 max-w-2xl text-sm text-text-muted">{description}</p> : null}
         </div>
       </header>
 
@@ -111,7 +111,7 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
                       {(lang === "ar" ? child.name_ar : child.name_en).slice(0, 1)}
                     </span>
                   )}
-                  <span className="line-clamp-2 text-[12px] font-bold text-text">
+                  <span className="line-clamp-2 text-xs font-bold text-text">
                     {lang === "ar" ? child.name_ar : child.name_en}
                   </span>
                 </Link>

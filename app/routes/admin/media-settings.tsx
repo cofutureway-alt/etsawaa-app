@@ -101,18 +101,18 @@ export default function AdminMediaSettings({ loaderData }: Route.ComponentProps)
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-lg font-extrabold text-text">{t("mediaSettings.title")}</h1>
-      <p className="text-[13px] text-text-muted">{t("mediaSettings.hint")}</p>
+      <p className="text-sm text-text-muted">{t("mediaSettings.hint")}</p>
 
       <fetcher.Form method="post" className="flex max-w-2xl flex-col gap-4 rounded-lg border border-border bg-surface p-4">
         <input type="hidden" name="intent" value="save" />
         <fieldset className="flex flex-col gap-2">
-          <legend className="text-[13px] font-extrabold text-text">{t("mediaSettings.kinds")}</legend>
+          <legend className="text-sm font-extrabold text-text">{t("mediaSettings.kinds")}</legend>
           {([
             ["allow_images", "mediaSettings.images"],
             ["allow_video", "mediaSettings.video"],
             ["allow_pdf", "mediaSettings.pdf"],
           ] as const).map(([key, label]) => (
-            <label key={key} className="flex items-center gap-2 text-[13px] font-bold text-text">
+            <label key={key} className="flex items-center gap-2 text-sm font-bold text-text">
               <input
                 type="checkbox"
                 name={key}
@@ -126,9 +126,9 @@ export default function AdminMediaSettings({ loaderData }: Route.ComponentProps)
         </fieldset>
 
         <fieldset className="flex flex-col gap-2">
-          <legend className="text-[13px] font-extrabold text-text">{t("mediaSettings.mimes")}</legend>
+          <legend className="text-sm font-extrabold text-text">{t("mediaSettings.mimes")}</legend>
           {mimeList.map((mime) => (
-            <label key={mime} className="flex items-center gap-2 text-[13px] text-text">
+            <label key={mime} className="flex items-center gap-2 text-sm text-text">
               <input
                 type="checkbox"
                 name="mimes"

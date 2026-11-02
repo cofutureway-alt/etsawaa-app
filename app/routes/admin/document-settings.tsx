@@ -17,7 +17,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
  * print time → changes apply to the NEXT print without deploy.
  */
 
-const INPUT = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
+const INPUT = "w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text";
 const BOOL = "size-4 accent-[var(--color-action)]";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -70,89 +70,89 @@ export default function AdminDocSettings({ loaderData }: Route.ComponentProps) {
   return (
     <div>
       <h1 className="text-lg font-extrabold text-text">{t("ds.title")}</h1>
-      <p className="mt-1 text-[13px] text-text-muted">{t("ds.hint")}</p>
+      <p className="mt-1 text-sm text-text-muted">{t("ds.hint")}</p>
 
       <Card className="mt-3">
         <CardHeader title={t("ds.paperCopies")} />
         <CardBody>
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.copiesAdminInvoice")}
                 <input name="copies_invoice_admin" type="number" min={0} max={20} defaultValue={Number(d.copies_invoice_admin ?? 1)} dir="ltr" className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.copiesVendorInvoice")}
                 <input name="copies_invoice_vendor" type="number" min={0} max={20} defaultValue={Number(d.copies_invoice_vendor ?? 1)} dir="ltr" className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.copiesCarrierLabel")}
                 <input name="copies_label_carrier" type="number" min={0} max={20} defaultValue={Number(d.copies_label_carrier ?? 2)} dir="ltr" className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.copiesVendorLabel")}
                 <input name="copies_label_vendor" type="number" min={0} max={20} defaultValue={Number(d.copies_label_vendor ?? 1)} dir="ltr" className={INPUT} />
               </label>
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.paperInvoice")}
                 <select name="paper_invoice" defaultValue={String(d.paper_invoice ?? "a4")} className={INPUT}>
                   <option value="a4">A4</option>
                 </select>
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.paperLabel")}
                 <select name="paper_label" defaultValue={String(d.paper_label ?? "a5_landscape")} className={INPUT}>
                   <option value="a5_landscape">A5 landscape</option>
                 </select>
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.barcodeHeight")}
                 <input name="barcode_height_mm" type="number" min={6} max={30} defaultValue={Number(d.barcode_height_mm ?? 12)} dir="ltr" className={INPUT} />
               </label>
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.headerAr")}
                 <input name="header_ar" defaultValue={String(d.header_ar ?? "")} className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.headerEn")}
                 <input name="header_en" defaultValue={String(d.header_en ?? "")} dir="ltr" className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.footerAr")}
                 <input name="footer_ar" defaultValue={String(d.footer_ar ?? "")} className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.footerEn")}
                 <input name="footer_en" defaultValue={String(d.footer_en ?? "")} dir="ltr" className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.termsAr")}
                 <textarea name="terms_ar" defaultValue={String(d.terms_ar ?? "")} className={`${INPUT} min-h-16`} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.termsEn")}
                 <textarea name="terms_en" defaultValue={String(d.terms_en ?? "")} dir="ltr" className={`${INPUT} min-h-16`} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.logo")}
                 <input name="logo_path" defaultValue={String(d.logo_path ?? "")} dir="ltr" placeholder="media/… path" className={INPUT} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("ds.watermark")}
                 <input name="watermark_cancelled" defaultValue={String(d.watermark_cancelled ?? "ملغي")} className={INPUT} />
               </label>
             </div>
-            <label className="flex items-center gap-2 text-[13px] font-bold text-text">
+            <label className="flex items-center gap-2 text-sm font-bold text-text">
               <input type="checkbox" name="show_commission" defaultChecked={d.show_commission === true} className={BOOL} />
               {t("ds.showCommission")}
             </label>
             <div className="flex items-center gap-3">
               <Button type="submit" disabled={busy}>{t("ve.save")}</Button>
-              {ok ? <span className="text-[13px] font-bold text-success-strong">{t("ve.saved")}</span> : null}
+              {ok ? <span className="text-sm font-bold text-success-strong">{t("ve.saved")}</span> : null}
             </div>
           </fetcher.Form>
         </CardBody>

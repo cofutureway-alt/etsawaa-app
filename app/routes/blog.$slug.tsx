@@ -225,7 +225,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
           <h1 className="text-2xl font-extrabold leading-snug text-text md:text-3xl">
             {en ? p.title_en : p.title_ar}
           </h1>
-          <p className="mt-1.5 text-[13px] text-text-muted">
+          <p className="mt-1.5 text-sm text-text-muted">
             {p.author_name ? `${p.author_name} · ` : ""}
             <time dateTime={p.published_at ?? undefined} dir="ltr">
               {new Date(p.published_at ?? p.updated_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
@@ -253,12 +253,12 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
               starts right under the title) */}
           {toc.length >= 2 ? (
             <details className="group mt-5 rounded-md border border-border bg-surface-tint lg:hidden">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-3 text-[13px] font-bold text-text marker:content-none">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 p-3 text-sm font-bold text-text marker:content-none">
                 {t("pubBlog.toc")}
                 <span aria-hidden="true" className="text-text-muted transition-transform duration-150 group-open:rotate-180">▾</span>
               </summary>
               <nav aria-label={t("pubBlog.toc")} className="px-3 pb-3">
-                <ol className="flex flex-col gap-1 border-s border-border ps-3 text-[13px]">
+                <ol className="flex flex-col gap-1 border-s border-border ps-3 text-sm">
                   {toc.map((item) => (
                     <li key={item.id} className={item.level === 3 ? "ms-3" : ""}>
                       <a href={`#${item.id}`} className="text-primary hover:underline">{item.text}</a>
@@ -270,21 +270,21 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
           ) : null}
 
           <div
-            className="pubProse mt-5 flex flex-col gap-3 text-[15px] leading-7 text-text"
+            className="pubProse mt-5 flex flex-col gap-3 text-lg leading-7 text-text"
             dangerouslySetInnerHTML={{ __html: withIds }}
           />
 
           {/* share row */}
           <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-border pt-4">
-            <span className="text-[13px] font-bold text-text">{t("pubBlog.share")}</span>
+            <span className="text-sm font-bold text-text">{t("pubBlog.share")}</span>
             {shareTargets.map((s) => (
               <a key={s.key} href={s.href} target="_blank" rel="noreferrer"
-                className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
                 {t(`pubBlog.share_${s.key}`)}
               </a>
             ))}
             <button type="button" onClick={() => void navigator.clipboard?.writeText(url)}
-              className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+              className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
               {t("pubBlog.copyLink")}
             </button>
           </div>
@@ -294,8 +294,8 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
         {toc.length >= 2 ? (
           <aside className="hidden lg:block">
             <nav aria-label={t("pubBlog.toc")} className="sticky top-24 rounded-md border border-border bg-surface p-3">
-              <p className="text-[13px] font-bold text-text">{t("pubBlog.toc")}</p>
-              <ol className="mt-1.5 flex flex-col gap-1 border-s border-border ps-3 text-[13px]">
+              <p className="text-sm font-bold text-text">{t("pubBlog.toc")}</p>
+              <ol className="mt-1.5 flex flex-col gap-1 border-s border-border ps-3 text-sm">
                 {toc.map((item) => (
                   <li key={item.id} className={item.level === 3 ? "ms-3" : ""}>
                     <a href={`#${item.id}`}
@@ -329,7 +329,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
                 </Link>
                 <div className="p-3">
                   <Link to={`/${lang}/blog/${encodeURIComponent(en ? r.slug_en : r.slug_ar)}`}
-                    className="text-[14px] font-bold text-text hover:text-primary">
+                    className="text-base font-bold text-text hover:text-primary">
                     {en ? r.title_en : r.title_ar}
                   </Link>
                   <p className="mt-1 line-clamp-2 text-xs text-text-muted">{en ? r.excerpt_en : r.excerpt_ar}</p>

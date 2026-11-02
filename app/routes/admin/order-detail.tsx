@@ -211,12 +211,12 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
               {copied ? (
                 <>
                   <CheckIcon className="size-3.5 text-success" />
-                  <span className="text-success font-bold text-[11px]">Copied</span>
+                  <span className="text-success font-bold text-2xs">Copied</span>
                 </>
               ) : (
                 <>
                   <CopyIcon className="size-3.5" />
-                  <span className="text-[11px]">Copy</span>
+                  <span className="text-2xs">Copy</span>
                 </>
               )}
             </button>
@@ -289,7 +289,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                       </div>
                       <div>
                         <h3 className="text-sm font-extrabold text-text">{storeName}</h3>
-                        <p className="text-[11px] text-text-muted">
+                        <p className="text-2xs text-text-muted">
                           {groupItems.reduce((acc, it) => acc + it.qty, 0)} قطع
                         </p>
                       </div>
@@ -326,7 +326,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                             <span className="block font-bold text-text font-mono text-sm">
                               {money(it.line_total_piastres)}
                             </span>
-                            <span className="block text-[11px] text-text-muted font-mono">
+                            <span className="block text-2xs text-text-muted font-mono">
                               {t("order.commissionShort")}: {money(it.commission_piastres)}
                             </span>
                           </div>
@@ -414,7 +414,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                       <span className="text-xs font-bold text-text">
                         {t(`order.status_${h.status}`)}
                       </span>
-                      <time className="text-[11px] font-mono text-text-muted" dir="ltr">
+                      <time className="text-2xs font-mono text-text-muted" dir="ltr">
                         {new Date(h.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}
                       </time>
                     </div>
@@ -487,12 +487,12 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                       <Badge tone={n.is_internal ? "danger" : "success"} dot>
                         {n.is_internal ? t("note.private") : t("note.public")}
                       </Badge>
-                      <time className="text-[11px] font-mono text-text-muted" dir="ltr">
+                      <time className="text-2xs font-mono text-text-muted" dir="ltr">
                         {new Date(n.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}
                       </time>
                     </div>
                     <p className="text-xs text-text font-normal leading-relaxed">{n.body}</p>
-                    <p className="text-[11px] text-text-faint">
+                    <p className="text-2xs text-text-faint">
                       بواسطة: {n.author || "—"}
                     </p>
                   </div>
@@ -596,7 +596,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
               </div>
 
               <div className="flex items-center gap-2 font-mono text-text" dir="ltr">
-                <span className="text-text-muted text-[11px]">TEL:</span>
+                <span className="text-text-muted text-2xs">TEL:</span>
                 <span>{order.phone_primary}</span>
                 {order.phone_alternate ? (
                   <span className="text-text-muted">/ {order.phone_alternate}</span>
@@ -610,7 +610,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                     {order.address1}
                     {order.address2 ? `، ${order.address2}` : ""}
                   </p>
-                  <p className="text-text-muted text-[11px] mt-0.5">
+                  <p className="text-text-muted text-2xs mt-0.5">
                     {en ? loaderData.geo.governorate?.name_en : loaderData.geo.governorate?.name_ar} ·{" "}
                     {en ? loaderData.geo.area?.name_en : loaderData.geo.area?.name_ar}
                   </p>
@@ -660,7 +660,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                   <button
                     type="button"
                     onClick={() => setPieces("auto")}
-                    className={`text-[11px] font-bold cursor-pointer ${pieces === "auto" ? "text-action" : "text-text-faint hover:text-text"}`}
+                    className={`text-2xs font-bold cursor-pointer ${pieces === "auto" ? "text-action" : "text-text-faint hover:text-text"}`}
                   >
                     {t("order.piecesAuto")}
                   </button>
@@ -708,7 +708,7 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
                 <summary className="cursor-pointer font-bold text-text-muted hover:text-text">
                   {t("order.printLog")} ({documents.length})
                 </summary>
-                <ul className="mt-2 space-y-1 font-mono text-[11px] text-text-faint">
+                <ul className="mt-2 space-y-1 font-mono text-2xs text-text-faint">
                   {documents.map((d: { id: string; doc_type: string; copies: number; created_at: string }) => (
                     <li key={d.id} className="flex justify-between gap-2 border-b border-border/20 py-1">
                       <span>{t(`order.doc_${d.doc_type}`)}</span>

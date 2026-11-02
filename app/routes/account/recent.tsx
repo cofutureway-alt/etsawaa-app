@@ -59,7 +59,7 @@ export default function AccountRecentPage({ loaderData }: Route.ComponentProps) 
         <fetcher.Form method="post" preventScrollReset>
           <button
             type="submit"
-            className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint"
+            className="cursor-pointer rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text transition-colors duration-150 hover:bg-surface-tint"
           >
             {t("recent.clear")}
           </button>
@@ -82,13 +82,13 @@ export default function AccountRecentPage({ loaderData }: Route.ComponentProps) 
                     <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`}>
                       <MediaImg path={p.main_image_path ?? ""} alt={en ? p.name_en : p.name_ar} className="aspect-square w-full rounded-md border border-border object-cover" />
                     </Link>
-                    <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="mt-2 block truncate text-[13px] font-bold text-text hover:text-action">
+                    <Link to={`/${loaderData.lang}/product/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="mt-2 block truncate text-sm font-bold text-text hover:text-action">
                       {en ? p.name_en : p.name_ar}
                     </Link>
-                    <p className="text-[13px] font-extrabold text-text">{money(effectivePrice(p))}</p>
+                    <p className="text-sm font-extrabold text-text">{money(effectivePrice(p))}</p>
                   </>
                 ) : (
-                  <p className="text-[13px] text-text-muted">{t("recent.gone")}</p>
+                  <p className="text-sm text-text-muted">{t("recent.gone")}</p>
                 )}
               </li>
             );

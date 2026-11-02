@@ -224,11 +224,11 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
                     ) : null}
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-[13px] font-bold text-text">
+                    <p className="truncate text-sm font-bold text-text">
                       {lang === "ar" ? row.name_ar : row.name_en}
                     </p>
                     {row.status === "rejected" && row.rejection_reason ? (
-                      <p className="truncate text-[11px] font-bold text-danger">{row.rejection_reason}</p>
+                      <p className="truncate text-2xs font-bold text-danger">{row.rejection_reason}</p>
                     ) : null}
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
             {
               key: "variants",
               header: t("vendor.products.col.variants"),
-              render: (row) => <span className="num text-[13px] text-text">{row.variant_count}</span>,
+              render: (row) => <span className="num text-sm text-text">{row.variant_count}</span>,
               text: (row) => String(row.variant_count),
             },
             {
@@ -251,7 +251,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
               header: t("vendor.products.col.updated"),
               text: (row) => row.updated_at,
               render: (row) => (
-                <span className="num text-[12px] text-text-muted">
+                <span className="num text-xs text-text-muted">
                   {new Date(row.updated_at).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-GB")}
                 </span>
               ),
@@ -306,7 +306,7 @@ export default function VendorProducts({ loaderData }: Route.ComponentProps) {
         title={t("vendor.products.archiveConfirmTitle")}
       >
         <div className="flex flex-col gap-4">
-          <p className="text-[13px] text-text-muted">{t("vendor.products.archiveConfirmBody")}</p>
+          <p className="text-sm text-text-muted">{t("vendor.products.archiveConfirmBody")}</p>
           <div className="flex justify-end gap-2">
             <Button variant="ghost" onClick={() => setConfirmArchive(null)}>
               {t("common.cancel")}

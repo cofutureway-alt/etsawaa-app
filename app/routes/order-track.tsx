@@ -57,7 +57,7 @@ export default function TrackPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-6">
-      <p className="text-[13px]">
+      <p className="text-sm">
         <Link to={`/${lang}/order/${encodeURIComponent(order.number)}`} className="font-bold text-action hover:underline">
           {t("order.backToOrder")} <span dir="ltr">{order.number}</span>
         </Link>
@@ -80,7 +80,7 @@ export default function TrackPage({ loaderData }: Route.ComponentProps) {
               </div>
 
               {g.status === "cancelled" ? (
-                <p className="mt-3 text-[13px] text-text-muted">{t("order.cancelReason")}: {g.cancel_reason ?? "—"}</p>
+                <p className="mt-3 text-sm text-text-muted">{t("order.cancelReason")}: {g.cancel_reason ?? "—"}</p>
               ) : (
                 <ol className="mt-4 flex flex-col gap-0">
                   {FLOW.map((s, i) => {
@@ -99,7 +99,7 @@ export default function TrackPage({ loaderData }: Route.ComponentProps) {
                           }`}
                         />
                         <div>
-                          <p className={`text-[13px] font-bold ${reached ? "text-text" : "text-text-faint"}`}>
+                          <p className={`text-sm font-bold ${reached ? "text-text" : "text-text-faint"}`}>
                             {statusLabel(s)}
                           </p>
                           {update ? (
@@ -120,7 +120,7 @@ export default function TrackPage({ loaderData }: Route.ComponentProps) {
             </section>
           );
         })}
-        {groups.length === 0 ? <p className="text-[13px] text-text-muted">{t("order.preparing")}</p> : null}
+        {groups.length === 0 ? <p className="text-sm text-text-muted">{t("order.preparing")}</p> : null}
       </div>
     </div>
   );

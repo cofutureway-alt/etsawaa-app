@@ -231,8 +231,8 @@ function AttributeForm({
     <>
       {/* 1 — naming */}
       <section className="flex flex-col gap-2">
-        <p className="text-[11px] font-black uppercase tracking-wide text-text-faint">{t("catalog.blockNaming")}</p>
-        <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+        <p className="text-2xs font-black uppercase tracking-wide text-text-faint">{t("catalog.blockNaming")}</p>
+        <label className="flex flex-col gap-1 text-sm font-bold text-text">
           {t("catalog.labelAr")}
           <input
             name="label_ar"
@@ -241,10 +241,10 @@ function AttributeForm({
             placeholder={t("catalog.labelArPlaceholder")}
             required
             maxLength={60}
-            className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text focus:border-action focus:outline-none"
+            className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text focus:border-action focus:outline-none"
           />
         </label>
-        <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+        <label className="flex flex-col gap-1 text-sm font-bold text-text">
           {t("catalog.labelEn")}
           <input
             name="label_en"
@@ -254,12 +254,12 @@ function AttributeForm({
             required
             maxLength={60}
             dir="ltr"
-            className="rounded-md border border-border bg-surface px-3 py-2 text-[13px] text-text focus:border-action focus:outline-none"
+            className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text focus:border-action focus:outline-none"
           />
         </label>
         <details className="rounded-md border border-border/60 px-3 py-2">
-          <summary className="cursor-pointer text-[12px] font-bold text-text-muted">{t("catalog.advanced")}</summary>
-          <label className="mt-2 flex flex-col gap-1 text-[12px] font-bold text-text">
+          <summary className="cursor-pointer text-xs font-bold text-text-muted">{t("catalog.advanced")}</summary>
+          <label className="mt-2 flex flex-col gap-1 text-xs font-bold text-text">
             {t("catalog.code")}
             <input
               name="code"
@@ -268,7 +268,7 @@ function AttributeForm({
               pattern="[a-z0-9_]{2,40}"
               dir="ltr"
               readOnly={mode === "edit"}
-              className={`rounded-md border border-border px-3 py-2 font-mono text-[12px] ${mode === "edit" ? "bg-surface-alt text-text-muted" : "bg-surface text-text"}`}
+              className={`rounded-md border border-border px-3 py-2 font-mono text-xs ${mode === "edit" ? "bg-surface-alt text-text-muted" : "bg-surface text-text"}`}
             />
             <span className="font-normal text-text-muted">{t("catalog.codeHint")}</span>
           </label>
@@ -277,7 +277,7 @@ function AttributeForm({
 
       {/* 2 — type as cards */}
       <section className="mt-4 flex flex-col gap-2">
-        <p className="text-[11px] font-black uppercase tracking-wide text-text-faint">{t("catalog.blockType")}</p>
+        <p className="text-2xs font-black uppercase tracking-wide text-text-faint">{t("catalog.blockType")}</p>
         <div role="radiogroup" aria-label={t("catalog.type")} className="grid grid-cols-2 gap-2">
           {TYPE_CARDS.map((card) => (
             <label
@@ -296,8 +296,8 @@ function AttributeForm({
                 onChange={() => setType(card.value)}
                 className="sr-only"
               />
-              <span className="text-[13px] font-extrabold text-text">{t(card.titleKey)}</span>
-              <span className="text-[11px] leading-snug text-text-muted">{t(card.hintKey)}</span>
+              <span className="text-sm font-extrabold text-text">{t(card.titleKey)}</span>
+              <span className="text-2xs leading-snug text-text-muted">{t(card.hintKey)}</span>
             </label>
           ))}
         </div>
@@ -308,31 +308,31 @@ function AttributeForm({
 
       {/* 3 — behaviour */}
       <section className="mt-4 flex flex-col gap-2">
-        <p className="text-[11px] font-black uppercase tracking-wide text-text-faint">{t("catalog.blockBehaviour")}</p>
-        <label className="flex items-start gap-2 rounded-md border border-border bg-surface p-2.5 text-[13px] font-bold text-text">
+        <p className="text-2xs font-black uppercase tracking-wide text-text-faint">{t("catalog.blockBehaviour")}</p>
+        <label className="flex items-start gap-2 rounded-md border border-border bg-surface p-2.5 text-sm font-bold text-text">
           <input type="checkbox" name="is_required" defaultChecked={def?.is_required ?? false} className="mt-0.5 size-4 shrink-0 accent-[var(--color-action)]" />
           <span>
             {t("catalog.required")}
-            <span className="block font-normal text-[11px] leading-snug text-text-muted">{t("catalog.requiredHint")}</span>
+            <span className="block font-normal text-2xs leading-snug text-text-muted">{t("catalog.requiredHint")}</span>
           </span>
         </label>
-        <label className="flex items-start gap-2 rounded-md border border-border bg-surface p-2.5 text-[13px] font-bold text-text">
+        <label className="flex items-start gap-2 rounded-md border border-border bg-surface p-2.5 text-sm font-bold text-text">
           <input type="checkbox" name="is_filterable" defaultChecked={def?.is_filterable ?? false} className="mt-0.5 size-4 shrink-0 accent-[var(--color-action)]" />
           <span>
             {t("catalog.filterable")}
-            <span className="block font-normal text-[11px] leading-snug text-text-muted">{t("catalog.filterableHint")}</span>
+            <span className="block font-normal text-2xs leading-snug text-text-muted">{t("catalog.filterableHint")}</span>
           </span>
         </label>
         {axisAllowed ? (
-          <label className="flex items-start gap-2 rounded-md border border-border bg-surface p-2.5 text-[13px] font-bold text-text">
+          <label className="flex items-start gap-2 rounded-md border border-border bg-surface p-2.5 text-sm font-bold text-text">
             <input type="checkbox" name="is_variant_axis" defaultChecked={def?.is_variant_axis ?? false} className="mt-0.5 size-4 shrink-0 accent-[var(--color-action)]" />
             <span>
               {t("catalog.axis")}
-              <span className="block font-normal text-[11px] leading-snug text-text-muted">{t("catalog.axisHint")}</span>
+              <span className="block font-normal text-2xs leading-snug text-text-muted">{t("catalog.axisHint")}</span>
             </span>
           </label>
         ) : (
-          <p className="rounded-md border border-dashed border-border px-2.5 py-2 text-[11px] leading-snug text-text-muted">
+          <p className="rounded-md border border-dashed border-border px-2.5 py-2 text-2xs leading-snug text-text-muted">
             {t("catalog.axisNotAllowed")}
           </p>
         )}
@@ -340,13 +340,13 @@ function AttributeForm({
 
       {/* 4 — live preview */}
       <section className="mt-4 rounded-md border border-border bg-surface-alt p-3">
-        <p className="text-[11px] font-black uppercase tracking-wide text-text-faint">{t("catalog.blockPreview")}</p>
+        <p className="text-2xs font-black uppercase tracking-wide text-text-faint">{t("catalog.blockPreview")}</p>
         <div className="mt-1.5 flex flex-col gap-1">
-          <span className="text-[13px] font-bold text-text">
+          <span className="text-sm font-bold text-text">
             {labelAr || t("catalog.labelAr")}
             <span className="text-danger" aria-hidden="true"> *</span>
           </span>
-          <span className="text-[11px] text-text-muted">
+          <span className="text-2xs text-text-muted">
             {type === "enum" || type === "color" ? t("catalog.previewPick") : type === "bool" ? t("catalog.typeBool") : type === "number" ? `0 ${def?.unit || ""}`.trim() : "…"}
           </span>
         </div>
@@ -433,7 +433,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-lg font-extrabold text-text">{t("catalog.attributes")}</h1>
-        <p className="text-[13px] text-text-muted">{t("catalog.pickLeaf")}</p>
+        <p className="text-sm text-text-muted">{t("catalog.pickLeaf")}</p>
         <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {leaves.map((leaf) => {
             // showing the count tells the admin which leaves are still empty
@@ -448,11 +448,11 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
                   className="flex w-full cursor-pointer items-center justify-between rounded-md border border-border bg-surface px-3 py-2.5 text-start transition-colors duration-150 hover:bg-surface-tint"
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-[13px] font-bold text-text">{leaf.name_ar}</span>
-                    <span className="block truncate text-[12px] text-text-muted">{leaf.name_en}</span>
+                    <span className="block truncate text-sm font-bold text-text">{leaf.name_ar}</span>
+                    <span className="block truncate text-xs text-text-muted">{leaf.name_en}</span>
                   </span>
                   <span className="flex shrink-0 items-center gap-2">
-                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${count > 0 ? "bg-surface-tint text-action" : "bg-surface-alt text-text-faint"}`}>
+                    <span className={`rounded-full px-2 py-0.5 text-2xs font-bold ${count > 0 ? "bg-surface-tint text-action" : "bg-surface-alt text-text-faint"}`}>
                       {count > 0 ? t("catalog.attrCount", { count }) : t("catalog.attrNone")}
                     </span>
                     <ChevronRightIcon className="size-4 text-text-muted mirr" />
@@ -462,7 +462,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
             );
           })}
         </ul>
-        {leaves.length === 0 ? <p className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noLeaves")}</p> : null}
+        {leaves.length === 0 ? <p className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-sm text-text-muted">{t("catalog.noLeaves")}</p> : null}
       </div>
     );
   }
@@ -471,7 +471,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <button type="button" onClick={() => setSearch({})} className="cursor-pointer text-[13px] font-bold text-action hover:underline">{t("catalog.allLeaves")}</button>
+          <button type="button" onClick={() => setSearch({})} className="cursor-pointer text-sm font-bold text-action hover:underline">{t("catalog.allLeaves")}</button>
           <h1 className="text-lg font-extrabold text-text">{selected.name_ar} <span className="text-sm font-normal text-text-muted">/ {selected.name_en}</span></h1>
         </div>
         <Button type="button" onClick={() => setDefDialog({ mode: "create" })}>
@@ -481,18 +481,18 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
 
       {/* template preview (US-10) */}
       <details className="rounded-lg border border-border bg-surface p-3">
-        <summary className="cursor-pointer text-[13px] font-extrabold text-text">{t("catalog.preview")}</summary>
+        <summary className="cursor-pointer text-sm font-extrabold text-text">{t("catalog.preview")}</summary>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {visibleDefs.map((d) => (
             <div key={d.id} className="flex flex-col gap-1">
-              <label className="text-[13px] font-bold text-text">
+              <label className="text-sm font-bold text-text">
                 {d.label_ar || d.code}{d.unit ? ` (${d.unit})` : ""}
                 {d.is_required ? <span className="text-danger" aria-hidden="true"> *</span> : null}
               </label>
               <TemplateField def={d} options={optionsFor(d.id)} />
             </div>
           ))}
-          {visibleDefs.length === 0 ? <p className="text-[13px] text-text-muted sm:col-span-2">{t("catalog.noAttributes")}</p> : null}
+          {visibleDefs.length === 0 ? <p className="text-sm text-text-muted sm:col-span-2">{t("catalog.noAttributes")}</p> : null}
         </div>
       </details>
 
@@ -500,43 +500,43 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
         {visibleDefs.map((d) => (
           <li key={d.id} className="rounded-md border border-border bg-surface px-3 py-2.5">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="min-w-0 flex-1 truncate text-[13px] font-extrabold text-text">
+              <span className="min-w-0 flex-1 truncate text-sm font-extrabold text-text">
                 {d.label_ar || d.code}
-                <span className="ms-2 font-mono text-[11px] font-normal text-text-faint" dir="ltr">{d.code}</span>
+                <span className="ms-2 font-mono text-2xs font-normal text-text-faint" dir="ltr">{d.code}</span>
                 {d.unit ? <span className="font-normal text-text-muted"> ({d.unit})</span> : null}
               </span>
-              <span className="rounded-full bg-surface-tint px-2 py-0.5 text-[11px] font-bold text-text-muted">{t(TYPE_LABELS[d.type])}</span>
-              {d.is_required ? <span className="rounded-full bg-surface-tint px-2 py-0.5 text-[11px] font-bold text-text-muted">{t("catalog.required")}</span> : null}
-              {d.is_filterable ? <span className="rounded-full bg-surface-tint px-2 py-0.5 text-[11px] font-bold text-text-muted">{t("catalog.filterable")}</span> : null}
-              {d.is_variant_axis ? <span className="rounded-full bg-surface-tint px-2 py-0.5 text-[11px] font-bold text-text-muted">{t("catalog.axis")}</span> : null}
+              <span className="rounded-full bg-surface-tint px-2 py-0.5 text-2xs font-bold text-text-muted">{t(TYPE_LABELS[d.type])}</span>
+              {d.is_required ? <span className="rounded-full bg-surface-tint px-2 py-0.5 text-2xs font-bold text-text-muted">{t("catalog.required")}</span> : null}
+              {d.is_filterable ? <span className="rounded-full bg-surface-tint px-2 py-0.5 text-2xs font-bold text-text-muted">{t("catalog.filterable")}</span> : null}
+              {d.is_variant_axis ? <span className="rounded-full bg-surface-tint px-2 py-0.5 text-2xs font-bold text-text-muted">{t("catalog.axis")}</span> : null}
               <button type="button" aria-label={t("common.edit")} onClick={() => setDefDialog({ mode: "edit", def: d })} className="cursor-pointer text-text-muted hover:text-action"><PencilIcon className="size-4" /></button>
               <button type="button" aria-label={t("common.delete")} onClick={() => setDeletingDef(d)} className="cursor-pointer text-text-muted hover:text-danger"><TrashIcon className="size-4" /></button>
             </div>
             {(d.type === "enum" || d.type === "color") ? (
               <div className="mt-2 flex flex-wrap items-center gap-1.5">
                 {optionsFor(d.id).map((o) => (
-                  <span key={o.id} className="flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[12px] font-bold text-text">
+                  <span key={o.id} className="flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-xs font-bold text-text">
                     {o.color_hex ? <span className="size-3.5 rounded-full border border-border" style={{ backgroundColor: o.color_hex }} aria-hidden="true" /> : null}
                     {o.label_ar}
                     <button type="button" aria-label={t("common.edit")} onClick={() => setOptionDialog({ attributeId: d.id, option: o })} className="cursor-pointer text-text-muted hover:text-action"><PencilIcon className="size-3" /></button>
                     <button type="button" aria-label={t("common.delete")} onClick={() => setDeletingOption(o)} className="cursor-pointer text-text-muted hover:text-danger"><TrashIcon className="size-3" /></button>
                   </span>
                 ))}
-                <button type="button" onClick={() => setOptionDialog({ attributeId: d.id, option: null })} className="cursor-pointer rounded-full border border-dashed border-border px-2.5 py-1 text-[12px] font-bold text-text-muted hover:text-action">
+                <button type="button" onClick={() => setOptionDialog({ attributeId: d.id, option: null })} className="cursor-pointer rounded-full border border-dashed border-border px-2.5 py-1 text-xs font-bold text-text-muted hover:text-action">
                   {t("catalog.addOption")}
                 </button>
-                <button type="button" onClick={() => setLinkDialog(d)} className="cursor-pointer rounded-full border border-border px-2.5 py-1 text-[12px] font-bold text-action hover:bg-surface-tint">
+                <button type="button" onClick={() => setLinkDialog(d)} className="cursor-pointer rounded-full border border-border px-2.5 py-1 text-xs font-bold text-action hover:bg-surface-tint">
                   {t("catalog.linkTo", { count: links.filter((l) => l.attribute_id === d.id && l.category_id !== selected.id).length })}
                 </button>
               </div>
             ) : (
-              <button type="button" onClick={() => setLinkDialog(d)} className="mt-2 cursor-pointer rounded-full border border-border px-2.5 py-1 text-[12px] font-bold text-action hover:bg-surface-tint">
+              <button type="button" onClick={() => setLinkDialog(d)} className="mt-2 cursor-pointer rounded-full border border-border px-2.5 py-1 text-xs font-bold text-action hover:bg-surface-tint">
                 {t("catalog.linkTo", { count: links.filter((l) => l.attribute_id === d.id && l.category_id !== selected.id).length })}
               </button>
             )}
           </li>
         ))}
-        {visibleDefs.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-[13px] text-text-muted">{t("catalog.noAttributes")}</li> : null}
+        {visibleDefs.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-sm text-text-muted">{t("catalog.noAttributes")}</li> : null}
       </ul>
 
       {/* def create/edit dialog */}
@@ -576,7 +576,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
               <Button type="button" size="sm" variant="outline" onClick={() => setPickerImage({ attributeId: optionDialog.attributeId, option: optionDialog.option, path: optionDialog.option?.image_path ?? null })}>
                 {t("media.choose")}
               </Button>
-              {pickerImage?.path || optionDialog.option?.image_path ? <span className="text-[12px] text-text-muted">{t("catalog.imageSet")}</span> : null}
+              {pickerImage?.path || optionDialog.option?.image_path ? <span className="text-xs text-text-muted">{t("catalog.imageSet")}</span> : null}
             </div>
             <input type="hidden" name="sort" value={optionDialog.option?.sort ?? optionsFor(optionDialog.attributeId).length} />
             <div className="flex justify-end gap-2">
@@ -597,19 +597,19 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
                 <fetcher.Form key={leaf.id} method="post" className="flex items-center justify-between gap-2 rounded-md border border-border px-3 py-2">
                   <input type="hidden" name="attribute_id" value={linkDialog.id} />
                   <input type="hidden" name="category_id" value={leaf.id} />
-                  <span className="text-[13px] font-bold text-text">{leaf.name_ar} <span className="font-normal text-text-muted">/ {leaf.name_en}</span></span>
+                  <span className="text-sm font-bold text-text">{leaf.name_ar} <span className="font-normal text-text-muted">/ {leaf.name_en}</span></span>
                   {linked ? (
                     <>
-                      <span className="rounded-full bg-surface-tint px-2 py-0.5 text-[11px] font-bold text-text-muted">{t("catalog.linked")}</span>
-                      <button type="submit" name="intent" value="unlink" className="cursor-pointer text-[12px] font-bold text-danger hover:underline">{t("catalog.unlink")}</button>
+                      <span className="rounded-full bg-surface-tint px-2 py-0.5 text-2xs font-bold text-text-muted">{t("catalog.linked")}</span>
+                      <button type="submit" name="intent" value="unlink" className="cursor-pointer text-xs font-bold text-danger hover:underline">{t("catalog.unlink")}</button>
                     </>
                   ) : (
-                    <button type="submit" name="intent" value="link" className="cursor-pointer text-[12px] font-bold text-action hover:underline">{t("catalog.link")}</button>
+                    <button type="submit" name="intent" value="link" className="cursor-pointer text-xs font-bold text-action hover:underline">{t("catalog.link")}</button>
                   )}
                 </fetcher.Form>
               );
             })}
-            {leaves.length <= 1 ? <p className="py-6 text-center text-[13px] text-text-muted">{t("catalog.noLeaves")}</p> : null}
+            {leaves.length <= 1 ? <p className="py-6 text-center text-sm text-text-muted">{t("catalog.noLeaves")}</p> : null}
           </div>
         ) : null}
       </Dialog>
@@ -620,25 +620,25 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <input type="hidden" name="intent" value="def_delete" />
             <input type="hidden" name="id" value={deletingDef.id} />
-            <p className="text-[13px] font-bold text-text">
+            <p className="text-sm font-bold text-text">
               {deletingDef.label_ar || deletingDef.code}
               {deletingDef.label_en ? <span className="font-normal text-text-muted"> · {deletingDef.label_en}</span> : null}
             </p>
 
             {usageLoading ? (
-              <p className="text-[12px] text-text-muted">{t("common.loading")}</p>
+              <p className="text-xs text-text-muted">{t("common.loading")}</p>
             ) : usage && usage.length > 0 ? (
               <div className="rounded-md border border-warning/40 bg-warning-soft p-2.5">
-                <p className="text-[13px] font-extrabold text-text">{t("catalog.inUseTitle")}</p>
-                <p className="mt-1 text-[12px] leading-snug text-text">{t("catalog.inUseBody")}</p>
-                <p className="mt-2 text-[12px] font-bold text-text">{t("catalog.inUseList")}</p>
-                <ul className="mt-1 list-inside list-disc text-[12px] text-text">
+                <p className="text-sm font-extrabold text-text">{t("catalog.inUseTitle")}</p>
+                <p className="mt-1 text-xs leading-snug text-text">{t("catalog.inUseBody")}</p>
+                <p className="mt-2 text-xs font-bold text-text">{t("catalog.inUseList")}</p>
+                <ul className="mt-1 list-inside list-disc text-xs text-text">
                   {usage.slice(0, 6).map((u, i) => <li key={`${u.ref_type}-${i}`}>{u.ref_label || u.ref_type}</li>)}
                   {usage.length > 6 ? <li className="text-text-muted">+{usage.length - 6}</li> : null}
                 </ul>
               </div>
             ) : (
-              <p className="text-[13px] text-text">{t("catalog.deleteDefConfirm", { code: deletingDef.label_ar || deletingDef.code })}</p>
+              <p className="text-sm text-text">{t("catalog.deleteDefConfirm", { code: deletingDef.label_ar || deletingDef.code })}</p>
             )}
 
             <div className="flex justify-end gap-2">
@@ -655,7 +655,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <input type="hidden" name="intent" value="option_delete" />
             <input type="hidden" name="id" value={deletingOption.id} />
-            <p className="text-[13px] text-text">{t("catalog.deleteOptionConfirm", { label: deletingOption.label_ar })}</p>
+            <p className="text-sm text-text">{t("catalog.deleteOptionConfirm", { label: deletingOption.label_ar })}</p>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={() => setDeletingOption(null)}>{t("common.cancel")}</Button>
               <Button type="submit" loading={busy}>{t("common.confirm")}</Button>
@@ -680,7 +680,7 @@ export default function AdminAttributes({ loaderData }: Route.ComponentProps) {
 }
 
 function TemplateField({ def, options }: { def: DefRow; options: OptionRow[] }) {
-  const base = "rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] text-text focus:border-action focus:outline-none";
+  const base = "rounded-md border border-border bg-surface px-2.5 py-2 text-sm text-text focus:border-action focus:outline-none";
   if (def.type === "enum") {
     return <select className={base} disabled><option value="">{options.map((o) => o.label_ar).join(" · ") || "—"}</option></select>;
   }
@@ -688,12 +688,12 @@ function TemplateField({ def, options }: { def: DefRow; options: OptionRow[] }) 
     return (
       <div className="flex flex-wrap gap-1.5">
         {options.map((o) => (
-          <span key={o.id} className="flex items-center gap-1.5 rounded-full border border-border px-2 py-1 text-[12px] text-text">
+          <span key={o.id} className="flex items-center gap-1.5 rounded-full border border-border px-2 py-1 text-xs text-text">
             <span className="size-3.5 rounded-full border border-border" style={{ backgroundColor: o.color_hex ?? "#ffffff" }} aria-hidden="true" />
             {o.label_ar}
           </span>
         ))}
-        {options.length === 0 ? <span className="text-[12px] text-text-faint">—</span> : null}
+        {options.length === 0 ? <span className="text-xs text-text-faint">—</span> : null}
       </div>
     );
   }

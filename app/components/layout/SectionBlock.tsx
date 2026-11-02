@@ -20,7 +20,7 @@ export function SectionBlock({
     <section aria-labelledby={id} className="flex flex-col gap-3">
       <div className="flex items-center gap-2.5">
         <span aria-hidden="true" className="h-4 w-1 rounded-full bg-action" />
-        <h2 id={id} className="text-[15px] font-extrabold text-text">
+        <h2 id={id} className="text-lg font-extrabold text-text">
           {title}
         </h2>
         {action ? <div className="ms-auto">{action}</div> : null}
@@ -51,7 +51,7 @@ export function PhaseSection({
     <SectionBlock title={title} action={action} id={id}>
       <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-strong bg-surface px-6 py-10 text-center">
         <Badge tone="warning">{`Phase ${phase}`}</Badge>
-        <p className="max-w-md text-[13px] leading-relaxed text-text-muted">{note}</p>
+        <p className="max-w-md text-sm leading-relaxed text-text-muted">{note}</p>
       </div>
     </SectionBlock>
   );

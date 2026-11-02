@@ -345,7 +345,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
                 type="button"
                 onClick={() => setCurrentId(node.id)}
                 aria-current={currentId === node.id}
-                className={`flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1.5 text-[13px] font-bold transition-colors duration-150 hover:bg-surface-tint ${currentId === node.id ? "bg-surface-tint text-action" : "text-text"}`}
+                className={`flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1.5 text-sm font-bold transition-colors duration-150 hover:bg-surface-tint ${currentId === node.id ? "bg-surface-tint text-action" : "text-text"}`}
               >
                 <FolderIcon className="size-4 shrink-0 text-warning-strong" />
                 <span className="truncate">{node.name}</span>
@@ -364,7 +364,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
       {/* Folder tree (start side, inline on desktop / drawer on mobile) */}
       <aside className="hidden rounded-lg border border-border bg-surface p-2.5 lg:block" aria-label={t("media.folders")}>
         <div className="mb-2 flex items-center justify-between gap-2">
-          <span className="text-[13px] font-extrabold text-text">{t("media.folders")}</span>
+          <span className="text-sm font-extrabold text-text">{t("media.folders")}</span>
           <button
             type="button"
             onClick={() => setNewFolderOpen(true)}
@@ -380,20 +380,20 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
             type="button"
             onClick={() => setCurrentId(null)}
             aria-current={currentId === null}
-            className={`flex w-full cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1.5 text-[13px] font-bold transition-colors duration-150 hover:bg-surface-tint ${currentId === null ? "bg-surface-tint text-action" : "text-text"}`}
+            className={`flex w-full cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1.5 text-sm font-bold transition-colors duration-150 hover:bg-surface-tint ${currentId === null ? "bg-surface-tint text-action" : "text-text"}`}
           >
             <FolderIcon className="size-4 text-warning-strong" />
             {t("media.allFiles")}
           </button>
         </DroppableFolder>
         {renderTree(buildTree(folders), 0)}
-        {folders.length === 0 ? <p className="px-1.5 py-2 text-[12px] text-text-muted">{t("media.noFolders")}</p> : null}
+        {folders.length === 0 ? <p className="px-1.5 py-2 text-xs text-text-muted">{t("media.noFolders")}</p> : null}
       </aside>
 
       {/* Main column */}
       <div className="min-w-0">
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <nav aria-label={t("media.folders")} className="flex min-w-0 flex-wrap items-center gap-1 text-[13px]">
+          <nav aria-label={t("media.folders")} className="flex min-w-0 flex-wrap items-center gap-1 text-sm">
             <button type="button" onClick={() => setCurrentId(null)} className="cursor-pointer font-bold text-text hover:text-action">
               {t("media.allFiles")}
             </button>
@@ -411,7 +411,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
               type="button"
               onClick={() => setFoldersOpen(true)}
               aria-haspopup="dialog"
-              className="flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-2 text-[13px] font-bold text-text transition-colors duration-150 hover:bg-surface-tint lg:hidden"
+              className="flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-2 text-sm font-bold text-text transition-colors duration-150 hover:bg-surface-tint lg:hidden"
             >
               <FolderIcon className="size-4" aria-hidden="true" />
               {t("media.folders")}
@@ -424,7 +424,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t("media.search")}
                 aria-label={t("media.search")}
-                className="w-44 rounded-md border border-border bg-surface py-2 pe-2.5 ps-8 text-[13px] text-text placeholder:text-text-faint focus:border-action focus:outline-none"
+                className="w-44 rounded-md border border-border bg-surface py-2 pe-2.5 ps-8 text-sm text-text placeholder:text-text-faint focus:border-action focus:outline-none"
               />
             </label>
             <Button type="button" size="sm" onClick={openPicker}>
@@ -441,7 +441,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
           {uploads.length > 0 ? (
             <ul className="mb-3 flex flex-col gap-1.5" aria-label={t("media.uploads")}>
               {uploads.map((u) => (
-                <li key={u.id} className="flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-[12px]">
+                <li key={u.id} className="flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs">
                   <span className="min-w-0 flex-1 truncate font-bold text-text">{u.name}</span>
                   {u.status === "uploading" ? (
                     <>
@@ -483,7 +483,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
               ))}
             </div>
           ) : loadError ? (
-            <p className="py-10 text-center text-[13px] font-bold text-text-muted">{t("errors.dataUnavailable")}</p>
+            <p className="py-10 text-center text-sm font-bold text-text-muted">{t("errors.dataUnavailable")}</p>
           ) : (
             <>
               {/* sub-folders */}
@@ -497,7 +497,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
                         className="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-md border border-border bg-surface px-2 py-3.5 transition-colors duration-150 hover:bg-surface-tint"
                       >
                         <FolderIcon className="size-8 text-warning-strong" />
-                        <span className="w-full truncate text-center text-[12px] font-bold text-text">{f.name}</span>
+                        <span className="w-full truncate text-center text-xs font-bold text-text">{f.name}</span>
                       </button>
                     </DroppableFolder>
                   ))}
@@ -508,7 +508,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
                 <div className="py-14 text-center">
                   <UploadIcon className="mx-auto size-10 text-text-faint" aria-hidden="true" />
                   <p className="mt-2 text-sm font-extrabold text-text">{t("media.emptyTitle")}</p>
-                  <p className="mt-1 text-[13px] text-text-muted">{t("media.emptyBody")}</p>
+                  <p className="mt-1 text-sm text-text-muted">{t("media.emptyBody")}</p>
                   <div className="mt-3 flex justify-center gap-2">
                     <Button type="button" size="sm" onClick={openPicker}>{t("media.upload")}</Button>
                     <Button type="button" size="sm" variant="outline" onClick={() => setNewFolderOpen(true)}>{t("media.newFolder")}</Button>
@@ -538,8 +538,8 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
                             )}
                           </div>
                           <div className="min-w-0 px-2 py-1.5">
-                            <p className="truncate text-[12px] font-bold text-text">{f.original_name}</p>
-                            <p className="text-[11px] text-text-muted">{formatBytes(f.size_bytes)}</p>
+                            <p className="truncate text-xs font-bold text-text">{f.original_name}</p>
+                            <p className="text-2xs text-text-muted">{formatBytes(f.size_bytes)}</p>
                           </div>
                           {checked ? <span aria-hidden="true" className="absolute end-1.5 top-1.5 flex size-5 items-center justify-center rounded-full bg-action text-on-action"><CheckIcon className="size-3" /></span> : null}
                           {!select ? (
@@ -562,7 +562,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
 
         {/* pagination — 20 per page, server-side */}
         {count > MEDIA_PAGE_SIZE ? (
-          <nav aria-label={t("media.pagination")} className="mt-3 flex items-center justify-center gap-3 text-[13px] font-bold text-text">
+          <nav aria-label={t("media.pagination")} className="mt-3 flex items-center justify-center gap-3 text-sm font-bold text-text">
             <button
               type="button"
               onClick={() => setPage((p) => Math.max(0, p - 1))}
@@ -590,8 +590,8 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
         {/* undo toast — 5s window (M-04) */}
         {lastMove ? (
           <div role="status" className="fixed bottom-20 start-4 z-50 flex items-center gap-3 rounded-md border border-border bg-surface px-3.5 py-2.5 shadow-2">
-            <span className="text-[13px] font-bold text-text">{t("media.moved")}</span>
-            <button type="button" onClick={() => void undoLastMove()} className="cursor-pointer text-[13px] font-bold text-action hover:underline">
+            <span className="text-sm font-bold text-text">{t("media.moved")}</span>
+            <button type="button" onClick={() => void undoLastMove()} className="cursor-pointer text-sm font-bold text-action hover:underline">
               {t("media.undo")}
             </button>
             <button type="button" onClick={() => setLastMove(null)} aria-label={t("common.close")} className="cursor-pointer text-text-muted hover:text-text">
@@ -610,7 +610,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
               type="button"
               onClick={() => { setCurrentId(null); setFoldersOpen(false); }}
               aria-current={currentId === null}
-              className={`flex w-full cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-2 text-[13px] font-bold transition-colors duration-150 hover:bg-surface-tint ${currentId === null ? "bg-surface-tint text-action" : "text-text"}`}
+              className={`flex w-full cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-2 text-sm font-bold transition-colors duration-150 hover:bg-surface-tint ${currentId === null ? "bg-surface-tint text-action" : "text-text"}`}
             >
               <FolderIcon className="size-4 text-warning-strong" />
               {t("media.allFiles")}
@@ -623,7 +623,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
       <Dialog open={newFolderOpen} onClose={() => setNewFolderOpen(false)} title={t("media.newFolder")}>
         <form onSubmit={(e) => { e.preventDefault(); void submitNewFolder(); }} className="flex flex-col gap-3">
           <Input label={t("media.folderName")} value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} required maxLength={80} inputClassName="bg-surface" />
-          <p className="text-[12px] text-text-muted">{t("media.depthNote", { depth: currentDepth + 1 })}</p>
+          <p className="text-xs text-text-muted">{t("media.depthNote", { depth: currentDepth + 1 })}</p>
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" onClick={() => setNewFolderOpen(false)}>{t("common.cancel")}</Button>
             <Button type="submit">{t("common.confirm")}</Button>
@@ -634,7 +634,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
       <Dialog open={deleting !== null} onClose={() => setDeleting(null)} title={t("common.confirm")}>
         {deleting ? (
           <div className="flex flex-col gap-3">
-            <p className="text-[13px] text-text">{t("media.deleteConfirm", { name: deleting.original_name })}</p>
+            <p className="text-sm text-text">{t("media.deleteConfirm", { name: deleting.original_name })}</p>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={() => setDeleting(null)}>{t("common.cancel")}</Button>
               <Button type="button" onClick={() => { const row = deleting; setDeleting(null); void deleteFile(row); }}>{t("common.confirm")}</Button>
@@ -679,7 +679,7 @@ export function MediaLibraryCore({ settings, uid, supabaseUrl, select, onConfirm
       {/* picker footer */}
       {select?.mode === "multi" ? (
         <div className="sticky bottom-0 flex items-center justify-between gap-3 border-t border-border bg-surface px-4 py-3">
-          <span className="text-[13px] font-bold text-text">{t("media.selectedCount", { count: selectedRows.size })}</span>
+          <span className="text-sm font-bold text-text">{t("media.selectedCount", { count: selectedRows.size })}</span>
           <div className="flex gap-2">
             <Button type="button" variant="ghost" onClick={() => { setSelectedRows(new Map()); onCancel?.(); }}>{t("common.cancel")}</Button>
             <Button
@@ -736,13 +736,13 @@ function MoveDialog({ folders, currentFolderId, onSubmit, onCancel }: {
   return (
     <form onSubmit={(e) => { e.preventDefault(); void onSubmit(target); }} className="flex flex-col gap-3">
       <fieldset className="max-h-72 overflow-y-auto rounded-md border border-border p-2">
-        <legend className="px-1 text-[12px] text-text-muted">{t("media.targetFolder")}</legend>
-        <label className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+        <legend className="px-1 text-xs text-text-muted">{t("media.targetFolder")}</legend>
+        <label className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm font-bold text-text hover:bg-surface-tint">
           <input type="radio" name="target" checked={target === null} onChange={() => setTarget(null)} className="accent-[var(--color-action)]" />
           {t("media.allFiles")}
         </label>
         {folders.map((f) => (
-          <label key={f.id} className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint" style={{ paddingInlineStart: `${(f.depth - 1) * 14 + 8}px` }}>
+          <label key={f.id} className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm font-bold text-text hover:bg-surface-tint" style={{ paddingInlineStart: `${(f.depth - 1) * 14 + 8}px` }}>
             <input type="radio" name="target" checked={target === f.id} onChange={() => setTarget(f.id)} className="accent-[var(--color-action)]" />
             <FolderIcon className="size-4 text-warning-strong" aria-hidden="true" />
             {f.name}

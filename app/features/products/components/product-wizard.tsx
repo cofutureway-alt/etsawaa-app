@@ -526,10 +526,10 @@ export function ProductWizard({
 
   const errorSummary = stepErrors.length > 0 ? (
     <div ref={submitRef} tabIndex={-1} role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3">
-      <p className="text-[13px] font-extrabold text-danger">{t("common.errorSummary", { count: stepErrors.length })}</p>
+      <p className="text-sm font-extrabold text-danger">{t("common.errorSummary", { count: stepErrors.length })}</p>
       <ul className="mt-1.5 list-inside list-disc">
         {stepErrors.map((error) => (
-          <li key={error} className="text-[13px] font-bold text-danger">{error}</li>
+          <li key={error} className="text-sm font-bold text-danger">{error}</li>
         ))}
       </ul>
     </div>
@@ -542,7 +542,7 @@ export function ProductWizard({
         <h1 className="text-lg font-extrabold text-text">
           {productId ? t("productWizard.editTitle") : t("productWizard.newTitle")}
         </h1>
-        <div className="flex items-center gap-2 text-[12px] text-text-faint" aria-live="polite">
+        <div className="flex items-center gap-2 text-xs text-text-faint" aria-live="polite">
           {product?.status ? <Badge tone={product.status === "rejected" ? "danger" : product.status === "approved" ? "success" : "warning"}>{t(`vendorStates.status.${product.status}`)}</Badge> : null}
           <span>
             {save.state !== "idle" || dirty
@@ -555,17 +555,17 @@ export function ProductWizard({
       </div>
 
       {!editable ? (
-        <div role="status" className="rounded-md border border-info/40 bg-info-soft p-3 text-[13px] font-bold text-text">
+        <div role="status" className="rounded-md border border-info/40 bg-info-soft p-3 text-sm font-bold text-text">
           {t("productWizard.readOnly")}
         </div>
       ) : null}
       {isRejected && product?.rejection_reason ? (
-        <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-[13px] font-bold text-danger">
+        <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-sm font-bold text-danger">
           {t("productWizard.rejectionReason")}: {product.rejection_reason}
         </div>
       ) : null}
       {stale ? (
-        <div role="alert" className="rounded-md border border-warning/40 bg-warning-soft p-3 text-[13px] font-bold text-warning-strong">
+        <div role="alert" className="rounded-md border border-warning/40 bg-warning-soft p-3 text-sm font-bold text-warning-strong">
           {t("productWizard.staleWarning")}
         </div>
       ) : null}
@@ -582,11 +582,11 @@ export function ProductWizard({
                 <Input id="p_name_en" label={t("productWizard.basics.nameEn")} value={form.name_en} dir="ltr" onChange={(e) => patch({ name_en: e.target.value })} />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
-                <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+                <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
                   {t("productWizard.basics.descAr")}
                   <textarea className="min-h-24 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" value={form.desc_ar} onChange={(e) => patch({ desc_ar: e.target.value })} />
                 </label>
-                <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+                <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
                   {t("productWizard.basics.descEn")}
                   <textarea className="min-h-24 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" dir="ltr" value={form.desc_en} onChange={(e) => patch({ desc_en: e.target.value })} />
                 </label>
@@ -617,7 +617,7 @@ export function ProductWizard({
                 options={[{ value: "", label: t("common.none") }, ...brands.map((brand) => ({ value: brand.id, label: isAr ? brand.name_ar : brand.name_en }))]}
               />
               <fieldset className="flex flex-col gap-2">
-                <legend className="text-[13px] font-bold text-text">{t("productWizard.classification.tags")}</legend>
+                <legend className="text-sm font-bold text-text">{t("productWizard.classification.tags")}</legend>
                 <div className="flex flex-wrap gap-1.5">
                   {tags.map((tag) => {
                     const active = form.tag_ids.includes(tag.id);
@@ -631,7 +631,7 @@ export function ProductWizard({
                             tag_ids: active ? form.tag_ids.filter((id) => id !== tag.id) : [...form.tag_ids, tag.id],
                           })
                         }
-                        className={`cursor-pointer rounded-full border px-3 py-1 text-[12px] font-bold transition-colors duration-150 ${
+                        className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-bold transition-colors duration-150 ${
                           active ? "border-action bg-action text-on-action" : "border-border bg-surface text-text hover:bg-surface-tint"
                         }`}
                       >
@@ -642,25 +642,25 @@ export function ProductWizard({
                 </div>
               </fieldset>
               <div className="flex flex-col gap-2">
-                <p className="text-[13px] font-bold text-text">{t("productWizard.classification.media")}</p>
+                <p className="text-sm font-bold text-text">{t("productWizard.classification.media")}</p>
                 <div className="flex flex-wrap gap-2">
                   {form.media.map((item, index) => (
                     <div key={`${item.path}-${index}`} className="relative size-20 overflow-hidden rounded-md border border-border bg-surface-tint">
                       {item.kind === "image" ? (
                         <MediaImage path={item.path} alt="" width={80} height={80} supabaseUrl={supabaseUrl} className="size-full object-cover" />
                       ) : (
-                        <span className="flex size-full items-center justify-center text-[10px] text-text-faint">video</span>
+                        <span className="flex size-full items-center justify-center text-2xs text-text-faint">video</span>
                       )}
                       <button
                         type="button"
                         aria-label={t("common.remove")}
                         onClick={() => patch({ media: form.media.filter((_, i) => i !== index) })}
-                        className="absolute end-1 top-1 flex size-5 cursor-pointer items-center justify-center rounded-full bg-danger text-[10px] font-black text-white"
+                        className="absolute end-1 top-1 flex size-5 cursor-pointer items-center justify-center rounded-full bg-danger text-2xs font-black text-white"
                       >
                         ×
                       </button>
                       {index === 0 ? (
-                        <span className="absolute bottom-0 start-0 end-0 bg-ink/70 py-0.5 text-center text-[9px] font-bold text-white">
+                        <span className="absolute bottom-0 start-0 end-0 bg-ink/70 py-0.5 text-center text-2xs font-bold text-white">
                           {t("productWizard.classification.main")}
                         </span>
                       ) : null}
@@ -672,12 +672,12 @@ export function ProductWizard({
                     className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border-strong bg-surface text-text-muted transition-colors duration-150 hover:bg-surface-tint"
                   >
                     <span aria-hidden="true" className="text-xl">+</span>
-                    <span className="text-[10px] font-bold">{t("media.picker.choose")}</span>
+                    <span className="text-2xs font-bold">{t("media.picker.choose")}</span>
                   </button>
                 </div>
-                <p className="text-[11px] text-text-faint">{t("productWizard.classification.mainFirst")}</p>
+                <p className="text-2xs text-text-faint">{t("productWizard.classification.mainFirst")}</p>
               </div>
-              <label className="flex items-center gap-2 text-[13px] text-text">
+              <label className="flex items-center gap-2 text-sm text-text">
                 <input type="checkbox" className="size-4 accent-[var(--color-action)]" checked={form.is_fragile} onChange={(e) => patch({ is_fragile: e.target.checked })} />
                 {t("productWizard.classification.fragile")}
               </label>
@@ -704,7 +704,7 @@ export function ProductWizard({
 
           {step === 3 ? (
             <>
-              <p className="text-[13px] text-text-muted">{t("productWizard.pricing.hint")}</p>
+              <p className="text-sm text-text-muted">{t("productWizard.pricing.hint")}</p>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Input id="p_price" label={t("productWizard.pricing.price")} type="number" inputMode="decimal" min="0" step="0.01" dir="ltr" value={form.price} onChange={(e) => patch({ price: e.target.value })} hint={t("productWizard.pricing.egp")} />
                 <Input id="p_sale" label={t("productWizard.pricing.sale")} type="number" inputMode="decimal" min="0" step="0.01" dir="ltr" value={form.sale_price} onChange={(e) => patch({ sale_price: e.target.value })} />
@@ -714,7 +714,7 @@ export function ProductWizard({
                 <Input id="p_sale_end" label={t("productWizard.pricing.saleEnd")} type="datetime-local" dir="ltr" value={form.sale_ends_at} onChange={(e) => patch({ sale_ends_at: e.target.value })} />
               </div>
               {rows.length > 1 ? (
-                <p className="rounded-md bg-surface-tint p-3 text-[12px] text-text-muted">
+                <p className="rounded-md bg-surface-tint p-3 text-xs text-text-muted">
                   {t("productWizard.pricing.variantsNote")}
                 </p>
               ) : null}
@@ -724,7 +724,7 @@ export function ProductWizard({
           {step === 4 ? (
             <div className="flex flex-col gap-5">
               {template.length === 0 ? (
-                <p className="text-[13px] text-text-muted">{t("productWizard.attributes.noTemplate")}</p>
+                <p className="text-sm text-text-muted">{t("productWizard.attributes.noTemplate")}</p>
               ) : null}
               {template
                 .filter((attr) => !attr.is_variant_axis)
@@ -740,12 +740,12 @@ export function ProductWizard({
 
               {template.some((attr) => attr.is_variant_axis) ? (
                 <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface-tint p-4">
-                  <p className="text-[13px] font-extrabold text-text">{t("productWizard.variants.title")}</p>
+                  <p className="text-sm font-extrabold text-text">{t("productWizard.variants.title")}</p>
                   {template
                     .filter((attr) => attr.is_variant_axis)
                     .map((attr) => (
                       <fieldset key={attr.id} className="flex flex-col gap-1.5">
-                        <legend className="text-[13px] font-bold text-text">{attrLabel(attr, isAr)}</legend>
+                        <legend className="text-sm font-bold text-text">{attrLabel(attr, isAr)}</legend>
                         <div className="flex flex-wrap gap-1.5">
                           {attr.options.map((option) => {
                             const selected = (form.axes[attr.id] ?? []).includes(option.id);
@@ -763,7 +763,7 @@ export function ProductWizard({
                                     },
                                   });
                                 }}
-                                className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-bold transition-colors duration-150 ${
+                                className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-colors duration-150 ${
                                   selected ? "border-action bg-action text-on-action" : "border-border bg-surface text-text hover:bg-surface-tint"
                                 }`}
                               >
@@ -778,7 +778,7 @@ export function ProductWizard({
                       </fieldset>
                     ))}
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[13px] text-text-muted">
+                    <span className="text-sm text-text-muted">
                       {t("productWizard.variants.count", { count: comboCount })}
                     </span>
                     <Button type="button" variant="outline" size="sm" onClick={requestGenerate}>
@@ -827,13 +827,13 @@ export function ProductWizard({
                   ) : null}
                 </div>
               ) : (
-                <p className="rounded-md bg-surface-tint p-3 text-[12px] text-text-muted">{t("productWizard.variants.noAxes")}</p>
+                <p className="rounded-md bg-surface-tint p-3 text-xs text-text-muted">{t("productWizard.variants.noAxes")}</p>
               )}
             </div>
           ) : null}
 
           {step === 5 ? (
-            <div className="flex flex-col gap-4 text-[13px]">
+            <div className="flex flex-col gap-4 text-sm">
               <div className="grid gap-3 sm:grid-cols-2">
                 <Input id="p_weight" label={t("productWizard.shipping.weight")} type="number" inputMode="numeric" min="0" dir="ltr" value={form.weight_g} onChange={(e) => patch({ weight_g: e.target.value })} hint={t("productWizard.shipping.grams")} />
                 <Select
@@ -865,7 +865,7 @@ export function ProductWizard({
               />
 
               <div className="rounded-md border border-border bg-surface-tint p-3.5">
-                <p className="text-[13px] font-extrabold text-text">{t("productWizard.review.title")}</p>
+                <p className="text-sm font-extrabold text-text">{t("productWizard.review.title")}</p>
                 <dl className="mt-2 grid gap-1.5 sm:grid-cols-2">
                   <ReviewRow label={t("productWizard.basics.nameAr")} value={form.name_ar} />
                   <ReviewRow label={t("productWizard.basics.nameEn")} value={form.name_en} />
@@ -892,7 +892,7 @@ export function ProductWizard({
                   </Button>
                 ) : null}
               </div>
-              <p className="text-[12px] text-text-faint">{t("productWizard.review.note")}</p>
+              <p className="text-xs text-text-faint">{t("productWizard.review.note")}</p>
             </div>
           ) : null}
         </CardBody>
@@ -911,7 +911,7 @@ export function ProductWizard({
 
       <Dialog open={confirmGenerate !== null} onClose={() => setConfirmGenerate(null)} title={t("productWizard.variants.confirmTitle")}>
         <div className="flex flex-col gap-4">
-          <p className="text-[13px] text-text-muted">
+          <p className="text-sm text-text-muted">
             {t("productWizard.variants.confirmBody", { count: confirmGenerate?.removed ?? 0 })}
           </p>
           <div className="flex justify-end gap-2">
@@ -929,8 +929,8 @@ export function ProductWizard({
 function ReviewRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col">
-      <dt className="text-[11px] font-bold text-text-faint">{label}</dt>
-      <dd className="text-[13px] text-text">{value || "—"}</dd>
+      <dt className="text-2xs font-bold text-text-faint">{label}</dt>
+      <dd className="text-sm text-text">{value || "—"}</dd>
     </div>
   );
 }
@@ -994,7 +994,7 @@ function AttributeField({
   }
   if (attr.type === "bool") {
     return (
-      <label className="flex items-center gap-2 text-[13px] text-text">
+      <label className="flex items-center gap-2 text-sm text-text">
         <input
           id={`attr_${attr.id}`}
           type="checkbox"
@@ -1052,7 +1052,7 @@ function CategoryPicker({
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-[13px] font-bold text-text">{t("productWizard.classification.category")}</p>
+      <p className="text-sm font-bold text-text">{t("productWizard.classification.category")}</p>
       <div className="grid gap-3 sm:grid-cols-3">
         <Select
           id="cat_root"

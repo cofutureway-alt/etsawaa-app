@@ -157,8 +157,8 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
               <PackageIcon aria-hidden="true" className="size-4" />
             </div>
             <div>
-              <p className="text-[13px] font-black text-text">{t("vendor.products.title")}</p>
-              <p className="text-[11px] text-text-muted">{total} {isAr ? "منتج مسجل" : "items"}</p>
+              <p className="text-sm font-black text-text">{t("vendor.products.title")}</p>
+              <p className="text-2xs text-text-muted">{total} {isAr ? "منتج مسجل" : "items"}</p>
             </div>
           </Link>
 
@@ -170,8 +170,8 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
               <StoreIcon aria-hidden="true" className="size-4" />
             </div>
             <div>
-              <p className="text-[13px] font-black text-text">{t("vendorStore.title")}</p>
-              <p className="text-[11px] text-text-muted">{isAr ? "تعديل الشعار والبيانات" : "Branding & Bio"}</p>
+              <p className="text-sm font-black text-text">{t("vendorStore.title")}</p>
+              <p className="text-2xs text-text-muted">{isAr ? "تعديل الشعار والبيانات" : "Branding & Bio"}</p>
             </div>
           </Link>
 
@@ -183,8 +183,8 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
               <UploadIcon aria-hidden="true" className="size-4" />
             </div>
             <div>
-              <p className="text-[13px] font-black text-text">{t("media.title")}</p>
-              <p className="text-[11px] text-text-muted">{isAr ? "مكتبة الصور والملفات" : "Files library"}</p>
+              <p className="text-sm font-black text-text">{t("media.title")}</p>
+              <p className="text-2xs text-text-muted">{isAr ? "مكتبة الصور والملفات" : "Files library"}</p>
             </div>
           </Link>
         </CardBody>

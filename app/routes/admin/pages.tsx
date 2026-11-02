@@ -18,7 +18,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
  * returns 404 (existing static-page route respects is_active).
  */
 
-const inp = "w-full rounded-md border border-border bg-surface p-2.5 text-[13px] text-text";
+const inp = "w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text";
 
 interface PageRow {
   id: string; slug_ar: string; slug_en: string; title_ar: string; title_en: string;
@@ -92,7 +92,7 @@ export default function AdminPages({ loaderData }: Route.ComponentProps) {
 
       <ul className="mt-3 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
         {(loaderData.pages as PageRow[]).map((p) => (
-          <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-[13px]">
+          <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 p-3 text-sm">
             <span className="font-bold text-text">{en ? p.title_en : p.title_ar}</span>
             <a href={`/${lang}/p/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`} className="num text-xs text-primary hover:underline" dir="ltr">
               /p/{en ? p.slug_en : p.slug_ar}
@@ -110,30 +110,30 @@ export default function AdminPages({ loaderData }: Route.ComponentProps) {
             <input type="hidden" name="intent" value="save" />
             <input type="hidden" name="id" value={edit.id} />
             <div className="grid gap-2 sm:grid-cols-2">
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("z.nameAr")}<input name="title_ar" defaultValue={edit.title_ar} required className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("z.nameEn")}<input name="title_en" defaultValue={edit.title_en} dir="ltr" className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.slugAr")}<input name="slug_ar" defaultValue={edit.slug_ar} required={edit.id === ""} dir="ltr" className={inp} />
               </label>
-              <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+              <label className="flex flex-col gap-1 text-sm font-bold text-text">
                 {t("bl.slugEn")}<input name="slug_en" defaultValue={edit.slug_en} required={edit.id === ""} dir="ltr" className={inp} />
               </label>
             </div>
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("sp.contentAr")}<textarea name="content_ar" defaultValue={edit.content_ar} className={`${inp} min-h-28`} />
             </label>
-            <label className="flex flex-col gap-1 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("sp.contentEn")}<textarea name="content_en" defaultValue={edit.content_en} dir="ltr" className={`${inp} min-h-28`} />
             </label>
-            <label className="flex items-center gap-2 text-[13px] font-bold text-text">
+            <label className="flex items-center gap-2 text-sm font-bold text-text">
               <input type="checkbox" name="show_in_header" defaultChecked={edit.show_in_header} className="size-4 accent-[var(--color-action)]" />
               {t("sp.inHeader")}
             </label>
-            <label className="flex items-center gap-2 text-[13px] font-bold text-text">
+            <label className="flex items-center gap-2 text-sm font-bold text-text">
               <input type="checkbox" name="is_active" defaultChecked={edit.is_active} className="size-4 accent-[var(--color-action)]" />
               {t("pn.active")}
             </label>

@@ -53,7 +53,7 @@ export default function VendorPrintHistory({ loaderData }: Route.ComponentProps)
         </div>
       ) : (
         <div className="mt-4 overflow-x-auto rounded-md border border-border">
-          <table className="w-full text-[13px]">
+          <table className="w-full text-sm">
             <thead className="bg-surface-tint text-text-muted">
               <tr>
                 <th scope="col" className="p-2.5 text-start font-bold">{t("vph.order")}</th>

@@ -48,7 +48,7 @@ export function PanelShell({
             <img src="/logo-mark.webp" alt={siteName} width={548} height={245} className="h-9 w-auto" />
           )}
         </Link>
-        <span className={`truncate text-[13px] font-black text-white ${collapsed ? "hidden" : ""}`}>
+        <span className={`truncate text-sm font-black text-white ${collapsed ? "hidden" : ""}`}>
           {panelTitle}
         </span>
         <button

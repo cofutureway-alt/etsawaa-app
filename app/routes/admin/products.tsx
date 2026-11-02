@@ -233,8 +233,8 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
                     ) : null}
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-[13px] font-bold text-text">{isAr ? row.name_ar : row.name_en}</p>
-                    <p className="truncate text-[11px] text-text-muted">{isAr ? row.vendor_name_ar : row.vendor_name_en}</p>
+                    <p className="truncate text-sm font-bold text-text">{isAr ? row.name_ar : row.name_en}</p>
+                    <p className="truncate text-2xs text-text-muted">{isAr ? row.vendor_name_ar : row.vendor_name_en}</p>
                   </div>
                 </div>
               ),
@@ -249,7 +249,7 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
               key: "variants",
               header: t("adminProducts.col.variants"),
               text: (row) => String(row.variant_count),
-              render: (row) => <span className="num text-[13px] text-text">{row.variant_count}</span>,
+              render: (row) => <span className="num text-sm text-text">{row.variant_count}</span>,
             },
             {
               key: "actions",
@@ -303,14 +303,14 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
                 ) : null}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-[13px] font-extrabold text-text">{isAr ? reviewTarget.name_ar : reviewTarget.name_en}</p>
-                <p className="truncate text-[12px] text-text-muted">{isAr ? reviewTarget.vendor_name_ar : reviewTarget.vendor_name_en}</p>
+                <p className="truncate text-sm font-extrabold text-text">{isAr ? reviewTarget.name_ar : reviewTarget.name_en}</p>
+                <p className="truncate text-xs text-text-muted">{isAr ? reviewTarget.vendor_name_ar : reviewTarget.vendor_name_en}</p>
               </div>
             </div>
-            <p className="text-[13px] text-text-muted">
+            <p className="text-sm text-text-muted">
               {t("adminProducts.reviewNote")}
             </p>
-            <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminProducts.reason")} <span className="font-normal text-text-faint">{t("adminProducts.reasonHint")}</span>
               <textarea
                 className={`min-h-20 rounded-md border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus ${
@@ -341,8 +341,8 @@ export default function AdminProducts({ loaderData }: Route.ComponentProps) {
       <Dialog open={archiveTarget !== null} onClose={() => setArchiveTarget(null)} title={t("adminProducts.archiveTitle")}>
         {archiveTarget ? (
           <div className="flex flex-col gap-3">
-            <p className="text-[13px] text-text">{t("adminProducts.archiveNote")}</p>
-            <label className="flex flex-col gap-1.5 text-[13px] font-bold text-text">
+            <p className="text-sm text-text">{t("adminProducts.archiveNote")}</p>
+            <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminProducts.reason")}
               <textarea className="min-h-16 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus"
                 value={reason} onChange={(e) => setReason(e.target.value)} />
