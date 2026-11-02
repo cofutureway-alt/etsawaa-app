@@ -1,0 +1,182 @@
+{
+ "at": "2026-11-01T19:05:47.460Z",
+ "results": [
+  {
+   "name": "B1 fetched slugs unique",
+   "ok": true,
+   "detail": "p8-buying-guide-1793559921787"
+  },
+  {
+   "name": "B2 list 200",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "B3 list shows published article",
+   "ok": true,
+   "detail": "found"
+  },
+  {
+   "name": "B4 list hides drafts",
+   "ok": true,
+   "detail": "absent"
+  },
+  {
+   "name": "B5 article 200",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "B6 TOC anchors injected",
+   "ok": true,
+   "detail": "sec-*"
+  },
+  {
+   "name": "B7 BlogPosting JSON-LD",
+   "ok": true,
+   "detail": "ld+json"
+  },
+  {
+   "name": "B8 BreadcrumbList JSON-LD",
+   "ok": true,
+   "detail": "ld+json"
+  },
+  {
+   "name": "B9 share row present",
+   "ok": true,
+   "detail": "share"
+  },
+  {
+   "name": "B10 canonical present",
+   "ok": true,
+   "detail": "meta"
+  },
+  {
+   "name": "B11 draft article 404 publicly",
+   "ok": true,
+   "detail": "404"
+  },
+  {
+   "name": "B12 rss 200 xml",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "B13 rss has published item",
+   "ok": true,
+   "detail": "item"
+  },
+  {
+   "name": "B14 rss hides drafts",
+   "ok": true,
+   "detail": "absent"
+  },
+  {
+   "name": "B15 sitemap includes blog post",
+   "ok": true,
+   "detail": "loc"
+  },
+  {
+   "name": "B16 redirect created",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "B17 moved slug 301",
+   "ok": true,
+   "detail": "301 /en/blog/p8-buying-guide-1793559921787"
+  },
+  {
+   "name": "M1 meta complete /ar",
+   "ok": true,
+   "detail": "200 title=true desc=true canon=true hreflang=true"
+  },
+  {
+   "name": "M2 JSON-LD Organization on /ar",
+   "ok": true,
+   "detail": "Organization"
+  },
+  {
+   "name": "M2 JSON-LD WebSite on /ar",
+   "ok": true,
+   "detail": "WebSite"
+  },
+  {
+   "name": "M1 meta complete /ar/products",
+   "ok": true,
+   "detail": "200 title=true desc=true canon=true hreflang=true"
+  },
+  {
+   "name": "M2 JSON-LD ItemList on /ar/products",
+   "ok": true,
+   "detail": "ItemList"
+  },
+  {
+   "name": "M1 meta complete /ar/product/%D8%B3%D8%A7%D8%B9%D8%A9-%D9%8A%D8%AF-%D9%81%D8%A7%D8%AE%D8%B1%D8%A9",
+   "ok": true,
+   "detail": "200 title=true desc=true canon=true hreflang=true"
+  },
+  {
+   "name": "M2 JSON-LD Product on /ar/product/%D8%B3%D8%A7%D8%B9%D8%A9-%D9%8A%D8%AF-%D9%81%D8%A7%D8%AE%D8%B1%D8%A9",
+   "ok": true,
+   "detail": "\"Product\""
+  },
+  {
+   "name": "M2 JSON-LD BreadcrumbList on /ar/product/%D8%B3%D8%A7%D8%B9%D8%A9-%D9%8A%D8%AF-%D9%81%D8%A7%D8%AE%D8%B1%D8%A9",
+   "ok": true,
+   "detail": "BreadcrumbList"
+  },
+  {
+   "name": "M2 JSON-LD offers on /ar/product/%D8%B3%D8%A7%D8%B9%D8%A9-%D9%8A%D8%AF-%D9%81%D8%A7%D8%AE%D8%B1%D8%A9",
+   "ok": true,
+   "detail": "offers"
+  },
+  {
+   "name": "P1 order with pin created",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-001\",\"status\":\"processing\",\"order_id\":\"189d7a2d-6f63-4ac4-b60a-126c9da13014\",\"payment_method\":\"cod\"}"
+  },
+  {
+   "name": "P2 pin persisted on order",
+   "ok": true,
+   "detail": "{\"shipping_lat\":30.0444,\"shipping_lng\":31.2357,\"shipping_geo_accuracy_m\":25}"
+  },
+  {
+   "name": "P3 vendor snapshot has NO coordinates",
+   "ok": true,
+   "detail": "{\"id\":\"189d7a2d-6f63-4ac4-b60a-126c9da13014\",\"number\":\"ETS-26-001\",\"status\":\"processing\",\"area_id\":35,\"ship_name\":\"عميل "
+  },
+  {
+   "name": "P4 carrier label renders with pin QR",
+   "ok": true,
+   "detail": "landed=/ar/account status=200"
+  },
+  {
+   "name": "P5 QR is scannable maps payload",
+   "ok": true,
+   "detail": "https://maps.google.com/?q=30.044400,31.235700"
+  },
+  {
+   "name": "W1 order cancelled via admin",
+   "ok": true,
+   "detail": "cancelled"
+  },
+  {
+   "name": "W2 cancelled watermark on invoice",
+   "ok": true,
+   "detail": "status=200 watermark=true"
+  },
+  {
+   "name": "U1 leaflet map mounts at 390",
+   "ok": true,
+   "detail": "{\"w\":290,\"h\":254}"
+  },
+  {
+   "name": "U2 no horizontal scroll at 390 with map",
+   "ok": true,
+   "detail": "scrollWidth<=innerWidth"
+  }
+ ]
+}
+
+pristine: true {"orders":0,"products":0,"categories":0,"vendors":0,"cart_items":0,"blog_posts":0,"blog_categories":0,"slug_redirects":0,"reviews":0,"refund_requests":0,"user_addresses":0}

@@ -1,0 +1,21 @@
+{
+ "at": "2026-11-02T00:20:29.257Z",
+ "navCount": 30,
+ "loggedOut": 0,
+ "fiveHundreds": 0,
+ "failures": [],
+ "refreshKept": true,
+ "attrs": {
+  "pathOk": true,
+  "laxOk": true,
+  "secureOk": true,
+  "httpOnlyOk": false
+ },
+ "expirySim": {
+  "status": 302,
+  "recovered": false,
+  "clearAttempt": false,
+  "redirected": "/ar/auth/login?next=%2Far%2Faccount"
+ },
+ "pass": true
+}

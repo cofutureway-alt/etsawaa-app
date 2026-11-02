@@ -1,0 +1,79 @@
+{
+ "at": "2026-10-31T23:08:49.780Z",
+ "to": "p4x-a-1793469669431@etsawaa-e2e.com",
+ "templatesInDb": 6,
+ "results": [
+  {
+   "key": "order_confirmation",
+   "locale": "ar",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_confirmation",
+   "locale": "en",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "payment_success",
+   "locale": "ar",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "payment_success",
+   "locale": "en",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "payment_failed",
+   "locale": "ar",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "payment_failed",
+   "locale": "en",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_shipped",
+   "locale": "ar",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_shipped",
+   "locale": "en",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_delivered",
+   "locale": "ar",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_delivered",
+   "locale": "en",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_cancelled",
+   "locale": "ar",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  },
+  {
+   "key": "order_cancelled",
+   "locale": "en",
+   "status": "failed",
+   "error": "RESEND_API_KEY missing"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "stamp": 1793454393464,
+ "results": [
+  {
+   "check": "consecutive autosaves do NOT raise the stale banner",
+   "ok": true
+  },
+  {
+   "check": "autosave indicator shows after saves",
+   "ok": true
+  },
+  {
+   "check": "area select resets when the governorate changes",
+   "ok": true
+  }
+ ]
+}

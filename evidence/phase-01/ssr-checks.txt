@@ -1,0 +1,24 @@
+PASS  G-01 root / redirects to /ar  —  status=302
+PASS  G-02 /ar 200  —  status=200
+PASS  G-03 html dir=rtl lang=ar  —  
+PASS  G-04 site name from DB  —  
+PASS  G-05 tokens from settings.design in SSR  —  
+PASS  G-06 DB connected (no degraded banner)  —  
+PASS  G-07 /en 200 LTR  —  status=200
+PASS  G-08 invalid locale 404  —  status=404
+PASS  G-09 login 200+noindex  —  status=200
+PASS  G-09 register 200+noindex  —  status=200
+PASS  G-09 forgot 200+noindex  —  status=200
+PASS  G-09 verify 200+noindex  —  status=200
+PASS  G-10 invalid login document-POST → role=alert summary  —  status=200
+PASS  G-11 /ar/ui 200+noindex  —  status=200
+PASS  G-12 admin guard → login  —  status=302 loc=/ar/auth/login?next=%2Far%2Fadmin
+PASS  G-12 account guard → login  —  status=302 loc=/ar/auth/login?next=%2Far%2Faccount
+PASS  G-12 vendor guard → login  —  status=302 loc=/ar/auth/login?next=%2Far%2Fvendor
+PASS  G-13 robots.txt + Sitemap + disallow panels  —  status=200
+PASS  G-14 logout GET → 405  —  status=405
+PASS  G-15 notifications API no-session → unauthenticated  —  body={"notifications":null,"reason":"unauthenticated"}
+PASS  G-16 404 page  —  status=404
+
+===== SUMMARY =====
+21/21 checks passed

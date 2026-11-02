@@ -1,0 +1,27 @@
+PASS assert checkout-gate@1440 container>=1100 — 1200px
+PASS captured checkout-address — 390/768/1280/1440
+PASS captured checkout-cod-disabled — 390/768/1280/1440
+PASS captured order-success-cod — 390/768/1280/1440
+PASS captured kashier-awaiting — 390/768/1280/1440
+PASS captured tracking-progress — 390/768/1280/1440
+PASS captured tracking-initial — 390/768/1280/1440
+PASS captured account-orders — 390/768/1280/1440
+PASS captured account-order-delivered — 390/768/1280/1440
+PASS captured refund-wizard — 390/768/1280/1440
+PASS captured profile — 390/768/1280/1440
+PASS captured wishlist — 390/768/1280/1440
+PASS captured recently-viewed — 390/768/1280/1440
+PASS captured notifications — 390/768/1280/1440
+PASS captured addresses — 390/768/1280/1440
+PASS captured account-reviews — 390/768/1280/1440
+PASS captured account-overview — 390/768/1280/1440
+PASS captured vendor-orders — 390/768/1280/1440
+PASS captured admin orders + detail — 390/768/1280/1440
+PASS PDFs generated (A4 invoice + A5 landscape carrier/vendor labels) — admin-invoice-a4.pdf:187KB carrier-label-a5-landscape.pdf:161KB vendor-label-a5-landscape.pdf:155KB
+PASS carrier label Code128 rendered (multi-width bars + readable number) — {"found":true,"dLen":8840,"bars":53,"numberShown":true}
+PASS vendor label route ok
+PASS vendor label: shipment number as TEXT, no barcode, no phone/address, shipping dash — hasNumber=true
+PASS carrier label: A5 sheet 210×148 + all elements inside margins — {"sheetW":794,"sheetH":559,"overflows":[]}
+PASS carrier label: name + both phones + address + pieces + COD line — carrier fields
+PASS all shots saved (87) — checkout-gate-390.png:49KB checkout-gate-768.png:61KB checkout-gate-1280.png:63KB checkout-gate-1440.png:64KB checkout-address-390.png:102KB checkout-address-768.png:114KB checkout-address-1280.png:116KB checkout-address-1440.png:118KB checkout-cod-disabled-390.png:78KB checkout-cod-disabled-768.png:92KB checkout-cod-disabled-1280.png:88KB checkout-cod-disabled-1440.png:89KB order-success-cod-390.png:110KB order-success-cod-768.png:122KB order-success-cod-1280.png:125KB order-success-cod-1440.png:127KB kashier-awaiting-390.png:92KB kashier-awaiting-768.png:102KB kashier-awaiting-1280.png:105KB kashier-awaiting-1440.png:107KB tracking-progress-390.png:54KB tracking-progress-768.png:63KB tracking-progress-1280.png:66KB tracking-progress-1440.png:67KB tracking-initial-390.png:70KB tracking-initial-768.png:82KB tracking-initial-1280.png:85KB tracking-initial-1440.png:86KB account-orders-390.png:14KB account-orders-768.png:15KB account-orders-1280.png:16KB account-orders-1440.png:17KB account-order-delivered-390.png:44KB account-order-delivered-768.png:50KB account-order-delivered-1280.png:53KB account-order-delivered-1440.png:54KB refund-wizard-390.png:45KB refund-wizard-768.png:50KB refund-wizard-1280.png:53KB refund-wizard-1440.png:54KB profile-390.png:52KB profile-768.png:57KB profile-1280.png:62KB profile-1440.png:63KB wishlist-390.png:14KB wishlist-768.png:15KB wishlist-1280.png:16KB wishlist-1440.png:17KB recently-viewed-390.png:349KB recently-viewed-768.png:256KB recently-viewed-1280.png:161KB recently-viewed-1440.png:163KB notifications-390.png:34KB notifications-768.png:39KB notifications-1280.png:41KB notifications-1440.png:42KB addresses-390.png:52KB addresses-768.png:57KB addresses-1280.png:59KB addresses-1440.png:59KB account-reviews-390.png:20KB account-reviews-768.png:24KB account-reviews-1280.png:27KB account-reviews-1440.png:27KB account-overview-390.png:41KB account-overview-768.png:45KB account-overview-1280.png:48KB account-overview-1440.png:49KB vendor-orders-390.png:51KB vendor-orders-768.png:55KB vendor-orders-1280.png:74KB vendor-orders-1440.png:75KB admin-orders-390.png:45KB admin-order-detail-390.png:91KB admin-orders-768.png:49KB admin-order-detail-768.png:97KB admin-orders-1280.png:74KB admin-order-detail-1280.png:121KB admin-orders-1440.png:76KB admin-order-detail-1440.png:122KB print-invoice-a4.png:52KB print-carrier-a5-code128.png:37KB print-vendor-label-a.png:30KB print-vendor-label-b.png:29KB print-vendor-label-c.png:29KB print-vendor-invoice-a.png:33KB print-carrier-cancelled-watermark.png:35KB
+PASS DB pristine after cleanup — {"orders":0,"products":0,"categories":0,"vendors":0,"banners":0,"brands":0,"cart_items":0,"reviews":0,"refund_requests":0,"wishlist_items":0,"recently_viewed":0}

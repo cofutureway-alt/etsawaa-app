@@ -1,0 +1,35 @@
+{
+ "at": "2026-11-01T21:31:13.011Z",
+ "dry": false,
+ "areas": {
+  "batch": "a41e5479-7dc7-42c7-85b9-79398da5e6d3",
+  "staged": 571,
+  "rejected": 1
+ },
+ "categories": {
+  "batch": "bcf91f68-a280-44e3-b8b3-d6e1b25f131c",
+  "staged": 218
+ },
+ "specs": {
+  "batch": "eb364645-bf98-482c-9cf9-e114108e9710",
+  "staged": 1269,
+  "rejected": 1
+ },
+ "groups": {
+  "batch": "bc700753-347f-4d46-8f15-e18eca0751b7",
+  "staged": 1000,
+  "links": 9409,
+  "rejected": 0
+ },
+ "types": {
+  "batch": "7a9603ad-aac4-4136-8026-de7881d35723",
+  "staged": 1354,
+  "templates": 1354,
+  "rejected": 0
+ },
+ "shared": {
+  "batch": "f7152c3a-c83e-4824-b9eb-3e7ef0bcc791",
+  "staged": 32,
+  "rejected": 2
+ }
+}

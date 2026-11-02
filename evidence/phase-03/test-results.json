@@ -1,0 +1,372 @@
+{
+ "stamp": 1793411348966,
+ "passed": 73,
+ "failed": 0,
+ "results": [
+  {
+   "name": "fixtures ready (4 users, 2 leaf templates)",
+   "ok": true,
+   "detail": "cbf6fe14-50be-40f6-bca5-da222c610404"
+  },
+  {
+   "name": "duplicate email signup never completes (no confirmed identities)",
+   "ok": true,
+   "detail": "identities=0"
+  },
+  {
+   "name": "no extra auth user created by duplicate signup",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "vendor B cannot create a store owned by another user",
+   "ok": true,
+   "detail": "new row violates row-level security policy for table \"vendors\""
+  },
+  {
+   "name": "V-02 autosave creates draft",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "draft survives re-login with exact values",
+   "ok": true,
+   "detail": "{\"store_name_ar\":\"متجر أ\",\"store_name_en\":\"Store A\",\"onboarding_step\":2,\"status\":\"draft\"}"
+  },
+  {
+   "name": "V-01 vendor A onboarding → pending",
+   "ok": true,
+   "detail": "{\"slug\":\"store\",\"status\":\"pending\",\"vendor_id\":\"1e903024-a118-458e-b51f-16916743d0d0\",\"grace_until\":\"2026-11-07T01:49:13.570824+00:00\"}"
+  },
+  {
+   "name": "V-01 vendor B onboarding → pending",
+   "ok": true,
+   "detail": "{\"slug\":\"store-1\",\"status\":\"pending\",\"vendor_id\":\"e2472c74-1e74-4186-b459-22049504f327\",\"grace_until\":\"2026-11-07T01:49:13.662508+00:00\"}"
+  },
+  {
+   "name": "V-01 vendor C onboarding → pending",
+   "ok": true,
+   "detail": "{\"slug\":\"store-2\",\"status\":\"pending\",\"vendor_id\":\"5821ab06-b31d-4080-af75-ff9725d97309\",\"grace_until\":\"2026-11-07T01:49:13.760787+00:00\"}"
+  },
+  {
+   "name": "one store per user (resubmit updates, never duplicates)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "exactly 3 vendor rows for 3 vendors",
+   "ok": true,
+   "detail": "count=3"
+  },
+  {
+   "name": "onboarding promoted customer → vendor",
+   "ok": true,
+   "detail": "vendor"
+  },
+  {
+   "name": "V-04 area∉governorate rejected server-side",
+   "ok": true,
+   "detail": "store name (ar+en) is required"
+  },
+  {
+   "name": "V-08 terms+signature mandatory",
+   "ok": true,
+   "detail": "store name (ar+en) is required"
+  },
+  {
+   "name": "admin approves vendors A/B/C → active",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "grace clock started on submit (unverified + future)",
+   "ok": true,
+   "detail": "{\"grace_until\":\"2026-11-07T01:49:13.570824+00:00\",\"verification_status\":\"unverified\",\"status\":\"active\"}"
+  },
+  {
+   "name": "vendor rejection reason mandatory",
+   "ok": true,
+   "detail": "vendor is not awaiting review (status active)"
+  },
+  {
+   "name": "rejected-review without reason left vendor untouched",
+   "ok": true,
+   "detail": "active"
+  },
+  {
+   "name": "V-12 t-shirt draft saved",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "V-14 forbidden value (option from another attribute) rejected",
+   "ok": true,
+   "detail": "value for color must come from the admin options"
+  },
+  {
+   "name": "vendors cannot write attribute values directly (grant revoked)",
+   "ok": true,
+   "detail": "permission denied for table product_attribute_values"
+  },
+  {
+   "name": "V-15 3×4 cartesian generated = 12 rows",
+   "ok": true,
+   "detail": "{\"removed\":0,\"skipped\":[],\"inserted\":12}"
+  },
+  {
+   "name": "12 live rows with distinct option_keys",
+   "ok": true,
+   "detail": "rows=12"
+  },
+  {
+   "name": "V-16 12 rows saved with unique SKUs",
+   "ok": true,
+   "detail": "{\"saved\":12}"
+  },
+  {
+   "name": "duplicate SKU in one save blocked",
+   "ok": true,
+   "detail": "duplicate SKU TEE-DUP in this save"
+  },
+  {
+   "name": "SKU colliding with an existing live row blocked",
+   "ok": true,
+   "detail": "duplicate key value violates unique constraint \"variants_sku"
+  },
+  {
+   "name": "desired-set diff tombstones removed combos (4 removed)",
+   "ok": true,
+   "detail": "{\"removed\":4,\"skipped\":[],\"inserted\":0}"
+  },
+  {
+   "name": "deleted combos NOT recreated (skipped=4)",
+   "ok": true,
+   "detail": "{\"removed\":0,\"skipped\":[\"11f58fee-c57b-4812-8a00-402c84150aa3,e93d68c9-42f9-48e0-863c-dc5391833daf\",\"11f58fee-c57b-4812-8a00-402c84150aa3,83165277-ee97-4300-aa28-17fe3d86610e\",\"11f58fee-c57b-4812-8a00-402c84150aa3,c0a18371-3514-4ba4-9a59-18dbb3c238ca\",\"11f58fee-c57b-4812-8a00-402c84150aa3,ac24af9c-7ee6-4ad1-9c05-5213ed1671ee\"],\"inserted\":0}"
+  },
+  {
+   "name": "explicit restore revives a tombstoned combo",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "full 12 live rows resaved",
+   "ok": true,
+   "detail": "{\"saved\":9}"
+  },
+  {
+   "name": "V-17 t-shirt submit → pending",
+   "ok": true,
+   "detail": "{\"status\":\"pending\"}"
+  },
+  {
+   "name": "TV draft saved",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "V-20 no-axes → exactly one plain variant",
+   "ok": true,
+   "detail": "{\"removed\":0,\"skipped\":[],\"inserted\":1}"
+  },
+  {
+   "name": "plain variant has empty option_key",
+   "ok": true,
+   "detail": "{\"id\":\"8eb3f09b-f895-4e72-a7b3-2f613df92139\",\"option_key\":\"\"}"
+  },
+  {
+   "name": "TV submit → pending (single row)",
+   "ok": true,
+   "detail": "{\"status\":\"pending\"}"
+  },
+  {
+   "name": "V-19 product rejection reason mandatory",
+   "ok": true,
+   "detail": "a rejection reason is mandatory"
+  },
+  {
+   "name": "V-19 admin rejects with reason",
+   "ok": true,
+   "detail": "{\"status\":\"rejected\"}"
+  },
+  {
+   "name": "vendor sees the rejection reason",
+   "ok": true,
+   "detail": "{\"status\":\"rejected\",\"rejection_reason\":\"الصورة غير مطابقة للمنتج\"}"
+  },
+  {
+   "name": "rejected product resubmits → pending",
+   "ok": true,
+   "detail": "{\"status\":\"pending\"}"
+  },
+  {
+   "name": "V-19 approve publishes both products",
+   "ok": true,
+   "detail": "{\"status\":\"approved\"}"
+  },
+  {
+   "name": "grace-active vendor CAN submit",
+   "ok": true,
+   "detail": "{\"status\":\"pending\"}"
+  },
+  {
+   "name": "grace-active vendor's product can be approved",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "fn_expire_grace flipped 1 vendor",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "vendor C → grace_expired",
+   "ok": true,
+   "detail": "grace_expired"
+  },
+  {
+   "name": "expired grace blocks publish at API level",
+   "ok": true,
+   "detail": "selling is blocked for this store (active / grace_expired)"
+  },
+  {
+   "name": "grace-expired vendor product hidden from public",
+   "ok": true,
+   "detail": "count=0"
+  },
+  {
+   "name": "verified-flow vendor product visible to public",
+   "ok": true,
+   "detail": "count=1"
+  },
+  {
+   "name": "grace-expired variants hidden from public",
+   "ok": true,
+   "detail": "rows=0 err=null"
+  },
+  {
+   "name": "admin verification → verified",
+   "ok": true,
+   "detail": "{\"verification_status\":\"verified\"}"
+  },
+  {
+   "name": "after verification the vendor can publish again",
+   "ok": true,
+   "detail": "{\"status\":\"pending\"}"
+  },
+  {
+   "name": "A cannot read B's vendor row",
+   "ok": true,
+   "detail": "0 rows"
+  },
+  {
+   "name": "A cannot read B's product by ID",
+   "ok": true,
+   "detail": "0 rows"
+  },
+  {
+   "name": "A cannot read B's variants",
+   "ok": true,
+   "detail": "0 rows"
+  },
+  {
+   "name": "A cannot read B's attribute values",
+   "ok": true,
+   "detail": "0 rows"
+  },
+  {
+   "name": "A cannot read B's product media",
+   "ok": true,
+   "detail": "0 rows"
+  },
+  {
+   "name": "A cannot update B's product (0 rows / error)",
+   "ok": true,
+   "detail": "updated=0"
+  },
+  {
+   "name": "A cannot list B's DRAFT products by vendor_id (approved ones are public)",
+   "ok": true,
+   "detail": "count=0 err=none"
+  },
+  {
+   "name": "A sees own products",
+   "ok": true,
+   "detail": "count=1"
+  },
+  {
+   "name": "vendor A uploads KYC doc to private bucket",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "vendor_documents row inserted (owner)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "B cannot read A's document metadata",
+   "ok": true,
+   "detail": "0 rows"
+  },
+  {
+   "name": "anon direct GET on private object denied",
+   "ok": true,
+   "detail": "HTTP 400"
+  },
+  {
+   "name": "B cannot sign A's object",
+   "ok": true,
+   "detail": "Object not found"
+  },
+  {
+   "name": "owner signs their own document",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "admin-only review RPC blocked for vendor",
+   "ok": true,
+   "detail": "not allowed: reviewer permission required"
+  },
+  {
+   "name": "admin-only verify RPC blocked for vendor",
+   "ok": true,
+   "detail": "not allowed: verifier permission required"
+  },
+  {
+   "name": "fn_vendor_config denied for anon",
+   "ok": true,
+   "detail": "permission denied for function fn_vendor_config"
+  },
+  {
+   "name": "V-18 clone creates draft (copy)",
+   "ok": true,
+   "detail": "{\"id\":\"b63843bc-b6b0-4632-9ee9-fc53aad14c64\",\"name_en\":\"Cotton T-Shirt (copy)\",\"drifted_attributes\":[]}"
+  },
+  {
+   "name": "clone named (copy) + status draft",
+   "ok": true,
+   "detail": "{\"name_en\":\"Cotton T-Shirt (copy)\",\"name_ar\":\"تيشيرت قطن (نسخة)\",\"status\":\"draft\"}"
+  },
+  {
+   "name": "clone got unique SKU suffixes",
+   "ok": true,
+   "detail": "[{\"sku\":\"TEE-1793411348966-4-C1\"},{\"sku\":\"TEE-1793411348966-0-C1\"}]"
+  },
+  {
+   "name": "V-18 archive hides product from list",
+   "ok": true,
+   "detail": "count=0"
+  },
+  {
+   "name": "review-off setting → submit publishes directly",
+   "ok": true,
+   "detail": "{\"status\":\"approved\"}"
+  },
+  {
+   "name": "DB pristine after cleanup",
+   "ok": true,
+   "detail": "vendors=0 products=0"
+  }
+ ]
+}

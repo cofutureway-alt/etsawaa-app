@@ -1,0 +1,7 @@
+D-10 IDEMPOTENCY — import run twice; diff by natural key between the last two canonical runs
+PASS  areas       prev#28=571 fresh#34=571 newInFresh=0 dropped=0
+PASS  categories  prev#29=218 fresh#35=218 newInFresh=0 dropped=0
+PASS  specs       prev#30=1269 fresh#36=1269 newInFresh=0 dropped=0
+PASS  groups      prev#31=1000 fresh#37=1000 newInFresh=0 dropped=0
+PASS  templates   prev#32=1354 fresh#38=1354 newInFresh=0 dropped=0
+PASS  shared      prev#27=32 fresh#39=32 newInFresh=0 dropped=0

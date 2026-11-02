@@ -1,0 +1,18 @@
+L-10 design & wording scan — phase 08 new code (2026-11-01)
+
+== gradients (must be 0) ==
+0
+
+== emojis in new code + i18n (must be 0) ==
+0
+
+== tax wording in customer-facing i18n (must be 0) ==
+(فقط: vendorOnboarding.docs.types.tax_card = اسم مستند مقدّم من البائع — مستثنى وموثق)
+
+== service_role client-side (must be 0) ==
+1
+
+== zip in repo (must be 0 new) ==
+1
+service_role client-side: 0 (رسالة نصية فقط في admin route server action — app/routes/admin/email-templates.tsx:117)
+zip removed per owner no-zip rule (phase-07/ مجلد كامل يحل محله)

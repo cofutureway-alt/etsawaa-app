@@ -1,0 +1,6 @@
+D-11 ROLLBACK TEST — delete batch by id; FK cascade removes staging rows + rejects
+before: batch#39 rows=32 rejects=0
+delete: OK
+after: keeper#27 rows=32 (intact), table total=32
+PASS — rollback restored the pre-batch snapshot exactly
+guard: CLI refuses rollback of a published batch (status=published); fn_admin_publish_batch refuses non-staged

@@ -1,0 +1,198 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/*
+ * Map Tailwind theme keys onto the Etsawaa token variables (tokens.css).
+ * `inline` makes utilities reference the variables directly, so overrides
+ * injected by SSR from `settings.design` restyle the whole app with no code edits.
+ */
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-primary-soft: var(--color-primary-soft);
+  --color-action: var(--color-action);
+  --color-action-hover: var(--color-action-hover);
+  --color-ink: var(--color-ink);
+  --color-on-action: var(--color-on-action);
+
+  --color-surface: var(--color-surface);
+  --color-surface-alt: var(--color-surface-alt);
+  --color-surface-tint: var(--color-surface-tint);
+
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-faint: var(--color-text-faint);
+
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+
+  --color-accent-soft: var(--color-accent-soft);
+  --color-highlight: var(--color-highlight);
+  --color-featured: var(--color-featured);
+
+  --color-success: var(--color-success);
+  --color-success-strong: var(--color-success-strong);
+  --color-success-soft: var(--color-success-soft);  --color-warning: var(--color-warning);
+  --color-warning-strong: var(--color-warning-strong);
+  --color-warning-soft: var(--color-warning-soft);
+  --color-danger: var(--color-danger);
+  --color-danger-soft: var(--color-danger-soft);
+  --color-info: var(--color-info);
+  --color-info-soft: var(--color-info-soft);
+
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+
+  --radius-s: var(--radius-s);
+  --radius-m: var(--radius-m);
+  --radius-l: var(--radius-l);
+  --radius-full: var(--radius-full);
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-focus: var(--shadow-focus);
+
+  --container-page: var(--container-max);
+
+  --color-side: var(--color-side);
+  --color-side-text: var(--color-side-text);
+  --color-side-text-strong: var(--color-side-text-strong);
+  --color-side-muted: var(--color-side-muted);
+  --color-side-line: var(--color-side-line);
+  --color-side-hover: var(--color-side-hover);
+  --color-footer: var(--color-footer);
+  --color-footer-text: var(--color-footer-text);
+}
+
+@layer base {
+  /* H-02 — self-hosted Arabic typography (no runtime fonts.googleapis.com).
+     Cairo variable (wght 200..1000) per subset; ~63KB total. font-display:swap
+     paints fallback immediately and swaps when ready (no FOUT on repeat views
+     because the preload in root.tsx starts the fetch before CSS). */
+  @font-face {
+    font-family: "Cairo";
+    font-style: normal;
+    font-weight: 200 1000;
+    font-display: swap;
+    src: url("/fonts/cairo-var-arabic.woff2") format("woff2");
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+  }
+  @font-face {
+    font-family: "Cairo";
+    font-style: normal;
+    font-weight: 200 1000;
+    font-display: swap;
+    src: url("/fonts/cairo-var-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  html {
+    font-family: var(--font-body);
+  }
+
+  body {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* Visible focus ring for keyboard users (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+  }
+
+  /* Numeric container: digits render Western glyphs and keep tabular rhythm,
+     but the BOX follows the document direction (owner rule: Arabic layout =
+     numbers on the right). unicode-bidi:isolate stops the digits from
+     flipping adjacent-word order inside a sentence. Use dir="ltr" only where
+     a *sequence* must read left-to-right (OTP, phone input fields). */
+  .num {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    direction: inherit;
+  }
+
+  /* Directional mirroring for chevrons/arrows (logical, RTL-safe) */
+  .mirr {
+    transition: transform var(--duration-page) var(--ease-out);
+  }
+  [dir="rtl"] .mirr {
+    transform: scaleX(-1);
+  }
+
+  /* Prevent accidental page-level horizontal scroll on any viewport */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  /* Long unbroken strings (emails, URLs) never push the layout */
+  .break-anywhere {
+    overflow-wrap: anywhere;
+  }
+
+  /* Blog article body (L-01): the DB content is plain HTML (h2/h3/p/ul/ol).
+     Without these rules every heading renders at body size and the article
+     reads as one flat block. Tokens only, no colour literals. */
+  .pubProse > h2 {
+    margin-top: calc(var(--spacing) * 6);
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+  .pubProse > h2:first-child {
+    margin-top: 0;
+  }
+  .pubProse > h3 {
+    margin-top: calc(var(--spacing) * 4);
+    font-size: 1.0625rem;
+    font-weight: 800;
+    color: var(--color-text);
+  }
+  .pubProse > p {
+    color: var(--color-text);
+  }
+  .pubProse > ul,
+  .pubProse > ol {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 1.5);
+    padding-inline-start: calc(var(--spacing) * 6);
+  }
+  .pubProse > ul {
+    list-style: disc;
+  }
+  .pubProse > ol {
+    list-style: decimal;
+  }
+  .pubProse a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+  .pubProse blockquote {
+    border-inline-start: 3px solid var(--color-border);
+    padding-inline-start: calc(var(--spacing) * 4);
+    color: var(--color-text-muted);
+  }
+  .pubProse :is(h2, h3) {
+    scroll-margin-top: 6rem; /* sticky header + progress bar */
+  }
+
+  /* AGENT.md §10: disabled motion for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+ "generatedAt": "2026-10-30T18:33:17.003Z",
+ "what": "delivered-folder == audited-build proof (post-P1)",
+ "appPublicConfigTreeSha256": "287fa23ac3219b70f3eece53a5c9e5ac30c21356f6493c57b3bb2a5208837fab",
+ "fileCount": 98,
+ "build": {
+  "serverEntrySha256": "a38a68ab2ebe60dc06893d7296f6160af6c300e87a55d747eefcdcb12622d01f",
+  "clientAssetCount": 48,
+  "builtAt": "2026-10-30T18:30:26.649Z"
+ },
+ "p1Results": {
+  "lighthouseSimulated": "94/100, LCP 3.0-3.1s (Lantern queues paint behind hydration; see REPORT §10)",
+  "lighthouseRealThrottledCDP": "1816ms < 2.5s target (lighthouse/real-throttled-lcp.txt)",
+  "faviconSetKB": 12.4,
+  "removed": "public/logo.png (1.5MB)",
+  "ownerCorrection": "connection-status banners removed from the entire UI (REPORT §11)"
+ },
+ "gates": {
+  "typecheck": "clean",
+  "oxlint": "0 warnings 0 errors on 88 files",
+  "unitTests": "36/36",
+  "designScan": "no violations",
+  "c3Rerun": "PROOF OK (f02-render/run.log)"
+ },
+ "note": "npm run build regenerated after the last source edit; tag phase-01 re-points to the final P1 commit. Verify: git checkout phase-01 && npm ci && npm run build && sha256sum build/server/index.js"
+}

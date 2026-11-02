@@ -1,0 +1,57 @@
+Here’s a color palette inspired by the Etsawaa (اتسوى) logo, built around its glossy red delivery-cart identity, clean white lettering, and deep red shadows.
+Etsawaa brand color palette
+
+Primary Red
+#F30609
+Main brand color for buttons, links, CTAs, and key elements.
+
+Copy HEX
+
+
+Deep Red
+#BE0404
+Secondary buttons, gradients, emphasis, and hover states.
+
+Copy HEX
+
+
+Dark Red
+#8D0504
+Shadows, borders, and pressed button states.
+
+Copy HEX
+
+
+Dark Burgundy
+#510504
+Deep outlines, premium accents, and high-contrast details.
+
+Copy HEX
+
+
+Pure White
+#FFFFFF
+Backgrounds, cards, and text on red surfaces.
+
+Copy HEX
+
+
+Soft Highlight
+#DCC0BF
+Subtle reflections, soft decorative details, and neutral accents.
+
+Copy HEX
+
+Recommended brand gradient
+
+#F30609
+
+#BE0404
+
+#510504
+
+
+Best usage for the website and app
+- 60% white and light backgrounds.
+- 30% primary red and deep red for branding and actions.
+- 10% dark burgundy, gray, and subtle highlights.

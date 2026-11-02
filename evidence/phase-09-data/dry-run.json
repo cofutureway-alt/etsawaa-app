@@ -1,0 +1,26 @@
+{
+ "at": "2026-11-01T21:30:59.295Z",
+ "dry": true,
+ "areas": {
+  "staged": 571,
+  "rejected": 1
+ },
+ "categories": {
+  "staged": 218
+ },
+ "specs": {
+  "staged": 1269,
+  "rejected": 2
+ },
+ "groups": {
+  "staged": 1000,
+  "links": 9409
+ },
+ "types": {
+  "staged": 1354,
+  "templates": 1354
+ },
+ "shared": {
+  "staged": 32
+ }
+}

@@ -1,0 +1,12 @@
+{"fixture":{"staffId":"6aa03b38-da44-4e40-b49a-e4eda656c396","custId":"d131a3a7-0969-495c-be7c-c9ac393cd447","staffEmail":"staff-iso-1793378554289@etsawaa-e2e.com"}}
+{"fixture":{"staffPermissions":{"duringTest":[],"original":["users.read","products.read","orders.read","settings.read"]},"mechanism":"has_permission() reads roles live (security definer) — no JWT cache involved"}}
+{"staffJwtSubject":"6aa03b38-da44-4e40-b49a-e4eda656c396","staffRole":"staff(profile)"}
+{"test":"staff.settings.privateProbeHidden","expected":"no payments.private_probe row","actual":"hidden","pass":true,"detail":{"keysSeen":["site.general","settings.design"]}}
+{"test":"staff.settings.publicAllowlistOnly","expected":"exactly [site.general, settings.design]","actual":"[\"settings.design\",\"site.general\"]","pass":true,"detail":{}}
+{"test":"staff.audit_logs.unreadable","expected":"0 rows (DB holds 18)","actual":0,"pass":true,"detail":{}}
+{"test":"staff.profiles.ownRowOnly","expected":"exactly 1 row (6aa03b38-da44-4e40-b49a-e4eda656c396) — DB holds 2","actual":"1 rows","pass":true,"detail":{"seenIds":["6aa03b38-da44-4e40-b49a-e4eda656c396"]}}
+{"fixture":{"permissionsRestored":true}}
+{"cleanup":{"privateProbeDeleted":true}}
+{"cleanup":{"usersRemaining":0,"privateProbeGone":true}}
+{"summary":{"total":4,"passed":4,"failed":0}}
+M2 STAFF-ISOLATION OK

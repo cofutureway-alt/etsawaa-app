@@ -1,0 +1,107 @@
+{
+ "generatedAt": "2026-10-31T13:44:15.884Z",
+ "throttling": {
+  "cpu": "4x",
+  "network": "slow 4G (150ms RTT, 1.6Mbps down)"
+ },
+ "variantMatrixRows": 121,
+ "lcp": [
+  {
+   "label": "vendor dashboard",
+   "url": "http://localhost:3000/ar/vendor",
+   "lcpMs": 652,
+   "element": "(text)"
+  },
+  {
+   "label": "onboarding wizard",
+   "url": "http://localhost:3000/ar/vendor/onboarding",
+   "lcpMs": 1068,
+   "element": "(text)"
+  },
+  {
+   "label": "products list",
+   "url": "http://localhost:3000/ar/vendor/products",
+   "lcpMs": 760,
+   "element": "(text)"
+  },
+  {
+   "label": "product wizard (draft, 121 variants)",
+   "url": "http://localhost:3000/ar/vendor/products/52e586ce-17e1-4aa0-9831-28c492f91031/edit",
+   "lcpMs": 1516,
+   "element": "(text)"
+  }
+ ],
+ "matrixRenderedRows": 121,
+ "matrixKeystrokeToPaintMs": {
+  "samples": [
+   52,
+   66,
+   69,
+   72,
+   75,
+   75,
+   76,
+   76,
+   77,
+   84
+  ],
+  "p50": 75,
+  "max": 84
+ },
+ "bundle": {
+  "clientJsFiles": 69,
+  "totalKb": 1178,
+  "top10": [
+   {
+    "file": "index-B1Bxsg3Y.js",
+    "kb": 233
+   },
+   {
+    "file": "entry.client-D9iScujG.js",
+    "kb": 211
+   },
+   {
+    "file": "chunk-6KYCQHYJ-B6wXVXLp.js",
+    "kb": 130
+   },
+   {
+    "file": "config-voQmIduI.js",
+    "kb": 121
+   },
+   {
+    "file": "schemas-DL4-l-1E.js",
+    "kb": 91
+   },
+   {
+    "file": "media-ui-DjS9V2ki.js",
+    "kb": 78
+   },
+   {
+    "file": "schemas-NqvR1jcg.js",
+    "kb": 39
+   },
+   {
+    "file": "product-wizard-BzfkugcA.js",
+    "kb": 32
+   },
+   {
+    "file": "manifest-c7ac0b73.js",
+    "kb": 25
+   },
+   {
+    "file": "onboarding-9IkEIQWr.js",
+    "kb": 24
+   }
+  ],
+  "entry": {
+   "file": "entry.client-D9iScujG.js",
+   "kb": 211
+  },
+  "wizard": [
+   {
+    "file": "product-wizard-BzfkugcA.js",
+    "kb": 32
+   }
+  ]
+ }
+}

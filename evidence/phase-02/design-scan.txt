@@ -1,0 +1,4 @@
+Etsawaa G3 design scan — 109 files scanned
+Rules: zero emoji everywhere | zero gradients | hex only in token/seed files (shipped code)
+
+RESULT: PASS — no design-rule violations found

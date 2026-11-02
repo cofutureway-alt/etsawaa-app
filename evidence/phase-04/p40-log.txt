@@ -1,0 +1,18 @@
+PASS capture home-ar@390 — clientWidth 390, scrollWidth 390
+PASS capture home-ar@768 — clientWidth 768, scrollWidth 768
+PASS capture home-ar@1280 — clientWidth 1280, scrollWidth 1280
+PASS assert home-ar@1440: main container >= 1100px — 1200px
+PASS capture home-ar@1440 — clientWidth 1440, scrollWidth 1440, container 1200px
+PASS capture home-ar-empty-recent@390 — clientWidth 390, scrollWidth 390
+PASS capture home-ar-empty-recent@768 — clientWidth 768, scrollWidth 768
+PASS capture home-ar-empty-recent@1280 — clientWidth 1280, scrollWidth 1280
+PASS assert home-ar-empty-recent@1440: main container >= 1100px — 1200px
+PASS capture home-ar-empty-recent@1440 — clientWidth 1440, scrollWidth 1440, container 1200px
+PASS capture home-en@390 — clientWidth 390, scrollWidth 390
+PASS capture home-en@768 — clientWidth 768, scrollWidth 768
+PASS capture home-en@1280 — clientWidth 1280, scrollWidth 1280
+PASS assert home-en@1440: main container >= 1100px — 1200px
+PASS capture home-en@1440 — clientWidth 1440, scrollWidth 1440, container 1200px
+PASS empty block above footer: measured gap between last section and footer — gap 24px (main bottom 2489, footer top 2513)
+PASS LCP element identified — {"tag":"IMG","src":"http://localhost:3000/api/media?path=u%2Fc0347ba0-a2d8-4a9f-a1d9-7c580f54f513%2Fbanner-1793469984349.png","w":1280,"h":432,"renderedW":908,"bytes":278245,"ms":384}
+PASS DB pristine — p0 c0

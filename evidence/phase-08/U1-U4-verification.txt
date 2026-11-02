@@ -1,0 +1,20 @@
+U1 — placeholder excerpt scan (2026-11-01)
+
+== data-level occurrences (must be 0) ==
+  app/ production code:    0
+  scripts/ total matches:  2
+  → both are the literal lines of the PLACEHOLDERS assert blocklist (compared against
+    page HTML, never inserted into any table):
+            "ملخص قصير يشرح الفكرة الأساسية للمقال في سطرين.",
+            "A short summary explaining the core idea in two lines.",
+
+== rendered output (must be 0) ==
+  screens/json evidence:   0
+  (this report file naturally contains the string — it is the scan itself)
+
+== runtime assertions (3 pages x 4 widths) ==
+  U1 PASS: 12
+  U2 PASS: 12
+  U3 PASS: 4
+  U4 PASS: 2
+  FAIL total: 0

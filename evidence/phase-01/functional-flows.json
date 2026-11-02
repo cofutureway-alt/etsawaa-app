@@ -1,0 +1,290 @@
+{
+  "ranAt": "2026-10-30T09:12:02.531Z",
+  "project": "https://sveopzullspzymuodrlv.supabase.co",
+  "flows": {
+    "register": {
+      "userId": "ea005145-c2ac-4330-951d-33e46ec4e208",
+      "email": "e2e-a-1793351506375@etsawaa-e2e.com",
+      "phone": "+201051506375",
+      "viaAdmin": true
+    },
+    "profileAfterSignup": {
+      "role": "customer",
+      "phone": "+201051506375"
+    },
+    "verify": {
+      "session": true
+    },
+    "roleChangeAudit": {
+      "action": "role.change",
+      "entity": "profiles",
+      "entity_id": "b25ecf08-6106-44f2-85f9-c3b6ad2623dc",
+      "before": {
+        "role": "customer"
+      },
+      "after": {
+        "role": "vendor"
+      },
+      "actor": "b2fab32d-dd71-4349-a0da-32ceeeda1ab9"
+    },
+    "lastAdminError": "cannot demote the last admin",
+    "settingsAudit": {
+      "action": "settings.update",
+      "before": {
+        "key": "settings.design",
+        "value": {
+          "ink": "#510504",
+          "action": "#BE0404",
+          "primary": "#F30609",
+          "actionHover": "#8D0504"
+        },
+        "updated_at": "2026-10-30T09:06:37.074105+00:00",
+        "updated_by": null
+      },
+      "after": {
+        "key": "settings.design",
+        "value": {
+          "ink": "#510504",
+          "action": "#BE0404",
+          "primary": "#0055CC",
+          "actionHover": "#8D0504"
+        },
+        "updated_at": "2026-10-30T09:12:00.709415+00:00",
+        "updated_by": "b2fab32d-dd71-4349-a0da-32ceeeda1ab9"
+      }
+    },
+    "duplicatePhoneError": "Database error creating new user"
+  },
+  "results": [
+    {
+      "id": "F09-1",
+      "label": "signUp via public endpoint",
+      "ok": true,
+      "skipped": true,
+      "reason": "Supabase built-in email service limit (2/hour) — the same code path is exercised below via admin.createUser + generateLink"
+    },
+    {
+      "id": "F09-1b",
+      "label": "unconfirmed user created via admin API (trigger fires)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F09-2",
+      "label": "handle_new_user trigger created profile (role=customer)",
+      "ok": true,
+      "detail": "{\"role\":\"customer\",\"phone\":\"+201051506375\"}"
+    },
+    {
+      "id": "G2-1",
+      "label": "guest denied on profiles (RLS: permission denied or zero rows)",
+      "ok": true,
+      "detail": "permission denied for table profiles"
+    },
+    {
+      "id": "F09-3",
+      "label": "signup OTP generated (6-digit)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F09-4",
+      "label": "verifyOtp(signup) signs the user in",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F09-5",
+      "label": "authenticated user reads own profile via RLS",
+      "ok": true,
+      "detail": "[{\"id\":\"ea005145-c2ac-4330-951d-33e46ec4e208\",\"full_name\":\"E2E User A\",\"role\":\"customer\"}]"
+    },
+    {
+      "id": "F09-6",
+      "label": "fn_bootstrap_profile returns own profile",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F10-1",
+      "label": "login by email works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F10-2",
+      "label": "phone resolves to email via RPC (anon)",
+      "ok": true,
+      "detail": "resolved=e2e-a-1793351506375@etsawaa-e2e.com "
+    },
+    {
+      "id": "F10-3",
+      "label": "login via resolved phone email works",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F10-4",
+      "label": "wrong password rejected",
+      "ok": true,
+      "detail": "Invalid login credentials"
+    },
+    {
+      "id": "F11-1",
+      "label": "resetPasswordForEmail via public endpoint",
+      "ok": true,
+      "skipped": true,
+      "reason": "Supabase built-in email rate limit (2/hour) — recovery verified below via generateLink + the same verifyOtp/updateUser calls the UI makes"
+    },
+    {
+      "id": "F11-2",
+      "label": "recovery OTP generated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F11-3",
+      "label": "verifyOtp(recovery) grants recovery session",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F11-4",
+      "label": "password updated after recovery",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F11-5",
+      "label": "old password now invalid",
+      "ok": true,
+      "detail": "Invalid login credentials"
+    },
+    {
+      "id": "F11-6",
+      "label": "new password signs in",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "FIX-1",
+      "label": "user B created (confirmed)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "FIX-2",
+      "label": "address A inserted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "G2-2",
+      "label": "user B sees only own addresses (RLS)",
+      "ok": true,
+      "detail": "[{\"user_id\":\"b25ecf08-6106-44f2-85f9-c3b6ad2623dc\",\"address1\":\"street B\"}]"
+    },
+    {
+      "id": "G2-3",
+      "label": "user B sees only own notifications (RLS)",
+      "ok": true,
+      "detail": "[{\"user_id\":\"b25ecf08-6106-44f2-85f9-c3b6ad2623dc\"}]"
+    },
+    {
+      "id": "G2-4",
+      "label": "user B cannot update A's notifications",
+      "ok": true,
+      "detail": "no rows matched (RLS)"
+    },
+    {
+      "id": "G2-5",
+      "label": "authenticated cannot insert email_logs (service-only)",
+      "ok": true,
+      "detail": "permission denied for table email_logs"
+    },
+    {
+      "id": "ADM-1",
+      "label": "admin user created",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "ADM-2",
+      "label": "staff without users.manage blocked by RPC",
+      "ok": true,
+      "detail": "not allowed: caller cannot change roles"
+    },
+    {
+      "id": "ADM-3",
+      "label": "admin changes role via fn_admin_set_role",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "ADM-4",
+      "label": "role actually changed to vendor",
+      "ok": true,
+      "detail": "role=vendor"
+    },
+    {
+      "id": "F08-1",
+      "label": "audit row: role.change with before/after + actor",
+      "ok": true,
+      "detail": "{\"action\":\"role.change\",\"entity\":\"profiles\",\"entity_id\":\"b25ecf08-6106-44f2-85f9-c3b6ad2623dc\",\"before\":{\"role\":\"customer\"},\"after\":{\"role\":\"vendor\"},\"actor\":\"b2fab32d-dd71-4349-a0da-32ceeeda1ab9\"}"
+    },
+    {
+      "id": "ADM-5",
+      "label": "last-admin demotion blocked",
+      "ok": true,
+      "detail": "cannot demote the last admin"
+    },
+    {
+      "id": "G2-6",
+      "label": "user cannot self-escalate role (column grant)",
+      "ok": true,
+      "detail": "permission denied for table profiles"
+    },
+    {
+      "id": "G2-7",
+      "label": "anon reads exactly the public allowlist keys",
+      "ok": true,
+      "detail": "[\"settings.design\",\"site.general\"]"
+    },
+    {
+      "id": "G2-8",
+      "label": "non-admin cannot write settings",
+      "ok": true,
+      "detail": "new row violates row-level security policy for table \"settings\""
+    },
+    {
+      "id": "F02-1",
+      "label": "admin saves settings.design",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "id": "F02-2",
+      "label": "public read reflects the token change (no deploy)",
+      "ok": true,
+      "detail": "primary=#0055CC"
+    },
+    {
+      "id": "F08-2",
+      "label": "audit row: settings.update with before/after",
+      "ok": true,
+      "detail": "{\"action\":\"settings.update\",\"before\":{\"key\":\"settings.design\",\"value\":{\"ink\":\"#510504\",\"action\":\"#BE0404\",\"primary\":\"#F30609\",\"actionHover\":\"#8D0504\"},\"updated_at\":\"2026-10-30T09:06:37.074105+00:00\",\"updated_by\":null},\"after\":{\"key\":\"settings.design\",\"value\":{\"ink\":\"#510504\",\"action\":\"#BE0404\",\"primary\":\"#0055CC\",\"actionHover\":\"#8D0504\"},\"updated_at\":\"2026-10-30T09:12:00.709415+00:00\",\"updated_by\":\"b2fab32d-dd71-4349-a0da-32ceeeda1ab9\"}}"
+    },
+    {
+      "id": "F02-3",
+      "label": "tokens reverted to brand palette",
+      "ok": true,
+      "detail": "primary=#F30609"
+    },
+    {
+      "id": "F10-5",
+      "label": "duplicate phone rejected by UNIQUE index",
+      "ok": true,
+      "detail": "Database error creating new user"
+    }
+  ]
+}

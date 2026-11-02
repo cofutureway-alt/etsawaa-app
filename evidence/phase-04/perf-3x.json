@@ -1,0 +1,80 @@
+{
+ "at": "2026-10-31T18:03:30.566Z",
+ "runs": [
+  {
+   "label": "home",
+   "url": "http://localhost:3000/ar",
+   "runs": [
+    {
+     "score": 88,
+     "lcpMs": 3860,
+     "tbtMs": 70,
+     "cls": 0,
+     "fcpMs": 801,
+     "lcpElement": null
+    },
+    {
+     "score": 93,
+     "lcpMs": 2945,
+     "tbtMs": 169,
+     "cls": 0,
+     "fcpMs": 770,
+     "lcpElement": null
+    },
+    {
+     "score": 97,
+     "lcpMs": 2662,
+     "tbtMs": 42,
+     "cls": 0,
+     "fcpMs": 824,
+     "lcpElement": null
+    }
+   ],
+   "medians": {
+    "score": 93,
+    "lcpMs": 2945,
+    "tbtMs": 70,
+    "cls": 0,
+    "fcpMs": 801
+   }
+  },
+  {
+   "label": "product",
+   "url": "http://localhost:3000/ar/product/%D8%B4%D8%A7%D8%B4%D8%A9-%D8%A3%D8%AF%D8%A7%D8%A1-55",
+   "runs": [
+    {
+     "score": 92,
+     "lcpMs": 3432,
+     "tbtMs": 14,
+     "cls": 0,
+     "fcpMs": 763,
+     "lcpElement": null
+    },
+    {
+     "score": 98,
+     "lcpMs": 2318,
+     "tbtMs": 83,
+     "cls": 0,
+     "fcpMs": 765,
+     "lcpElement": null
+    },
+    {
+     "score": 98,
+     "lcpMs": 2318,
+     "tbtMs": 58,
+     "cls": 0,
+     "fcpMs": 767,
+     "lcpElement": null
+    }
+   ],
+   "medians": {
+    "score": 98,
+    "lcpMs": 2318,
+    "tbtMs": 58,
+    "cls": 0,
+    "fcpMs": 765
+   }
+  }
+ ],
+ "pristine": true
+}

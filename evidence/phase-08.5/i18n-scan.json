@@ -1,0 +1,13 @@
+{
+ "at": "2026-11-02T01:23:14.277Z",
+ "dynamicUses": 21,
+ "dynamicKeyChecks": 124,
+ "dictSizes": {
+  "ar": 1877,
+  "en": 1877
+ },
+ "arOnlyKeys": [],
+ "enOnlyKeys": [],
+ "failures": [],
+ "pass": true
+}

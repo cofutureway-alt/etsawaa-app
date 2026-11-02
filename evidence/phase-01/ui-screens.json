@@ -1,0 +1,78 @@
+{
+ "generatedAt": "2026-10-30T16:43:47.007Z",
+ "command": "node --env-file=.env scripts/shoot-ui.mjs",
+ "shots": [
+  {
+   "lang": "ar",
+   "width": 390,
+   "file": "evidence/phase-01/screens/ui-ar-390.png",
+   "title": "اتسوء — سوق اتسوء المتعدد البائعين",
+   "dir": "rtl",
+   "overflowX": 0,
+   "pageHeight": 3883
+  },
+  {
+   "lang": "ar",
+   "width": 768,
+   "file": "evidence/phase-01/screens/ui-ar-768.png",
+   "title": "اتسوء — سوق اتسوء المتعدد البائعين",
+   "dir": "rtl",
+   "overflowX": 0,
+   "pageHeight": 2733
+  },
+  {
+   "lang": "ar",
+   "width": 1280,
+   "file": "evidence/phase-01/screens/ui-ar-1280.png",
+   "title": "اتسوء — سوق اتسوء المتعدد البائعين",
+   "dir": "rtl",
+   "overflowX": 0,
+   "pageHeight": 2682
+  },
+  {
+   "lang": "ar",
+   "width": 1440,
+   "file": "evidence/phase-01/screens/ui-ar-1440.png",
+   "title": "اتسوء — سوق اتسوء المتعدد البائعين",
+   "dir": "rtl",
+   "overflowX": 0,
+   "pageHeight": 2682
+  },
+  {
+   "lang": "en",
+   "width": 390,
+   "file": "evidence/phase-01/screens/ui-en-390.png",
+   "title": "Etsawaa — Egypt's multi-vendor marketplace",
+   "dir": "ltr",
+   "overflowX": 0,
+   "pageHeight": 3942
+  },
+  {
+   "lang": "en",
+   "width": 768,
+   "file": "evidence/phase-01/screens/ui-en-768.png",
+   "title": "Etsawaa — Egypt's multi-vendor marketplace",
+   "dir": "ltr",
+   "overflowX": 0,
+   "pageHeight": 2733
+  },
+  {
+   "lang": "en",
+   "width": 1280,
+   "file": "evidence/phase-01/screens/ui-en-1280.png",
+   "title": "Etsawaa — Egypt's multi-vendor marketplace",
+   "dir": "ltr",
+   "overflowX": 0,
+   "pageHeight": 2682
+  },
+  {
+   "lang": "en",
+   "width": 1440,
+   "file": "evidence/phase-01/screens/ui-en-1440.png",
+   "title": "Etsawaa — Egypt's multi-vendor marketplace",
+   "dir": "ltr",
+   "overflowX": 0,
+   "pageHeight": 2682
+  }
+ ]
+}

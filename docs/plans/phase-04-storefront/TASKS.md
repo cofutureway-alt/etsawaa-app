@@ -1,0 +1,24 @@
+# Phase 04 — Storefront · TASKS
+
+- [ ] **S-01** Home page: hero banners (DB), categories strip, featured vendors, featured products, top-rated, active event block. DoD: all blocks have loading/empty states; banners responsive.
+- [ ] **S-02** Category page: header (image/desc), subcategory cards, products grid, breadcrumbs. DoD: only active nodes exposed.
+- [ ] **S-03** Product listing: facets (category, price, brand, attributes, rating, in-stock), sort, count, pagination/infinite. DoD: URL reflects filters; back restores exact state.
+- [ ] **S-04** Search: suggestions (products/stores/categories), results page, no-results guidance, typo tolerance. DoD: query <300ms on 50k rows.
+- [ ] **S-05** Product page: gallery per variant, variant selector with disabled combos, price/sale/expiry, specs table, reviews tab, vendor card, related, sticky buy. DoD: schema validates; shareable URL with selected variant.
+- [ ] **S-06** Store page: banner/logo, level badge, rating, tabs (products/about/reviews/policies), hidden/refused event state. DoD: hidden products stay visible here when event-hidden.
+- [ ] **S-07** Vendors list + featured section + filters (category/level). DoD: suspended/hidden vendors excluded from listings.
+- [ ] **S-08** Brands list + brand page. DoD: empty brand handled.
+- [ ] **S-09** Cart page + drawer + merge on login + coupon baseline display. DoD: quantity > stock auto-corrected with notice.
+- [ ] **S-10** Header/footer: search, categories menu, wishlist, cart count, language switch, policies links. DoD: mobile menu fully keyboard accessible.
+- [ ] **S-11** Seller Center `/sell`: 3-level site map card, vendor terms card, start-selling article + CTA, vendor articles. DoD: every map node links to a live category route.
+- [ ] **S-12** Static pages (contact/about/terms/privacy/returns) from DB + header visibility. DoD: contact form has success + error states.
+- [ ] **S-13** Wishlist toggle on cards/product (guest prompt → login). DoD: persisted per user, dedup.
+- [ ] **S-14** SEO: meta per page, canonical, hreflang, OG/Twitter, JSON-LD (Product/Breadcrumb/Organization/WebSite). DoD: Rich Results passes.
+- [ ] **S-15** Image pipeline: srcset, lazy, placeholder, alt from product name. DoD: no CLS > 0.1.
+- [ ] **S-16** Error pages: 404 with search, 500 with retry, offline message. DoD: no raw stack traces.
+- [ ] **S-17** Skeletons for every list/grid; 300ms minimum perceived smoothness. DoD: no layout jump between skeleton and data.
+- [ ] **S-18** Accessibility pass: focus rings, labels, contrast AA, keyboard nav. DoD: axe scan zero critical.
+- [ ] **S-19** Performance budget: LCP<2.5s, JS<200KB gzipped for public routes. DoD: Lighthouse ≥90 mobile.
+- [ ] **S-20** G1–G6 evidence pack with four breakpoints. DoD: stored in `plans/evidence/phase-04/`.
+- [ ] **S-21** Compare: "Compare" action on product/cards, select a second product (any category), `/compare?ids=p1,p2` table (shared attributes + price/rating/vendor), different-category notice, mobile layout. DoD: URL shareable; missing/invalid ids show a friendly state.
+- [ ] **S-22** Recently viewed tracking: record product views (guest localStorage, signed-in DB, merge on login), show last 20 in the account, dedupe, clear history, and a "you viewed before" strip on home + product page. DoD: count never exceeds 20; newest first.

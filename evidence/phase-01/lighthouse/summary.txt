@@ -1,0 +1,33 @@
+# C4 + P1 — Lighthouse mobile reports (raw facts)
+
+Command for every run below (same flags; only the output filename differs):
+  CHROME_PATH="C:/Program Files/Google/Chrome/Application/chrome.exe" npx --yes lighthouse <url> --quiet --only-categories=performance --output=json,html --output-path=evidence/phase-01/lighthouse/<name> --chrome-flags="--headless=new --no-sandbox"
+Config: formFactor=mobile, throttlingMethod=simulate (Lighthouse defaults).
+
+| run | performance | LCP | FCP | CLS | TBT |
+|---|---|---|---|---|---|
+| ar-home | 74/100 | 11.1 s | 1.5 s | 0 | 100 ms |
+| ar-home-p1 | 88/100 | 3.5 s | 1.6 s | 0 | 20 ms |
+| ar-home-p2 | 89/100 | 3.4 s | 1.5 s | 0 | 0 ms |
+| ar-home-p3 | 92/100 | 3.3 s | 1.5 s | 0.001 | 0 ms |
+| ar-home-p4 | 90/100 | 3.5 s | 1.5 s | 0.001 | 0 ms |
+| ar-home-p5 | 94/100 | 3.0 s | 0.8 s | 0.001 | 0 ms |
+| ar-home-p6 | 94/100 | 3.1 s | 0.8 s | 0.001 | 30 ms |
+| ar-login | 99/100 | 1.5 s | 1.5 s | 0 | 30 ms |
+
+Run history:
+- ar-home: initial C4 report (before P1).
+- p1: favicon set replaced the 1.5 MB logo.png; logos → WebP; banners downscaled; fetchPriority=high on the hero; lazy below-the-fold.
+- p2: + hydration fix (client-only Toast portal regenerated the tree — React #418 — and delayed the LCP paint).
+- p3: + hero preload (imageSrcset-aware) + Cairo-only font set (IBM Plex dropped from the stack, weight 500 unused removed).
+- p4: + Supabase connection warm-up at boot (TTFB variance only; no caching — settings stay per-request).
+- p5: + Google Fonts stylesheet made non-render-blocking (media=print + immediate swap; text paints with the system fallback).
+- p6: + 800w mobile srcset variants for both hero slides (33/35 KB) with a matching imageSrcset preload. FINAL P1 STATE.
+
+Real-device-condition measurement (CDP: 4x CPU + slow-4G 150ms/1.6Mbps — the same profile Lighthouse simulates):
+  command: node --env-file=.env scripts/measure-lcp-throttled.mjs   (raw output: real-throttled-lcp.txt)
+  final LCP on /ar: 1816 ms (element promo-wide-1-sm.webp) — under the 2.5 s target on real throttled hardware.
+
+Note on the simulated number: Lighthouse simulates LCP ≈ TTI on this trace — the model queues the LCP paint behind hydration script execution (mainthread-work-breakdown ~1.1 s, bootup 0.3 s observed). Observed-trace LCP breakdown (p6): TTFB + load delay + load + render delay ≈ 1.0-1.1 s.
+
+ar-login: C4 report for /ar/auth/login (99/100, LCP 1.5 s, CLS 0) — unchanged by P1.

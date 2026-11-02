@@ -1,0 +1,24 @@
+PASS assert vendor-orders@1440 container>=1100 — 1200px
+PASS captured vendor-orders — 390/768/1280/1440
+PASS assert vendor-orders-filtered@1440 container>=1100 — 1200px
+PASS captured vendor-orders-filtered — 390/768/1280/1440
+PASS assert vendor-wallet@1440 container>=1100 — 1200px
+PASS captured vendor-wallet — 390/768/1280/1440
+PASS assert vendor-withdraw-dialog@1440 container>=1100 — 1200px
+PASS captured vendor-withdraw-dialog — 390/768/1280/1440
+PASS assert vendor-penalties@1440 container>=1100 — 1200px
+PASS captured vendor-penalties — 390/768/1280/1440
+PASS assert vendor-report@1440 container>=1100 — 1200px
+PASS captured vendor-report — 390/768/1280/1440
+PASS assert vendor-profile@1440 container>=1100 — 1200px
+PASS captured vendor-profile — 390/768/1280/1440
+PASS assert vendor-print-history@1440 container>=1100 — 1200px
+PASS captured vendor-print-history — 390/768/1280/1440
+PASS assert admin-shipping-queue@1440 container>=1100 — 1200px
+PASS captured admin-shipping-queue — 390/768/1280/1440
+PASS PDF vendor invoice A4 — 163KB
+PASS vendor label A5 geometry + content rules — {"sheetW":794,"sheetH":556,"overflows":0,"hasNumber":true,"hasName":true,"noPhone":true,"noBarcode":true,"shippingDash":true}
+PASS PDF vendor label A5 landscape — 162KB
+PASS all shots saved (38) — vendor-orders-390.png,vendor-orders-768.png,vendor-orders-1280.png,vendor-orders-1440.png
+PASS DB pristine after cleanup — {"orders":0,"products":0,"categories":0,"vendors":0,"coupons":0,"wallets":0,"wallet_transactions":0,"withdrawal_requests":0,"vendor_penalties":0,"cart_items":0,"reviews":0,"refund_requests":0}
+pristine: true

@@ -1,0 +1,322 @@
+{
+ "at": "2026-11-01T01:04:57.292Z",
+ "results": [
+  {
+   "name": "T1 guest blocked at fn_create_order",
+   "ok": true,
+   "detail": "\"permission denied for function fn_create_order\""
+  },
+  {
+   "name": "T2a alternate == primary rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"phones_equal\"}"
+  },
+  {
+   "name": "T2b missing alternate rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"address_incomplete\"}"
+  },
+  {
+   "name": "T2c invalid Egyptian phone rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"phone_invalid\"}"
+  },
+  {
+   "name": "T3 forged COD with vendor-shipped item rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"cod_vendor_ship\"}"
+  },
+  {
+   "name": "T4 forged COD above 5,000 EGP cap rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"cod_cap\",\"cap_piastres\":500000}"
+  },
+  {
+   "name": "T5a order created",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-001\",\"status\":\"on_hold\",\"order_id\":\"826b1c66-0c05-45d7-9cfa-6e210e236679\",\"payment_method\":\"kashier\"}"
+  },
+  {
+   "name": "T5b shipment number ETS-YY-###",
+   "ok": true,
+   "detail": "ETS-26-001"
+  },
+  {
+   "name": "T5c three vendor groups",
+   "ok": true,
+   "detail": "groups=3"
+  },
+  {
+   "name": "T5d totals consistent (subtotal - discount + shipping = total)",
+   "ok": true,
+   "detail": "sub=210000 disc=21000 ship=5000 total=194000"
+  },
+  {
+   "name": "T5e one shipping fee on the order (groups carry none)",
+   "ok": true,
+   "detail": "fee=5000"
+  },
+  {
+   "name": "T5f commission on price AFTER discounts (5% default)",
+   "ok": true,
+   "detail": "comm=9450"
+  },
+  {
+   "name": "T5g stock decremented (20-2=18)",
+   "ok": true,
+   "detail": "stock=18"
+  },
+  {
+   "name": "T5h cart cleared after order",
+   "ok": true,
+   "detail": "left=0"
+  },
+  {
+   "name": "T5i coupon redemption recorded",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "T5j email snapshot = ACCOUNT email (payload never trusted)",
+   "ok": true,
+   "detail": "p5-customer-0-1793495041585@etsawaa-e2e.com"
+  },
+  {
+   "name": "T5k phones stored E.164 and different",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "T5l status history seeded",
+   "ok": true,
+   "detail": "hist=1"
+  },
+  {
+   "name": "T5m vendor-shipped item holds the order (on_hold)",
+   "ok": true,
+   "detail": "on_hold"
+  },
+  {
+   "name": "T6 same attempt_key returns the same order (no duplicate)",
+   "ok": true,
+   "detail": "ETS-26-002 vs ETS-26-002"
+  },
+  {
+   "name": "T6b exactly one order for the attempt key",
+   "ok": true,
+   "detail": "count=1"
+  },
+  {
+   "name": "T7 stock race: exactly one order wins",
+   "ok": true,
+   "detail": "[\"empty_cart\",\"ok\"]"
+  },
+  {
+   "name": "T7b stock never negative",
+   "ok": true,
+   "detail": "stock=0"
+  },
+  {
+   "name": "T8a expired coupon rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"coupon_expired\"}"
+  },
+  {
+   "name": "T8b min_subtotal rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"coupon_min_subtotal\"}"
+  },
+  {
+   "name": "T8c per-user limit enforced",
+   "ok": true,
+   "detail": "true/coupon_limit"
+  },
+  {
+   "name": "T9a invalid signature rejected with 400",
+   "ok": true,
+   "detail": "status=400"
+  },
+  {
+   "name": "T9b valid webhook confirms payment",
+   "ok": true,
+   "detail": "{\"received\":true,\"ok\":true,\"idempotent\":false,\"reason\":null}"
+  },
+  {
+   "name": "T9c order paid (stays on_hold for vendor-ship review)",
+   "ok": true,
+   "detail": "{\"status\":\"on_hold\",\"payment_status\":\"paid\"}"
+  },
+  {
+   "name": "T9d duplicate webhook is a 200 no-op",
+   "ok": true,
+   "detail": "{\"received\":true,\"ok\":true,\"idempotent\":true,\"reason\":null}"
+  },
+  {
+   "name": "T9e amount mismatch blocked",
+   "ok": true,
+   "detail": "{\"received\":true,\"ok\":false,\"idempotent\":false,\"reason\":\"amount_mismatch\"}"
+  },
+  {
+   "name": "T9f order state untouched by mismatch",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "T10a vendor B cannot render vendor A's label (403)",
+   "ok": true,
+   "detail": "status=403 body=Forbidden"
+  },
+  {
+   "name": "T10b vendor A renders own label (200)",
+   "ok": true,
+   "detail": "status=200"
+  },
+  {
+   "name": "T10c vendor B sees only own group (own render ok or 403 for foreign doc, never A's data)",
+   "ok": true,
+   "detail": "status=200"
+  },
+  {
+   "name": "T10d vendor label shows NO phone and NO address",
+   "ok": true,
+   "detail": "طباعة\nاتسوء\netsawaa.com — سوقك المصري متعدد البائعين\n\nرقم الشحنة: ETS-26-001\n\nال"
+  },
+  {
+   "name": "T10e RLS: vendor B sees only own group rows",
+   "ok": true,
+   "detail": "seen=1"
+  },
+  {
+   "name": "T11a every print logs a row (reprints included)",
+   "ok": true,
+   "detail": "before=2 after=4"
+  },
+  {
+   "name": "T11b shipment number stable",
+   "ok": true,
+   "detail": "ETS-26-001"
+  },
+  {
+   "name": "T12a admin invoice A4 renders for admin",
+   "ok": true,
+   "detail": "status=200"
+  },
+  {
+   "name": "T12b carrier label renders with pieces override",
+   "ok": true,
+   "detail": "status=200"
+  },
+  {
+   "name": "T12c customer cannot render admin invoice",
+   "ok": true,
+   "detail": "status=403"
+  },
+  {
+   "name": "T12d vendor cannot render admin invoice",
+   "ok": true,
+   "detail": "status=403"
+  },
+  {
+   "name": "T13a refund blocked before delivery",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_delivered\"}"
+  },
+  {
+   "name": "T14a vendor cannot set delivered on another vendor's group",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "T14b last group delivered completes the order",
+   "ok": true,
+   "detail": "{\"status\":\"completed\",\"delivered_at\":\"2026-11-01T01:04:52.66542+00:00\"}"
+  },
+  {
+   "name": "T15a review blocked before delivery",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_delivered\"}"
+  },
+  {
+   "name": "T15b review after delivery accepted (half stars ok)",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "T15c one review per order item",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"already_reviewed\"}"
+  },
+  {
+   "name": "T16a refund accepted within 14 days",
+   "ok": true,
+   "detail": "{\"ok\":true,\"refund_request_id\":\"5bc2add7-3ae5-4f72-b09a-a0d784d1b40e\"}"
+  },
+  {
+   "name": "T16b duplicate over remaining qty blocked",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"qty_exceeded\",\"remaining\":0,\"order_item_id\":\"7672e723-d3ac-4ffe-950f-dc93ce06ab7c\"}"
+  },
+  {
+   "name": "T16c concerned vendor sees the refund request",
+   "ok": true,
+   "detail": "vendor=1 svc=2"
+  },
+  {
+   "name": "T17-pre COD order created",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-005\",\"status\":\"processing\",\"order_id\":\"9a600c1c-f21f-4e39-a4e6-aede90a00fa7\",\"payment_method\":\"cod\"}"
+  },
+  {
+   "name": "T17a COD order confirmed immediately",
+   "ok": true,
+   "detail": "{\"id\":\"9a600c1c-f21f-4e39-a4e6-aede90a00fa7\",\"status\":\"processing\",\"payment_status\":\"cod_pending\"}"
+  },
+  {
+   "name": "T17b admin collects COD once",
+   "ok": true,
+   "detail": "[{\"ok\":true},{\"ok\":false,\"reason\":\"already_collected\"}]"
+  },
+  {
+   "name": "T17c payment_status = cod_collected",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "T19a email-change request accepted (or provider-throttled)",
+   "ok": true,
+   "detail": "email rate limit exceeded"
+  },
+  {
+   "name": "T19b OLD email still valid BEFORE confirmation",
+   "ok": true,
+   "detail": "signed in"
+  },
+  {
+   "name": "T19c wrong 6-digit code rejected (verifyOtp type=email_change)",
+   "ok": true,
+   "detail": "Token has expired or is invalid"
+  },
+  {
+   "name": "T19d OLD email still valid AFTER a failed confirmation",
+   "ok": true,
+   "detail": "signed in"
+  },
+  {
+   "name": "T19e account email unchanged until the code is confirmed",
+   "ok": true,
+   "detail": "p5otp-1793495041585@example.com"
+  },
+  {
+   "name": "T18a customer cancels with reason (stock restored)",
+   "ok": true,
+   "detail": "stock 2→4"
+  },
+  {
+   "name": "T18b shipment number unchanged after cancel",
+   "ok": true,
+   "detail": "ETS-26-006"
+  }
+ ]
+}
+
+pristine: true {"orders":0,"products":0,"categories":0,"vendors":0,"banners":0,"brands":0,"coupons":0,"cart_items":0,"reviews":0,"refund_requests":0}

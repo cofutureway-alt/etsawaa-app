@@ -1,0 +1,35 @@
+import { data, redirect } from "react-router";
+import type { Route } from "./+types/profile";
+import { createSupabaseServerClient } from "~/lib/supabase/server";
+import { requirePanelAccess } from "~/lib/auth/guards";
+import { requireLang } from "~/lib/lang.server";
+import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { SkeletonForm } from "~/components/ui/Skeleton";
+
+
+/**
+ * VO-21 — /vendor/profile: the vendor section of the SHARED profile page
+ * (AGENT §30). One implementation lives at /account/profile (store name as
+ * the display heading, avatar IS the store logo through MediaPicker →
+ * vendors.logo_path); this route lands the vendor there so the panel
+ * navigation and the shared page stay in sync — a second form here would
+ * duplicate the OTP/password/avatar logic and drift.
+ */
+export async function loader({ request, params }: Route.LoaderArgs) {
+  const lang = requireLang(params);
+  const { client } = createSupabaseServerClient(request);
+  if (!client) throw data({ reason: "db" }, { status: 503 });
+  await requirePanelAccess(client, lang, "vendor", request);
+  throw redirect(`/${lang}/account/profile`);
+}
+
+
+/** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */
+export function ErrorBoundary() {
+  return <RouteErrorBoundary />;
+}
+
+/** H-24: shown while the client hydrates / while the loader streams — stable shapes, CLS 0. */
+export function HydrateFallback() {
+  return <SkeletonForm />;
+}

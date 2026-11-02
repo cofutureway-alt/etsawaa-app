@@ -1,0 +1,30 @@
+{
+ "command": "node --env-file=.env scripts/measure-lcp-throttled.mjs",
+ "url": "http://localhost:3000/ar",
+ "throttling": {
+  "cpu": "4x",
+  "network": "slow 4G (150ms RTT, 1.6Mbps down) — matches Lighthouse mobile profile"
+ },
+ "entries": [
+  {
+   "startTime": 1680,
+   "renderTime": 1680,
+   "loadTime": 0,
+   "element": "(text)"
+  },
+  {
+   "startTime": 1716,
+   "renderTime": 1716,
+   "loadTime": 1634,
+   "element": "logo-mark.webp"
+  },
+  {
+   "startTime": 1816,
+   "renderTime": 1816,
+   "loadTime": 1740,
+   "element": "promo-wide-1-sm.webp"
+  }
+ ],
+ "finalLCPms": 1816,
+ "element": "promo-wide-1-sm.webp"
+}

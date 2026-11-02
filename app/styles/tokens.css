@@ -1,0 +1,107 @@
+/*
+ * Etsawaa design tokens — DEFAULT THEME.
+ *
+ * Source of truth at runtime is `settings.design` in the database; the SSR
+ * root loader injects overrides as a <style> block. This file carries the
+ * same defaults so the app renders correctly before the database is connected.
+ *
+ * Rules (AGENT.md §10):
+ *   - Flat colors only. Zero gradients. Zero emojis.
+ *   - Brand reds come from the official palette (branding/colors.txt):
+ *       #F30609 (primary) · #BE0404 (deep) · #8D0504 (pressed) · #510504 (ink)
+ *   - WCAG AA: #BE0404 is used for text-bearing surfaces (buttons/links,
+ *     6.5:1 on white); #F30609 is reserved for brand accents and non-text
+ *     elements (4.3:1, passes the 3:1 non-text requirement).
+ *   - Every color in the UI must reference one of these variables.
+ */
+
+:root {
+  /* Brand */
+  --color-primary: #f30609; /* brand accent: logo ring, highlights, icons, focus ring */
+  /* tinted surface for the SELECTED state of chips/tabs (bg-primary-soft).
+     Referenced by admin panels + storefront filters; undeclared, those
+     classes silently rendered nothing. */
+  --color-primary-soft: #fee7e7;
+  --color-action: #be0404; /* text-bearing surfaces: solid buttons, links */
+  --color-action-hover: #8d0504;
+  --color-ink: #510504; /* deep outlines, premium accents */
+  --color-on-action: #ffffff;
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-alt: #fafafa;
+  --color-surface-tint: #fff4f4; /* flat 4% red tint, no gradients */
+
+  /* Text */
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-text-faint: #9ca3af; /* decorative only — never body text */
+
+  /* Borders */
+  --color-border: #e5e7eb;
+  --color-border-strong: #d1d5db;
+
+  /* Accents */
+  --color-accent-soft: #ffd6db;
+  --color-highlight: #dcc0bf; /* official Soft Highlight */
+  --color-featured: #f5b301;
+
+  /* Semantic */
+  --color-success: #16a34a;
+  --color-success-strong: #15803d; /* text-safe on white (5.0:1) */
+  --color-success-soft: #dcfce7;
+  --color-warning: #f59e0b;
+  --color-warning-strong: #92400e; /* text-safe on white (7.1:1) */
+  --color-warning-soft: #fef3c7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-info: #2563eb;
+  --color-info-soft: #dbeafe;
+
+  /* Typography (replaceable from admin settings; Arabic-first fallbacks) */
+  --font-body: "Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  --font-heading: var(--font-body);
+
+  /* Radius */
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+  --radius-full: 999px;
+
+  /* Shadows (subtle only — no glow borders) */
+  --shadow-1: 0 1px 2px rgba(31, 41, 55, 0.06);
+  --shadow-2: 0 4px 14px rgba(31, 41, 55, 0.1);
+  --shadow-focus: 0 0 0 3px rgba(243, 6, 9, 0.18);
+
+  /* Spacing scale — 8px rhythm */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 80px;
+
+  /* Motion (AGENT.md §10: 150-300ms ease-out, reduced-motion aware) */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-page: 250ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Layout */
+  --container-max: 1200px;
+
+  /* Dashboard sidebar (reference design: deep red shell) */
+  --color-side: var(--color-ink);
+  --color-side-text: #e2b8b8;
+  --color-side-text-strong: #ffffff;
+  --color-side-muted: rgba(255, 255, 255, 0.45);
+  --color-side-line: rgba(255, 255, 255, 0.1);
+  --color-side-hover: rgba(255, 255, 255, 0.08);
+  --color-footer: #2e0302;
+  --color-footer-text: #b99b9b;
+  --sidebar-w: 240px;
+  --sidebar-w-collapsed: 64px;
+  --topbar-h: 60px;
+}

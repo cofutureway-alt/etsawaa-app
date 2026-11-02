@@ -1,0 +1,5 @@
+batch #50 status=staged
+rpc → publish_deferred_D16: production target not provided by owner
+verdict: PASS — gate passed, publish deferred (D-16)
+status after attempt: staged (unchanged = non-destructive deferral)
+NOTE: audit insert inside the tx is rolled back by RAISE; the deferral record is the exception message + gate PASS evidence above. Postgres RAISE semantics — documented honestly.

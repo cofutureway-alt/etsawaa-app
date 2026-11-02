@@ -1,0 +1,13 @@
+{
+ "moved": "79faebee-e5a5-47d7-8f13-a97f6e175a9c",
+ "name": "أثاث",
+ "newParent": "e7dbccf1-562b-478f-8b66-5557bde5217b",
+ "newParentName": "إلكترونيات",
+ "dbAfter": {
+  "parent_id": "e7dbccf1-562b-478f-8b66-5557bde5217b",
+  "path": "e7dbccf1-562b-478f-8b66-5557bde5217b/79faebee-e5a5-47d7-8f13-a97f6e175a9c",
+  "depth": 2
+ },
+ "persisted": true,
+ "uiShowsNestedAfterReload": true
+}

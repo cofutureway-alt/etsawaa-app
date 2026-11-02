@@ -1,0 +1,117 @@
+{
+ "at": "2026-11-01T20:29:37.300Z",
+ "runs": [
+  {
+   "label": "home",
+   "url": "http://localhost:3000/ar",
+   "runs": [
+    {
+     "score": 85,
+     "lcpMs": 3183,
+     "tbtMs": 78,
+     "cls": 0,
+     "fcpMs": 803,
+     "lcpElement": null
+    },
+    {
+     "score": 96,
+     "lcpMs": 2850,
+     "tbtMs": 24,
+     "cls": 0,
+     "fcpMs": 771,
+     "lcpElement": null
+    },
+    {
+     "score": 95,
+     "lcpMs": 2758,
+     "tbtMs": 124,
+     "cls": 0,
+     "fcpMs": 817,
+     "lcpElement": null
+    }
+   ],
+   "medians": {
+    "score": 95,
+    "lcpMs": 2850,
+    "tbtMs": 78,
+    "cls": 0,
+    "fcpMs": 803
+   }
+  },
+  {
+   "label": "product",
+   "url": "http://localhost:3000/ar/product/%D8%B4%D8%A7%D8%B4%D8%A9-%D8%A3%D8%AF%D8%A7%D8%A1-%D9%A5%D9%A5",
+   "runs": [
+    {
+     "score": 90,
+     "lcpMs": 3673,
+     "tbtMs": 54,
+     "cls": 0,
+     "fcpMs": 769,
+     "lcpElement": null
+    },
+    {
+     "score": 95,
+     "lcpMs": 2628,
+     "tbtMs": 140,
+     "cls": 0,
+     "fcpMs": 830,
+     "lcpElement": null
+    },
+    {
+     "score": 95,
+     "lcpMs": 2988,
+     "tbtMs": 45,
+     "cls": 0,
+     "fcpMs": 774,
+     "lcpElement": null
+    }
+   ],
+   "medians": {
+    "score": 95,
+    "lcpMs": 2988,
+    "tbtMs": 54,
+    "cls": 0,
+    "fcpMs": 774
+   }
+  },
+  {
+   "label": "category",
+   "url": "http://localhost:3000/ar/category/p8lh-leaf-1793564977300",
+   "runs": [
+    {
+     "score": 95,
+     "lcpMs": 2847,
+     "tbtMs": 66,
+     "cls": 0,
+     "fcpMs": 761,
+     "lcpElement": null
+    },
+    {
+     "score": 96,
+     "lcpMs": 2683,
+     "tbtMs": 71,
+     "cls": 0,
+     "fcpMs": 801,
+     "lcpElement": null
+    },
+    {
+     "score": 97,
+     "lcpMs": 2579,
+     "tbtMs": 16,
+     "cls": 0,
+     "fcpMs": 763,
+     "lcpElement": null
+    }
+   ],
+   "medians": {
+    "score": 96,
+    "lcpMs": 2683,
+    "tbtMs": 66,
+    "cls": 0,
+    "fcpMs": 763
+   }
+  }
+ ],
+ "pristine": true
+}

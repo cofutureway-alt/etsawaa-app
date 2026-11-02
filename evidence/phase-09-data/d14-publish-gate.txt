@@ -1,0 +1,9 @@
+templates batch #50
+pending (new_family): 399 | exact auto-approved: 955
+attempt-1 → publish_gate_blocked: 399 template(s) pending review (first: shirts)
+GATE BLOCKS UNREVIEWED => PASS
+approved via fn_admin_review_template: 399 / 399
+attempt-2 → publish_deferred_D16: production target not provided by owner
+D16 DEFERRED AFTER GATE PASSES => PASS
+audit rows: reviews=798 publish_attempts=0
+REVIEW AUDITED => PASS

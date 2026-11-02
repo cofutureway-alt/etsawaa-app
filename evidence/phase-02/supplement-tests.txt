@@ -1,0 +1,13 @@
+{"test":"folder.depth3Ok.depth4Rejected","expected":"L4 rejected","actual":"rejected (folder_depth_limit)","pass":true}
+{"depth":{"l1":"3605bd37-b34b-4046-ba34-745f5e3bdf7f","l3":"cb4138ce-5235-46da-a75a-fa05f795749a"}}
+{"test":"category.moveRepathChild","expected":"path under B + depth 2","actual":"ok","pass":true}
+{"test":"category.moveRepathGrand","expected":"path under B + depth 3","actual":"ok","pass":true}
+{"test":"tag.duplicateCaseInsensitive","expected":"rejected","actual":"rejected","pass":true}
+{"test":"option.duplicateCode","expected":"rejected","actual":"rejected","pass":true}
+{"test":"usageCheck.listsReference","expected":"category row","actual":"[\"category\"]","pass":true}
+{"test":"delete.referencedObjectGuarded","expected":"usage found + object still alive","actual":"guarded","pass":true}
+{"test":"navigation.noReloadIntoFolder","expected":"same URL","actual":"same","pass":true}
+{"test":"ui.uploadThroughDropzone","expected":"row created in L1","actual":"folder=L1","pass":true}
+{"test":"uiDelete.softWithUsageReport","expected":"row soft-deleted + object kept + usage toast","actual":"ok (حُذف من المكتبة — الملف مستخدم في 1 موضع (مستخدم) والحذف الن)","pass":true}
+{"cleanup":{"usersRemaining":0}}
+{"summary":{"total":10,"passed":10,"failed":0}}

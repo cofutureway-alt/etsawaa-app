@@ -1,0 +1,95 @@
+
+=== FIXTURES ===
+PASS [FIXTURES] vendor A onboarded — null
+PASS [FIXTURES] tee A saved — null
+PASS [FIXTURES] tee A has 12 variants — got 12
+PASS [FIXTURES] tee A variants saved with images/sale — null
+PASS [FIXTURES] regeneration skips tombstoned combo — {"removed":0,"skipped":["5d46069c-6c50-4d69-a164-4590f2d3f510,d81d2251-3bc5-4259-9b70-b1554af2334b"],"inserted":0}
+
+=== NO LEAKAGE (draft/pending/hidden) ===
+PASS [NO LEAKAGE (draft/pending/hidden)] draft product NOT in the public view
+PASS [NO LEAKAGE (draft/pending/hidden)] published A tee visible + listable
+PASS [NO LEAKAGE (draft/pending/hidden)] vendor B tee visible
+PASS [NO LEAKAGE (draft/pending/hidden)] pending product NOT in the public view
+PASS [NO LEAKAGE (draft/pending/hidden)] suspended vendor's products drop from the view
+
+=== FILTER COUNTS vs DB ===
+PASS [FILTER COUNTS vs DB] total matches DB listable count — rpc 3 vs db 3
+PASS [FILTER COUNTS vs DB] category scope counts only subtree products — got 2 (tee A + tee B)
+PASS [FILTER COUNTS vs DB] brand facet count = 2 (both tees) — [{"id":"74434727-0076-4f14-a30f-1837792a5da4","count":2,"name_ar":"اتسو سبورت","name_en":"Etso Sport"}]
+PASS [FILTER COUNTS vs DB] attribute filter narrows to tee A (1 item) — got 1
+PASS [FILTER COUNTS vs DB] in-stock filter keeps both (stocked) — got 2
+PASS [FILTER COUNTS vs DB] price band hits the sale price (tee A only) — got 1: [["Ahmed Tee",8000]]
+
+=== SORT + PAGINATION ===
+PASS [SORT + PAGINATION] price_asc is ordered — [7000,8000,2500000]
+PASS [SORT + PAGINATION] rating sort puts tee A first (only rated) — ["Ahmed Tee","Tee B"]
+PASS [SORT + PAGINATION] pagination totals stable + pages disjoint — p1=2 p2=1
+
+=== SEARCH NORMALIZATION ===
+PASS [SEARCH NORMALIZATION] hamza-normalized search finds 'أحمد' — total 1
+PASS [SEARCH NORMALIZATION] typo 'احمض' → did-you-mean suggests 'أحمد' — got "أحمد"
+PASS [SEARCH NORMALIZATION] suggestions return products for 'تيشرت' — 1
+PASS [SEARCH NORMALIZATION] suggestions return stores for 'الأناقة' — [{"slug":"store","name_ar":"متجر الأناقة","name_en":"Elegance Store","logo_path":"u/47d43747-4571-49aa-a71a-350e661320f0/logo-a-1793470172866.png"}]
+
+=== CART add/set/merge ===
+PASS [CART add/set/merge] cart add returns qty 2 — {"qty":2,"stock":3,"capped":false,"variant_id":"2fa40834-e3fb-4cef-a0ab-b64ea5d3eae2"}
+PASS [CART add/set/merge] cart add same line increments and caps at stock (3) — {"qty":3,"stock":3,"capped":true,"variant_id":"2fa40834-e3fb-4cef-a0ab-b64ea5d3eae2"}
+PASS [CART add/set/merge] tombstoned variant → variant_unavailable — variant_unavailable
+PASS [CART add/set/merge] set qty caps at stock with capped flag — {"qty":3,"stock":3,"capped":true,"variant_id":"2fa40834-e3fb-4cef-a0ab-b64ea5d3eae2"}
+PASS [CART add/set/merge] merge: new line added (blue x2) — {"qty":2,"sku":"TEE-1793470172866-4","stock":7,"capped":false,"name_ar":"تيشيرت أحمد","name_en":"Ahmed Tee","on_sale":true,"slug_ar":"تيشيرت-أحمد","slug_en":"ahmed-tee","brand_id":"74434727-0076-4f14-a30f-1837792a5da4","vendor_id":"d470439f-93a5-4a78-b588-ba80675b2eb4","image_path":"u/47d43747-4571-49aa-a71a-350e661320f0/tee-main-1793470172866.png","option_key":"72e6449b-198e-48f7-9d9c-0d9ff814c3bc,e20673d8-e8c2-49c1-98a6-6f1aa99714af","product_id":"9351cd31-5da1-48d8-9185-48bfffdd1747","variant_id":"098a7402-9aa9-43c4-b151-b9823213021a","store_name_ar":"متجر الأناقة","store_name_en":"Elegance Store","price_piastres":8000,"leaf_category_id":"0bf3bcec-eb2f-4c48-a228-16591866de69","regular_price_piastres":10000}
+PASS [CART add/set/merge] merge: conflicting line caps at stock (red) — {"qty":3,"sku":"TEE-1793470172866-0","stock":3,"capped":false,"name_ar":"تيشيرت أحمد","name_en":"Ahmed Tee","on_sale":false,"slug_ar":"تيشيرت-أحمد","slug_en":"ahmed-tee","brand_id":"74434727-0076-4f14-a30f-1837792a5da4","vendor_id":"d470439f-93a5-4a78-b588-ba80675b2eb4","image_path":"u/47d43747-4571-49aa-a71a-350e661320f0/tee-main-1793470172866.png","option_key":"3c7d868c-8b92-42b8-be59-323fde86de0d,e20673d8-e8c2-49c1-98a6-6f1aa99714af","product_id":"9351cd31-5da1-48d8-9185-48bfffdd1747","variant_id":"2fa40834-e3fb-4cef-a0ab-b64ea5d3eae2","store_name_ar":"متجر الأناقة","store_name_en":"Elegance Store","price_piastres":10000,"leaf_category_id":"0bf3bcec-eb2f-4c48-a228-16591866de69","regular_price_piastres":10000}
+PASS [CART add/set/merge] merge: unavailable variant dropped with notice — [{"key":"capped","variant_id":"2fa40834-e3fb-4cef-a0ab-b64ea5d3eae2"},{"key":"unavailable","variant_id":"e751bf29-eb97-4200-b299-ac3267e43a9b"}]
+PASS [CART add/set/merge] fn_cart_get returns hydrated lines (name+price) — "تيشيرت أحمد"
+
+=== COUPON validation matrix ===
+PASS [COUPON validation matrix] exclude_sale drops the sale line, keeps the regular one (3,000) — {"ok":true,"coupon_id":"00fc9dc8-6b83-4bbc-94c3-d3c665b94a7b","free_shipping":false,"eligible_count":3,"discount_piastres":3000}
+PASS [COUPON validation matrix] branded line → 10% of 20,000 = 2,000 — {"ok":true,"coupon_id":"00fc9dc8-6b83-4bbc-94c3-d3c665b94a7b","free_shipping":false,"eligible_count":2,"discount_piastres":2000}
+PASS [COUPON validation matrix] min_subtotal enforced (1x10,000 ≥ 5,000 → ok? qty1=10,000 ≥ 5,000 ok) — {"ok":true,"coupon_id":"00fc9dc8-6b83-4bbc-94c3-d3c665b94a7b","free_shipping":false,"eligible_count":1,"discount_piastres":1000}
+PASS [COUPON validation matrix] min_subtotal rejects (3,000 < 5,000) — {"ok":false,"reason":"min_subtotal"}
+PASS [COUPON validation matrix] expired coupon rejected — {"ok":false,"reason":"expired"}
+PASS [COUPON validation matrix] unknown code rejected — {"ok":false,"reason":"invalid"}
+
+=== WISHLIST toggle + dedupe ===
+PASS [WISHLIST toggle + dedupe] first toggle adds — {"added":true}
+PASS [WISHLIST toggle + dedupe] exactly one row after add — count 1
+PASS [WISHLIST toggle + dedupe] duplicate (user,product) insert rejected by the unique PK — duplicate key value violates unique constraint "wishlist_items_pkey"
+PASS [WISHLIST toggle + dedupe] second toggle removes it — {"added":false}
+PASS [WISHLIST toggle + dedupe] wishlist row gone after toggle off — count 0
+PASS [WISHLIST toggle + dedupe] draft product cannot be wishlisted — product_unavailable
+
+=== RECENTLY VIEWED cap/dedupe/clear ===
+PASS [RECENTLY VIEWED cap/dedupe/clear] cap: only 3 distinct products (dedupe by user+product) — count 3
+PASS [RECENTLY VIEWED cap/dedupe/clear] hard cap: never more than 20 rows — rows 20
+PASS [RECENTLY VIEWED cap/dedupe/clear] newest first: last viewed product is row 1 — "6ccb5b09-6a5b-4889-a1d1-2ee77c6b6d01"
+PASS [RECENTLY VIEWED cap/dedupe/clear] hidden/draft product view not recorded — count 0
+PASS [RECENTLY VIEWED cap/dedupe/clear] clear history removes all rows — deleted 20
+
+=== PRODUCT PAGE DATA (variant integrity) ===
+PASS [PRODUCT PAGE DATA (variant integrity)] TV (no-variant) has 1 live variant — got 1
+PASS [PRODUCT PAGE DATA (variant integrity)] TV view exposes min price 2,500.00 EGP — 2500000
+PASS [PRODUCT PAGE DATA (variant integrity)] tee view: has_sale true with sale window — true
+PASS [PRODUCT PAGE DATA (variant integrity)] tee view: min price includes sale (8,000) — 8000
+PASS [PRODUCT PAGE DATA (variant integrity)] tee view: rating avg 4.7 (4,5,5 → 4.7) — 4.7
+PASS [PRODUCT PAGE DATA (variant integrity)] tee view: rating count 3
+PASS [PRODUCT PAGE DATA (variant integrity)] published reviews visible with author names — 3
+PASS [PRODUCT PAGE DATA (variant integrity)] red variants carry their own image (4 rows) — got 4
+
+=== STORE PAGE DATA ===
+PASS [STORE PAGE DATA] store view exposes public identity — "متجر الأناقة"
+PASS [STORE PAGE DATA] store view hides owner/phone fields
+PASS [STORE PAGE DATA] store product_count = 2 + 21 throwaway — got 23
+PASS [STORE PAGE DATA] refused vendor: EVERY product flagged refused + not listable — rows 23
+PASS [STORE PAGE DATA] store view carries the refusal notice fields — {"refused_event_id":"d604cfc7-283a-4907-8e94-9bffca0e6c0a","refused_event_name_ar":"عرض اختبار"}
+
+=== STATIC PAGES + CONTACT ===
+PASS [STATIC PAGES + CONTACT] 4 seeded static pages readable by anon — got 4
+PASS [STATIC PAGES + CONTACT] anon can insert a contact message — null
+PASS [STATIC PAGES + CONTACT] anon CANNOT read contact messages (RLS) — "permission denied for table contact_messages"
+
+=== BANNERS ===
+PASS [BANNERS] active banner readable by anon
+PASS [BANNERS] inactive banner hidden from anon — 0
+
+=== CLEANUP ===
+PASS [CLEANUP] DB pristine: 0 products, vendors, categories, brands — products 0, vendors 0, categories 0, brands 0

@@ -1,0 +1,312 @@
+{
+ "at": "2026-11-01T20:47:38.120Z",
+ "results": [
+  {
+   "name": "KO1a order created",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-001\",\"status\":\"pending_payment\",\"order_id\":\"7be57016-6fa0-4888-a8aa-8878c5bd9a4a\",\"payment_method\":\"kashier\"}"
+  },
+  {
+   "name": "KO1b vendor B snapshot of A order empty",
+   "ok": true,
+   "detail": "null"
+  },
+  {
+   "name": "KO1c vendor B direct-transition on A group forbidden",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "KO1d vendor B shipping-request on A group forbidden",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "KO1e group untouched by cross-vendor attempts",
+   "ok": true,
+   "detail": "not_required"
+  },
+  {
+   "name": "KO2a vendor B HTTP print of A invoice → 403",
+   "ok": true,
+   "detail": "403"
+  },
+  {
+   "name": "KO2b vendor B HTTP print of A label → 403",
+   "ok": true,
+   "detail": "403"
+  },
+  {
+   "name": "KO2c vendor B prints OWN invoice → 200",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "WS0 COD blocked for vendor-shipped cart",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"cod_vendor_ship\"}"
+  },
+  {
+   "name": "WS1 vendor-shipped order created on_hold",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-004\",\"status\":\"on_hold\",\"order_id\":\"6ce8a143-2e08-4ec9-8a80-911e46f9be73\",\"payment_method\":\"kashier\"}"
+  },
+  {
+   "name": "WS2 ship before approval rejected",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"awaiting_admin_approval\"}"
+  },
+  {
+   "name": "WS3 shipping request ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"duplicate\":true}"
+  },
+  {
+   "name": "WS3b duplicate shipping request idempotent",
+   "ok": true,
+   "detail": "{\"ok\":true,\"duplicate\":true}"
+  },
+  {
+   "name": "WS4 group on_hold + pending_admin",
+   "ok": true,
+   "detail": "{\"status\":\"on_hold\",\"vendor_ship_status\":\"pending_admin\"}"
+  },
+  {
+   "name": "WS5 reject ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "WS5b reject without reason invalid (state check strictness)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_pending\"}"
+  },
+  {
+   "name": "WS6 after reject: resumed + rejected",
+   "ok": true,
+   "detail": "{\"status\":\"preparing\",\"vendor_ship_status\":\"rejected\"}"
+  },
+  {
+   "name": "WS7 rejection posted NOTHING",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "WS8 vendor still cannot mark handed after REJECT (platform ships)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"vendor_ship_not_approved\"}"
+  },
+  {
+   "name": "WS9 order resumed after decision",
+   "ok": true,
+   "detail": "processing"
+  },
+  {
+   "name": "WA1 approve ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "WA1b second approve rejected (not_pending)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_pending\"}"
+  },
+  {
+   "name": "WA2 shipping_revenue posted once at share",
+   "ok": true,
+   "detail": "{\"amount_piastres\":5000}"
+  },
+  {
+   "name": "WA3 handed_to_carrier ok (pickup posted)",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "WA4 pickup = qty×rate (2×700=1400)",
+   "ok": true,
+   "detail": "{\"amount_piastres\":-1400}"
+  },
+  {
+   "name": "WA5 retry ship rejected (invalid_transition)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"to\":\"handed_to_carrier\",\"from\":\"handed_to_carrier\",\"reason\":\"invalid_transition\"}"
+  },
+  {
+   "name": "WA6 pickup single row (no double charge)",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "WA7 earning pending = 40000−4000=36000",
+   "ok": true,
+   "detail": "{\"amount_piastres\":36000}"
+  },
+  {
+   "name": "WA8 commission debit = −4000",
+   "ok": true,
+   "detail": "{\"amount_piastres\":-4000}"
+  },
+  {
+   "name": "WA9 wallet available = share − pickup − commission",
+   "ok": true,
+   "detail": "{\"available_piastres\":-400,\"pending_piastres\":36000}"
+  },
+  {
+   "name": "WA10 wallet pending = earning",
+   "ok": true,
+   "detail": "{\"available_piastres\":-400,\"pending_piastres\":36000}"
+  },
+  {
+   "name": "WA11 wallet view reconciles ledger",
+   "ok": true,
+   "detail": "{\"pending_piastres\":36000,\"available_piastres\":-400}"
+  },
+  {
+   "name": "WA12 release runs",
+   "ok": true,
+   "detail": "{\"ok\":true,\"released\":1}"
+  },
+  {
+   "name": "WA13 release moved pending→available once",
+   "ok": true,
+   "detail": "{\"available_piastres\":35600,\"pending_piastres\":0}"
+  },
+  {
+   "name": "WA14 second release no-op",
+   "ok": true,
+   "detail": "{\"ok\":true,\"released\":0}"
+  },
+  {
+   "name": "WD1 below-min blocked",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"below_min\",\"min_piastres\":5000}"
+  },
+  {
+   "name": "WD2 over-balance blocked (server)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"insufficient\",\"available_piastres\":35600}"
+  },
+  {
+   "name": "WD3 request ok",
+   "ok": true,
+   "detail": "{\"id\":\"ba74890c-3dbb-43e3-9dbd-4b03beade7fe\",\"ok\":true}"
+  },
+  {
+   "name": "WD4 second pending blocked",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"pending_exists\"}"
+  },
+  {
+   "name": "WD5 hold applied (available − 20000)",
+   "ok": true,
+   "detail": "{\"available_piastres\":15600}"
+  },
+  {
+   "name": "WD6 vendor cancel ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "WD7 double cancel rejected (not_pending)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_pending\"}"
+  },
+  {
+   "name": "WD8 hold restored once",
+   "ok": true,
+   "detail": "{\"available_piastres\":35600}"
+  },
+  {
+   "name": "WD9 admin approve ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "WD10 approve once (not_pending)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_pending\"}"
+  },
+  {
+   "name": "WD11 available reduced exactly once",
+   "ok": true,
+   "detail": "{\"available_piastres\":25600}"
+  },
+  {
+   "name": "WD12 balance went negative by design",
+   "ok": true,
+   "detail": "{\"available_piastres\":-474400}"
+  },
+  {
+   "name": "VF0 order without coupon ok",
+   "ok": true,
+   "detail": "ETS-26-006"
+  },
+  {
+   "name": "VF1 baseline cart consumed",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"empty_cart\"}"
+  },
+  {
+   "name": "VF2 commission-coupon order ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-007\",\"status\":\"pending_payment\",\"order_id\":\"b762390e-b655-445e-a49c-764f7bacc640\",\"payment_method\":\"kashier\"}"
+  },
+  {
+   "name": "VF3 discount = 30%×10%×item = 2400",
+   "ok": true,
+   "detail": "{\"subtotal_piastres\":80000,\"discount_piastres\":2400,\"total_piastres\":82600}"
+  },
+  {
+   "name": "VF4 item commission reduced to 5600 (platform net 7−2.4)",
+   "ok": true,
+   "detail": "{\"commission_piastres\":5600,\"coupon_discount_piastres\":2400,\"line_total_piastres\":80000}"
+  },
+  {
+   "name": "VF5 vendor keeps FULL item total (item coupon_discount only)",
+   "ok": true,
+   "detail": "{\"commission_piastres\":5600,\"coupon_discount_piastres\":2400,\"line_total_piastres\":80000}"
+  },
+  {
+   "name": "VF6 empty cart → fails",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"empty_cart\"}"
+  },
+  {
+   "name": "VF7 zero-commission → zero discount",
+   "ok": true,
+   "detail": "{\"discount_piastres\":0}"
+  },
+  {
+   "name": "VF8 stacked discount = 8000(product)+2160(commission)",
+   "ok": true,
+   "detail": "{\"discount_piastres\":10160}"
+  },
+  {
+   "name": "VF9 stacked: item keeps full vendor line, commission reduced from 7200 to 5040",
+   "ok": true,
+   "detail": "{\"coupon_discount_piastres\":10160,\"commission_piastres\":5040}"
+  },
+  {
+   "name": "PEN1 vendor reads own penalty (RLS)",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "PEN2 vendor B cannot read A penalties",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "RPT1 pickup total = 1400 (B has none)",
+   "ok": true,
+   "detail": "1400"
+  },
+  {
+   "name": "RPT2 wallet view level present",
+   "ok": true,
+   "detail": "{\"name_ar\":\"تاجر جديد\",\"name_en\":\"New vendor\",\"hold_days\":14,\"next_name_en\":null,\"next_min_orders\":null,\"commission_percent\":10,\"min_successful_orders\":0}"
+  }
+ ]
+}
+
+pristine: true {"orders":0,"products":0,"categories":0,"vendors":0,"coupons":0,"wallets":0,"wallet_transactions":0,"withdrawal_requests":0,"vendor_penalties":0,"cart_items":0,"reviews":0,"refund_requests":0}

@@ -1,0 +1,16 @@
+node_modules/
+build/
+.react-router/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+evidence/phase-0*/commit.txt
+
+# Owner ruling: no ZIP archives in the repository (phase-06 decree)
+evidence/*.zip
+*.zip
+
+# Supabase CLI scratch
+supabase/.temp/

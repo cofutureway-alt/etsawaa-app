@@ -1,0 +1,32 @@
+{
+ "at": "2026-11-01T20:17:51.659Z",
+ "pass": 1,
+ "fail": 0,
+ "blocked": 3,
+ "results": [
+  {
+   "id": "G1",
+   "name": "email live send (welcome + OTP + order confirmation)",
+   "status": "BLOCKED",
+   "detail": "RESEND_API_KEY غير مضبوط — أي إرسال من الواجهة يسجّل not_configured بصدق في email_logs (لا نجاح مزيف)"
+  },
+  {
+   "id": "G1b",
+   "name": "email templates seeded",
+   "status": "PASS",
+   "detail": "7 templates AR+EN"
+  },
+  {
+   "id": "G2",
+   "name": "kashier checkout + webhook",
+   "status": "BLOCKED",
+   "detail": "KASHIER_MERCHANT_ID/KASHIER_HMAC_SECRET غير مضبوطة — مسار الدفع (توقيع HMAC + webhook) مُختبر في p5 63/63 بـ sandbox، والحقيقي يحتاج حساب المالك"
+  },
+  {
+   "id": "G3",
+   "name": "google oauth round-trip",
+   "status": "BLOCKED",
+   "detail": "Supabase: 'provider is not enabled' — يجب تفعيل Google في لوحة Supabase (Client ID/Secret من Google Cloud)"
+  }
+ ]
+}

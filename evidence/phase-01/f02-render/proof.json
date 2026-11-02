@@ -1,0 +1,38 @@
+{
+ "command": "node --env-file=.env scripts/prove-f02-render.mjs",
+ "url": "http://localhost:3000/ar",
+ "selector": "aside .bg-action",
+ "what": "settings.design.action token flipped in DB only; page reloaded; element color must follow",
+ "note": "reload is a CDP hard reload (ignoreCache) — a plain reload was served from the browser cache",
+ "startedAt": "2026-10-30T18:11:41.665Z",
+ "appTreeSha256Before": "681922fcf7626d48d2ed762daf7976064a9358daf1a02f29efc8d5e4c9377907",
+ "dbBefore": {
+  "ink": "#510504",
+  "action": "#BE0404",
+  "primary": "#F30609",
+  "actionHover": "#8D0504"
+ },
+ "computedBefore": {
+  "backgroundColor": "rgb(190, 4, 4)"
+ },
+ "dbModified": {
+  "ink": "#510504",
+  "action": "#0B7A3E",
+  "primary": "#F30609",
+  "actionHover": "#8D0504"
+ },
+ "expectedAfterRgb": "rgb(11, 122, 62)",
+ "computedAfter": {
+  "backgroundColor": "rgb(11, 122, 62)"
+ },
+ "colorFollowed": true,
+ "changed": true,
+ "computedRestored": {
+  "backgroundColor": "rgb(190, 4, 4)"
+ },
+ "restored": true,
+ "appTreeSha256After": "681922fcf7626d48d2ed762daf7976064a9358daf1a02f29efc8d5e4c9377907",
+ "noCodeEdit": true,
+ "dbRestored": true,
+ "finishedAt": "2026-10-30T18:11:51.095Z"
+}

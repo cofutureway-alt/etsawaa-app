@@ -1,0 +1,21 @@
+{
+ "note": "below-fold widgets split into lazy chunks",
+ "lazyChunks": [
+  {
+   "f": "CartDrawer-oC47l1V2.js",
+   "kb": 4.9
+  },
+  {
+   "f": "CompareBar-Bhy-hMoq.js",
+   "kb": 1.8
+  },
+  {
+   "f": "ProductCard-CDlH-CIW.js",
+   "kb": 5.4
+  }
+ ],
+ "totals": {
+  "before_all_js_kb": 1319.8,
+  "after_all_js_kb": 1317.8000000000006
+ }
+}

@@ -1,0 +1,28 @@
+Etsawaa Phase 09 — staging data verification  2026-11-01T21:31:40.857Z
+Stable-column ordered pagination before range() on every paged fetch (no phantom duplicates).
+
+BATCHES (latest per dataset)
+  areas       batch_no=46   status=staged   staged=571    rejected=1  id=a41e5479-7dc7-42c7-85b9-79398da5e6d3
+  categories  batch_no=47   status=staged   staged=218    rejected=0  id=bcf91f68-a280-44e3-b8b3-d6e1b25f131c
+  specs       batch_no=48   status=staged   staged=1269   rejected=1  id=eb364645-bf98-482c-9cf9-e114108e9710
+  groups      batch_no=49   status=staged   staged=1000   rejected=0  id=bc700753-347f-4d46-8f15-e18eca0751b7
+  templates   batch_no=50   status=staged   staged=1354   rejected=0  id=7a9603ad-aac4-4136-8026-de7881d35723
+  shared      batch_no=51   status=staged   staged=32     rejected=2  id=f7152c3a-c83e-4824-b9eb-3e7ef0bcc791
+
+CHECKS (14)
+  PASS  cat levels (L1/L2/L3)    expected={"L1":10,"L2":38,"L3":170}  actual={"L1":10,"L2":38,"L3":170}
+  PASS  cat orphans (parent_key unresolved)  expected=0  actual=0
+  PASS  cat missing AR           expected=0  actual=0
+  PASS  types staged             expected=1354  actual=1354
+  PASS  type leaf_keys unresolved vs L3  expected=0  actual=0
+  PASS  types missing name_ar    expected=0  actual=0
+  PASS  templates (rows/exact/new_family/approved-exact/pending-new_family/zero-field)  expected={"rows":1354,"exact":955,"new_family":399,"exact_approved":955,"new_family_pending":399,"zero_field":0}  actual={"rows":1354,"exact":955,"new_family":399,"exact_approved":955,"new_family_pending":399,"zero_field":0}
+  PASS  specs staged (1270 - 1 Brand reject)  expected=1269  actual=1269
+  PASS  Brand rows in staging_specs  expected=0  actual=0
+  PASS  groups+links (rows/links/orphan_links/brand-spec-groups/zero-spec-groups)  expected={"rows":1000,"links":9409,"orphan_links":0,"brand_spec_groups":0,"zero_spec_groups":0}  actual={"rows":1000,"links":9409,"orphan_links":0,"brand_spec_groups":0,"zero_spec_groups":0}
+  PASS  areas (rows/distinct-govs/shipping-10000/pickup-2000)  expected={"rows":571,"distinct_gov_keys":27,"shipping_fee_wrong":0,"pickup_fee_wrong":0}  actual={"rows":571,"distinct_gov_keys":27,"shipping_fee_wrong":0,"pickup_fee_wrong":0}
+  PASS  duplicate area (gov_key,name_ar)  expected=0  actual=0
+  PASS  shared (rows/bad_type_keys/cat_keys_sum/unresolved_cat_keys)  expected={"rows":32,"bad_type_keys":0,"cat_keys_sum":190,"unresolved_cat_keys":0}  actual={"rows":32,"bad_type_keys":0,"cat_keys_sum":190,"unresolved_cat_keys":0}
+  PASS  rejects ledger (areas-dup-area/specs-brand)  expected={"duplicate_area_name_in_governorate":1,"brand_is_not_a_spec":1}  actual={"duplicate_area_name_in_governorate":1,"brand_is_not_a_spec":1}
+
+RESULT: ALL PASS (14/14)

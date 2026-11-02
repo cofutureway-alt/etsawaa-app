@@ -1,0 +1,121 @@
+{
+ "at": "2026-11-01T20:23:23.205Z",
+ "base": "http://localhost:3000",
+ "results": [
+  {
+   "name": "3-vendor job created (1+1+3)",
+   "ok": true,
+   "detail": "groups=3 pieces=1+1+3 order=ETS-26-001"
+  },
+  {
+   "name": "carrier label 200",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "Code128 structurally encoded (>40 bar subpaths)",
+   "ok": true,
+   "detail": "bars=53"
+  },
+  {
+   "name": "Code128 human-readable text = order number",
+   "ok": true,
+   "detail": "ETS-26-001"
+  },
+  {
+   "name": "carrier label embeds maps QR data-URL",
+   "ok": true,
+   "detail": "svgs=1"
+  },
+  {
+   "name": "carrier label shows recipient+phone",
+   "ok": true,
+   "detail": "carrier PII present by design"
+  },
+  {
+   "name": "vendor label C name-only (no customer PII, no coords)",
+   "ok": true,
+   "detail": "200 clean=true"
+  },
+  {
+   "name": "vendor label C shows own store name",
+   "ok": true,
+   "detail": "store name"
+  },
+  {
+   "name": "vendor invoice C 200 name-only",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "vendor label A name-only (no customer PII, no coords)",
+   "ok": true,
+   "detail": "200 clean=true"
+  },
+  {
+   "name": "vendor label A shows own store name",
+   "ok": true,
+   "detail": "store name"
+  },
+  {
+   "name": "vendor invoice A 200 name-only",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "vendor label B name-only (no customer PII, no coords)",
+   "ok": true,
+   "detail": "200 clean=true"
+  },
+  {
+   "name": "vendor label B shows own store name",
+   "ok": true,
+   "detail": "store name"
+  },
+  {
+   "name": "vendor invoice B 200 name-only",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "admin invoice 200",
+   "ok": true,
+   "detail": "200"
+  },
+  {
+   "name": "admin invoice shows full address+phone",
+   "ok": true,
+   "detail": "admin sees PII"
+  },
+  {
+   "name": "order detail (print center) captured at 4 widths",
+   "ok": true,
+   "detail": "390/768/1280/1440"
+  },
+  {
+   "name": "order cancelled",
+   "ok": true,
+   "detail": "cancelled"
+  },
+  {
+   "name": "cancelled watermark ملغي on invoice",
+   "ok": true,
+   "detail": "status=200"
+  },
+  {
+   "name": "every render logged an order_documents row",
+   "ok": true,
+   "detail": "rows=9"
+  }
+ ],
+ "pristine": true,
+ "counts": {
+  "orders": 0,
+  "products": 0,
+  "categories": 0,
+  "vendors": 0,
+  "cart_items": 0,
+  "user_addresses": 0,
+  "order_documents": 0
+ }
+}

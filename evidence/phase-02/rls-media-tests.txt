@@ -1,0 +1,28 @@
+{"fixture":{"adminId":"bd1bef6f-c943-4cec-9857-e1724e7dd03f","aId":"110c6634-ed3e-4272-83c7-a8f623b79229","bId":"c28b808a-6468-4db6-a24a-cf1bea5c0797","staffId":"60d6bb9a-bdc2-4a24-b0db-1eb380ca2715"}}
+{"test":"A.createFolder","expected":"ok","actual":"ok","pass":true}
+{"test":"B.cannotListAfolders","expected":"0 rows","actual":0,"pass":true}
+{"test":"A.uploadToMedia","expected":"ok","actual":"ok","pass":true}
+{"test":"A.insertMediaFileRow","expected":"ok","actual":"ok","pass":true}
+{"test":"B.cannotListAfiles","expected":"0 rows","actual":0,"pass":true}
+{"test":"B.directIdReadDenied","expected":"0 rows","actual":0,"pass":true}
+{"test":"media.publicUrl200","expected":200,"actual":200,"pass":true}
+{"test":"A.uploadToDocuments","expected":"ok","actual":"ok","pass":true}
+{"test":"documents.notPublic","expected":"403/400","actual":400,"pass":true}
+{"test":"documents.signedUrl200","expected":200,"actual":200,"pass":true}
+{"test":"documents.signedUrlExpires","expected":"400/403","actual":400,"pass":true}
+{"test":"customer.categoryWriteDenied","expected":"RLS error","actual":"denied","pass":true}
+{"test":"staff.categoryWriteDenied","expected":"RLS error","actual":"denied","pass":true}
+{"test":"admin.categoryWriteAllowed","expected":"ok","actual":"ok","pass":true}
+{"test":"anon.seesActiveOnly","expected":"hidden excluded","actual":"excluded","pass":true}
+{"test":"admin.seesInactiveRow","expected":"visible","actual":"visible","pass":true}
+{"test":"attribute.nonLeafBlocked","expected":"DB error","actual":"denied","pass":true}
+{"test":"attribute.textAxisBlocked","expected":"DB check error","actual":"denied","pass":true}
+{"test":"edge.applyConfig","expected":"admin ok","actual":"{\"media\":\"ok\",\"documents\":\"ok\"}","pass":true}
+{"test":"edge.nonAdminDenied","expected":403,"actual":403,"pass":true}
+{"test":"upload.disallowedMime","expected":"rejected","actual":"rejected (415)","pass":true}
+{"test":"upload.oversizedImage","expected":"rejected","actual":"rejected (413)","pass":true}
+{"test":"upload.videoOff","expected":"rejected","actual":"rejected","pass":true}
+{"test":"upload.pdfOff","expected":"rejected","actual":"rejected","pass":true}
+{"test":"upload.pdfOn","expected":"accepted","actual":"accepted","pass":true}
+{"cleanup":{"usersRemaining":0,"testCategoriesRemoved":true}}
+{"summary":{"total":25,"passed":25,"failed":0}}

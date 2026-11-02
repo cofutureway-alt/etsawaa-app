@@ -1,0 +1,48 @@
+
+> test
+> node --import tsx --test tests/phone.test.ts tests/permissions.test.ts tests/tokens.test.ts tests/i18n-keys.test.ts tests/auth-schemas.test.ts tests/otp-cooldown.test.ts tests/money.test.ts
+
+✔ register schema: happy path normalizes email and phone (6.5828ms)
+✔ register schema: rejects weak passwords, mismatch, missing terms (1.0751ms)
+✔ register schema: rejects non-Egyptian phones (0.5044ms)
+✔ login schema: routes identifier to email or normalized phone (1.6126ms)
+✔ otp schema: exactly six digits (0.7013ms)
+✔ reset schema enforces match + strength (0.7994ms)
+✔ passwordStrengthScore climbs with length, classes and symbols (0.3145ms)
+✔ ar and en dictionaries carry exactly the same key set (F-03 DoD) (6.3951ms)
+✔ no empty values in either dictionary (0.8371ms)
+✔ dictionaries contain no emoji (G3 code-level check) (0.6373ms)
+✔ interpolation placeholders appear in both languages (0.6343ms)
+✔ locale helpers (0.3217ms)
+✔ switchLocalePath keeps path, query and hash (US-01) (0.3141ms)
+✔ money is always integer piastres formatted as EGP (AGENT.md §7) (29.2629ms)
+✔ arabic formatting keeps digits convertible (tabular-nums handled in CSS) (3.3549ms)
+✔ resend cooldown counts down from 60s and never goes negative (0.9904ms)
+✔ cooldown formats as m:ss (design reference countdown style) (0.2118ms)
+✔ admin bypasses the permission matrix (1.2315ms)
+✔ staff is limited to their matrix (exact + wildcard) (0.2519ms)
+✔ vendor and customer never pass permission checks (0.2387ms)
+✔ panel access matrix matches AGENT.md §4 (0.2325ms)
+✔ isRole guards unknown values (0.2025ms)
+✔ normalizes Egyptian mobile formats to E.164 + local (1.5621ms)
+✔ rejects invalid numbers with the right reason (2.3109ms)
+✔ accepts all four Egyptian mobile prefixes only (0.5873ms)
+✔ local form keeps the 01 leading zero (0.33ms)
+✔ maskPhone hides the middle digits (0.329ms)
+✔ looksLikeEmail distinguishes emails from phones (0.2779ms)
+✔ default brand tokens match the official palette (1.8597ms)
+✔ action red passes WCAG AA for normal text on white (G3) (0.367ms)
+✔ brand primary is reserved for accents (documented 3:1 non-text) (0.1635ms)
+✔ semantic text colors pass AA on white (0.1813ms)
+✔ isHexColor validates strict #RRGGBB only (0.2894ms)
+✔ parseDesignTokens keeps valid overrides and drops invalid ones (0.2281ms)
+✔ tokensToCss emits the :root override block for SSR injection (0.2354ms)
+✔ contrastRatio is symmetric and bounded (0.1772ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1984.2495

@@ -1,0 +1,38 @@
+== npm run typecheck
+
+> typecheck
+> react-router typegen && tsc
+
+(exit 0 — clean)
+
+== npx oxlint app scripts tests
+
+  ! eslint(no-unused-vars): Variable 'rootB' is declared but never used. Unused variables should start with a '_'.
+     ,-[scripts/closing-screenshots.mjs:160:17]
+ 159 |   const { data: rootA } = await admin.from("categories").insert({ slug_ar: `dr-a-${stamp}`, slug_en: `dr-a-${stamp}`, name_ar: "إلكترونيات", name_en: "Electronics" }).select("id").single();
+ 160 |   const { data: rootB } = await admin.from("categories").insert({ slug_ar: `dr-b-${stamp}`, slug_en: `dr-b-${stamp}`, name_ar: "أثاث", name_en: "Furniture" }).select("id").single();
+     :                 ^^|^^
+     :                   `-- 'rootB' is declared here
+ 161 |   const { data: mover } = await admin.from("categories").insert({ slug_ar: `dr-m-${stamp}`, slug_en: `dr-m-${stamp}`, name_ar: "سماعات", name_en: "Headphones" }).select("id,path").single();
+     `----
+  help: Consider removing this declaration.
+
+Found 1 warning and 0 errors.
+Finished in 878ms on 105 files with 96 rules using 4 threads.
+
+== npm test
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1394.34
+
+== npm run build
+
+[32m✓ built in 1.34s[39m
+
+== node scripts/scan-design.mjs
+RESULT: PASS — no design-rule violations found

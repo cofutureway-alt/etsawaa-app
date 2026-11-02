@@ -1,0 +1,616 @@
+{
+  "total": 101,
+  "hfCount": 86,
+  "missingCount": 0,
+  "wronglyCount": 0,
+  "missing": [],
+  "wronglyHas": [],
+  "rows": [
+    {
+      "f": "app/routes/account/addresses.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/notifications.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/order-detail.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/orders.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/overview.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/profile.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/recent.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/return-new.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/returns.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/reviews.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/account/wishlist.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/ads.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/banners.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/blog.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/catalog/attributes.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/catalog/brands.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/catalog/categories.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/catalog/tags.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/coupons.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/customers.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/dashboard.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/data-import.templates.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/data-import.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/document-settings.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/email-templates.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/events.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/levels.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/logs.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/media-settings.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/media.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/order-detail.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/orders.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/pages.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/penalties.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/products.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/profile.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/refunds.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/reports.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/reviews.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/roles.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/sections.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/settings.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/shipping.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/users.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/vendors.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/vendors_.$id.edit.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/withdrawals.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/admin/zones.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/api/admin-import-rejects.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/areas.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/media.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/notifications.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/order-status.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/recent.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/reorder.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/search-suggest.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/webhooks/kashier.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/api/wishlist-default-variant.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/auth/complete.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/auth/forgot.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/auth/google-callback.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/auth/login.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/auth/logout.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/auth/register.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/auth/verify.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/blog.$slug.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/blog.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/brand.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/brands.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/cart.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/category.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/checkout.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/compare.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/contact.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/home.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/order-print.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/order-track.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/order.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/product.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/products.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/robots[.txt].ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/root-redirect.ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/rss[.xml].ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/search.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/sell.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/sitemap[.xml].ts",
+      "hasLoader": true,
+      "hasHF": false,
+      "isRes": true
+    },
+    {
+      "f": "app/routes/static-page.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/store.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/ui-preview.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/dashboard.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/media.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/onboarding.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/orders.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/penalties.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/product-wizard.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/products.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/profile.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/reports.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/store.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendor/wallet.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    },
+    {
+      "f": "app/routes/vendors.tsx",
+      "hasLoader": true,
+      "hasHF": true,
+      "isRes": false
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+ "at": "2026-10-31T23:06:40.431Z",
+ "runs": [
+  {
+   "label": "checkout-gate",
+   "url": "http://localhost:3000/ar/checkout",
+   "runs": [
+    {
+     "score": 100,
+     "lcpMs": 768,
+     "tbtMs": 0,
+     "cls": 0,
+     "fcpMs": 768
+    },
+    {
+     "score": 100,
+     "lcpMs": 769,
+     "tbtMs": 36,
+     "cls": 0,
+     "fcpMs": 769
+    },
+    {
+     "score": 100,
+     "lcpMs": 765,
+     "tbtMs": 76,
+     "cls": 0,
+     "fcpMs": 765
+    }
+   ],
+   "medians": {
+    "score": 100,
+    "lcpMs": 768,
+    "tbtMs": 36,
+    "cls": 0,
+    "fcpMs": 768
+   }
+  }
+ ]
+}

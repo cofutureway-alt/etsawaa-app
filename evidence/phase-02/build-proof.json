@@ -1,0 +1,18 @@
+{
+ "generatedAt": "2026-10-30T23:54:38.180Z",
+ "what": "P2-4 — tagged tree == audited build (ONE SHA)",
+ "tag": "phase-02",
+ "appPublicConfigTreeSha256": "3de22e51149d4e63971a185f98490dc69168528fd5efe27d8a646435a18e1407",
+ "fileCount": 109,
+ "build": {
+  "serverEntrySha256": "844022c5eac4620fd978076d7ac77101ac31fd1df3027a574a7684c104d214d5",
+  "clientAssetCount": 59,
+  "builtAt": "2026-10-30T23:54:05.421Z"
+ },
+ "env": {
+  "gitignored": true,
+  "tracked": "only .env.example"
+ },
+ "note": "Verify: git checkout phase-02 && npm ci && npm run build && sha256sum build/server/index.js",
+ "whoami": "tag phase-02 -> git rev-list -1 phase-02 (quoted in REPORT.md and the reply)"
+}

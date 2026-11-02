@@ -1,0 +1,357 @@
+{
+ "at": "2026-11-01T17:06:39.421Z",
+ "results": [
+  {
+   "name": "PM1 staff settings.write denied (RPC)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "PM2 staff wallet adjust denied",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "PM3 staff ban vendor denied",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "PM4 staff roles.write denied",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "PM5 staff audit read denied (RLS)",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "PM6 staff refund decide denied",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"forbidden\"}"
+  },
+  {
+   "name": "PM7 admin route gated (HTTP)",
+   "ok": true,
+   "detail": "302"
+  },
+  {
+   "name": "WD1 vendor withdrawal request ok",
+   "ok": true,
+   "detail": "{\"id\":\"35c15709-5370-4604-b70d-bf00d8615feb\",\"ok\":true}"
+  },
+  {
+   "name": "WD2 admin approve ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "WD3 approve moves money exactly once (hold already taken)",
+   "ok": true,
+   "detail": "20000→20000"
+  },
+  {
+   "name": "WD4 second approve → not_pending",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_pending\"}"
+  },
+  {
+   "name": "WD5 approved stamped reviewer+paid_at",
+   "ok": true,
+   "detail": "{\"status\":\"approved\",\"reviewed_by\":\"dbba7fa4-a495-4a83-aa2c-68e3dcc466ef\",\"paid_at\":\"2026-11-01T17:06:28.061757+00:00\"}"
+  },
+  {
+   "name": "RF1 decide ok + totals",
+   "ok": true,
+   "detail": "{\"ok\":true,\"clawback_total\":20000,\"refunded_total\":20000}"
+  },
+  {
+   "name": "RF2 clawback debited wallet (−20000)",
+   "ok": true,
+   "detail": "20000→0"
+  },
+  {
+   "name": "RF3 vendor fault posts an automatic penalty row",
+   "ok": true,
+   "detail": "0→1"
+  },
+  {
+   "name": "RF4 clawback transaction recorded once",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "RF5 restock applied",
+   "ok": true,
+   "detail": "5"
+  },
+  {
+   "name": "RF6 shipping-fault decide ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"clawback_total\":0,\"refunded_total\":5000}"
+  },
+  {
+   "name": "RF7 shipping fault → no vendor charge",
+   "ok": true,
+   "detail": "0→0"
+  },
+  {
+   "name": "RF8 decided request cannot be re-decided",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"not_pending\"}"
+  },
+  {
+   "name": "EV0 product listable before refusal",
+   "ok": true,
+   "detail": "{\"id\":\"cf536edc-cfaf-4124-933f-059ae0d3cac9\",\"is_listable\":true}"
+  },
+  {
+   "name": "EV1 refuse recorded",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "EV2 refusal removes product from public listings (is_listable=false)",
+   "ok": true,
+   "detail": "{\"id\":\"cf536edc-cfaf-4124-933f-059ae0d3cac9\",\"is_listable\":false}"
+  },
+  {
+   "name": "EV3 accept restores visibility",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "EV4 products return after acceptance",
+   "ok": true,
+   "detail": "{\"id\":\"cf536edc-cfaf-4124-933f-059ae0d3cac9\",\"is_listable\":true}"
+  },
+  {
+   "name": "AD1 grant ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"campaign_id\":\"7b3d2b65-5bc9-44e7-9402-d7c4a3664f73\"}"
+  },
+  {
+   "name": "AD2 campaign active with source=admin_grant",
+   "ok": true,
+   "detail": "{\"source\":\"admin_grant\",\"status\":\"active\",\"ends_at\":\"2026-11-04T17:06:31.997727+00:00\"}"
+  },
+  {
+   "name": "AD3 no payment transaction for a grant",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "CP1 commission coupon order ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-002\",\"status\":\"pending_payment\",\"order_id\":\"ff1d8f0c-7ffa-4559-ac5f-4ad465cd24e9\",\"payment_method\":\"kashier\"}"
+  },
+  {
+   "name": "CP2 discount = 30%×10%×80000 = 2400",
+   "ok": true,
+   "detail": "{\"discount_piastres\":2400}"
+  },
+  {
+   "name": "CP3 vendor keeps full line, commission 5600",
+   "ok": true,
+   "detail": "{\"commission_piastres\":5600,\"line_total_piastres\":80000}"
+  },
+  {
+   "name": "ZN0 referenced area exists",
+   "ok": true,
+   "detail": "{\"id\":32,\"is_active\":true}"
+  },
+  {
+   "name": "ZN1 import creates 1",
+   "ok": true,
+   "detail": "{\"ok\":true,\"errors\":[],\"created\":1,\"updated\":0}"
+  },
+  {
+   "name": "ZN2 re-import idempotent (0 created, 1 updated)",
+   "ok": true,
+   "detail": "{\"ok\":true,\"errors\":[],\"created\":0,\"updated\":1}"
+  },
+  {
+   "name": "ZN3 unknown governorate row rejected, listed",
+   "ok": true,
+   "detail": "{\"ok\":true,\"errors\":[{\"row\":{\"name_ar\":\"x\",\"governorate_id\":\"999\"},\"error\":\"unknown_governorate\"}],\"created\":0,\"updated\":0}"
+  },
+  {
+   "name": "ZN4 zone change audited",
+   "ok": true,
+   "detail": "null"
+  },
+  {
+   "name": "DOC1 settings save ok (audited)",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "DOC2 next print reads new watermark",
+   "ok": true,
+   "detail": "{\"show_commission\":false,\"copies_label_vendor\":1,\"watermark_cancelled\":\"ملغي P7\",\"copies_invoice_admin\":1,\"copies_label_carrier\":2,\"copies_invoice_vendor\":1}"
+  },
+  {
+   "name": "PRT0 2-vendor order ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"number\":\"ETS-26-003\",\"status\":\"pending_payment\",\"order_id\":\"8abe3410-dfe0-45b0-b824-707a50f0d854\",\"payment_method\":\"kashier\"}"
+  },
+  {
+   "name": "PRT1 order page responds",
+   "ok": true,
+   "detail": "302"
+  },
+  {
+   "name": "PRT2 order_documents table reachable",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "XX1 set_commission ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "XX2 apply_penalty ok",
+   "ok": true,
+   "detail": "{\"ok\":true,\"penalty_id\":\"4ae1016c-be5b-4966-9626-f8ed284c7109\"}"
+  },
+  {
+   "name": "XX3 hide_listings ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "XX4 unhide ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "XX5 wallet adjust ok (+777)",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "XX6 adjust transaction on ledger",
+   "ok": true,
+   "detail": "[{\"amount_piastres\":777}]"
+  },
+  {
+   "name": "ET1 list returns every template",
+   "ok": true,
+   "detail": "count=7"
+  },
+  {
+   "name": "ET2 list carries subject/body/locales/variables/version",
+   "ok": true,
+   "detail": "\"order_cancelled\""
+  },
+  {
+   "name": "ET3 variables declared per template",
+   "ok": true,
+   "detail": "[\"name\",\"site_name\",\"site_url\"]"
+  },
+  {
+   "name": "ET4 empty subject blocked (server)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"empty_subject\"}"
+  },
+  {
+   "name": "ET5 empty body blocked (server)",
+   "ok": true,
+   "detail": "{\"ok\":false,\"reason\":\"empty_body\"}"
+  },
+  {
+   "name": "ET6 unknown variable blocked with its name",
+   "ok": true,
+   "detail": "{\"ok\":false,\"detail\":\"nope\",\"reason\":\"unknown_variables\"}"
+  },
+  {
+   "name": "ET7 valid save bumps version",
+   "ok": true,
+   "detail": "1→2"
+  },
+  {
+   "name": "ET8 save is audited (before/after)",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "ET9 test-send attempt logged",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "ET10 email_logs row says not_configured (no fake success)",
+   "ok": true,
+   "detail": "[{\"status\":\"not_configured\",\"template\":\"welcome\",\"to_email\":\"p7-mail-1793552780225@etsawaa-e2e.com\"}]"
+  },
+  {
+   "name": "ET11 provider state is truthful for this env",
+   "ok": true,
+   "detail": "resendSet=false"
+  },
+  {
+   "name": "AU vendor.commission.set",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "AU refund.decided",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "AU penalty.applied",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "AU event.vendor.refused",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "AU ad.granted",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "AU settings.saved",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "AU vendor.listings.hidden",
+   "ok": true,
+   "detail": "settings.update,vendors.update,vendor.commission.set,vendors.insert,vendor.onboard,areas.imported,wallet.adjusted,email_template.saved,vendor.review,product.create,refund.decided,product.submit,product.review,event.vendor.refused,settings.saved,penalty.applied,variants.generate,area.disabled,vendor."
+  },
+  {
+   "name": "BL1 duplicate slug blocked",
+   "ok": true,
+   "detail": "\"23505\""
+  },
+  {
+   "name": "BL2 draft never public (service read aside, RLS policy gates anon)",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "SP0 baseline static page present",
+   "ok": true,
+   "detail": "{\"id\":\"d2c889e6-4cb5-47f0-b095-a3ef83b9b4f6\",\"slug_en\":\"about\",\"is_active\":true}"
+  },
+  {
+   "name": "LV1 manual promote ok",
+   "ok": true,
+   "detail": "{\"ok\":true}"
+  },
+  {
+   "name": "LV2 history row written",
+   "ok": true,
+   "detail": "1"
+  }
+ ]
+}
+
+pristine: true {"orders":0,"products":0,"categories":0,"vendors":0,"coupons":0,"wallets":0,"wallet_transactions":0,"withdrawal_requests":0,"vendor_penalties":0,"cart_items":0,"reviews":0,"refund_requests":0,"ad_packages":0,"ad_campaigns":0,"blog_posts":0,"penalty_rules":0,"event_vendors":0}

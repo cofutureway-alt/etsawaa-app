@@ -1,0 +1,59 @@
+{
+ "at": "2026-11-01T18:23:17.099Z",
+ "results": [
+  {
+   "name": "rls.enabled-on-all-tables (63 tables)",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "all tables have rowsecurity=on"
+  },
+  {
+   "name": "rls.every-rls-table-has-a-policy",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "every table has ≥1 policy"
+  },
+  {
+   "name": "rls.write-policies-carry-with-check",
+   "ok": false,
+   "severity": "WARN",
+   "detail": "cart_items.cart_delete_own(DELETE); products.products_delete_own(DELETE); recently_viewed.recent_delete_own(DELETE); reviews.reviews_buyer_delete(DELETE); settings.settings_delete_permissioned(DELETE); vendors.vendors_delete_own_draft(DELETE); wishlist_items.wishlist_delete_own(DELETE)"
+  },
+  {
+   "name": "rls.no-anon-grant-on-sensitive-tables",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "anon has no grants on any sensitive table"
+  },
+  {
+   "name": "rls.force-rls-on-ledger-and-audit",
+   "ok": true,
+   "severity": "WARN",
+   "detail": "forced everywhere"
+  },
+  {
+   "name": "cross-tenant.vendor-b-sees-no-wallet-tx-of-a",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "rows=0"
+  },
+  {
+   "name": "cross-tenant.vendor-b-sees-no-penalties-of-others",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "rows=0"
+  },
+  {
+   "name": "cross-tenant.vendor-snapshot-foreign-order-empty",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "null"
+  },
+  {
+   "name": "cross-tenant.vendor-b-sees-no-media-folders-of-a",
+   "ok": true,
+   "severity": "CRITICAL",
+   "detail": "rows=0"
+  }
+ ]
+}

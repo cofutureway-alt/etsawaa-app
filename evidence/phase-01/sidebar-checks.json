@@ -1,0 +1,104 @@
+{
+ "generatedAt": "2026-10-30T09:12:17.355Z",
+ "panels": {
+  "admin": {
+   "email": "panel-admin-1793351537490@etsawaa-e2e.com",
+   "widths": {
+    "320": {
+     "overflow": 0,
+     "asideW": 0,
+     "logo": "0x0",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 6
+    },
+    "390": {
+     "overflow": 0,
+     "asideW": 0,
+     "logo": "0x0",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 6
+    },
+    "768": {
+     "overflow": 0,
+     "asideW": 0,
+     "logo": "0x0",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 6
+    },
+    "1024": {
+     "overflow": 0,
+     "asideW": 240,
+     "logo": "81x36",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 6
+    },
+    "1440": {
+     "overflow": 0,
+     "asideW": 240,
+     "logo": "81x36",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 6
+    }
+   }
+  },
+  "vendor": {
+   "email": "panel-vendor-1793351537490@etsawaa-e2e.com",
+   "widths": {
+    "320": {
+     "overflow": 0,
+     "asideW": 0,
+     "logo": "0x0",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 4
+    },
+    "390": {
+     "overflow": 0,
+     "asideW": 0,
+     "logo": "0x0",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 4
+    },
+    "768": {
+     "overflow": 0,
+     "asideW": 0,
+     "logo": "0x0",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 4
+    },
+    "1024": {
+     "overflow": 0,
+     "asideW": 240,
+     "logo": "81x36",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 4
+    },
+    "1440": {
+     "overflow": 0,
+     "asideW": 240,
+     "logo": "81x36",
+     "gapRightOfAside": 0,
+     "hamburger": true,
+     "navLinks": 4
+    }
+   }
+  }
+ },
+ "drawer": {
+  "open": true,
+  "width": 384,
+  "links": 4,
+  "headerLogo": "81x36",
+  "headerBg": "rgb(81, 5, 4)",
+  "headerH": 64
+ },
+ "usersRemaining": 0
+}

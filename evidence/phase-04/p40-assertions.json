@@ -1,0 +1,133 @@
+{
+ "at": "2026-10-31T18:06:52.859Z",
+ "assertionLog": [
+  {
+   "name": "home-ar",
+   "width": 390,
+   "clientWidth": 390,
+   "scrollWidth": 390,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-ar",
+   "width": 768,
+   "clientWidth": 768,
+   "scrollWidth": 768,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-ar",
+   "width": 1280,
+   "clientWidth": 1280,
+   "scrollWidth": 1280,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-ar",
+   "width": 1440,
+   "containerW": 1200,
+   "ok": true
+  },
+  {
+   "name": "home-ar",
+   "width": 1440,
+   "clientWidth": 1440,
+   "scrollWidth": 1440,
+   "containerW": 1200,
+   "ok": true
+  },
+  {
+   "name": "home-ar-empty-recent",
+   "width": 390,
+   "clientWidth": 390,
+   "scrollWidth": 390,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-ar-empty-recent",
+   "width": 768,
+   "clientWidth": 768,
+   "scrollWidth": 768,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-ar-empty-recent",
+   "width": 1280,
+   "clientWidth": 1280,
+   "scrollWidth": 1280,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-ar-empty-recent",
+   "width": 1440,
+   "containerW": 1200,
+   "ok": true
+  },
+  {
+   "name": "home-ar-empty-recent",
+   "width": 1440,
+   "clientWidth": 1440,
+   "scrollWidth": 1440,
+   "containerW": 1200,
+   "ok": true
+  },
+  {
+   "name": "home-en",
+   "width": 390,
+   "clientWidth": 390,
+   "scrollWidth": 390,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-en",
+   "width": 768,
+   "clientWidth": 768,
+   "scrollWidth": 768,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-en",
+   "width": 1280,
+   "clientWidth": 1280,
+   "scrollWidth": 1280,
+   "containerW": null,
+   "ok": true
+  },
+  {
+   "name": "home-en",
+   "width": 1440,
+   "containerW": 1200,
+   "ok": true
+  },
+  {
+   "name": "home-en",
+   "width": 1440,
+   "clientWidth": 1440,
+   "scrollWidth": 1440,
+   "containerW": 1200,
+   "ok": true
+  }
+ ],
+ "emptyBlock": {
+  "mainBottom": 2489,
+  "footerTop": 2513,
+  "gapPx": 24
+ },
+ "lcpElement": {
+  "tag": "IMG",
+  "src": "http://localhost:3000/api/media?path=u%2Fc0347ba0-a2d8-4a9f-a1d9-7c580f54f513%2Fbanner-1793469984349.png",
+  "w": 1280,
+  "h": 432,
+  "renderedW": 908,
+  "bytes": 278245,
+  "ms": 384
+ }
+}

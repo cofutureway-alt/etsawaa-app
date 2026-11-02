@@ -1,0 +1,95 @@
+
+===== FIXTURES =====
+PASS — fixtures ready (4 users, 2 leaf templates) :: cbf6fe14-50be-40f6-bca5-da222c610404
+
+===== V-01 signup/one-store-per-user =====
+PASS — duplicate email signup never completes (no confirmed identities) :: identities=0
+PASS — no extra auth user created by duplicate signup
+PASS — vendor B cannot create a store owned by another user :: new row violates row-level security policy for table "vendors"
+
+===== V-02 onboarding + autosave + resume =====
+PASS — V-02 autosave creates draft
+PASS — draft survives re-login with exact values :: {"store_name_ar":"متجر أ","store_name_en":"Store A","onboarding_step":2,"status":"draft"}
+PASS — V-01 vendor A onboarding → pending :: {"slug":"store","status":"pending","vendor_id":"1e903024-a118-458e-b51f-16916743d0d0","grace_until":"2026-11-07T01:49:13.570824+00:00"}
+PASS — V-01 vendor B onboarding → pending :: {"slug":"store-1","status":"pending","vendor_id":"e2472c74-1e74-4186-b459-22049504f327","grace_until":"2026-11-07T01:49:13.662508+00:00"}
+PASS — V-01 vendor C onboarding → pending :: {"slug":"store-2","status":"pending","vendor_id":"5821ab06-b31d-4080-af75-ff9725d97309","grace_until":"2026-11-07T01:49:13.760787+00:00"}
+PASS — one store per user (resubmit updates, never duplicates)
+PASS — exactly 3 vendor rows for 3 vendors :: count=3
+PASS — onboarding promoted customer → vendor :: vendor
+PASS — V-04 area∉governorate rejected server-side :: store name (ar+en) is required
+PASS — V-08 terms+signature mandatory :: store name (ar+en) is required
+PASS — admin approves vendors A/B/C → active
+PASS — grace clock started on submit (unverified + future) :: {"grace_until":"2026-11-07T01:49:13.570824+00:00","verification_status":"unverified","status":"active"}
+PASS — vendor rejection reason mandatory :: vendor is not awaiting review (status active)
+PASS — rejected-review without reason left vendor untouched :: active
+
+===== V-11..V-15 products + variant cartesian =====
+PASS — V-12 t-shirt draft saved
+PASS — V-14 forbidden value (option from another attribute) rejected :: value for color must come from the admin options
+PASS — vendors cannot write attribute values directly (grant revoked) :: permission denied for table product_attribute_values
+PASS — V-15 3×4 cartesian generated = 12 rows :: {"removed":0,"skipped":[],"inserted":12}
+PASS — 12 live rows with distinct option_keys :: rows=12
+PASS — V-16 12 rows saved with unique SKUs :: {"saved":12}
+PASS — duplicate SKU in one save blocked :: duplicate SKU TEE-DUP in this save
+PASS — SKU colliding with an existing live row blocked :: duplicate key value violates unique constraint "variants_sku
+PASS — desired-set diff tombstones removed combos (4 removed) :: {"removed":4,"skipped":[],"inserted":0}
+PASS — deleted combos NOT recreated (skipped=4) :: {"removed":0,"skipped":["11f58fee-c57b-4812-8a00-402c84150aa3,e93d68c9-42f9-48e0-863c-dc5391833daf","11f58fee-c57b-4812-8a00-402c84150aa3,83165277-ee97-4300-aa28-17fe3d86610e","11f58fee-c57b-4812-8a00-402c84150aa3,c0a18371-3514-4ba4-9a59-18dbb3c238ca","11f58fee-c57b-4812-8a00-402c84150aa3,ac24af9c-7ee6-4ad1-9c05-5213ed1671ee"],"inserted":0}
+PASS — explicit restore revives a tombstoned combo :: 1
+PASS — full 12 live rows resaved :: {"saved":9}
+PASS — V-17 t-shirt submit → pending :: {"status":"pending"}
+
+===== V-20 no-variant TV + rejected resubmit =====
+PASS — TV draft saved
+PASS — V-20 no-axes → exactly one plain variant :: {"removed":0,"skipped":[],"inserted":1}
+PASS — plain variant has empty option_key :: {"id":"8eb3f09b-f895-4e72-a7b3-2f613df92139","option_key":""}
+PASS — TV submit → pending (single row) :: {"status":"pending"}
+PASS — V-19 product rejection reason mandatory :: a rejection reason is mandatory
+PASS — V-19 admin rejects with reason :: {"status":"rejected"}
+PASS — vendor sees the rejection reason :: {"status":"rejected","rejection_reason":"الصورة غير مطابقة للمنتج"}
+PASS — rejected product resubmits → pending :: {"status":"pending"}
+PASS — V-19 approve publishes both products :: {"status":"approved"}
+
+===== V-06 grace expiry blocks selling (API level) =====
+PASS — grace-active vendor CAN submit :: {"status":"pending"}
+PASS — grace-active vendor's product can be approved
+PASS — fn_expire_grace flipped 1 vendor :: 1
+PASS — vendor C → grace_expired :: grace_expired
+PASS — expired grace blocks publish at API level :: selling is blocked for this store (active / grace_expired)
+PASS — grace-expired vendor product hidden from public :: count=0
+PASS — verified-flow vendor product visible to public :: count=1
+PASS — grace-expired variants hidden from public :: rows=0 err=null
+PASS — admin verification → verified :: {"verification_status":"verified"}
+PASS — after verification the vendor can publish again :: {"status":"pending"}
+
+===== G2 RLS isolation (vendor A vs B, direct-ID) =====
+PASS — A cannot read B's vendor row :: 0 rows
+PASS — A cannot read B's product by ID :: 0 rows
+PASS — A cannot read B's variants :: 0 rows
+PASS — A cannot read B's attribute values :: 0 rows
+PASS — A cannot read B's product media :: 0 rows
+PASS — A cannot update B's product (0 rows / error) :: updated=0
+PASS — A cannot list B's DRAFT products by vendor_id (approved ones are public) :: count=0 err=none
+PASS — A sees own products :: count=1
+
+===== G2 documents privacy (private bucket + signed URLs) =====
+PASS — vendor A uploads KYC doc to private bucket
+PASS — vendor_documents row inserted (owner)
+PASS — B cannot read A's document metadata :: 0 rows
+PASS — anon direct GET on private object denied :: HTTP 400
+PASS — B cannot sign A's object :: Object not found
+PASS — owner signs their own document
+PASS — admin-only review RPC blocked for vendor :: not allowed: reviewer permission required
+PASS — admin-only verify RPC blocked for vendor :: not allowed: verifier permission required
+PASS — fn_vendor_config denied for anon :: permission denied for function fn_vendor_config
+PASS — V-18 clone creates draft (copy) :: {"id":"b63843bc-b6b0-4632-9ee9-fc53aad14c64","name_en":"Cotton T-Shirt (copy)","drifted_attributes":[]}
+PASS — clone named (copy) + status draft :: {"name_en":"Cotton T-Shirt (copy)","name_ar":"تيشيرت قطن (نسخة)","status":"draft"}
+PASS — clone got unique SKU suffixes :: [{"sku":"TEE-1793411348966-4-C1"},{"sku":"TEE-1793411348966-0-C1"}]
+PASS — V-18 archive hides product from list :: count=0
+
+===== publish rules follow settings =====
+PASS — review-off setting → submit publishes directly :: {"status":"approved"}
+
+===== CLEANUP =====
+PASS — DB pristine after cleanup :: vendors=0 products=0
+
+===== SUMMARY: 73/73 passed, 0 failed =====

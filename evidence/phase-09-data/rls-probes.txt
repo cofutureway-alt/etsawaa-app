@@ -1,0 +1,13 @@
+specimen categories batch: e1d511af-76b3-476f-839d-4b9915317db5
+admin login: ok
+vendor login: ok
+PASS  admin SELECT staging_categories (3)
+PASS  admin SELECT import_batches (3)
+PASS  vendor SELECT staging_categories → 0 (0)
+PASS  vendor SELECT import_batches → 0
+PASS  vendor SELECT staging_templates → 0
+PASS  anon SELECT staging_categories → 0
+PASS  vendor INSERT staging_specs → denied (new row violates row-level security poli)
+PASS  vendor RPC review → forbidden_admin_only
+PASS  anon RPC publish → permission denied / forbidden
+ALL RLS PROBES PASS (9/9)

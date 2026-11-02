@@ -1,0 +1,244 @@
+{
+ "generatedAt": "2026-10-31T18:05:05.176Z",
+ "meta": [
+  {
+   "label": "home",
+   "url": "/ar",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "home-en",
+   "url": "/en",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "listing",
+   "url": "/ar/products",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "search",
+   "url": "/ar/search?q=شاشة",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "vendors",
+   "url": "/ar/vendors",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "brands",
+   "url": "/ar/brands",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "cart",
+   "url": "/ar/cart",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "sell",
+   "url": "/ar/sell",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "contact",
+   "url": "/ar/contact",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "static",
+   "url": "/ar/p/about",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "compare",
+   "url": "/ar/compare",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "product",
+   "url": "http://localhost:3000/ar/product/%D8%B4%D8%A7%D8%B4%D8%A9-%D8%A3%D8%AF%D8%A7%D8%A1-55",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "category",
+   "url": "http://localhost:3000/ar/category/%D8%B4%D8%A7%D8%B4%D8%A7%D8%AA-1793469905176",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  },
+  {
+   "label": "store",
+   "url": "http://localhost:3000/ar/store/store",
+   "status": 200,
+   "title": true,
+   "description": true,
+   "canonical": true,
+   "hreflang": true,
+   "og": true,
+   "robotsOk": true
+  }
+ ],
+ "jsonld": [
+  {
+   "url": "http://localhost:3000/ar",
+   "expected": [
+    "Organization",
+    "WebSite"
+   ],
+   "found": [
+    "Organization",
+    "WebSite"
+   ]
+  },
+  {
+   "url": "http://localhost:3000/ar/product/%D8%B4%D8%A7%D8%B4%D8%A9-%D8%A3%D8%AF%D8%A7%D8%A1-55",
+   "expected": [
+    "Product",
+    "BreadcrumbList"
+   ],
+   "found": [
+    "BreadcrumbList",
+    "Product"
+   ]
+  },
+  {
+   "url": "http://localhost:3000/ar/category/%D8%B4%D8%A7%D8%B4%D8%A7%D8%AA-1793469905176",
+   "expected": [
+    "BreadcrumbList",
+    "ItemList"
+   ],
+   "found": [
+    "BreadcrumbList",
+    "ItemList"
+   ]
+  }
+ ],
+ "sitemap": {
+  "status": 200,
+  "urls": 14,
+  "hasProduct": true,
+  "hasAlternates": true
+ },
+ "lighthouse": [
+  {
+   "label": "home",
+   "url": "http://localhost:3000/ar",
+   "performance": 92,
+   "accessibility": 91,
+   "seo": 100,
+   "lcpMs": 3090,
+   "cls": 0,
+   "tbtMs": 146
+  },
+  {
+   "label": "product",
+   "url": "http://localhost:3000/ar/product/%D8%B4%D8%A7%D8%B4%D8%A9-%D8%A3%D8%AF%D8%A7%D8%A1-55",
+   "performance": 93,
+   "accessibility": 94,
+   "seo": 100,
+   "lcpMs": 3065,
+   "cls": 0,
+   "tbtMs": 140
+  }
+ ],
+ "lcp": [
+  {
+   "label": "home",
+   "url": "http://localhost:3000/ar",
+   "lcpMs": 796
+  },
+  {
+   "label": "product",
+   "url": "http://localhost:3000/ar/product/%D8%B4%D8%A7%D8%B4%D8%A9-%D8%A3%D8%AF%D8%A7%D8%A1-55",
+   "lcpMs": 836
+  },
+  {
+   "label": "listing",
+   "url": "http://localhost:3000/ar/products",
+   "lcpMs": 556
+  },
+  {
+   "label": "category",
+   "url": "http://localhost:3000/ar/category/%D8%B4%D8%A7%D8%B4%D8%A7%D8%AA-1793469905176",
+   "lcpMs": 780
+  }
+ ]
+}
