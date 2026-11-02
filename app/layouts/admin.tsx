@@ -10,6 +10,7 @@ import { LanguageSwitch } from "~/components/layout/LanguageSwitch";
 import { NotificationBell } from "~/features/notifications/NotificationBell";
 import { PanelShell } from "~/components/layout/PanelShell";
 import type { SidebarGroup } from "~/components/layout/SidebarNav";
+import { RoutePending } from "~/components/layout/RoutePending";
 import {
   ChartIcon,
   GridIcon,
@@ -131,7 +132,9 @@ export default function AdminLayout({ loaderData }: Route.ComponentProps) {
         </>
       }
     >
-      <Outlet />
+      <RoutePending>
+        <Outlet />
+      </RoutePending>
     </PanelShell>
   );
 }

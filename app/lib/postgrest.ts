@@ -19,18 +19,27 @@ export function isSafeFilterValue(value: string): boolean {
   return value.length > 0 && value.length <= 200 && !RESERVED.test(value);
 }
 
-/** Slugs we accept for lookup: ASCII letters, digits, `-` and `_` only. */
-const SLUG = /^[a-z0-9][a-z0-9_-]{0,199}$/i;
+/**
+ * Slugs are NOT ASCII-only: this catalogue stores Arabic slugs
+ * (`h08-أزياء`), so the guard must permit any letter/digit in any script.
+ * What it forbids is exactly the PostgREST expression grammar plus control
+ * characters — the things that let a value escape its filter.
+ */
+const SLUG_FORBIDDEN = /[,.:()"*\\\u0000-\u001f\u007f]/;
 
 /**
  * Normalize a URL slug before it reaches PostgREST. Returns the trimmed value
- * when it matches the slug shape, otherwise `null` so the caller returns a 404
- * instead of building a filter.
+ * when it is safe to interpolate, otherwise `null` so the caller returns a 404
+ * instead of building a filter. Length-capped to keep URLs sane.
  */
 export function safeSlug(raw: string | null | undefined): string | null {
   if (typeof raw !== "string") return null;
   const v = raw.trim();
-  return SLUG.test(v) ? v : null;
+  if (v.length === 0 || v.length > 200) return null;
+  if (SLUG_FORBIDDEN.test(v)) return null;
+  // A slug never starts with a separator.
+  if (v.startsWith("-") || v.startsWith("_")) return null;
+  return v;
 }
 
 /**

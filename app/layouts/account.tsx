@@ -9,6 +9,7 @@ import { NotificationBellLink } from "~/features/notifications/NotificationBellL
 import { MediaImg } from "~/components/catalog/MediaImg";
 import { listNotifications } from "~/features/notifications/api";
 import { BellIcon } from "~/components/ui/icons";
+import { RoutePending } from "~/components/layout/RoutePending";
 import {
   ChartIcon,
   ChevronDownIcon,
@@ -146,7 +147,9 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
               keeps the persistent sidebar untouched. */}
           <MobileTabsDropdown nav={nav} />
 
-          <Outlet />
+          <RoutePending>
+            <Outlet />
+          </RoutePending>
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ import { PanelShell } from "~/components/layout/PanelShell";
 import type { SidebarGroup } from "~/components/layout/SidebarNav";
 import { LanguageSwitch } from "~/components/layout/LanguageSwitch";
 import { AlertIcon, ChartIcon, ListIcon, MegaphoneIcon, PackageIcon, PlusIcon, StarIcon, StoreIcon, TagIcon, UploadIcon } from "~/components/ui/icons";
+import { RoutePending } from "~/components/layout/RoutePending";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
@@ -106,7 +107,9 @@ export default function VendorLayout({ loaderData }: Route.ComponentProps) {
       {/* V-07: persistent, non-dismissible verification warning — visible on
           every vendor page until verified or grace end. No close button. */}
       <VerificationBanner verification={loaderData.verification} lang={lang} />
-      <Outlet />
+      <RoutePending>
+        <Outlet />
+      </RoutePending>
     </PanelShell>
   );
 }

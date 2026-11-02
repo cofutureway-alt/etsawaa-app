@@ -5,6 +5,7 @@ import { requireLang } from "~/lib/lang.server";
 import { useRouteLoaderData } from "react-router";
 import type { RootLoaderData } from "~/features/settings/api";
 import { LanguageSwitch } from "~/components/layout/LanguageSwitch";
+import { RoutePending } from "~/components/layout/RoutePending";
 
 export async function loader({ params }: Route.LoaderArgs) {
   return { lang: requireLang(params) };
@@ -29,7 +30,9 @@ export default function AuthLayout() {
         </Link>
         <p className="text-[13px] text-text-muted">{t("auth.login.subtitle")}</p>
       </div>
-      <Outlet />
+      <RoutePending>
+        <Outlet />
+      </RoutePending>
       <div className="mt-5 flex items-center gap-3 text-xs text-text-muted">
         <LanguageSwitch current={root?.locale ?? "ar"} />
         <Link to={`/${root?.locale ?? "ar"}`} className="hover:text-action">

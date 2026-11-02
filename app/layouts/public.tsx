@@ -26,6 +26,7 @@ import { LanguageSwitch } from "~/components/layout/LanguageSwitch";
 import { SearchBox } from "~/components/catalog/SearchBox";
 import { Suspense, lazy } from "react";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { RoutePending } from "~/components/layout/RoutePending";
 
 // Interaction-only / below-fold widgets ship as separate chunks and hydrate
 // lazily — the initial pipe carries header + content only.
@@ -184,7 +185,9 @@ export default function PublicLayout({ loaderData }: Route.ComponentProps) {
         </header>
 
         <main id="main" className="mx-auto w-full max-w-page flex-1 px-4 py-6">
-          <Outlet />
+          <RoutePending>
+            <Outlet />
+          </RoutePending>
         </main>
 
         <PublicFooter siteName={siteName} lang={lang} headerPages={loaderData.headerPages} />

@@ -12,6 +12,14 @@ test("safeSlug accepts the slugs we generate", () => {
   assert.equal(safeSlug("  phones  "), "phones");
 });
 
+test("safeSlug accepts Arabic slugs (real catalogue data)", () => {
+  // categories.slug_ar holds values like this; blocking them 404'd every
+  // Arabic category URL.
+  assert.equal(safeSlug("h08-أزياء"), "h08-أزياء");
+  assert.equal(safeSlug("h08-فساتين"), "h08-فساتين");
+  assert.equal(safeSlug("h08-هواتف"), "h08-هواتف");
+});
+
 test("safeSlug rejects injection payloads", () => {
   assert.equal(safeSlug("x,id.not.is.null"), null);
   assert.equal(safeSlug("x)"), null);
