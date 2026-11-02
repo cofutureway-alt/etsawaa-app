@@ -168,6 +168,8 @@ export default [
   // without a lang segment, so they live OUTSIDE the :lang prefix
   route("api/cart", "routes/api/cart.ts"),
   route("api/media", "routes/api/media.ts"),
+  // private `documents` bucket (refund evidence, KYC) via signed URL
+  route("api/document", "routes/api/document.ts"),
   // phase 09 — admin-only reject ledger download
   route("api/admin/import-rejects", "routes/api/admin-import-rejects.ts"),
   route("api/wishlist", "routes/api/wishlist.ts"),

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { uploadCustomerImage } from "./client";
 import { getSupabaseBrowserClient } from "~/lib/supabase/browser";
-import { mediaUrl } from "~/components/catalog/MediaImg";
+import { DocumentImage } from "~/components/account/DocumentImage";
 
 /**
  * Refund evidence picker (US-11): native device file input straight to the
@@ -64,7 +64,7 @@ export function EvidenceUploader({ onChange }: { onChange: (paths: string[]) => 
         <ul className="mt-2 flex flex-wrap gap-2">
           {paths.map((p) => (
             <li key={p}>
-              <img src={mediaUrl(p)} alt="" className="size-14 rounded-md border border-border object-cover" />
+              <DocumentImage path={p} className="size-14" />
             </li>
           ))}
         </ul>

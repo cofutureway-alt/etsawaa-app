@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
+import { safeSlug } from "~/lib/postgrest";
 import { publicMeta } from "~/lib/seo";
 import { getStaticPage, type StaticPage } from "~/features/storefront/api";
 import { Breadcrumbs } from "~/components/ui/Breadcrumbs";
@@ -27,7 +28,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       .select("new_slug_ar, new_slug_en")
       .eq("kind", "page")
       .eq("is_active", true)
-      .or(`old_slug_ar.eq.${rawSlug},old_slug_en.eq.${rawSlug}`)
+      .or(`old_slug_ar.eq.${safeSlug(rawSlug ?? "") ?? ""},old_slug_en.eq.${safeSlug(rawSlug ?? "") ?? ""}`)
       .limit(1);
     const target = redirect?.[0] ? (lang === "ar" ? redirect[0].new_slug_ar : redirect[0].new_slug_en) : null;
     if (target && target !== rawSlug) {

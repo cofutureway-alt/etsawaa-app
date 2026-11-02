@@ -359,7 +359,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
                   ) : null}
                   {row.status === "active" || row.status === "suspended" ? (
                     <>
-                      <Link to={`vendors/${row.id}/edit`} className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
+                      <Link to={`/${loaderData.lang}/admin/vendors/${row.id}/edit`} className="rounded-md border border-border px-3 py-1.5 text-[13px] font-bold text-text hover:bg-surface-tint">
                         {t("adminVendors.edit")}
                       </Link>
                       {row.status === "active" ? (

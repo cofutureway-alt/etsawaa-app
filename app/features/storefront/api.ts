@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { safeSlug } from "~/lib/postgrest";
 
 /**
  * Storefront read layer — every function reads ONLY through the definer
@@ -223,7 +224,9 @@ export async function getCategories(client: SupabaseClient): Promise<CategoryNod
   return (data ?? []) as CategoryNode[];
 }
 
-export async function getCategoryBySlug(client: SupabaseClient, slug: string): Promise<CategoryNode | null> {
+export async function getCategoryBySlug(client: SupabaseClient, rawSlug: string): Promise<CategoryNode | null> {
+  const slug = safeSlug(rawSlug);
+  if (!slug) return null;
   const { data, error } = await client.from("v_storefront_categories").select("*").or(`slug_ar.eq.${slug},slug_en.eq.${slug}`).limit(1);
   if (error) throw new Error(error.message);
   return (data?.[0] as CategoryNode | undefined) ?? null;
@@ -329,7 +332,9 @@ export async function listBrands(client: SupabaseClient): Promise<BrandCard[]> {
 }
 
 export async function getBrandBySlug(client: SupabaseClient, slug: string): Promise<BrandCard | null> {
-  const { data, error } = await client.from("v_storefront_brands").select("*").or(`slug_ar.eq.${slug},slug_en.eq.${slug}`).limit(1);
+  const slugSafe = safeSlug(slug);
+  if (!slugSafe) return null;
+  const { data, error } = await client.from("v_storefront_brands").select("*").or(`slug_ar.eq.${slugSafe},slug_en.eq.${slugSafe}`).limit(1);
   if (error) throw new Error(error.message);
   return (data?.[0] as BrandCard | undefined) ?? null;
 }
@@ -345,7 +350,9 @@ export interface StaticPage {
   show_in_header: boolean;
 }
 
-export async function getStaticPage(client: SupabaseClient, slug: string): Promise<StaticPage | null> {
+export async function getStaticPage(client: SupabaseClient, rawSlug: string): Promise<StaticPage | null> {
+  const slug = safeSlug(rawSlug);
+  if (!slug) return null;
   const { data, error } = await client
     .from("static_pages")
     .select("id, slug_ar, slug_en, title_ar, title_en, content_ar, content_en, show_in_header")
@@ -426,7 +433,9 @@ export interface ProductPage {
   reviews: ReviewRow[];
 }
 
-export async function getProductPage(client: SupabaseClient, slug: string): Promise<ProductPage | null> {
+export async function getProductPage(client: SupabaseClient, rawSlug: string): Promise<ProductPage | null> {
+  const slug = safeSlug(rawSlug);
+  if (!slug) return null;
   const { data: card, error } = await client
     .from("v_storefront_products")
     .select("*")

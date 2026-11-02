@@ -3,6 +3,7 @@ import type { Route } from "./+types/blog.$slug";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
+import { safeSlug } from "~/lib/postgrest";
 import { requireLang } from "~/lib/lang.server";
 import { publicMeta, jsonLd, breadcrumbLd, siteUrl } from "~/lib/seo";
 import { publicMediaUrl } from "~/lib/media.shared";
@@ -96,7 +97,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       .select("new_slug_ar, new_slug_en")
       .eq("kind", "post")
       .eq("is_active", true)
-      .or(`old_slug_ar.eq.${slug},old_slug_en.eq.${slug}`)
+      .or(`old_slug_ar.eq.${safeSlug(slug) ?? ""},old_slug_en.eq.${safeSlug(slug) ?? ""}`)
       .limit(1);
     const target = redirect?.[0] ? (isAr ? redirect[0].new_slug_ar : redirect[0].new_slug_en) : null;
     if (target && target !== slug) {

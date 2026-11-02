@@ -3,6 +3,7 @@ import type { Route } from "./+types/customers";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
+import { safeLikeTerm } from "~/lib/postgrest";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
@@ -43,7 +44,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     .order("created_at", { ascending: false })
     .order("id", { ascending: true }) // tie-breaker → deterministic pages
     .range(from, from + PAGE - 1);
-  if (q) query = query.or(`full_name.ilike.%${q}%,email.ilike.%${q}%,phone.ilike.%${q}%`);
+  const term = safeLikeTerm(q);
+  if (term) query = query.or(`full_name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%`);
   const { data: rows, error, count } = await query;
   if (error) throw new Error(error.message);
   const ids = ((rows ?? []) as Array<{ id: string }>).map((r) => r.id);

@@ -11,6 +11,7 @@ import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
+import { DocumentImage } from "~/components/account/DocumentImage";
 
 
 /**
@@ -30,6 +31,8 @@ interface RfqItem {
 interface Rfq {
   id: string; order_number: string; customer: string; kind: string;
   description: string; status: string; created_at: string;
+  /** jsonb array of documents-bucket paths uploaded with the request */
+  evidence: string[] | null;
   items: RfqItem[];
 }
 
@@ -44,7 +47,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const status = new URL(request.url).searchParams.get("status") ?? "pending_admin";
   let q = client
     .from("refund_requests")
-    .select(`id, kind, description, status, created_at,
+    .select(`id, kind, description, evidence, status, created_at,
              orders(number, ship_name),
              refund_request_items(id, order_item_id, qty, reason, decision, fault,
                refund_amount_piastres, restock,
@@ -82,6 +85,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       description: r.description as string,
       status: r.status as string,
       created_at: r.created_at as string,
+      evidence: Array.isArray(r.evidence) ? (r.evidence as string[]) : null,
       items,
     };
   });
@@ -192,6 +196,9 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                 <span className="text-xs text-text-muted" dir="ltr">{r.created_at.slice(0, 10)}</span>
               </div>
               {r.description ? <p className="mt-1.5 text-[13px] text-text-muted">{r.description}</p> : null}
+              {/* A-03: the admin rules on money here, so the customer's proof
+                  is shown inline rather than left in the database. */}
+              <EvidenceStrip paths={r.evidence} />
 
               <details className="mt-2" open={r.status === "pending_admin" && openId === r.id}
                 onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) setOpenId(r.id); }}>
@@ -271,6 +278,33 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
   );
 }
 
+
+/**
+ * Refund evidence: paths stored in refund_requests.evidence (jsonb array of
+ * documents-bucket paths). Opens the full image in a new tab — the signed URL
+ * still expires in 60s, so the tab fetches it immediately.
+ */
+function EvidenceStrip({ paths }: { paths: unknown }) {
+  const { t } = useTranslation();
+  const list = Array.isArray(paths) ? paths.filter((x): x is string => typeof x === "string") : [];
+  if (list.length === 0) {
+    return <p className="mt-1.5 text-[12px] text-text-faint">{t("rfund.noEvidence")}</p>;
+  }
+  return (
+    <div className="mt-2">
+      <p className="text-[12px] font-bold text-text-muted">{t("rfund.evidence", { count: list.length })}</p>
+      <ul className="mt-1 flex flex-wrap gap-1.5">
+        {list.map((p) => (
+          <li key={p}>
+            <span className="block transition-opacity hover:opacity-80">
+              <DocumentImage path={p} className="size-16" />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 /** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */
 export function ErrorBoundary() {

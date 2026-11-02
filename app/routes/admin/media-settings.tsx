@@ -31,11 +31,18 @@ export async function action({ request, params }: Route.ActionArgs) {
 
   if (String(form.get("intent")) === "test_upload") {
     // validate configuration by pushing a tiny probe object through the bucket config
+    // The edge function authenticates the CALLER (auth.getUser → profiles.role).
+    // An SSR form POST carries cookies only, so request.headers has no
+    // Authorization; falling back to the anon key made every call 401.
+    // Mint the admin's own access token from the cookie-scoped client.
+    const { data: sessionData } = await client.auth.getSession();
+    const accessToken = sessionData.session?.access_token;
+    if (!accessToken) return { ok: false as const, reason: "no_session" };
     const fnUrl = `${process.env.SUPABASE_URL}/functions/v1/admin-update-bucket`;
     const res = await fetch(fnUrl, {
       method: "POST",
       headers: {
-        Authorization: request.headers.get("Authorization") ?? `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
         apikey: process.env.SUPABASE_ANON_KEY ?? "",
       },
