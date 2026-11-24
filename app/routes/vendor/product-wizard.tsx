@@ -1,5 +1,9 @@
 import type { Route } from "./+types/product-wizard";
-import { data, redirect } from "react-router";
+import { data, redirect, useFetcher, useNavigate } from "react-router";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Dialog } from "~/components/ui/Overlay";
+import { Button } from "~/components/ui/Button";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
@@ -8,12 +12,18 @@ import { fetchVendorRow } from "~/features/vendor/api";
 import { parseMediaSettings } from "~/lib/media.shared";
 import {
   ProductWizard,
-  type LoaderVariant,
-  type PickerCategory,
-  type TemplateAttr,
-  type WizardProduct,
+  type TemplateOption,
 } from "~/features/products/components/product-wizard";
 import type { SaveActionData } from "~/features/products/components/product-wizard";
+import {
+  loadBrands,
+  loadSizeOptions,
+  loadTemplate,
+  loadWizardCategories,
+  loadWizardProduct,
+  loadWizardTags,
+  saveChildrenRpc,
+} from "~/features/products/wizard-loader.server";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonForm } from "~/components/ui/Skeleton";
 
@@ -21,7 +31,8 @@ import { SkeletonForm } from "~/components/ui/Skeleton";
 /**
  * /vendor/products/new + /vendor/products/:id/edit — the 5-step wizard.
  * Server action maps every intent onto the definer RPCs (atomic multi-row
- * writes); loaders feed the template that generates the form.
+ * writes); loaders feed the template that generates the form. Product loading
+ * is shared with the admin editor (`features/products/wizard-loader.server`).
  */
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -36,139 +47,64 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     throw redirect(`/${lang}/vendor/onboarding`);
   }
   const productId = params.id ?? null;
-
-  let product: WizardProduct | null = null;
-  let variants: LoaderVariant[] = [];
-  let template: TemplateAttr[] = [];
-
-  if (productId) {
-    const { data: row } = await client
-      .from("products")
-      .select("*")
-      .eq("id", productId)
-      .eq("vendor_id", vendor.id)
-      .maybeSingle();
-    if (!row) throw redirect(`/${lang}/vendor/products`);
-
-    const [mediaRes, tagsRes, valuesRes, variantsRes] = await Promise.all([
-      client.from("product_media").select("kind, path, position").eq("product_id", productId).order("position"),
-      client.from("product_tags").select("tag_id").eq("product_id", productId),
-      client
-        .from("product_attribute_values")
-        .select("attribute_id, option_id, value_text, value_number, value_bool")
-        .eq("product_id", productId),
-      client
-        .from("variants")
-        .select("id, option_key, option_ids, sku, price_piastres, sale_price_piastres, stock, image_path")
-        .eq("product_id", productId)
-        .is("deleted_at", null)
-        .order("option_key"),
-    ]);
-
-    product = {
-      id: row.id,
-      status: row.status,
-      rejection_reason: row.rejection_reason,
-      name_ar: row.name_ar,
-      name_en: row.name_en,
-      desc_ar: row.desc_ar,
-      desc_en: row.desc_en,
-      short_ar: row.short_ar,
-      short_en: row.short_en,
-      leaf_category_id: row.leaf_category_id,
-      brand_id: row.brand_id,
-      is_fragile: row.is_fragile,
-      sale_starts_at: row.sale_starts_at,
-      sale_ends_at: row.sale_ends_at,
-      weight_g: row.weight_g,
-      dims: (row.dims ?? {}) as WizardProduct["dims"],
-      shipping_class: row.shipping_class,
-      shipping_mode: row.shipping_mode,
-      updated_at: row.updated_at,
-      media: (mediaRes.data ?? []).map((m: { kind: string; path: string }) => ({ kind: m.kind as "image" | "video", path: m.path })),
-      tag_ids: (tagsRes.data ?? []).map((tag: { tag_id: string }) => tag.tag_id),
-      attribute_values: valuesRes.data ?? [],
-    };
-    variants = (variantsRes.data ?? []) as LoaderVariant[];
-    template = await loadTemplate(client, row.leaf_category_id);
+  if (!productId && vendor.status === "pending") {
+    throw redirect(`/${lang}/vendor/products?underReview=1`);
   }
 
-  const [catsRes, brandsRes, tagsRes, mediaRow] = await Promise.all([
-    client
-      .from("categories")
-      .select("id, parent_id, depth, name_ar, name_en")
-      .eq("is_active", true)
-      .is("deleted_at", null)
-      .order("sort"),
-    client.from("brands").select("id, name_ar, name_en").eq("is_active", true).is("deleted_at", null).order("sort"),
-    client.from("tags").select("id, name_ar, name_en").is("deleted_at", null).order("sort"),
+  const bundle = productId ? await loadWizardProduct(client, productId, vendor.id) : null;
+  if (productId && !bundle) throw redirect(`/${lang}/vendor/products`);
+
+  const [categories, tags, mediaRow] = await Promise.all([
+    // only the branches the seller chose at registration (vendors.category_ids)
+    loadWizardCategories(client, vendor.category_ids ?? []),
+    loadWizardTags(client),
     client.from("settings").select("value").eq("key", "media").maybeSingle(),
   ]);
+
+  // "Add product" with an unfinished draft on file → offer to resume it or start over
+  let resumeDraft: { id: string; name: string; updated_at: string } | null = null;
+  if (!productId && !new URL(request.url).searchParams.has("fresh")) {
+    const { data: draft } = await client.from("products").select("id, name_ar, name_en, updated_at")
+      .eq("vendor_id", vendor.id).eq("status", "draft").is("deleted_at", null)
+      .order("updated_at", { ascending: false }).limit(1).maybeSingle();
+    if (draft) resumeDraft = { id: draft.id, name: (lang === "ar" ? draft.name_ar || draft.name_en : draft.name_en || draft.name_ar) || "", updated_at: draft.updated_at };
+  }
+  const leafForRule = bundle?.product.leaf_category_id ?? null;
+  const { data: blocked } = leafForRule
+    ? await client.rpc("fn_vendor_shipping_blocked", { p_category: leafForRule })
+    : { data: true };
 
   return data({
     lang,
     uid: viewer.user.id,
-    product,
-    template,
-    variants,
-    categories: (catsRes.data ?? []) as PickerCategory[],
-    brands: brandsRes.data ?? [],
-    tags: tagsRes.data ?? [],
+    resumeDraft,
+    shippingBlocked: blocked === true,
+    product: bundle?.product ?? null,
+    template: bundle?.template ?? [],
+    childrenData: bundle?.childrenData ?? [],
+    sizeOptions: bundle?.sizeOptions ?? [],
+    categories,
+    // only the brands of the product's category; picking a category fetches its own (intent "template")
+    brands: bundle?.brands ?? [],
+    tags,
     media: parseMediaSettings(mediaRow?.value),
     supabaseUrl: process.env.SUPABASE_URL ?? "",
+    // the platform commission is for the platform team only: admin/staff viewers
+    commissionVendorId: viewer.profile.role === "admin" || viewer.profile.role === "staff" ? vendor.id : null,
   });
 }
 
-/** Leaf template load (V-11): defs in configured order + admin options only. */
-async function loadTemplate(client: SupabaseClient, leafCategoryId: string | null): Promise<TemplateAttr[]> {
-  if (!leafCategoryId) return [];
-  // template = defs owned by the leaf (phase-02 model) + defs linked to it
-  const [{ data: ownDefs }, { data: linkedDefs }] = await Promise.all([
-    client.from("attribute_defs").select("*").eq("category_id", leafCategoryId).is("deleted_at", null),
-    client
-      .from("category_attributes")
-      .select("attribute_defs!inner(*)")
-      .eq("category_id", leafCategoryId),
-  ]);
-  const defRows = new Map<string, Record<string, unknown>>();
-  for (const def of (ownDefs ?? []) as unknown as Array<Record<string, unknown>>) {
-    defRows.set(def.id as string, def);
-  }
-  for (const row of (linkedDefs ?? []) as unknown as Array<{ attribute_defs: Record<string, unknown> }>) {
-    const def = row.attribute_defs;
-    if (def && !def.deleted_at) defRows.set(def.id as string, def);
-  }
-  const attrs: TemplateAttr[] = [];
-  for (const def of defRows.values()) {
-    const { data: options } = await client
-      .from("attribute_options")
-      .select("id, label_ar, label_en, color_hex")
-      .eq("attribute_id", def.id as string)
-      .is("deleted_at", null)
-      .order("sort");
-    attrs.push({
-      id: def.id as string,
-      code: def.code as string,
-      label_ar: (def.label_ar as string | null) ?? "",
-      label_en: (def.label_en as string | null) ?? "",
-      type: def.type as TemplateAttr["type"],
-      unit: def.unit as string,
-      is_required: def.is_required as boolean,
-      is_filterable: def.is_filterable as boolean,
-      is_variant_axis: def.is_variant_axis as boolean,
-      sort: def.sort as number,
-      options: options ?? [],
-    });
-  }
-  attrs.sort((a, b) => a.sort - b.sort);
-  return attrs;
+async function productUpdatedAt(client: SupabaseClient, productId: string | null): Promise<string | undefined> {
+  if (!productId) return undefined;
+  const { data: row } = await client.from("products").select("updated_at").eq("id", productId).maybeSingle();
+  return (row?.updated_at as string | undefined) ?? undefined;
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) return data<SaveActionData>({ intent: "save", ok: false, error: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "vendor", request);
+  const viewer = await requirePanelAccess(client, lang, "vendor", request);
   const form = await request.formData();
   const intent = String(form.get("intent") ?? "");
   const productId = (String(form.get("productId") ?? "") || null) as string | null;
@@ -199,12 +135,15 @@ export async function action({ request, params }: Route.ActionArgs) {
       console.error("[product-wizard:save]", error.message);
       return data<SaveActionData>({ intent, ok: false, error: error.message }, { status: 400 });
     }
-    const result = saved as { id: string; updated_at: string };
+    const result = saved as { id: string; updated_at: string; status: string };
     return data<SaveActionData>({
       intent,
       ok: true,
       stale,
       updatedAt: result.updated_at,
+      productId: result.id,
+      // pending/approved products come back as draft after the first save
+      status: result.status,
       redirectTo: productId ? undefined : `/${lang}/vendor/products/${result.id}/edit`,
     });
   }
@@ -214,61 +153,87 @@ export async function action({ request, params }: Route.ActionArgs) {
   // attributes step stayed empty until an autosave reloaded the page.
   if (intent === "template") {
     const leafId = String(form.get("leaf_category_id") ?? "") || null;
-    const template = await loadTemplate(client, leafId);
-    return { intent, ok: true as const, template };
+    const vendor = await fetchVendorRow(client, viewer.user.id);
+    const [template, sizeOptions, blocked, brands] = await Promise.all([
+      loadTemplate(client, leafId),
+      loadSizeOptions(client, leafId),
+      leafId ? client.rpc("fn_vendor_shipping_blocked", { p_category: leafId }).then((r: { data: unknown }) => r.data === true) : Promise.resolve(true),
+      loadBrands(client, leafId, null, vendor?.id),
+    ]);
+    return { intent, ok: true as const, template, sizeOptions, shippingBlocked: blocked, brands };
   }
 
-  if (intent === "generate_variants") {
-    let axes: unknown = [];
-    let defaults: unknown = {};
-    try {
-      axes = JSON.parse(String(form.get("axes") ?? "[]"));
-      defaults = JSON.parse(String(form.get("defaults") ?? "{}"));
-    } catch {
-      return data<SaveActionData>({ intent, ok: false, error: "payload" }, { status: 400 });
-    }
-    const { data: result, error } = await client.rpc("fn_generate_variants", {
-      p_product_id: productId,
-      p_axes: axes,
-      p_defaults: defaults,
+  // a brand the catalogue does not have: the seller proposes it, a reviewer
+  // completes its data before it goes live with the product
+  if (intent === "propose_brand") {
+    const { data: res, error } = await client.rpc("fn_vendor_propose_brand", {
+      p_name_ar: String(form.get("name_ar") ?? ""),
+      p_name_en: String(form.get("name_en") ?? ""),
+      p_category: String(form.get("category_id") ?? ""),
     });
     if (error) return data<SaveActionData>({ intent, ok: false, error: error.message }, { status: 400 });
-    const r = result as { inserted: number; removed: number; skipped: string[] };
-    return data<SaveActionData>({ intent, ok: true, skipped: r.skipped ?? [] });
-  }
-
-  if (intent === "restore_variant") {
-    const optionKey = String(form.get("optionKey") ?? "");
-    const { error } = await client.rpc("fn_restore_variants", {
-      p_product_id: productId,
-      p_keys: optionKey ? [optionKey] : [],
+    const r = res as { ok?: boolean; reason?: string; existing?: boolean; id?: string; name_ar?: string; name_en?: string; thumb_path?: string | null } | null;
+    if (!r?.ok) return data<SaveActionData>({ intent, ok: false, error: r?.reason ?? "failed" }, { status: 400 });
+    return data<SaveActionData>({
+      intent, ok: true, existing: Boolean(r.existing),
+      brand: { id: String(r.id), name_ar: String(r.name_ar ?? ""), name_en: String(r.name_en ?? ""), thumb_path: r.thumb_path ?? null, pending: !r.existing },
     });
-    if (error) return data<SaveActionData>({ intent, ok: false, error: error.message }, { status: 400 });
-    return { intent, ok: true } as SaveActionData;
   }
 
-  if (intent === "save_variants") {
-    let rows: unknown = [];
-    try {
-      rows = JSON.parse(String(form.get("rows") ?? "[]"));
-    } catch {
-      return data<SaveActionData>({ intent, ok: false, error: "payload" }, { status: 400 });
+  // edit a submitted / published product: it goes back to draft (and off the
+  // store) until it is submitted and approved again; the loader then reloads editable
+  if (intent === "reopen") {
+    if (!productId) return data<SaveActionData>({ intent, ok: false, error: "input" }, { status: 400 });
+    const { data: res, error } = await client.rpc("fn_vendor_reopen_product", { p_product_id: productId });
+    const r = res as { ok?: boolean; reason?: string } | null;
+    if (error || !r?.ok) return data<SaveActionData>({ intent, ok: false, error: error?.message ?? r?.reason ?? "failed" }, { status: 400 });
+    return data<SaveActionData>({ intent, ok: true });
+  }
+
+  // a seller's own colour (device colour picker + name); the same hex is reused
+  if (intent === "add_color") {
+    const { data: color, error } = await client.rpc("fn_vendor_add_color", {
+      p_hex: String(form.get("hex") ?? ""), p_label_ar: String(form.get("name") ?? ""), p_label_en: String(form.get("name_en") ?? "").trim() || null,
+    });
+    if (error) {
+      const code = /too_many_colors/.test(error.message) ? "too_many_colors" : /name_required|bad_hex/.test(error.message) ? "bad_input" : "failed";
+      return data<SaveActionData>({ intent, ok: false, error: code }, { status: 400 });
     }
-    const { error } = await client.rpc("fn_save_variants", { p_product_id: productId, p_rows: rows });
-    if (error) return data<SaveActionData>({ intent, ok: false, error: error.message }, { status: 400 });
-    return { intent, ok: true } as SaveActionData;
+    return data<SaveActionData>({ intent, ok: true, color: color as TemplateOption });
+  }
+
+  // "start over" on the resume prompt: the unfinished draft is archived
+  if (intent === "discard_draft") {
+    const draftId = String(form.get("draftId") ?? "");
+    const { error } = await client.rpc("fn_archive_product", { p_product_id: draftId });
+    if (error) return data<SaveActionData>({ intent: "save", ok: false, error: error.message }, { status: 400 });
+    return data<SaveActionData>({ intent: "save", ok: true });
+  }
+
+  if (intent === "save_children") {
+    const saved = await saveChildrenRpc(client, productId, String(form.get("children") ?? "[]"));
+    if (!saved.ok) return data<SaveActionData>({ intent, ok: false, error: saved.error }, { status: 400 });
+    // fn_save_children bumps products.updated_at — hand it back so the next
+    // autosave doesn't mistake this session's own write for another tab's
+    const updatedAt = await productUpdatedAt(client, productId);
+    return data<SaveActionData>({ intent, ok: true, children: saved.children, updatedAt });
   }
 
   if (intent === "submit") {
-    // no variant rows yet (no-axis product) → ensure the plain row exists first
-    const { count } = await client
-      .from("variants")
-      .select("id", { count: "exact", head: true })
-      .eq("product_id", productId ?? "")
-      .is("deleted_at", null);
-    if ((count ?? 0) === 0) {
-      await client.rpc("fn_generate_variants", { p_product_id: productId, p_axes: [], p_defaults: {} });
+    if (!productId) return data<SaveActionData>({ intent, ok: false, error: "not_saved" }, { status: 400 });
+    // flush the latest product fields first (the debounced autosave may not
+    // have fired yet), then children (the gate checks their prices/SKUs), then review
+    const rawPayload = String(form.get("payload") ?? "");
+    if (rawPayload) {
+      let payload: Record<string, unknown>;
+      try { payload = JSON.parse(rawPayload) as Record<string, unknown>; } catch {
+        return data<SaveActionData>({ intent, ok: false, error: "payload" }, { status: 400 });
+      }
+      const { error: saveErr } = await client.rpc("fn_save_product", { p_product: payload, p_id: productId });
+      if (saveErr) return data<SaveActionData>({ intent, ok: false, error: saveErr.message }, { status: 400 });
     }
+    const saved = await saveChildrenRpc(client, productId, String(form.get("children") ?? "[]"));
+    if (!saved.ok) return data<SaveActionData>({ intent, ok: false, error: saved.error }, { status: 400 });
     const { error } = await client.rpc("fn_submit_product", { p_product_id: productId });
     if (error) return data<SaveActionData>({ intent, ok: false, error: error.message }, { status: 400 });
     return data<SaveActionData>({ intent, ok: true, redirectTo: `/${lang}/vendor/products` });
@@ -279,7 +244,11 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 export default function ProductWizardRoute({ loaderData }: Route.ComponentProps) {
   return (
+    <>
+    {loaderData.resumeDraft ? <ResumeDraftPrompt draft={loaderData.resumeDraft} lang={loaderData.lang} /> : null}
     <ProductWizard
+      key={loaderData.product?.id ?? (loaderData.resumeDraft ? "pending-choice" : "new")}
+      shippingBlocked={loaderData.shippingBlocked}
       uid={loaderData.uid}
       supabaseUrl={loaderData.supabaseUrl}
       media={loaderData.media}
@@ -288,12 +257,59 @@ export default function ProductWizardRoute({ loaderData }: Route.ComponentProps)
       categories={loaderData.categories}
       brands={loaderData.brands}
       tags={loaderData.tags}
-      variants={loaderData.variants}
+      childrenData={loaderData.childrenData}
+      sizeOptions={loaderData.sizeOptions}
       isAr={loaderData.lang === "ar"}
+      commissionVendorId={loaderData.commissionVendorId}
     />
+    </>
   );
 }
 
+/** Resume the unfinished draft, or archive it and start a fresh product. */
+function ResumeDraftPrompt({ draft, lang }: { draft: { id: string; name: string; updated_at: string }; lang: string }) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const fetcher = useFetcher<SaveActionData>();
+  const [open, setOpen] = useState(true);
+  const fresh = () => {
+    fetcher.submit({ intent: "discard_draft", draftId: draft.id }, { method: "post" });
+    setOpen(false);
+    navigate(`/${lang}/vendor/products/new?fresh=1`, { replace: true });
+  };
+  return (
+    <Dialog open={open} onClose={() => navigate(`/${lang}/vendor/products/new?fresh=1`, { replace: true })} title={t("productWizard.resume.title")}>
+      <div className="flex flex-col gap-4">
+        {/* the date is formatted by the server's and the browser's ICU, which differ for Arabic */}
+        <p className="text-sm text-text-muted" suppressHydrationWarning>
+          {t("productWizard.resume.body", {
+            name: draft.name || t("vendor.products.untitled"),
+            when: new Date(draft.updated_at).toLocaleString(lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "Africa/Cairo" }),
+          })}
+        </p>
+        <div className="flex flex-wrap justify-end gap-2">
+          <Button type="button" variant="outline" className="text-danger" onClick={fresh} loading={fetcher.state !== "idle"}>{t("productWizard.resume.fresh")}</Button>
+          <Button type="button" onClick={() => navigate(`/${lang}/vendor/products/${draft.id}/edit`, { replace: true })}>{t("productWizard.resume.continue")}</Button>
+        </div>
+      </div>
+    </Dialog>
+  );
+}
+
+
+/**
+ * The wizard's own background requests (autosave, variants save, category
+ * template) must not re-run the loader: on /products/new the first autosave
+ * creates the draft, and a reload then "found" that very draft and asked the
+ * seller whether to resume it or start over. The wizard keeps its own state
+ * from the action results.
+ */
+const NO_RELOAD_INTENTS = new Set(["save", "save_children", "template", "add_color", "propose_brand"]);
+export function shouldRevalidate({ formData, defaultShouldRevalidate }: { formData?: FormData; defaultShouldRevalidate: boolean }) {
+  const intent = formData?.get("intent");
+  if (typeof intent === "string" && NO_RELOAD_INTENTS.has(intent)) return false;
+  return defaultShouldRevalidate;
+}
 
 /** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */
 export function ErrorBoundary() {

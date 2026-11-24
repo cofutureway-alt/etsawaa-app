@@ -1,0 +1,19 @@
+{
+  "ui.rating.word.1": { "ar": "سيئ", "en": "Bad" },
+  "ui.rating.word.2": { "ar": "مقبول", "en": "Fair" },
+  "ui.rating.word.3": { "ar": "جيد", "en": "Good" },
+  "ui.rating.word.4": { "ar": "جيد جدًا", "en": "Very good" },
+  "ui.rating.word.5": { "ar": "ممتاز", "en": "Excellent" },
+  "children.baseHintOptions": { "ar": "اللون والمقاس اختياريان لمنتج بدون اختيارات — لو المنتج له أكثر من لون أو مقاس، اضغط «إضافة منتج فرعي».", "en": "Colour and size are optional for a product without variants — if it comes in several colours or sizes, click “Add variant”." },
+  "reviews.badMedia": { "ar": "الوسائط المرفقة غير صالحة — أعد اختيار الصور أو الفيديو.", "en": "The attached media is invalid — please pick the photos or video again." },
+  "reviewMedia.add": { "ar": "أضف صور أو فيديو", "en": "Add photos or video" },
+  "reviewMedia.hint": { "ar": "حتى 5 ملفات، وفيديوهان كحد أقصى.", "en": "Up to 5 files, with at most 2 videos." },
+  "reviewMedia.uploading": { "ar": "جارٍ رفع الملفات…", "en": "Uploading files…" },
+  "reviewMedia.tooMany": { "ar": "الحد الأقصى 5 ملفات.", "en": "At most 5 files." },
+  "reviewMedia.tooManyVideos": { "ar": "الحد الأقصى فيديوهان.", "en": "At most 2 videos." },
+  "reviewMedia.uploadFailed": { "ar": "تعذر رفع الملف — حاول مرة أخرى.", "en": "Could not upload the file — please try again." },
+  "reviewMedia.videoOff": { "ar": "رفع الفيديو غير متاح حاليًا.", "en": "Video uploads are currently unavailable." },
+  "reviewMedia.tooLarge": { "ar": "الملف أكبر من الحد المسموح.", "en": "The file is larger than the allowed limit." },
+  "reviewMedia.invalid": { "ar": "نوع الملف غير مدعوم.", "en": "This file type is not supported." },
+  "reviewMedia.infected": { "ar": "تم رفض الملف لأسباب أمنية.", "en": "The file was rejected for security reasons." }
+}

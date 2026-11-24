@@ -1,3 +1,4 @@
+import { PhoneInput } from "~/components/phone/PhoneInput";
 import type { Route } from "./+types/register";
 import { Link, data, redirect, useActionData, useFetcher, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -9,15 +10,25 @@ import type { z } from "zod";
 import { registerSchema, passwordStrengthScore } from "~/features/auth/schemas";
 import { Button, Card, CardBody, Input, AlertIcon } from "~/components/ui";
 import { requireLang } from "~/lib/lang.server";
-import { getSupabaseAdminClient } from "~/lib/supabase/admin";
-import { sendEmail } from "~/lib/email/server";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { GoogleButton, OrDivider } from "~/components/auth/GoogleButton";
+import { acceptanceEvidence, getLegalDoc } from "~/features/legal/legal.server";
+import { getViewerContext } from "~/lib/auth/guards";
 
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const intent = new URL(request.url).searchParams.get("intent") === "vendor" ? "vendor" : "customer";
-  return { lang, intent };
+  // the exact Terms version shown here is the one recorded on sign-up
+  const { client } = createSupabaseServerClient(request);
+  // Already signed in: a customer who wants to sell goes straight to the store
+  // set-up (it turns the account into a seller on submit); nobody needs a second account.
+  if (client) {
+    const { ctx } = await getViewerContext(client);
+    if (ctx) throw redirect(intent === "vendor" ? `/${lang}/vendor/onboarding` : `/${lang}/account`);
+  }
+  const terms = client ? await getLegalDoc(client, "terms") : null;
+  return { lang, intent, termsVersion: terms?.version ?? null };
 }
 
 /** Success redirects server-side; the action only ever returns failures. */
@@ -55,6 +66,11 @@ export async function action({ request, params }: Route.ActionArgs) {
     confirmPassword: String(form.get("confirmPassword") ?? ""),
     terms: form.get("terms") === "on",
   });
+  // acceptance is mandatory and must be of the CURRENT version
+  const currentTerms = await getLegalDoc(client, "terms");
+  if (parsed.success && currentTerms && String(form.get("terms_version") ?? "") !== currentTerms.version) {
+    return data<RegisterActionData>({ ok: false, formError: "terms_changed" });
+  }
   if (!parsed.success) {
     const fieldErrors: Partial<Record<keyof z.output<typeof registerSchema>, string>> = {};
     for (const issue of parsed.error.issues) {
@@ -67,8 +83,13 @@ export async function action({ request, params }: Route.ActionArgs) {
   }
 
   const input = parsed.data;
+  // a number on a CONFIRMED account can't be reused (unconfirmed holders are released by the sign-up trigger)
+  const taken = await client.rpc("fn_signup_phone_taken", { p_phone: input.phone });
+  if (taken.data === true) {
+    return data<RegisterActionData>({ ok: false, fieldErrors: { phone: "phone:taken" } });
+  }
   const siteUrl = process.env.SITE_URL?.replace(/\/$/, "") ?? new URL(request.url).origin;
-  const { error } = await client.auth.signUp({
+  const { data: signed, error } = await client.auth.signUp({
     email: input.email,
     password: input.password,
     options: {
@@ -77,6 +98,8 @@ export async function action({ request, params }: Route.ActionArgs) {
         phone_e164: input.phone,
         locale: lang,
         terms_accepted_at: new Date().toISOString(),
+        // recorded in legal_acceptances by the sign-up trigger (version + evidence)
+        ...(currentTerms ? { terms_version: currentTerms.version, terms_ip: acceptanceEvidence(request).ip, terms_ua: acceptanceEvidence(request).userAgent } : {}),
         ...(vendorIntent ? { signup_intent: "vendor" } : {}),
       },
       emailRedirectTo: `${siteUrl}/${lang}/auth/verify?email=${encodeURIComponent(input.email)}`,
@@ -86,23 +109,34 @@ export async function action({ request, params }: Route.ActionArgs) {
     if (/already registered|already exists/i.test(error.message)) {
       return data<RegisterActionData>({ ok: false, formError: vendorIntent ? "email_exists_vendor" : "email_exists" });
     }
+    // Signing up again with an address that is still waiting for its code: the
+    // auth server re-sends the code, but at most once a minute — inside that
+    // minute a code was JUST sent, so go to the code screen instead of failing.
+    if (/security purposes|only request this after/i.test(error.message)) {
+      const again = `/${lang}/auth/verify?email=${encodeURIComponent(input.email)}&sent=${Date.now()}${
+        vendorIntent ? `&next=${encodeURIComponent(`/${lang}/vendor/onboarding`)}` : ""
+      }`;
+      if (isDocumentPost) throw redirect(again);
+      return { ok: true as const, redirectTo: again };
+    }
+    // too many codes asked for from this server in a short time
+    if (error.status === 429 || /rate limit/i.test(error.message)) {
+      return data<RegisterActionData>({ ok: false, formError: "rate_limited" });
+    }
+    console.error("[register] signUp failed", { status: error.status, code: (error as { code?: string }).code, message: error.message });
     return data<RegisterActionData>({ ok: false, formError: "generic" });
   }
+  // With email confirmation on, signing up again with an address that is ALREADY
+  // confirmed is not an error: the auth server answers with a stand-in user that
+  // has no identities and sends no email. Say so instead of waiting for a code.
+  if (signed.user && Array.isArray(signed.user.identities) && signed.user.identities.length === 0) {
+    return data<RegisterActionData>({ ok: false, formError: vendorIntent ? "email_exists_vendor" : "email_exists" });
+  }
 
-  // Welcome email via the real provider (no-op success if unconfigured).
-  const admin = getSupabaseAdminClient();
-  void sendEmail(admin, {
-    to: input.email,
-    templateKey: "welcome",
-    locale: lang === "en" ? "en" : "ar",
-    variables: {
-      name: input.firstName,
-      site_name: lang === "ar" ? "اتسوء" : "Etsawaa",
-      site_url: siteUrl,
-    },
-  }).catch((cause) => console.error("[register] welcome email failed", cause));
-
-  const redirectTo = `/${lang}/auth/verify?email=${encodeURIComponent(input.email)}${
+  // The auth server now emails the 6-digit code (Supabase SMTP → Resend).
+  // The welcome email waits until the code is verified (verify action).
+  // `sent` lets the verify page keep its resend countdown across refreshes.
+  const redirectTo = `/${lang}/auth/verify?email=${encodeURIComponent(input.email)}&sent=${Date.now()}${
     vendorIntent ? `&next=${encodeURIComponent(`/${lang}/vendor/onboarding`)}` : ""
   }`;
   if (isDocumentPost) throw redirect(redirectTo);
@@ -112,6 +146,8 @@ export async function action({ request, params }: Route.ActionArgs) {
 const FORM_ERRORS: Record<string, string> = {
   email_exists: "auth.register.emailExists",
   email_exists_vendor: "vendorOnboarding.register.emailExists",
+  terms_changed: "legal.termsChanged",
+  rate_limited: "auth.errors.rateLimited",
   db_not_connected: "auth.errors.generic",
   generic: "auth.errors.generic",
 };
@@ -152,6 +188,11 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
     if (result?.ok) navigate(result.redirectTo, { replace: true });
   }, [result, navigate]);
 
+  const phoneError = (code: string | undefined) =>
+    !code ? undefined
+      : code === "phone:taken" ? t("auth.complete.phoneTaken")
+      : code.startsWith("phone:") ? t("checkout.errPhone")
+      : code;
   const password = watch("password") ?? "";
   const strength = passwordStrengthScore(password);
 
@@ -166,6 +207,14 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
             {isVendor ? t("vendorOnboarding.register.subtitle") : t("auth.register.subtitle")}
           </p>
         </div>
+
+        {/* one tap: name + photo come from Google, then the two phones */}
+        <GoogleButton
+          lang={lang}
+          next={isVendor ? `/${lang}/vendor/onboarding` : null}
+          label={t("auth.register.google")}
+        />
+        <OrDivider />
 
         {failed?.formError ? (
           <div role="alert" className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger-soft p-3 text-sm text-danger">
@@ -189,15 +238,10 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
             <Input label={t("auth.register.lastName")} autoComplete="family-name" error={errors.lastName?.message ?? failed?.fieldErrors?.lastName} {...register("lastName")} />
           </div>
           <Input label={t("auth.register.email")} type="email" inputMode="email" autoComplete="email" error={errors.email?.message ?? failed?.fieldErrors?.email} {...register("email")} />
-          <Input
+          <PhoneInput
             label={t("auth.register.phone")}
-            type="tel"
-            inputMode="tel"
             autoComplete="tel"
-            hint={t("auth.register.phoneHint")}
-            dir="ltr"
-            inputClassName="text-start"
-            error={errors.phone?.message ?? failed?.fieldErrors?.phone}
+            error={phoneError(errors.phone?.message ?? failed?.fieldErrors?.phone)}
             {...register("phone")}
           />
           <div className="flex flex-col gap-1.5">
@@ -232,9 +276,10 @@ export default function RegisterPage({ loaderData }: Route.ComponentProps) {
           <div className="flex flex-col gap-1">
             <label className="flex items-start gap-2 text-start text-sm text-text">
               <input type="checkbox" className="mt-0.5 size-4 shrink-0 accent-[var(--color-action)]" {...register("terms")} />
+              <input type="hidden" name="terms_version" value={loaderData.termsVersion ?? ""} />
               <span className="min-w-0 leading-relaxed">
                 {t("auth.register.terms")}{" "}
-                <Link to={`/${lang}/p/terms`} className="font-bold text-action hover:underline">
+                <Link to={`/${lang}/legal/terms`} target="_blank" className="font-bold text-action hover:underline">
                   {t("auth.register.termsLink")}
                 </Link>{" "}
                 {t("auth.register.and")}{" "}

@@ -5,6 +5,8 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { Rating } from "~/components/ui/Rating";
+import { ReviewMediaThumbs } from "~/components/catalog/ReviewMediaPicker";
+import type { ReviewMediaItem } from "~/lib/review-media";
 import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
@@ -27,7 +29,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   const { data: rows, error } = await client
     .from("reviews")
-    .select("id, rating, title, body, status, created_at, product_id")
+    .select("id, rating, title, body, status, created_at, media, product_id")
     .eq("vendor_id", vendorId)
     .in("status", ["published", "pending"])
     .order("created_at", { ascending: false })
@@ -64,6 +66,7 @@ export default function VendorReviews({ loaderData }: Route.ComponentProps) {
   const rows = loaderData.rows as Array<{
     id: string; rating: number; title: string | null; body: string | null;
     status: string; created_at: string; product_id: string;
+    media?: ReviewMediaItem[] | null;
   }>;
   const names = loaderData.productNames as Record<string, string>;
 
@@ -100,12 +103,13 @@ export default function VendorReviews({ loaderData }: Route.ComponentProps) {
                 <span className="flex items-center gap-2">
                   {r.status === "pending" ? <Badge tone="warning">{t("vr.pending")}</Badge> : null}
                   <span className="num text-xs text-text-muted">
-                    {new Date(r.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
+                    {new Date(r.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}
                   </span>
                 </span>
               </div>
               {r.title ? <p className="mt-1.5 text-sm font-bold text-text">{r.title}</p> : null}
               {r.body ? <p className="mt-0.5 text-sm leading-relaxed text-text-muted">{r.body}</p> : null}
+              <ReviewMediaThumbs media={r.media ?? []} alt={names[r.product_id] ?? ""} />
             </li>
           ))}
         </ul>

@@ -94,11 +94,18 @@ export function CartProvider({
         mergedRef.current = true;
         const guest = readGuestLines();
         void (async () => {
+          let notices: Awaited<ReturnType<typeof apiMergeCart>>["notices"] = [];
           if (guest.length > 0) {
-            const { lines: merged, notices } = await apiMergeCart(guest).catch(() => ({ lines: [] as CartLine[], notices: [] }));
+            const res = await apiMergeCart(guest).catch(() => ({ lines: [] as CartLine[], notices: [] }));
+            notices = res.notices;
             writeGuestLines([]);
-            setLines(merged);
-            // guest recently-viewed merges server-side in the same pass
+            setLines(res.lines);
+          } else {
+            await refresh();
+          }
+          // guest recently-viewed + the pending wishlist heart merge on every
+          // sign-in, whether or not the guest cart had lines
+          {
             try {
               const rawRecent = localStorage.getItem(RECENT_KEY);
               const items = rawRecent ? (JSON.parse(rawRecent) as Array<{ id: string; at: number }>) : [];
@@ -119,14 +126,13 @@ export function CartProvider({
                 await fetch("/api/wishlist", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ product_id: pending }),
+                  // "add" never toggles an already-saved product back off
+                  body: JSON.stringify({ intent: "add", product_id: pending }),
                 });
               }
             } catch { /* non-critical */ }
-            onMerged?.(notices);
-          } else {
-            await refresh();
           }
+          if (guest.length > 0) onMerged?.(notices);
           setReady(true);
         })();
         return;
@@ -160,8 +166,12 @@ export function CartProvider({
   const setQty = useCallback(
     async (variantId: string, qty: number) => {
       if (viewerId) {
+        // optimistic: show the new quantity now; the server's (stock-capped)
+        // lines replace it, or the previous lines come back on failure
+        const before = lines;
+        setLines(qty < 1 ? lines.filter((l) => l.variant_id !== variantId) : lines.map((l) => (l.variant_id === variantId ? { ...l, qty: Math.min(qty, 99) } : l)));
         const res = await apiSetQty(variantId, qty).catch(() => ({ ok: false, lines: undefined }));
-        if (res.lines) setLines(res.lines);
+        setLines(res.lines ?? before);
         return;
       }
       const guest = readGuestLines();
@@ -186,8 +196,11 @@ export function CartProvider({
   const remove = useCallback(
     async (variantId: string) => {
       if (viewerId) {
+        // optimistic removal, restored if the server refuses
+        const before = lines;
+        setLines(lines.filter((l) => l.variant_id !== variantId));
         const res = await apiRemove(variantId).catch(() => ({ ok: false, lines: undefined }));
-        if (res.lines) setLines(res.lines);
+        setLines(res.lines ?? before);
         return;
       }
       const next = readGuestLines().filter((l) => l.variant_id !== variantId);

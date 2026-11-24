@@ -29,12 +29,15 @@
 
 | Layer | Technology | Notes |
 |---|---|---|
-| Frontend | React 19 + TypeScript (strict) | React Router 7 framework mode + Vite |
-| Styling | Tailwind + CSS variables (tokens) | Tokens come from DB, injected at SSR |
-| Motion | Framer Motion | 150–300ms, ease-out, respects reduced-motion |
-| Data/state | TanStack Query + Supabase JS | No Redux |
-| Forms | React Hook Form + Zod | Schemas shared with RPC validation |
-| i18n | react-i18next + bilingual DB content | URL prefix `/ar` and `/en` |
+| Frontend | React 19 + TypeScript (strict) | React Router 7 framework mode, SSR + Vite |
+| Styling | Tailwind v4 + CSS variables (tokens) | Tokens come from DB, injected at SSR |
+| Motion | CSS transitions + Tailwind utilities (no animation library) | 150–300ms, ease-out, respects reduced-motion |
+| Data/state | React Context + React Router loaders/`useFetcher` + Supabase JS v2 | No Redux, no query/cache library |
+| Forms | React Hook Form 7 + Zod 4 | Schemas shared with RPC validation |
+| i18n | i18next 25 + react-i18next + bilingual DB content | URL prefix `/ar` and `/en` |
+| Media upload | react-dropzone 20 | Drag & drop in the media library / pickers (§24) |
+| Maps | Leaflet 1.9 (dynamic import) | Delivery-location map at checkout |
+| Barcodes | bwip-js 4 | Code128 of the shipment number as inline SVG (§28) |
 | Backend | Supabase (Postgres 15+) | RLS on every exposed table |
 | Sensitive ops | Postgres functions (RPC) + Edge Functions | Wallet, commission, webhooks |
 | Storage | Supabase Storage (buckets) | Products, store assets, documents, blog |

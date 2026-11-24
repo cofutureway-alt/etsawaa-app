@@ -6,6 +6,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { getViewer } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { publicMeta } from "~/lib/seo";
+import { getI18n } from "~/lib/i18n/config";
 import { getOwnOrder, getOrderParts, getGeoNames, type OrderRow, type GroupRow, type ItemRow } from "~/features/orders/api";
 import { formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
@@ -19,26 +20,40 @@ import { SkeletonPage } from "~/components/ui/Skeleton";
  * (?kashier=return) where "Payment received" appears ONLY after the webhook
  * flips payment_status — the browser return query is never trusted (US-07).
  */
-export const meta: Route.MetaFunction = ({ params }) =>
-  publicMeta({
-    lang: params.lang === "en" ? "en" : "ar",
+export const meta: Route.MetaFunction = ({ params }) => {
+  const lang = params.lang === "en" ? "en" : "ar";
+  const t = getI18n(lang).t;
+  return publicMeta({
+    lang,
     path: "/order",
-    title: params.lang === "en" ? "Order — Etsawaa" : "الطلب — اتسوء",
-    description: params.lang === "en" ? "Your order details." : "تفاصيل طلبك.",
+    title: `${t("order.title")} — ${t("app.name")}`,
+    description: t("order.metaDescription"),
     noindex: true,
   });
+};
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  const { viewer } = (await getViewer(client)) ?? { viewer: null };
+  // session and order in parallel: RLS returns the order only to its owner,
+  // and a guest is redirected before anything is used
+  const [viewerRes, ownOrder] = await Promise.all([getViewer(client), getOwnOrder(client, params.number ?? "")]);
+  const viewer = viewerRes?.viewer ?? null;
   if (!viewer) {
     const url = new URL(request.url);
     throw redirect(`/${lang}/auth/login?next=${encodeURIComponent(url.pathname)}`);
   }
-  const order = await getOwnOrder(client, params.number ?? "");
+  let order = ownOrder;
   if (!order) throw new Response("Not found", { status: 404 });
+  if (order.payment_method === "kashier" && order.payment_status === "unpaid") {
+    // settle from Kashier's own record (server-to-server), then re-read
+    const { getSupabaseAdminClient } = await import("~/lib/supabase/admin");
+    const { reconcileKashierOrder } = await import("~/features/checkout/kashier.server");
+    const admin = getSupabaseAdminClient();
+    const res = admin ? await reconcileKashierOrder(admin, "order", order.number) : null;
+    if (res?.ok) order = (await getOwnOrder(client, order.number)) ?? order;
+  }
 
   const [parts, geo] = await Promise.all([
     getOrderParts(client, order.id),
@@ -87,17 +102,24 @@ export async function action({ request, params }: Route.ActionArgs) {
     if (order.payment_method !== "kashier" || order.payment_status === "paid") {
       return data({ ok: false, reason: "not_retryable" }, { status: 400 });
     }
-    const { buildKashierCheckoutUrl, isKashierConfigured } = await import("~/features/checkout/kashier.server");
+    const { loadKashierSettings, resolveKashierMode, startKashierPayment } = await import("~/features/checkout/kashier.server");
+    const { getSupabaseAdminClient } = await import("~/lib/supabase/admin");
     const { getSiteUrl } = await import("~/lib/env.server");
-    if (!isKashierConfigured()) return data({ ok: false, reason: "payment_unavailable" }, { status: 400 });
-    const payUrl = buildKashierCheckoutUrl({
+    const settings = await loadKashierSettings(client);
+    const mode = resolveKashierMode(settings, viewer.profile.role);
+    const admin = getSupabaseAdminClient();
+    if (!mode || !admin) return data({ ok: false, reason: "payment_unavailable" }, { status: 400 });
+    const session = await startKashierPayment(admin, "order", {
+      mode,
       orderNumber: order.number,
       totalPiastres: order.total_piastres,
       lang: lang === "en" ? "en" : "ar",
       siteUrl: getSiteUrl(request.url),
+      customer: { email: viewer.user.email ?? "", reference: viewer.user.id },
+      methods: settings.methods,
     });
-    if (!payUrl) return data({ ok: false, reason: "payment_session_failed" }, { status: 500 });
-    throw redirect(payUrl);
+    if (!session.ok) return data({ ok: false, reason: "payment_session_failed" }, { status: 502 });
+    throw redirect(session.sessionUrl);
   }
 
   return data({ ok: false, reason: "bad_intent" }, { status: 400 });
@@ -177,7 +199,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
         {t("order.title")} <span dir="ltr">{order.number}</span>
       </h1>
       <p className="mt-1 text-sm text-text-muted">
-        {t("order.createdAt")} {new Date(order.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG", { dateStyle: "long" })}
+        {t("order.createdAt")} {new Date(order.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn", { dateStyle: "long" })}
       </p>
 
       {banner ? (
@@ -262,7 +284,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
                       {en ? it.product_name_en : it.product_name_ar}
                     </span>
                     <span className="text-xs text-text-muted">
-                      {it.option_key ? `${it.option_key} · ` : ""}{t("cart.qty")} {it.qty}
+                      {(en ? it.option_label_en : it.option_label_ar) ? `${en ? it.option_label_en : it.option_label_ar} · ` : ""}{t("cart.qty")} {it.qty}
                     </span>
                   </span>
                   <span className="text-sm font-extrabold text-text">{money(it.line_total_piastres)}</span>
@@ -323,7 +345,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
             history.map((h) => (
               <li key={h.id} className="flex flex-wrap items-center gap-2 text-sm">
                 <span className="font-bold text-text">{statusLabel(h.status)}</span>
-                <span className="text-text-faint" dir="ltr">{new Date(h.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}</span>
+                <span className="text-text-faint" dir="ltr">{new Date(h.created_at).toLocaleString(en ? "en-EG" : "ar-EG-u-nu-latn")}</span>
                 {h.note && h.note !== "order_created" ? <span className="text-text-muted">— {h.note}</span> : null}
               </li>
             ))

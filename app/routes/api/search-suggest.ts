@@ -7,14 +7,14 @@ import { searchSuggestions } from "~/features/storefront/api";
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const q = (url.searchParams.get("q") ?? "").trim().slice(0, 60);
-  if (q.length < 2) return data({ products: [], stores: [], categories: [] });
+  if (q.length < 2) return data({ products: [], stores: [], categories: [], brands: [] });
   const { client } = createSupabaseServerClient(request);
-  if (!client) return data({ products: [], stores: [], categories: [] });
+  if (!client) return data({ products: [], stores: [], categories: [], brands: [] });
   try {
     const suggestions = await searchSuggestions(client, q);
     return data(suggestions);
   } catch {
-    return data({ products: [], stores: [], categories: [] });
+    return data({ products: [], stores: [], categories: [], brands: [] });
   }
 }
 

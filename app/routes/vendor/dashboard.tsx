@@ -9,6 +9,9 @@ import { fetchVendorRow } from "~/features/vendor/api";
 import { PackageIcon, PlusIcon, StoreIcon, UploadIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { SellerAchievements, type MyAchievements } from "~/components/achievements/SellerAchievements";
+import { DashboardInsights, LiveEventNotice, type DashboardCards, type LiveEvent } from "~/features/vendor/components/DashboardInsights";
+import { VendorAnalytics, type VendorAnalyticsData } from "~/features/vendor/components/VendorAnalytics";
 
 
 /**
@@ -28,18 +31,30 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     throw Response.redirect(new URL(`/${lang}/vendor/onboarding`, request.url).toString(), 302);
   }
 
-  const { data: statusRows } = await client
-    .from("products")
-    .select("status")
-    .eq("vendor_id", vendor.id)
-    .is("deleted_at", null);
+  const days = [7, 30, 90].includes(Number(new URL(request.url).searchParams.get("days"))) ? Number(new URL(request.url).searchParams.get("days")) : 30;
+  const [{ data: statusRows }, { data: achievements }, { data: cards }, { data: events }, { data: analytics }] = await Promise.all([
+    client.from("products").select("status").eq("vendor_id", vendor.id).is("deleted_at", null),
+    // level, progress to the next level, badges and active level rewards
+    client.rpc("fn_my_achievements"),
+    // categories + commission, child-level low stock, best sellers, unsold ≥10 days
+    client.rpc("fn_vendor_dashboard_cards", { p_low_stock: 5, p_unsold_days: 10 }),
+    client.rpc("fn_vendor_event_overview"),
+    client.rpc("fn_vendor_analytics", { p_days: days }),
+  ]);
 
   const counts = { draft: 0, pending: 0, approved: 0, rejected: 0 };
   for (const row of statusRows ?? []) {
     if (row.status in counts) counts[row.status as keyof typeof counts] += 1;
   }
 
-  return { lang, vendor, counts, total: (statusRows ?? []).length };
+  const ach = achievements as MyAchievements | null;
+  const insights = cards as DashboardCards | null;
+  const liveEvent = ((events ?? []) as Array<LiveEvent & { phase: string }>).find((e) => e.phase === "live") ?? null;
+  return {
+    lang, vendor, counts, total: (statusRows ?? []).length, achievements: ach?.ok ? ach : null,
+    insights: insights?.ok ? insights : null, liveEvent, supabaseUrl: process.env.SUPABASE_URL ?? "",
+    analytics: (analytics as VendorAnalyticsData | null)?.ok ? (analytics as VendorAnalyticsData) : null,
+  };
 }
 
 export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
@@ -113,14 +128,28 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
             </div>
           </div>
 
-          <Link to={`/${lang}/vendor/products/new`}>
-            <Button size="md">
-              <PlusIcon aria-hidden="true" className="size-4" />
-              <span>{t("vendor.products.new")}</span>
-            </Button>
-          </Link>
+          {vendor.status === "pending" ? (
+            <div className="flex flex-col items-end gap-1">
+              <Button size="md" disabled>
+                <PlusIcon aria-hidden="true" className="size-4" />
+                <span>{t("vendor.products.new")}</span>
+              </Button>
+              <p className="max-w-xs text-end text-xs font-bold text-warning-strong">{t("vendor.products.underReviewNote")}</p>
+            </div>
+          ) : (
+            <Link to={`/${lang}/vendor/products/new`}>
+              <Button size="md">
+                <PlusIcon aria-hidden="true" className="size-4" />
+                <span>{t("vendor.products.new")}</span>
+              </Button>
+            </Link>
+          )}
         </CardBody>
       </Card>
+
+      {loaderData.liveEvent ? <LiveEventNotice event={loaderData.liveEvent} lang={isAr ? "ar" : "en"} /> : null}
+
+      {loaderData.achievements ? <SellerAchievements data={loaderData.achievements} /> : null}
 
       {/* Product Status Cards */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -134,7 +163,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
               <p className="num text-2xl font-black text-text">{card.value}</p>
               <span className="text-xs font-bold text-text-muted">
                 {card.value > 0 ? (
-                  <span className="text-action">عرض &larr;</span>
+                  <span className="text-action">{t("vendor.dash.view")} &larr;</span>
                 ) : (
                   "—"
                 )}
@@ -144,6 +173,10 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
           </Link>
         ))}
       </div>
+
+      {loaderData.analytics ? <VendorAnalytics data={loaderData.analytics} lang={isAr ? "ar" : "en"} supabaseUrl={loaderData.supabaseUrl} /> : null}
+
+      {loaderData.insights ? <DashboardInsights cards={loaderData.insights} lang={isAr ? "ar" : "en"} supabaseUrl={loaderData.supabaseUrl} /> : null}
 
       {/* Quick Actions Shortcuts */}
       <Card>
@@ -158,7 +191,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
             </div>
             <div>
               <p className="text-sm font-black text-text">{t("vendor.products.title")}</p>
-              <p className="text-2xs text-text-muted">{total} {isAr ? "منتج مسجل" : "items"}</p>
+              <p className="text-2xs text-text-muted">{total} {t("vendor.dash.totalItems")}</p>
             </div>
           </Link>
 
@@ -171,7 +204,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
             </div>
             <div>
               <p className="text-sm font-black text-text">{t("vendorStore.title")}</p>
-              <p className="text-2xs text-text-muted">{isAr ? "تعديل الشعار والبيانات" : "Branding & Bio"}</p>
+              <p className="text-2xs text-text-muted">{t("vendor.dash.brandingBio")}</p>
             </div>
           </Link>
 
@@ -184,7 +217,7 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
             </div>
             <div>
               <p className="text-sm font-black text-text">{t("media.title")}</p>
-              <p className="text-2xs text-text-muted">{isAr ? "مكتبة الصور والملفات" : "Files library"}</p>
+              <p className="text-2xs text-text-muted">{t("vendor.dash.filesLibrary")}</p>
             </div>
           </Link>
         </CardBody>
@@ -196,11 +229,13 @@ export default function VendorDashboard({ loaderData }: Route.ComponentProps) {
             <EmptyState
               title={t("vendor.dash.emptyTitle")}
               body={t("vendor.dash.emptyBody")}
-              action={
+              action={vendor.status === "pending" ? (
+                <p className="text-sm font-bold text-warning-strong">{t("vendor.products.underReviewNote")}</p>
+              ) : (
                 <Link to={`/${lang}/vendor/products/new`}>
                   <Button>{t("vendor.products.new")}</Button>
                 </Link>
-              }
+              )}
             />
           </CardBody>
         </Card>

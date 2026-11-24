@@ -49,7 +49,7 @@ export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
       <PageHeader title={t("penalties.title")} />
       {loaderData.rows.length === 0 ? (
         <div className="mt-6">
-          <EmptyState title={t("penalties.empty")} body={t("report.netHint")} />
+          <EmptyState title={t("penalties.empty")} />
         </div>
       ) : (
         <ul className="mt-4 flex flex-col gap-2">
@@ -64,9 +64,9 @@ export default function PenaltiesPage({ loaderData }: Route.ComponentProps) {
               <span className="font-bold tabular-nums text-text" dir="ltr">{money(p.amount_piastres)}</span>
               <span className="flex-1 text-text">{p.reason}</span>
               <span className="text-xs text-text-muted" dir="ltr">{p.reference ?? "—"}</span>
-              <span className="num text-xs text-text-muted">{new Date(p.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}</span>
+              <span className="num text-xs text-text-muted">{new Date(p.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}</span>
               {p.status === "waived" && p.waived_at ? (
-                <span className="text-xs text-text-muted">{t("penalties.waivedBy", { by: (loaderData.waivedNames as Record<string, string>)[p.waived_by ?? ""] ?? "—" })} {new Date(p.waived_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}</span>
+                <span className="text-xs text-text-muted">{t("penalties.waivedBy", { by: (loaderData.waivedNames as Record<string, string>)[p.waived_by ?? ""] ?? "—" })} {new Date(p.waived_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}</span>
               ) : null}
             </li>
           ))}

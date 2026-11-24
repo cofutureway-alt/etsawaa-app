@@ -1,0 +1,110 @@
+{
+  "children.sku": {
+    "ar": "رمز المنتج SKU",
+    "en": "SKU"
+  },
+  "children.skuAuto": {
+    "ar": "تلقائي — يمكنك كتابة رمزك",
+    "en": "Automatic — or type your own"
+  },
+  "store.product.sku": {
+    "ar": "رمز المنتج (SKU)",
+    "en": "SKU"
+  },
+  "store.product.availableColors": {
+    "ar": "الألوان المتاحة",
+    "en": "Available colours"
+  },
+  "store.product.availableSizes": {
+    "ar": "المقاسات المتاحة",
+    "en": "Available sizes"
+  },
+  "children.customColorNameEn": {
+    "ar": "اسم اللون بالإنجليزي",
+    "en": "Colour name in English"
+  },
+  "panelSearch.none": {
+    "ar": "لا توجد منتجات مطابقة",
+    "en": "No matching products"
+  },
+  "panelSearch.vendorPlaceholder": {
+    "ar": "ابحث عن منتج بالاسم العربي أو الإنجليزي…",
+    "en": "Find a product by its Arabic or English name…"
+  },
+  "adminProducts.ownerAccount": {
+    "ar": "حساب التاجر",
+    "en": "Vendor account"
+  },
+  "adminProducts.reviewedBy": {
+    "ar": "بواسطة {{name}}",
+    "en": "by {{name}}"
+  },
+  "productReview.approvedBy": {
+    "ar": "قبله",
+    "en": "Approved by"
+  },
+  "productReview.rejectedBy": {
+    "ar": "رفضه",
+    "en": "Rejected by"
+  },
+  "dash.glance": {
+    "ar": "المنصة في لمحة",
+    "en": "Platform at a glance"
+  },
+  "dash.g.users": {
+    "ar": "كل المستخدمين",
+    "en": "All users"
+  },
+  "dash.g.customers": {
+    "ar": "العملاء",
+    "en": "Customers"
+  },
+  "dash.g.vendors": {
+    "ar": "التجار",
+    "en": "Vendors"
+  },
+  "dash.g.support": {
+    "ar": "خدمة العملاء",
+    "en": "Customer support"
+  },
+  "dash.g.admins": {
+    "ar": "المديرون",
+    "en": "Admins"
+  },
+  "dash.g.products": {
+    "ar": "المنتجات",
+    "en": "Products"
+  },
+  "dash.g.orders": {
+    "ar": "الطلبات",
+    "en": "Orders"
+  },
+  "dash.g.buyers": {
+    "ar": "المشترون",
+    "en": "Buyers"
+  },
+  "dash.g.newThis": {
+    "ar": "{{count}} جديد في الفترة",
+    "en": "{{count}} new this period"
+  },
+  "dash.g.activeOf": {
+    "ar": "{{count}} نشط",
+    "en": "{{count}} active"
+  },
+  "dash.g.liveOf": {
+    "ar": "{{count}} معروض",
+    "en": "{{count}} live"
+  },
+  "dash.g.repeat": {
+    "ar": "{{pct}}٪ يكررون الشراء",
+    "en": "{{pct}}% buy again"
+  },
+  "footer.siteMapFile": {
+    "ar": "تحميل خريطة الموقع",
+    "en": "Download the site map"
+  },
+  "home.metaDescription": {
+    "ar": "إتسوء (اتسوء – Etsawaa) سوق إلكتروني مصري: موبايلات، إلكترونيات، ملابس، أجهزة منزلية وأكثر من متاجر موثوقة بأسعار واضحة، توصيل لكل المحافظات والدفع عند الاستلام أو أونلاين.",
+    "en": "Etsawaa (إتسوء) is an Egyptian online marketplace: mobiles, electronics, fashion, home appliances and more from vetted stores, clear prices, delivery to every governorate, cash on delivery or online payment."
+  }
+}

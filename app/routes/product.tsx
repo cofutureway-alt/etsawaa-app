@@ -1,29 +1,40 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { Route } from "./+types/product";
 import { useTranslation } from "react-i18next";
+import { getI18n } from "~/lib/i18n/config";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
-import { breadcrumbLd, jsonLd, publicMeta, siteUrl } from "~/lib/seo";
+import { absoluteMediaUrl, breadcrumbLd, jsonLd, publicMeta, siteUrl } from "~/lib/seo";
+import { htmlToText } from "~/lib/sanitize";
 import { formatPiastres } from "~/lib/money";
-import { getProductPage, getRelatedProducts, getStoreProducts } from "~/features/storefront/api";
+import { getProductPage, getStoreProducts } from "~/features/storefront/api";
+import { getRelatedProductsWide } from "~/features/storefront/related";
+import { getActiveAds, getAdProductCards, pickRandom } from "~/features/ads/ads.server";
+import { sendAdEvent, useAdImpressions } from "~/features/ads/ad-tracking";
+import { ProductAdCarousel, type ProductPageBanner } from "~/components/catalog/ProductAdCarousel";
 import { toggleCompare } from "~/features/discovery/compare";
-import { useCart } from "~/features/cart/store";
 import { getViewer } from "~/lib/auth/guards";
 import { Tabs } from "~/components/ui/Tabs";
 import { Rating } from "~/components/ui/Rating";
-import { PriceTag } from "~/components/ui/PriceTag";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { Breadcrumbs } from "~/components/ui/Breadcrumbs";
 import { useToast } from "~/components/ui/Toast";
-import { CartIcon, MinusIcon, PlusIcon, ScaleIcon, ShieldIcon, StarIcon, StoreIcon, TruckIcon } from "~/components/ui/icons";
-import { Gallery } from "~/components/catalog/Gallery";
-import { VariantSelector } from "~/components/catalog/VariantSelector";
+import { CartIcon, CompareArrowsIcon, ShieldIcon, StarIcon, StoreIcon, TruckIcon } from "~/components/ui/icons";
+import { Gallery, type GalleryItem } from "~/components/catalog/Gallery";
+import { BuyBox } from "~/components/catalog/BuyBox";
+import { ProductDetails } from "~/components/catalog/ProductDetails";
 import { ProductCard } from "~/components/catalog/ProductCard";
 import { MediaImg, mediaUrl } from "~/components/catalog/MediaImg";
 import { RecentStrip, useRecordView } from "~/components/catalog/RecentStrip";
 import { WishlistHeart } from "~/components/catalog/WishlistHeart";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { Carousel } from "~/components/ui/Carousel";
+import { ReviewPrompt } from "~/components/catalog/ReviewPrompt";
+import { ReviewMediaThumbs } from "~/components/catalog/ReviewMediaPicker";
+import { SizeGuideButton } from "~/components/catalog/SizeGuide";
+import { data } from "react-router";
+import { parseReviewMedia } from "~/lib/review-media";
 
 
 /**
@@ -38,46 +49,127 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const { client } = createSupabaseServerClient(request);
   if (!client) throw new Response("Not Found", { status: 404 });
   const slug = decodeURIComponent(params.slug ?? "");
-  const page = await getProductPage(client, slug);
+  // round A: the product and the session in parallel (the session used to be
+  // checked only after the whole product had loaded)
+  const [page, viewerRes] = await Promise.all([getProductPage(client, slug), getViewer(client)]);
   if (!page) throw new Response("Not Found", { status: 404 });
+  const viewer = viewerRes?.viewer ?? null;
 
   const url = new URL(request.url);
   const requestedKey = url.searchParams.get("v");
-  const { viewer } = (await getViewer(client)) ?? { viewer: null };
-  const [related, moreFromStore, wishedRows] = await Promise.all([
-    getRelatedProducts(client, page.card.leaf_category_id, page.card.id, 8).catch(() => []),
+  // round B: carousels, the viewer's hearts and the review prompt — one batch
+  // (the review check used to be its own round after the carousels)
+  const noRows = Promise.resolve({ data: null, error: null });
+  const [relatedRaw, moreFromStore, wishedRows, deliveredLines, myReviews] = await Promise.all([
+    // 40, not 16: the strip drops the cards already shown in "more from this store"
+    getRelatedProductsWide(client, page.card.id, 40).catch(() => []),
     getStoreProducts(client, page.card.vendor_id)
-      .then((rows) => rows.filter((r) => r.id !== page.card.id && r.is_listable).slice(0, 4))
+      .then((rows) => rows.filter((r) => r.id !== page.card.id && r.is_listable).slice(0, 16))
       .catch(() => []),
     viewer
-      ? client.from("wishlist_items").select("product_id").eq("user_id", viewer.user.id)
-      : Promise.resolve({ data: null, error: null }),
+      ? client.from("wishlist_items").select("product_id").eq("user_id", viewer.user.id).limit(500)
+      : noRows,
+    // post-purchase review prompt: a delivered line of this product, never reviewed
+    viewer
+      ? client.from("order_items").select("id, orders!inner(user_id, delivered_at)")
+          .eq("product_id", page.card.id).eq("orders.user_id", viewer.user.id).not("orders.delivered_at", "is", null).limit(1)
+      : noRows,
+    viewer
+      ? client.from("reviews").select("id").eq("product_id", page.card.id).eq("customer_id", viewer.user.id).limit(1)
+      : noRows,
   ]);
   const wishedIds = new Set(((wishedRows.data ?? []) as Array<{ product_id: string }>).map((r) => r.product_id));
+  // "similar" must not repeat the cards already shown in "more from this store"
+  const storeIds = new Set(moreFromStore.map((r) => r.id));
+  const related = relatedRaw.filter((r) => !storeIds.has(r.id)).slice(0, 16);
   // warm the same-origin media cache with the LCP image while the page renders
   const firstImage = page.media.find((m) => m.kind === "image")?.path;
   if (firstImage) void import("~/lib/media-cache.server").then((m) => m.warmMedia(firstImage)).catch(() => undefined);
-  return { lang, page, related, moreFromStore, wishedIds, requestedKey, viewerId: viewer?.user.id ?? null, slug };
+  const lines = (deliveredLines.data ?? []) as Array<{ id: string }>;
+  const reviewItemId = lines.length > 0 && ((myReviews.data ?? []) as unknown[]).length === 0 ? lines[0]!.id : null;
+  // in-product-page ads: other stores' products of the same main category,
+  // shown as "Sponsored" (up to 2, random; paid per impression)
+  const sponsored: Array<{ campaign: string; card: (typeof related)[number] }> = [];
+  const pageAds = (await getActiveAds(client, ["product_page"])).filter((a) => a.product_id && a.product_id !== page.card.id && a.vendor_id !== page.card.vendor_id);
+  if (pageAds.length) {
+    const cards = await getAdProductCards(client, pageAds.map((a) => a.product_id ?? ""));
+    const leafIds = [...new Set([page.card.leaf_category_id, ...[...cards.values()].map((c) => c.leaf_category_id)].filter((x): x is string => Boolean(x)))];
+    const { data: paths } = await client.from("categories").select("id, path").in("id", leafIds);
+    const rootOf = new Map(((paths ?? []) as Array<{ id: string; path: string }>).map((c) => [c.id, c.path.split("/")[0]]));
+    const myRoot = page.card.leaf_category_id ? rootOf.get(page.card.leaf_category_id) : undefined;
+    const fits = pageAds.filter((a) => { const c = cards.get(a.product_id ?? ""); return c && c.leaf_category_id && rootOf.get(c.leaf_category_id) === myRoot; });
+    for (const a of pickRandom(fits, 2)) sponsored.push({ campaign: a.id, card: cards.get(a.product_id ?? "")! });
+  }
+  // ad box under "Shipping details": banners placed on the product page; a paid
+  // one (made when an ad order is approved) carries its campaign for counting
+  const now = new Date().toISOString();
+  const [{ data: bannerRows }, bannerAds] = await Promise.all([
+    client.from("banners").select("id, title_ar, title_en, image_path, link_url, vendor_id")
+      .eq("placement", "product_page").eq("is_active", true)
+      .or(`starts_at.is.null,starts_at.lte.${now}`).or(`ends_at.is.null,ends_at.gte.${now}`).order("position").limit(8),
+    getActiveAds(client, ["product_page"]).then((ads) => ads.filter((a) => !a.product_id)),
+  ]);
+  const pageBanners: ProductPageBanner[] = ((bannerRows ?? []) as Array<Omit<ProductPageBanner, "campaign"> & { vendor_id: string | null }>)
+    .filter((b) => b.image_path)
+    .map(({ vendor_id, ...b }) => ({ ...b, campaign: vendor_id ? bannerAds.find((a) => a.vendor_id === vendor_id)?.id ?? null : null }));
+  return { lang, page, related, moreFromStore, wishedIds, requestedKey, viewerId: viewer?.user.id ?? null, slug, reviewItemId, sponsored, pageBanners };
+}
+
+/** The review prompt posts here (fn_submit_review checks ownership + delivery). */
+export async function action({ request, params }: Route.ActionArgs) {
+  requireLang(params);
+  const { client } = createSupabaseServerClient(request);
+  if (!client) return data({ ok: false, reason: "db" }, { status: 503 });
+  const form = await request.formData();
+  if (String(form.get("intent")) !== "review") return data({ ok: false, reason: "bad_intent" }, { status: 400 });
+  const { data: res, error } = await client.rpc("fn_submit_review", {
+    p_order_item_id: String(form.get("order_item_id") ?? ""),
+    p_rating: Number(form.get("rating") ?? 0),
+    p_title: "",
+    p_body: String(form.get("body") ?? ""),
+    p_media: parseReviewMedia(form.get("media")),
+  });
+  if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
+  const r = res as { ok: boolean; reason?: string };
+  return r.ok ? { ok: true } : data({ ok: false, reason: r.reason }, { status: 400 });
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const lang = (data?.lang as "ar" | "en") ?? "ar";
+  const t = getI18n(lang).t;
   const page = data?.page;
   if (!page) {
     return publicMeta({
-      lang, path: "/product", title: lang === "ar" ? "المنتج غير موجود — اتسوء" : "Product not found — Etsawaa",
-      description: lang === "ar" ? "هذا المنتج غير متاح." : "This product is not available.", noindex: true,
+      lang, path: "/product", title: `${t("product.metaNotFoundTitle")} — ${t("app.name")}`,
+      description: t("product.metaNotFoundDescription"), noindex: true,
     });
   }
   const name = lang === "ar" ? page.card.name_ar || page.card.name_en : page.card.name_en || page.card.name_ar;
   const short = lang === "ar" ? page.card.short_ar || page.desc_ar : page.card.short_en || page.desc_en;
-  const description = (short || name).slice(0, 160);
+  const description = (htmlToText(short).replace(/\s+/g, " ") || name).slice(0, 160);
   const slug = lang === "ar" ? page.card.slug_ar || page.card.slug_en : page.card.slug_en || page.card.slug_ar;
+  const otherSlug = lang === "ar" ? page.card.slug_en || page.card.slug_ar : page.card.slug_ar || page.card.slug_en;
+  const img = page.card.main_image_path ?? page.media.find((m) => m.kind === "image")?.path ?? null;
+  const price = ((page.card.event_price_piastres ?? page.card.min_price_piastres ?? 0) / 100).toFixed(2);
+  const brand = lang === "ar" ? page.card.brand_name_ar || page.card.brand_name_en : page.card.brand_name_en || page.card.brand_name_ar;
+  const category = lang === "ar" ? page.card.category_name_ar : page.card.category_name_en;
+  const inStock = page.card.stock_total > 0;
   return publicMeta({
     lang,
     path: `/product/${encodeURIComponent(slug)}`,
-    title: `${name} — ${lang === "ar" ? "اتسوء" : "Etsawaa"}`,
+    altPath: `/product/${encodeURIComponent(otherSlug)}`,
+    title: `${name}${brand ? ` | ${brand}` : ""} — ${t("app.name")}`,
     description,
+    ogType: "product",
+    ogImage: img ? absoluteMediaUrl(img) : undefined,
+    ogImageAlt: name,
+    keywords: [name, brand ?? "", category ?? "", lang === "ar" ? `سعر ${name}` : `${name} price`, lang === "ar" ? `شراء ${name}` : `buy ${name}`],
+    extra: [
+      { property: "product:price:amount", content: price },
+      { property: "product:price:currency", content: "EGP" },
+      { property: "product:availability", content: inStock ? "in stock" : "out of stock" },
+      ...(brand ? [{ property: "product:brand", content: brand }] : []),
+    ],
     noindex: false,
   });
 };
@@ -87,111 +179,37 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
   const toast = useToast();
   const navigate = useNavigate();
   const lang = loaderData.lang;
+  useAdImpressions([...(loaderData.sponsored ?? []).map((s) => s.campaign),
+    ...(loaderData.pageBanners ?? []).map((b) => b.campaign).filter((c): c is string => Boolean(c))]);
   const page = loaderData.page;
   const card = page.card;
   const name = lang === "ar" ? card.name_ar || card.name_en : card.name_en || card.name_ar;
   const storeName = lang === "ar" ? card.store_name_ar || card.store_name_en : card.store_name_en || card.store_name_ar;
+  const brandName = lang === "ar" ? page.brand_name_ar || page.brand_name_en : page.brand_name_en || page.brand_name_ar;
+  const brandSlug = lang === "ar" ? page.brand_slug_ar || page.brand_slug_en : page.brand_slug_en || page.brand_slug_ar;
 
-  /* ---- variant selection state ------------------------------------------ */
-  const initialVariant = useMemo(() => {
-    if (loaderData.requestedKey) {
-      const byKey = page.variants.find((v) => v.option_key === loaderData.requestedKey);
-      if (byKey) return byKey;
-    }
-    return page.variants.find((v) => v.stock > 0) ?? page.variants[0] ?? null;
-  }, [page.variants, loaderData.requestedKey]);
-
-  const [selectedId, setSelectedId] = useState<string | null>(initialVariant?.id ?? null);
-  const selected = useMemo(
-    () => page.variants.find((v) => v.id === selectedId) ?? initialVariant,
-    [page.variants, selectedId, initialVariant],
-  );
-
-  const selectedMap = useMemo(() => {
-    const map = new Map<string, string>();
-    if (selected) for (const oid of selected.option_ids ?? []) {
-      const axis = page.axes.find((a) => a.options.some((o) => o.id === oid));
-      if (axis) map.set(axis.attribute_id, oid);
-    }
-    return map;
-  }, [selected, page.axes]);
-
-  // qty lives per variant; onSelectOption resets it when the variant changes.
-  const [qty, setQty] = useState(1);
-
-  const onSelectOption = (attributeId: string, optionId: string) => {
-    const next = new Map(selectedMap);
-    next.set(attributeId, optionId);
-    // resolve to the exact variant with this combination
-    const match = page.variants.find((v) => {
-      const ids = v.option_ids ?? [];
-      for (const axis of page.axes) {
-        const want = next.get(axis.attribute_id);
-        if (want && !ids.includes(want)) return false;
-      }
-      return true;
-    });
-    if (match) {
-      setSelectedId(match.id);
-      setPickedImage(null); // variant change wins over an earlier thumbnail pick
-      setQty(1);            // qty is per-variant; keep it inside the new stock
-      const url = new URL(window.location.href);
-      url.searchParams.set("v", match.option_key);
-      void navigate(`${url.pathname}${url.search}`, { replace: true, preventScrollReset: true });
-    }
-  };
-
-  /* ---- price / stock / sale window -------------------------------------- */
-  // A sale price with no scheduled window is a permanent sale — previously it
-  // was ignored entirely until an admin set sale_starts_at.
-  const inSaleWindow = (() => {
-    if (!page.sale_starts_at && !page.sale_ends_at) return true;
-    const start = page.sale_starts_at ? new Date(page.sale_starts_at).getTime() : -Infinity;
-    const end = page.sale_ends_at ? new Date(page.sale_ends_at).getTime() : Infinity;
-    const now = Date.now();
-    return now >= start && now <= end;
-  })();
-  const variantPrice = selected?.price_piastres ?? null;
-  const variantSale = inSaleWindow ? selected?.sale_price_piastres ?? null : null;
-  const effective = variantSale ?? variantPrice;
-  const regular = variantPrice;
-  const eventDiscount = card.event_percent > 0 && effective != null;
-  const eventPrice = eventDiscount && effective != null
-    ? (() => {
-        const discounted = effective - Math.trunc((effective * card.event_percent) / 100);
-        return card.event_max_piastres != null && discounted > card.event_max_piastres ? card.event_max_piastres : discounted;
-      })()
-    : null;
-
-  const stock = selected?.stock ?? 0;
-  const outOfStock = stock <= 0;
-
-  /* ---- gallery images ---------------------------------------------------- */
-  const images = page.media.filter((m) => m.kind === "image").map((m) => ({ id: m.id, path: m.path }));
-  // A thumbnail click sets `pickedImage`; switching variant drops it so the
-  // variant's own image wins again. Previously onSelect was a no-op and only
-  // variant changes ever moved the main image.
+  /* ---- gallery: the picked colour's own photos, else the product's ------ */
+  // one thumbnail per picture: the same file can be both the main photo and a colour's photo
+  const videoItems: GalleryItem[] = page.media
+    .filter((m, i, all) => m.kind === "video" && all.findIndex((x) => x.path === m.path) === i)
+    .map((m) => ({ id: m.id, path: m.path, kind: "video" }));
+  const baseImages: GalleryItem[] = [
+    ...page.media
+      .filter((m, i, all) => m.kind === "image" && all.findIndex((x) => x.path === m.path) === i)
+      .map((m) => ({ id: m.id, path: m.path, kind: "image" as const })),
+    ...videoItems,
+  ];
+  const [colorImages, setColorImages] = useState<string[] | null>(null);
   const [pickedImage, setPickedImage] = useState<string | null>(null);
-  const variantImage = selected?.image_path ?? null;
-  const selectedImage = pickedImage ?? variantImage ?? images[0]?.path ?? null;
+  const onColorImages = useCallback((paths: string[] | null) => {
+    setColorImages(paths);
+    setPickedImage(null); // a colour change wins over an earlier thumbnail pick
+  }, []);
+  const colorItems: GalleryItem[] = [...new Set(colorImages ?? [])].map((path, i) => ({ id: `color-${i}`, path, kind: "image" }));
+  const images: GalleryItem[] = colorImages ? [...colorItems, ...videoItems] : baseImages;
+  const selectedImage = pickedImage ?? images[0]?.path ?? null;
   const onPickImage = (path: string) => setPickedImage(path);
-
-  /* ---- cart -------------------------------------------------------------- */
-  const cart = useCart();
-  const [adding, setAdding] = useState(false);
-
-  const addToCart = async () => {
-    if (!selected || outOfStock || adding) return;
-    setAdding(true);
-    const res = await cart.add(selected.id, card.id, qty);
-    setAdding(false);
-    if (!res.ok) {
-      toast.showToast("error", t(res.reason === "out_of_stock" ? "store.product.outOfStock" : "errors.generic"));
-      return;
-    }
-    if (res.capped) toast.showToast("info", t("cart.cappedNotice"));
-    cart.openDrawer();
-  };
+  const outOfStock = card.stock_total <= 0;
 
   /* ---- recently viewed (S-22) -------------------------------------------- */
   useRecordView(card.id, loaderData.viewerId);
@@ -221,8 +239,6 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
     { label: name },
   ];
 
-  /* ---- specs table: attributes + shipping facts -------------------------- */
-  const specRows = page.attributes.filter((a) => !a.is_axis || a.option_label_ar || a.option_label_en || a.value_text || a.value_number != null || a.value_bool != null);
 
   const ratingDist = useMemo(() => {
     const buckets = [5, 4, 3, 2, 1].map((star) => ({ star, count: page.reviews.filter((r) => Math.floor(r.rating) === star).length }));
@@ -235,30 +251,52 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
   ) : null;
 
   return (
-    <div className="flex flex-col gap-5 pb-16 md:pb-0">
+    <div className="flex flex-col gap-5 pb-28 md:pb-0">
       {lcpPreload}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={jsonLd([
-          breadcrumbLd(lang === "en" ? "en" : "ar", crumbs.map((c) => ({ name: c.label, path: c.href ?? `/${lang}` }))),
+          breadcrumbLd(lang === "en" ? "en" : "ar", crumbs.map((c) => ({ name: c.label, path: c.href }))),
           {
             "@context": "https://schema.org",
             "@type": "Product",
             name,
-            description: (lang === "ar" ? page.desc_ar : page.desc_en).slice(0, 500) || undefined,
-            image: page.media.filter((m) => m.kind === "image").slice(0, 4).map((m) => mediaUrl(m.path)),
+            description: htmlToText(lang === "ar" ? page.desc_ar : page.desc_en).slice(0, 500) || undefined,
+            image: page.media.filter((m) => m.kind === "image").slice(0, 6).map((m) => absoluteMediaUrl(m.path)),
+            sku: page.variants[0]?.sku || card.id,
+            url: `${siteUrl()}/${lang}/product/${encodeURIComponent(lang === "ar" ? card.slug_ar : card.slug_en)}`,
+            category: (lang === "ar" ? card.category_name_ar : card.category_name_en) || undefined,
             brand: card.brand_name_ar || card.brand_name_en
               ? { "@type": "Brand", name: lang === "ar" ? card.brand_name_ar : card.brand_name_en }
               : undefined,
-            sku: selected?.sku ?? undefined,
             offers: {
               "@type": "Offer",
               priceCurrency: "EGP",
-              price: ((eventPrice ?? effective ?? 0) / 100).toFixed(2),
+              price: ((card.event_price_piastres ?? card.min_price_piastres ?? 0) / 100).toFixed(2),
               availability: outOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
               url: `${siteUrl()}/${lang}/product/${encodeURIComponent(lang === "ar" ? card.slug_ar : card.slug_en)}`,
+              itemCondition: "https://schema.org/NewCondition",
+              priceValidUntil: (page.sale_ends_at ?? new Date(Date.now() + 30 * 86_400_000).toISOString()).slice(0, 10),
               seller: { "@type": "Organization", name: storeName },
+              shippingDetails: {
+                "@type": "OfferShippingDetails",
+                shippingDestination: { "@type": "DefinedRegion", addressCountry: "EG" },
+              },
+              hasMerchantReturnPolicy: {
+                "@type": "MerchantReturnPolicy",
+                applicableCountry: "EG",
+                returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+                merchantReturnDays: 14,
+              },
             },
+            ...(page.reviews.length > 0
+              ? { review: page.reviews.slice(0, 5).map((r) => ({
+                  "@type": "Review",
+                  reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
+                  author: { "@type": "Person", name: r.author_name || (lang === "ar" ? "عميل" : "Customer") },
+                  ...(r.body ? { reviewBody: r.body.slice(0, 500) } : {}),
+                })) }
+              : {}),
             ...(card.rating_count > 0 && card.rating_avg != null
               ? { aggregateRating: { "@type": "AggregateRating", ratingValue: card.rating_avg, reviewCount: card.rating_count } }
               : {}),
@@ -277,109 +315,50 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
         {/* buy box */}
         <div className="flex min-w-0 flex-col gap-4">
           <div className="flex items-start justify-between gap-3">
-            <h1 className="min-w-0 text-xl font-black leading-snug text-text">{name}</h1>
+            <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
+              <h1 className="min-w-0 text-xl font-black leading-snug text-text">{name}</h1>
+              {card.rating_count > 0 && card.rating_avg != null ? (
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-featured/60 bg-featured/15 px-2 py-0.5 text-xs font-black text-ink"
+                  aria-label={t("store.product.ratingBadge", { value: card.rating_avg.toFixed(1), count: card.rating_count })}>
+                  <Rating value={card.rating_avg} size="sm" />
+                  <span className="num">{card.rating_avg.toFixed(1)}</span>
+                  <span className="num font-bold text-text-muted">({card.rating_count})</span>
+                </span>
+              ) : (
+                <span className="shrink-0 rounded-full border border-border px-2 py-0.5 text-2xs font-bold text-text-faint">{t("store.noReviews")}</span>
+              )}
+            </div>
             <WishlistHeart productId={card.id} initial={loaderData.wishedIds.has(card.id)} className="shrink-0" />
           </div>
 
-          {card.rating_count > 0 && card.rating_avg != null ? (
-            <Rating value={card.rating_avg} count={card.rating_count} />
-          ) : (
-            <span className="text-xs text-text-faint">{t("store.noReviews")}</span>
-          )}
-
-          {/* price block */}
-          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface-tint p-3.5">
-            {effective != null ? (
-              <PriceTag
-                pricePiastres={eventPrice ?? effective}
-                comparePricePiastres={eventPrice != null ? effective : variantSale != null && regular != null && regular > variantSale ? regular : undefined}
-                locale={lang === "en" ? "en" : "ar"}
-                size="lg"
-              />
-            ) : (
-              <span className="text-sm text-text-muted">{t("store.product.noPrice")}</span>
-            )}
-            {eventPrice != null ? (
-              <span className="rounded-full bg-surface-tint px-2.5 py-1 text-xs font-extrabold text-action">
-                {t("store.eventDiscount", { percent: card.event_percent })}
-              </span>
-            ) : null}
-            {variantSale != null && regular != null && regular > variantSale ? (
-              <span className="num text-xs font-bold text-text-muted">
-                {t("store.product.saleUntil", {
-                  date: page.sale_ends_at ? new Date(page.sale_ends_at).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-EG") : "",
-                })}
-              </span>
-            ) : null}
-          </div>
-
-          {/* stock state */}
-          <p className={`text-sm font-extrabold ${outOfStock ? "text-danger" : "text-success-strong"}`}>
-            {outOfStock ? t("store.product.outOfStock") : t("store.product.inStock", { count: stock })}
-          </p>
-
-          {/* variant selector (axes) */}
-          <VariantSelector
-            axes={page.axes}
-            variants={page.variants}
-            selected={selectedMap}
-            lang={lang === "en" ? "en" : "ar"}
-            onSelect={onSelectOption}
-          />
-
-          {/* qty + add */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center rounded-md border border-border">
-              <button
-                type="button"
-                aria-label={t("cart.decrease")}
-                disabled={outOfStock || qty <= 1}
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="flex size-11 cursor-pointer items-center justify-center text-text transition-colors duration-150 hover:bg-surface-tint disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <MinusIcon className="size-4" />
-              </button>
-              <span className="num w-10 text-center text-sm font-extrabold">{qty}</span>
-              <button
-                type="button"
-                aria-label={t("cart.increase")}
-                disabled={outOfStock || qty >= stock}
-                onClick={() => setQty((q) => Math.min(stock, q + 1))}
-                className="flex size-11 cursor-pointer items-center justify-center text-text transition-colors duration-150 hover:bg-surface-tint disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <PlusIcon className="size-4" />
-              </button>
-            </div>
-            {outOfStock ? (
-              <button
-                type="button"
-                disabled
-                title={t("store.product.outOfStock")}
-                className="flex min-h-11 flex-1 cursor-not-allowed items-center justify-center gap-2 rounded-md bg-surface-tint px-6 text-sm font-extrabold text-text-muted opacity-60"
-              >
-                <CartIcon aria-hidden="true" />
-                {t("store.product.outOfStockCta")}
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => void addToCart()}
-                disabled={adding || !selected}
-                className="flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-md bg-action px-6 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <CartIcon aria-hidden="true" />
-                {adding ? t("common.loading") : t("store.product.addToCart")}
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={onCompare}
-              aria-label={t("store.compare.add")}
-              className="flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border text-text-muted transition-colors duration-150 hover:bg-surface-tint hover:text-action"
+          {brandName && brandSlug ? (
+            <Link
+              to={`/${lang}/brand/${encodeURIComponent(brandSlug)}`}
+              className="flex w-fit items-center gap-2 text-sm font-extrabold text-action hover:underline"
             >
-              <ScaleIcon className="size-4.5" />
-            </button>
+              {page.brand_thumb_path ? (
+                <span className="relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-white p-1">
+                  <MediaImg path={page.brand_thumb_path} alt="" width={32} height={32} className="absolute inset-0 size-full p-1 !bg-transparent !object-contain" />
+                </span>
+              ) : null}
+              {t("store.product.brandLabel", { brand: brandName })}
+            </Link>
+          ) : null}
+
+          {page.size_chart ? <SizeGuideButton chart={page.size_chart} lang={lang === "en" ? "en" : "ar"} /> : null}
+
+          <div id="buy-box" className="scroll-mt-24">
+          <BuyBox page={page} lang={lang === "en" ? "en" : "ar"} requestedKey={loaderData.requestedKey} onColorImages={onColorImages} />
           </div>
+
+          <button
+            type="button"
+            onClick={onCompare}
+            className="flex w-fit cursor-pointer items-center gap-2 rounded-md px-1 text-xs font-bold text-text-muted transition-colors hover:text-action"
+          >
+            <CompareArrowsIcon className="size-4" />
+            {t("store.compare.add")}
+          </button>
 
           {/* assurances */}
           <ul className="grid grid-cols-2 gap-2 text-xs font-bold text-text-muted">
@@ -431,58 +410,25 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
             id: "specs",
             label: t("store.product.tabSpecs"),
             content: (
-              <div className="flex flex-col gap-5">
-                {(lang === "ar" ? page.desc_ar : page.desc_en) ? (
-                  <p className="whitespace-pre-line text-sm leading-relaxed text-text">
-                    {lang === "ar" ? page.desc_ar : page.desc_en}
-                  </p>
-                ) : null}
-                {specRows.length > 0 ? (
-                  <table className="w-full border-collapse text-sm">
-                    <caption className="sr-only">{t("store.product.tabSpecs")}</caption>
-                    <tbody>
-                      {specRows.map((attr) => {
-                        const label = lang === "ar" ? attr.label_ar : attr.label_en;
-                        const value = attr.option_label_ar != null || attr.option_label_en != null
-                          ? (lang === "ar" ? attr.option_label_ar : attr.option_label_en)
-                          : attr.value_text != null
-                            ? attr.value_text
-                            : attr.value_number != null
-                              ? `${attr.value_number}${attr.unit ? ` ${attr.unit}` : ""}`
-                              : attr.value_bool != null
-                                ? t(attr.value_bool ? "common.yes" : "common.no")
-                                : null;
-                        if (value == null) return null;
-                        return (
-                          <tr key={attr.attribute_id} className="border-b border-border">
-                            <th scope="row" className="w-1/3 py-2.5 text-start font-bold text-text-muted">{label}</th>
-                            <td className="py-2.5 text-text">
-                              {attr.color_hex ? (
-                                <span className="inline-flex items-center gap-2">
-                                  <span aria-hidden="true" className="size-3.5 rounded-full border border-border" style={{ backgroundColor: attr.color_hex }} />
-                                  {value}
-                                </span>
-                              ) : value}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                      {page.is_fragile ? (
-                        <tr className="border-b border-border">
-                          <th scope="row" className="py-2.5 text-start font-bold text-text-muted">{t("store.product.fragile")}</th>
-                          <td className="py-2.5 text-text">{t("common.yes")}</td>
-                        </tr>
-                      ) : null}
-                      {page.weight_g ? (
-                        <tr className="border-b border-border">
-                          <th scope="row" className="py-2.5 text-start font-bold text-text-muted">{t("store.product.weight")}</th>
-                          <td className="num py-2.5 text-text">{t("store.product.grams", { count: page.weight_g })}</td>
-                        </tr>
-                      ) : null}
-                    </tbody>
-                  </table>
-                ) : null}
-              </div>
+              <ProductDetails
+                description={lang === "ar" ? page.desc_ar : page.desc_en}
+                attributes={page.attributes}
+                isFragile={page.is_fragile}
+                weightG={page.weight_g}
+                shippingMode={page.shipping_mode}
+                aside={<ProductAdCarousel banners={loaderData.pageBanners ?? []} lang={lang} />}
+                brand={(lang === "ar" ? card.brand_name_ar : card.brand_name_en) ?? null}
+                category={(lang === "ar" ? card.category_name_ar : card.category_name_en) ?? null}
+                lang={lang === "en" ? "en" : "ar"}
+                skus={page.variants.map((v) => v.sku ?? "")}
+                axes={page.axes.map((a) => ({
+                  id: a.attribute_id,
+                  label: lang === "ar" ? a.label_ar || a.label_en : a.label_en || a.label_ar,
+                  // only options a live stock row actually carries
+                  values: a.options.filter((o) => page.variants.some((v) => v.option_ids.includes(o.id)))
+                    .map((o) => (lang === "ar" ? o.label_ar || o.label_en : o.label_en || o.label_ar)),
+                }))}
+              />
             ),
           },
           {
@@ -522,8 +468,9 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
                       </div>
                       {review.title ? <p className="mt-1 text-sm font-bold text-text">{review.title}</p> : null}
                       {review.body ? <p className="mt-1 text-sm leading-relaxed text-text-muted">{review.body}</p> : null}
+                      <ReviewMediaThumbs media={review.media ?? []} alt={review.author_name} />
                       <time dateTime={review.created_at} className="num mt-1.5 block text-2xs text-text-faint">
-                        {new Date(review.created_at).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-EG")}
+                        {new Date(review.created_at).toLocaleDateString(lang === "ar" ? "ar-EG-u-nu-latn" : "en-EG")}
                       </time>
                     </li>
                   ))}
@@ -534,42 +481,66 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
         ]}
       />
 
-      {/* related + more from store */}
-      {loaderData.related.length > 0 ? (
-        <section aria-label={t("store.product.related")} className="flex flex-col gap-3">
-          <h2 className="text-base font-extrabold text-text">{t("store.product.related")}</h2>
-          <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-            {loaderData.related.slice(0, 4).map((item) => (
-              <li key={item.id} className="min-w-0">
-                <ProductCard card={item} lang={lang} wished={loaderData.wishedIds.has(item.id)} />
+      {/* in-product-page ads */}
+      {(loaderData.sponsored ?? []).length > 0 ? (
+        <section aria-labelledby="sponsored-title" className="flex flex-col gap-3">
+          <h2 id="sponsored-title" className="flex items-center gap-2 text-lg font-extrabold text-text">
+            {t("ads.sponsoredTitle")}
+            <span className="rounded-full border border-border px-2 py-0.5 text-2xs font-bold text-text-muted">{t("ads.sponsored")}</span>
+          </h2>
+          <ul className="grid grid-cols-2 gap-3 sm:max-w-xl">
+            {(loaderData.sponsored ?? []).map((s) => (
+              <li key={s.campaign} onClickCapture={() => sendAdEvent(s.campaign, "click")}>
+                <ProductCard card={s.card} lang={lang} wished={loaderData.wishedIds.has(s.card.id)} />
               </li>
             ))}
           </ul>
+        </section>
+      ) : null}
+
+      {/* related + more from store */}
+      {loaderData.related.length > 0 ? (
+        <section aria-labelledby="related-title" className="flex flex-col gap-3">
+          <h2 id="related-title" className="relative ps-3 text-lg font-extrabold text-text before:absolute before:inset-y-1 before:start-0 before:w-1 before:rounded-full before:bg-action">
+            {t("store.product.related")}
+          </h2>
+          <Carousel label={t("store.product.related")} itemClassName="w-44 sm:w-56">
+            {loaderData.related.map((item) => (
+              <ProductCard key={item.id} card={item} lang={lang} wished={loaderData.wishedIds.has(item.id)} />
+            ))}
+          </Carousel>
         </section>
       ) : null}
       {loaderData.moreFromStore.length > 0 ? (
-        <section aria-label={t("store.product.moreFromStore")} className="flex flex-col gap-3">
-          <h2 className="text-base font-extrabold text-text">{t("store.product.moreFromStore")}</h2>
-          <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-            {loaderData.moreFromStore.slice(0, 4).map((item) => (
-              <li key={item.id} className="min-w-0">
-                <ProductCard card={item} lang={lang} wished={loaderData.wishedIds.has(item.id)} />
-              </li>
+        <section aria-labelledby="store-more-title" className="flex flex-col gap-3">
+          <div className="flex items-end justify-between gap-3">
+            <h2 id="store-more-title" className="relative ps-3 text-lg font-extrabold text-text before:absolute before:inset-y-1 before:start-0 before:w-1 before:rounded-full before:bg-action">
+              {t("store.product.moreFromStoreNamed", { store: storeName })}
+            </h2>
+            <Link to={`/${lang}/store/${encodeURIComponent(card.vendor_slug)}`} className="shrink-0 text-sm font-bold text-action hover:underline">
+              {t("store.product.visitStore")}
+            </Link>
+          </div>
+          <Carousel label={t("store.product.moreFromStore")} itemClassName="w-44 sm:w-56">
+            {loaderData.moreFromStore.map((item) => (
+              <ProductCard key={item.id} card={item} lang={lang} wished={loaderData.wishedIds.has(item.id)} />
             ))}
-          </ul>
+          </Carousel>
         </section>
       ) : null}
+
+      {loaderData.reviewItemId ? <ReviewPrompt orderItemId={loaderData.reviewItemId} productName={name} /> : null}
 
       {/* you viewed before */}
       <RecentStrip lang={lang} viewerId={loaderData.viewerId} excludeId={card.id} wishedIds={loaderData.wishedIds} />
 
       {/* sticky buy bar (mobile) */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 shadow-2 backdrop-blur-sm md:hidden">
-        <div className="mx-auto flex max-w-page items-center gap-3 px-4 py-2.5">
+      <div data-buy-bar className="fixed inset-x-3 bottom-[calc(var(--bottom-nav-h,0px)+var(--bottom-nav-clear,0px)+12px)] z-40 rounded-xl border border-border bg-surface shadow-[0_8px_28px_rgb(0_0_0/0.16)] md:hidden">
+        <div className="flex items-center gap-3 p-2.5 ps-4">
           <div className="min-w-0 flex-1">
-            {effective != null ? (
+            {card.min_price_piastres != null ? (
               <span className="num block text-base font-black text-text">
-                {formatPiastres(eventPrice ?? effective, lang === "en" ? "en" : "ar")}
+                {formatPiastres(card.event_price_piastres ?? card.min_price_piastres, lang === "en" ? "en" : "ar")}
               </span>
             ) : null}
             <span className="block truncate text-2xs text-text-muted">{name}</span>
@@ -581,12 +552,11 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
           ) : (
             <button
               type="button"
-              onClick={() => void addToCart()}
-              disabled={adding}
+              onClick={() => document.getElementById("buy-box")?.scrollIntoView({ behavior: "smooth", block: "center" })}
               className="flex min-h-10 cursor-pointer items-center gap-1.5 rounded-md bg-action px-4 text-sm font-extrabold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               <CartIcon aria-hidden="true" />
-              {t("store.product.addToCart")}
+              {t("store.card.chooseOptions")}
             </button>
           )}
         </div>

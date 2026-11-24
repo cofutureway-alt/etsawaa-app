@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
-import { formatPiastres } from "~/lib/money";
+import { egpToPiastres, formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { PageHeader } from "~/components/layout/PageHeader";
 import { Badge } from "~/components/ui/Badge";
@@ -32,6 +32,8 @@ interface RfqItem {
 interface Rfq {
   id: string; order_number: string; customer: string; kind: string;
   description: string; status: string; created_at: string;
+  source: string; logistics_status: string; refund_total_piastres: number;
+  refund_method: string | null; refund_reference: string | null;
   /** jsonb array of documents-bucket paths uploaded with the request */
   evidence: string[] | null;
   items: RfqItem[];
@@ -48,7 +50,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const status = new URL(request.url).searchParams.get("status") ?? "pending_admin";
   let q = client
     .from("refund_requests")
-    .select(`id, kind, description, evidence, status, created_at,
+    .select(`id, kind, description, evidence, status, created_at, source, logistics_status, refund_total_piastres,
+             refund_method, refund_reference,
              orders(number, ship_name),
              refund_request_items(id, order_item_id, qty, reason, decision, fault,
                refund_amount_piastres, restock,
@@ -86,6 +89,11 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       description: r.description as string,
       status: r.status as string,
       created_at: r.created_at as string,
+      source: (r.source as string) ?? "customer",
+      logistics_status: (r.logistics_status as string) ?? "awaiting_return",
+      refund_total_piastres: (r.refund_total_piastres as number) ?? 0,
+      refund_method: (r.refund_method as string | null) ?? null,
+      refund_reference: (r.refund_reference as string | null) ?? null,
       evidence: Array.isArray(r.evidence) ? (r.evidence as string[]) : null,
       items,
     };
@@ -110,12 +118,25 @@ export async function action({ request, params }: Route.ActionArgs) {
       item_id: id,
       decision: String(form.get(`decision_${id}`) ?? "reject"),
       fault: String(form.get(`fault_${id}`) ?? "customer"),
-      amount: Math.max(0, Math.trunc(Number(form.get(`amount_${id}`) ?? 0)) || 0),
+      // empty = the server computes what the buyer paid for these units
+      amount: egpToPiastres(form.get(`amount_${id}`)) ?? 0,
       restock: form.get(`restock_${id}`) === "on",
     }));
     const res = await client.rpc("fn_admin_decide_refund", {
       p_request_id: requestId, p_items: items, p_note: String(form.get("note") ?? ""),
+      p_options: {
+        shipping_refund_piastres: egpToPiastres(form.get("shipping_refund")) ?? 0,
+        deduction_piastres: egpToPiastres(form.get("deduction")) ?? 0,
+        logistics_status: String(form.get("logistics_status") ?? "awaiting_return"),
+      },
     });
+    if (res.error) return data({ ok: false, reason: res.error.message }, { status: 500 });
+    const r = res.data as { ok: boolean; reason?: string };
+    return r.ok ? { ok: true as const } : data({ ok: false, reason: r.reason }, { status: 400 });
+  }
+
+  if (intent === "received") {
+    const res = await client.rpc("fn_admin_return_received", { p_request_id: requestId, p_note: null });
     if (res.error) return data({ ok: false, reason: res.error.message }, { status: 500 });
     const r = res.data as { ok: boolean; reason?: string };
     return r.ok ? { ok: true as const } : data({ ok: false, reason: r.reason }, { status: 400 });
@@ -124,6 +145,8 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (intent === "execute") {
     const res = await client.rpc("fn_admin_execute_refund", {
       p_request_id: requestId, p_note: String(form.get("note") ?? ""),
+      p_method: String(form.get("method") ?? "original"),
+      p_reference: String(form.get("reference") ?? ""),
     });
     if (res.error) return data({ ok: false, reason: res.error.message }, { status: 500 });
     const r = res.data as { ok: boolean; reason?: string };
@@ -133,7 +156,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   return data({ ok: false, reason: "bad_intent" }, { status: 400 });
 }
 
-const TABS = ["pending_admin", "approved", "refunded", "closed"] as const;
+const TABS = ["pending_admin", "approved", "refunded", "rejected", "closed"] as const;
 
 export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
   const { t, i18n } = useTranslation();
@@ -149,11 +172,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
       <PageHeader
         title={t("rf.title")}
         count={loaderData.rfqs.length}
-        subtitle={
-          en
-            ? "Review customer return requests, inspect defects, and process refunds."
-            : "متابعة طلبات الإرجاع، فحص المنتجات، واتخاذ قرارات الاسترداد المالي والتسوية."
-        }
+        subtitle={t("rf.subtitle")}
       />
 
       <nav className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" aria-label={t("rf.title")}>
@@ -188,6 +207,9 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                 <Badge tone={r.status === "pending_admin" ? "warning" : r.status === "refunded" ? "success" : "neutral"}>
                   {t(`rfund.status_${r.status}`)}
                 </Badge>
+                {r.source === "admin" ? <Badge tone="info">{t("ret.source_admin")}</Badge> : null}
+                {r.status === "approved" ? <Badge tone={r.logistics_status === "awaiting_return" ? "warning" : "neutral"}>{t(`ret.log_${r.logistics_status}`)}</Badge> : null}
+                {r.status === "approved" || r.status === "refunded" ? <span className="num text-sm font-black text-action">{money(r.refund_total_piastres)}</span> : null}
                 <span className="text-xs text-text-muted" dir="ltr">{r.created_at.slice(0, 10)}</span>
               </div>
               {r.description ? <p className="mt-1.5 text-sm text-text-muted">{r.description}</p> : null}
@@ -224,8 +246,8 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                             <option value="defect">{t("rf.faultDefect")}</option>
                           </select>
                           <label htmlFor={`amt-${it.id}`} className="text-xs text-text-muted">{t("rf.amount")}</label>
-                          <input id={`amt-${it.id}`} name={`amount_${it.id}`} type="number" min={0} step={1} dir="ltr"
-                            defaultValue={it.line_total_piastres}
+                          <input id={`amt-${it.id}`} name={`amount_${it.id}`} type="number" min={0} step="0.01" inputMode="decimal" dir="ltr"
+                            placeholder={t("ret.amountAuto")}
                             className="w-28 rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
                           <label className="flex items-center gap-1.5 text-xs text-text">
                             <input type="checkbox" name={`restock_${it.id}`} defaultChecked className="size-4 accent-[var(--color-action)]" />
@@ -235,7 +257,23 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                         </div>
                       </fieldset>
                     ))}
-                    <p className="text-xs text-text-muted">{t("rf.faultNote")}</p>
+                    <div className="grid gap-2 sm:grid-cols-3">
+                      <label className="flex flex-col gap-1 text-xs font-bold text-text-muted">
+                        {t("ret.shippingRefund")}
+                        <input name="shipping_refund" inputMode="decimal" dir="ltr" placeholder="0" className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-bold text-text-muted">
+                        {t("ret.deduction")}
+                        <input name="deduction" inputMode="decimal" dir="ltr" placeholder="0" className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm" />
+                      </label>
+                      <label className="flex flex-col gap-1 text-xs font-bold text-text-muted">
+                        {t("ret.logistics")}
+                        <select name="logistics_status" defaultValue="awaiting_return" className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm">
+                          {["awaiting_return", "received", "not_required"].map((v) => <option key={v} value={v}>{t(`ret.logChoice_${v}`)}</option>)}
+                        </select>
+                      </label>
+                    </div>
+                    <p className="text-xs text-text-muted">{t("rf.faultNote")} {t("ret.amountHelp")}</p>
                     <div>
                       <Button type="submit" disabled={busy}>{t("rf.submit")}</Button>
                     </div>
@@ -243,10 +281,22 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                       <p role="alert" className="text-xs font-bold text-danger">{String(fetcher.data.reason)}</p>
                     ) : null}
                   </fetcher.Form>
+                ) : r.status === "approved" && r.logistics_status === "awaiting_return" ? (
+                  <fetcher.Form method="post" className="mt-2 flex flex-wrap items-center gap-2">
+                    <input type="hidden" name="intent" value="received" />
+                    <input type="hidden" name="request_id" value={r.id} />
+                    <span className="text-xs text-text-muted">{t("ret.awaitingHint")}</span>
+                    <Button type="submit" size="sm" variant="outline" disabled={busy}>{t("ret.markReceived")}</Button>
+                  </fetcher.Form>
                 ) : r.status === "approved" ? (
                   <fetcher.Form method="post" className="mt-2 flex flex-wrap items-center gap-2">
                     <input type="hidden" name="intent" value="execute" />
                     <input type="hidden" name="request_id" value={r.id} />
+                    <label htmlFor={`m-${r.id}`} className="sr-only">{t("ret.method")}</label>
+                    <select id={`m-${r.id}`} name="method" defaultValue="original" className="rounded-md border border-border bg-surface px-2 py-2 text-sm">
+                      {["original", "bank_transfer", "wallet", "cash", "other"].map((m) => <option key={m} value={m}>{t(`ret.method_${m}`)}</option>)}
+                    </select>
+                    <input name="reference" dir="ltr" placeholder={t("ret.reference")} className="w-36 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />
                     <input name="note" placeholder={t("rf.executeNote")} className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />
                     <Button type="submit" size="sm" disabled={busy}>{t("rf.execute")}</Button>
                   </fetcher.Form>

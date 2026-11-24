@@ -1,5 +1,6 @@
 import type { Route } from "./+types/products";
 import { useTranslation } from "react-i18next";
+import { getI18n } from "~/lib/i18n/config";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { jsonLd, publicMeta, siteUrl } from "~/lib/seo";
@@ -19,14 +20,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const lang = (data?.lang as "ar" | "en") ?? "ar";
+  const t = getI18n(lang).t;
   return publicMeta({
     lang,
     path: "/products",
-    title: lang === "ar" ? "كل المنتجات — اتسوء" : "All products — Etsawaa",
-    description:
-      lang === "ar"
-        ? "تصفح كل منتجات المتاجر المصرية على اتسوء مع فلاتر السعر والماركة والمواصفات."
-        : "Browse every product from Egyptian stores on Etsawaa with price, brand and spec filters.",
+    title: `${t("nav.allProducts")} — ${t("app.name")}`,
+    description: t("products.metaDescription"),
   });
 };
 

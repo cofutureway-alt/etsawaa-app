@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { CloseIcon } from "~/components/ui/icons";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
+import { safeLikeTerm } from "~/lib/postgrest";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { ORDER_SELECT } from "~/features/orders/api";
@@ -20,8 +21,8 @@ import {
   CopyIcon,
   SearchIcon,
   ChevronLeftIcon,
-  CheckIcon,
 } from "~/components/ui/icons";
+import { ListSkeleton, useListLoading } from "~/components/ui/ListLoading";
 
 
 /**
@@ -34,7 +35,7 @@ import {
 
 type OrderRow = {
   id: string; number: string; ship_name: string; status: string;
-  payment_method: string; payment_status: string; total_piastres: number;
+  payment_method: string; payment_status: string; payment_mode?: string; total_piastres: number;
   created_at: string; commission_piastres?: number;
 };
 
@@ -42,7 +43,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "admin", request);
+  const viewer = await requirePanelAccess(client, lang, "admin", request);
+  // site money: only the owner (admin) may see the order-value sum
+  const isAdmin = viewer.profile.role === "admin";
   const url = new URL(request.url);
   const filterParam = url.searchParams.get("filter") ?? "all";
   const filter = (["all", "active", "completed", "cancelled"] as const).includes(filterParam as "all")
@@ -61,11 +64,16 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (filter === "active") query = query.in("status", ["pending_payment", "processing", "on_hold"]);
   else if (filter === "completed") query = query.eq("status", "completed");
   else if (filter === "cancelled") query = query.eq("status", "cancelled");
-  if (q) query = query.or(`number.ilike.%${q}%,ship_name.ilike.%${q}%`);
+  // PostgREST `.or()` is raw interpolation inside postgrest-js — strip the
+  // reserved/LIKE characters from `q` so it can't widen the predicate. An
+  // emptied term behaves exactly like no search (the raw `q` still echoes
+  // back to the input below).
+  const term = safeLikeTerm(q);
+  if (term) query = query.or(`number.ilike.%${term}%,ship_name.ilike.%${term}%`);
   const { data: rows, error, count } = await query.range((page - 1) * PER_PAGE, page * PER_PAGE - 1);
   if (error) throw new Error(error.message);
   return {
-    lang, filter, q, page, perPage: PER_PAGE, total: count ?? 0,
+    lang, filter, q, page, perPage: PER_PAGE, total: count ?? 0, isAdmin,
     orders: JSON.parse(JSON.stringify(rows ?? [])),
   };
 }
@@ -91,6 +99,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 }
 
 export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
+  const listLoading = useListLoading();
   const { t, i18n } = useTranslation();
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
@@ -110,10 +119,10 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
   ).length;
   const completedCount = orders.filter((o) => o.status === "completed").length;
   const cancelledCount = orders.filter((o) => o.status === "cancelled").length;
-  const totalRevenue = orders.reduce(
-    (sum, o) => sum + (o.status !== "cancelled" ? o.total_piastres : 0),
-    0,
-  );
+  // only computed for admins — never derived or shown for staff
+  const totalRevenue = loaderData.isAdmin
+    ? orders.reduce((sum, o) => sum + (o.status !== "cancelled" ? o.total_piastres : 0), 0)
+    : 0;
 
   const filters: Array<{ key: string; label: string; count: number }> = [
     { key: "all", label: t("orders.filterAll"), count: totalCount },
@@ -148,11 +157,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
       <PageHeader
         title={t("adminNav.orders")}
         count={totalCount}
-        subtitle={
-          en
-            ? "Monitor customer fulfillment, payment status, and order reconciliation in real-time."
-            : "متابعة وتحديث طلبات المتاجر، تأكيد المدفوعات، وإصدار بوالص الشحن والفواتير."
-        }
+        subtitle={t("orders.subtitle")}
         actions={
         <form method="get" className="flex items-center gap-2">
           <input type="hidden" name="filter" value={loaderData.filter} />
@@ -182,32 +187,38 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
       />
 
       {/* KPI Stat Cards (Real Live Data) */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+      <div
+        className={`grid grid-cols-2 gap-3 sm:grid-cols-4 ${
+          loaderData.isAdmin ? "lg:grid-cols-5" : ""
+        }`}
+      >
         <div className="rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-text-muted">{t("orders.filterAll")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{totalCount}</p>
-          <p className="mt-0.5 text-2xs text-text-faint">{en ? "Current query" : "إجمالي المعروض"}</p>
+          <p className="mt-0.5 text-2xs text-text-faint">{t("orders.kpiAllHint")}</p>
         </div>
         <div className="rounded-lg border border-warning/30 bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-warning-strong">{t("orders.filterActive")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{activeCount}</p>
-          <p className="mt-0.5 text-2xs text-text-muted">{en ? "Requires action" : "تحتاج تجهيز ومتابعة"}</p>
+          <p className="mt-0.5 text-2xs text-text-muted">{t("orders.kpiActiveHint")}</p>
         </div>
         <div className="rounded-lg border border-success/30 bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-success-strong">{t("orders.filterCompleted")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{completedCount}</p>
-          <p className="mt-0.5 text-2xs text-text-muted">{en ? "Successfully delivered" : "تم التسليم بنجاح"}</p>
+          <p className="mt-0.5 text-2xs text-text-muted">{t("orders.kpiCompletedHint")}</p>
         </div>
         <div className="rounded-lg border border-danger/30 bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
           <p className="text-xs font-bold text-danger">{t("orders.filterCancelled")}</p>
           <p className="mt-1 text-xl font-black text-text tabular-nums">{cancelledCount}</p>
-          <p className="mt-0.5 text-2xs text-text-muted">{en ? "Returned / voided" : "ملغاة أو مسترجعة"}</p>
+          <p className="mt-0.5 text-2xs text-text-muted">{t("orders.kpiCancelledHint")}</p>
         </div>
-        <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
-          <p className="text-xs font-bold text-text-muted">{t("cart.total")}</p>
-          <p className="mt-1 text-lg font-black text-action tabular-nums">{money(totalRevenue)}</p>
-          <p className="mt-0.5 text-2xs text-text-faint">{en ? "Gross value" : "إجمالي قيمة الطلبات"}</p>
-        </div>
+        {loaderData.isAdmin ? (
+          <div className="col-span-2 sm:col-span-4 lg:col-span-1 rounded-lg border border-border bg-surface p-3.5 shadow-1 transition-shadow hover:shadow-2">
+            <p className="text-xs font-bold text-text-muted">{t("cart.total")}</p>
+            <p className="mt-1 text-lg font-black text-action tabular-nums">{money(totalRevenue)}</p>
+            <p className="mt-0.5 text-2xs text-text-faint">{t("orders.kpiRevenueHint")}</p>
+          </div>
+        ) : null}
       </div>
 
       {/* Filter Tabs & Content Container */}
@@ -240,15 +251,11 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* Table Content */}
-        {orders.length === 0 ? (
+        {listLoading ? <ListSkeleton /> : orders.length === 0 ? (
           <div className="p-8">
             <EmptyState
               title={t("orders.empty")}
-              body={
-                loaderData.q
-                  ? (en ? "No orders matched your search criteria." : "لم يتم العثور على طلبات مطابقة لكلمات البحث.")
-                  : (en ? "No orders found in this category." : "لا توجد طلبات في هذا التصنيف حالياً.")
-              }
+              body={loaderData.q ? t("orders.emptySearch") : t("orders.emptyFilter")}
             />
           </div>
         ) : (
@@ -316,6 +323,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
                           >
                             {o.number}
                           </Link>
+                          {o.payment_mode === "test" ? <Badge tone="warning">{t("pay.testBadge")}</Badge> : null}
                           <button
                             type="button"
                             onClick={() => navigator.clipboard?.writeText(o.number)}
@@ -371,7 +379,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
 
                       <td className="px-3.5 py-3 text-text-muted text-xs" dir="ltr">
                         {new Date(o.created_at).toLocaleDateString(
-                          en ? "en-EG" : "ar-EG",
+                          en ? "en-EG" : "ar-EG-u-nu-latn",
                           { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" },
                         )}
                       </td>
@@ -468,11 +476,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
           <input type="hidden" name="intent" value="bulk_status" />
 
           <div className="rounded-md border border-border bg-surface-tint p-3 text-xs text-text-muted">
-            <p>
-              {en
-                ? `You are updating the status for ${checked.size} selected order(s).`
-                : `سيتم تطبيق الحالة الجديدة على ${checked.size} طلب دفعة واحدة وتسجيلها في سجل التدقيق.`}
-            </p>
+            <p>{t("orders.bulkConfirm", { n: checked.size })}</p>
           </div>
 
           <div>
@@ -508,7 +512,7 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
               minLength={3}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder={en ? "Enter the operational reason..." : "اكتب سبب تغيير الحالة الإداري..."}
+              placeholder={t("orders.bulkReasonPlaceholder")}
               className="w-full rounded-md border border-border bg-surface p-2.5 text-sm text-text"
             />
             <p className="mt-1 text-xs text-text-muted">{t("orders.bulkNote")}</p>

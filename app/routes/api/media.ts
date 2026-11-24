@@ -15,8 +15,9 @@ import { data } from "react-router";
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const path = url.searchParams.get("path") ?? "";
-  // public bucket paths look like u/{uuid}/{uuid}.{ext} — anything else is rejected
-  if (!path || !/^u\/[0-9a-fA-F-]{36}\/[A-Za-z0-9._-]+$/.test(path)) {
+  // public bucket paths look like u/{uuid}/{uuid}.{ext}, or brands/{slug}.webp
+  // for the imported brand logos — anything else is rejected
+  if (!path || !/^(u\/[0-9a-fA-F-]{36}|brands|banners|mega)\/[A-Za-z0-9._-]+$/.test(path) || path.includes("..")) {
     return data({ ok: false, reason: "bad_path" }, { status: 400 });
   }
   const { loadMedia } = await import("~/lib/media-cache.server");

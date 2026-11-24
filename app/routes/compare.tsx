@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { publicMeta } from "~/lib/seo";
+import { getI18n } from "~/lib/i18n/config";
 import { formatPiastres } from "~/lib/money";
 import { compareProducts, type CompareProduct } from "~/features/discovery/compare";
 import { EmptyState } from "~/components/ui/EmptyState";
@@ -11,6 +12,7 @@ import { Breadcrumbs } from "~/components/ui/Breadcrumbs";
 import { Rating } from "~/components/ui/Rating";
 import { MediaImg } from "~/components/catalog/MediaImg";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { PRODUCT_CARD_COLUMNS } from "~/features/storefront/api";
 
 
 /**
@@ -31,42 +33,101 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (!client || ids.length !== 2 || ids[0] === ids[1]) {
     return { lang, ids, products: [] as CompareProduct[] };
   }
-  const products = (await Promise.all(ids.map((id) => loadCompareProduct(client, id)))).filter(
-    (p): p is CompareProduct => p !== null,
+  const bases = (await Promise.all(ids.map((id) => fetchCompareBase(client, id)))).filter(
+    (b): b is CompareBase => b !== null,
   );
+  // Batch ALL option labels in ONE round trip: the loader used to await one
+  // `v_storefront_facet_options` query per attribute row inside the loop
+  // (×2 products → dozens of sequential round trips on the critical path).
+  const optionIds = new Set<string>();
+  for (const base of bases) {
+    for (const raw of base.pavs) for (const id of pavOptionIds(raw)) optionIds.add(id);
+  }
+  const optionLabels = await loadOptionLabels(client, [...optionIds]);
+  const products = bases.map((base) => buildCompareProduct(base, optionLabels));
   return { lang, ids, products };
 }
 
-async function loadCompareProduct(client: NonNullable<Awaited<ReturnType<typeof createSupabaseServerClient>>["client"]>, id: string): Promise<CompareProduct | null> {
-  const { data: rows, error } = await client.from("v_storefront_products").select("*").eq("id", id).limit(1);
+type StorefrontClient = NonNullable<Awaited<ReturnType<typeof createSupabaseServerClient>>["client"]>;
+
+/** PAV row as selected in fetchCompareBase (attribute_defs is the FK join). */
+type ComparePav = {
+  attribute_id: string;
+  option_id: string | null;
+  option_ids: string[] | null;
+  value_text: string | null;
+  value_text_en?: string | null;
+  value_number: number | null;
+  value_bool: boolean | null;
+  attribute_defs: { code: string; label_ar: string | null; label_en: string | null };
+};
+
+type OptionLabel = { ar: string | null; en: string | null };
+
+/** every option a spec row holds (multi-choice specs list several) */
+function pavOptionIds(raw: { option_id: string | null; option_ids: string[] | null }): string[] {
+  return raw.option_ids?.length ? raw.option_ids : raw.option_id ? [raw.option_id] : [];
+}
+
+/** Per-product base rows fetched in parallel; attributes are assembled after the batched label lookup. */
+interface CompareBase {
+  card: Record<string, unknown> & { id: string };
+  pavs: ComparePav[];
+  media: Array<{ path: string; kind: string }> | null;
+}
+
+async function fetchCompareBase(client: StorefrontClient, id: string): Promise<CompareBase | null> {
+  const { data: rows, error } = await client.from("v_storefront_products").select(PRODUCT_CARD_COLUMNS).eq("id", id).limit(1);
   if (error || !rows || rows.length === 0) return null;
   const card = rows[0] as Record<string, unknown> & { id: string };
   const [pavRes, mediaRes] = await Promise.all([
     client.from("product_attribute_values").select(
-      "attribute_id, option_id, value_text, value_number, value_bool, attribute_defs(code, label_ar, label_en)",
+      "attribute_id, option_id, option_ids, value_text, value_text_en, value_number, value_bool, attribute_defs(code, label_ar, label_en)",
     ).eq("product_id", id),
     client.from("product_media").select("path, kind, position").eq("product_id", id).order("position").limit(1),
   ]);
-  const attributes: CompareProduct["attributes"] = [];
-  for (const raw of (pavRes.data ?? []) as Array<{
-    attribute_id: string; option_id: string | null; value_text: string | null; value_number: number | null; value_bool: boolean | null;
-    attribute_defs: { code: string; label_ar: string | null; label_en: string | null };
-  }>) {
-    let optionLabel: { ar: string | null; en: string | null } = { ar: null, en: null };
-    if (raw.option_id) {
-      const { data: opt } = await client.from("v_storefront_facet_options").select("label_ar, label_en").eq("option_id", raw.option_id).limit(1);
-      const row = opt?.[0] as { label_ar: string; label_en: string } | undefined;
-      optionLabel = { ar: row?.label_ar ?? null, en: row?.label_en ?? null };
+  return {
+    card,
+    pavs: (pavRes.data ?? []) as ComparePav[],
+    media: mediaRes.data as Array<{ path: string; kind: string }> | null,
+  };
+}
+
+/** One round trip for every option label both products need (was the N+1). */
+async function loadOptionLabels(client: StorefrontClient, optionIds: string[]): Promise<Map<string, OptionLabel>> {
+  const labels = new Map<string, OptionLabel>();
+  if (optionIds.length === 0) return labels;
+  const { data } = await client
+    .from("attribute_options")
+    .select("option_id:id, label_ar, label_en")
+    .in("id", optionIds);
+  for (const row of (data ?? []) as Array<{ option_id: string; label_ar: string | null; label_en: string | null }>) {
+    // first row wins — the per-option query used `.limit(1)`, keep that tie-break
+    if (!labels.has(row.option_id)) {
+      labels.set(row.option_id, { ar: row.label_ar ?? null, en: row.label_en ?? null });
     }
+  }
+  return labels;
+}
+
+function buildCompareProduct(base: CompareBase, optionLabels: Map<string, OptionLabel>): CompareProduct {
+  const attributes: CompareProduct["attributes"] = [];
+  for (const raw of base.pavs) {
+    // an option_id missing from the map behaves as before: labels fall back to
+    // value_text / value_number / value_bool below
+    const chosen = pavOptionIds(raw).map((id) => optionLabels.get(id)).filter((l): l is OptionLabel => Boolean(l));
+    const optionLabel: OptionLabel | undefined = chosen.length
+      ? { ar: chosen.map((l) => l.ar ?? l.en).filter(Boolean).join("، ") || null, en: chosen.map((l) => l.en ?? l.ar).filter(Boolean).join(", ") || null }
+      : undefined;
     attributes.push({
       attribute_id: raw.attribute_id,
       label_ar: raw.attribute_defs.label_ar ?? raw.attribute_defs.code,
       label_en: raw.attribute_defs.label_en ?? raw.attribute_defs.code,
-      value_ar: optionLabel.ar ?? raw.value_text ?? (raw.value_number != null ? String(raw.value_number) : raw.value_bool != null ? (raw.value_bool ? "نعم" : "لا") : null),
-      value_en: optionLabel.en ?? raw.value_text ?? (raw.value_number != null ? String(raw.value_number) : raw.value_bool != null ? (raw.value_bool ? "Yes" : "No") : null),
+      value_ar: optionLabel?.ar ?? raw.value_text ?? (raw.value_number != null ? String(raw.value_number) : raw.value_bool != null ? (raw.value_bool ? "نعم" : "لا") : null),
+      value_en: optionLabel?.en ?? raw.value_text_en ?? raw.value_text ?? (raw.value_number != null ? String(raw.value_number) : raw.value_bool != null ? (raw.value_bool ? "Yes" : "No") : null),
     });
   }
-  const media = mediaRes.data as Array<{ path: string; kind: string }> | null;
+  const card = base.card;
   return {
     id: card.id as string,
     name_ar: (card.name_ar as string) || "",
@@ -80,18 +141,19 @@ async function loadCompareProduct(client: NonNullable<Awaited<ReturnType<typeof 
     store_name_ar: (card.store_name_ar as string) || "",
     store_name_en: (card.store_name_en as string) || "",
     store_slug: (card.vendor_slug as string) || "",
-    image_path: media?.find((m) => m.kind === "image")?.path ?? null,
+    image_path: base.media?.find((m) => m.kind === "image")?.path ?? null,
     attributes,
   };
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const lang = (data?.lang as "ar" | "en") ?? "ar";
+  const t = getI18n(lang).t;
   return publicMeta({
     lang,
     path: "/compare",
-    title: lang === "ar" ? "مقارنة المنتجات — اتسوء" : "Compare products — Etsawaa",
-    description: lang === "ar" ? "قارن منتجين اتجاهاً لاتجاه: المواصفات المشتركة، السعر، التقييم، والمتجر." : "Compare two products side by side: shared specs, price, rating, and store.",
+    title: `${t("store.compare.title")} — ${t("app.name")}`,
+    description: t("store.compare.metaDescription"),
     noindex: true,
   });
 };

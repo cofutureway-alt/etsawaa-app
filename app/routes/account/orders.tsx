@@ -7,6 +7,7 @@ import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { listOwnOrders } from "~/features/orders/api";
 import { ReorderButton } from "~/features/account/ReorderButton";
+import { afterSaleKind, canCompletePayment, orderDate } from "~/features/orders/customer-actions";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
@@ -57,8 +58,11 @@ export default function AccountOrdersPage({ loaderData }: Route.ComponentProps) 
         <ul className="mt-4 flex flex-col gap-3">
           {loaderData.orders.map((o: {
             id: string; number: string; status: string; payment_method: string;
-            payment_status: string; total_piastres: number; created_at: string;
-          }) => (
+            payment_status: string; total_piastres: number; created_at: string; delivered_at: string | null;
+          }) => {
+            const pay = canCompletePayment(o);
+            const after = afterSaleKind(o);
+            return (
             <li key={o.id} className="rounded-md border border-border bg-surface p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
@@ -68,8 +72,8 @@ export default function AccountOrdersPage({ loaderData }: Route.ComponentProps) 
                   >
                     {o.number}
                   </Link>
-                  <p className="text-xs text-text-muted" dir="ltr">
-                    {new Date(o.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
+                  <p className="num text-xs text-text-muted" dir="ltr">
+                    {orderDate(o.created_at, Boolean(en))}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -80,6 +84,22 @@ export default function AccountOrdersPage({ loaderData }: Route.ComponentProps) 
                 </div>
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
+                {pay ? (
+                  <Link
+                    to={`/${loaderData.lang}/order/${encodeURIComponent(o.number)}`}
+                    className="rounded-md bg-action px-3 py-1.5 text-sm font-extrabold text-on-action hover:opacity-90"
+                  >
+                    {t("orders.completePayment")}
+                  </Link>
+                ) : null}
+                {after ? (
+                  <Link
+                    to={`/${loaderData.lang}/account/orders/${encodeURIComponent(o.number)}/return${after === "warranty" ? "?kind=warranty" : ""}`}
+                    className="rounded-md border border-action px-3 py-1.5 text-sm font-bold text-action hover:bg-surface-tint"
+                  >
+                    {t(after === "warranty" ? "returns.warrantyButton" : "returns.requestButton")}
+                  </Link>
+                ) : null}
                 <Link
                   to={`/${loaderData.lang}/account/orders/${encodeURIComponent(o.number)}`}
                   className="rounded-md border border-border px-3 py-1.5 text-sm font-bold text-text hover:bg-surface-tint"
@@ -95,7 +115,8 @@ export default function AccountOrdersPage({ loaderData }: Route.ComponentProps) 
                 </Link>
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

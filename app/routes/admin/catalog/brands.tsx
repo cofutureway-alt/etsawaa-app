@@ -1,224 +1,261 @@
 import { useEffect, useState } from "react";
 import type { Route } from "./+types/brands";
-import { useFetcher } from "react-router";
+import { Link, data, useFetcher, useNavigate, useSubmit } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/Button";
-import { Input } from "~/components/ui/Input";
 import { Dialog } from "~/components/ui/Overlay";
-import { useToast } from "~/components/ui/Toast";
-import { ChevronRightIcon, PencilIcon, TrashIcon } from "~/components/ui/icons";
-import { MediaPickerDialog } from "~/features/media/components/media-ui";
-import { parseMediaSettings } from "~/lib/media.shared";
+import { EmptyState } from "~/components/ui/EmptyState";
+import { Pagination } from "~/components/ui/Pagination";
+import { useActionToast } from "~/components/layout/ActionFeedback";
+import { PencilIcon, PlusIcon, SearchIcon, TrashIcon } from "~/components/ui/icons";
+import { publicMediaUrl } from "~/lib/media.shared";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
+import { safeLikeTerm } from "~/lib/postgrest";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { PageHeader } from "~/components/layout/PageHeader";
+import { ListSkeleton, useListLoading } from "~/components/ui/ListLoading";
 
+/**
+ * Admin brands list (~1,500): search by Arabic/English name, filter by
+ * linked category (main → includes its sub-categories), logo and status,
+ * 30 per page. A row opens the brand details page (/catalog/brands/:id),
+ * which is also where brands are added (/catalog/brands/new).
+ */
 
-interface BrandRow {
-  id: string;
-  name_ar: string;
-  name_en: string;
-  slug_ar: string;
-  slug_en: string;
-  thumb_path: string | null;
-  sort: number;
-  is_active: boolean;
+const PER_PAGE = 30;
+
+interface Row {
+  id: string; name_ar: string; name_en: string; slug_en: string; slug_ar: string; thumb_path: string | null;
+  country_ar: string; country_en: string; founded_year: number | null; is_active: boolean;
+  brand_categories: Array<{ category_id: string }> | null;
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
-  if (!client) throw Response.redirect(new URL(`/${lang}/auth/login?error=db`, request.url).toString(), 302);
-  const viewer = await requirePanelAccess(client, lang, "admin", request);
-  const { data: rows, error } = await client
-    .from("brands")
-    .select("id,name_ar,name_en,slug_ar,slug_en,thumb_path,sort,is_active")
-    .is("deleted_at", null)
-    .order("sort");
-  if (error) throw new Response(error.message, { status: 500 });
-  const { data: mediaRow } = await client.from("settings").select("value").eq("key", "media").single();
+  if (!client) throw data({ reason: "db" }, { status: 503 });
+  await requirePanelAccess(client, lang, "admin", request);
+  const url = new URL(request.url);
+  const q = (url.searchParams.get("q") ?? "").trim().slice(0, 60);
+  const cat = url.searchParams.get("cat") ?? "";
+  const logo = url.searchParams.get("logo") ?? "";
+  const status = url.searchParams.get("status") ?? "";
+  const page = Math.max(1, Math.trunc(Number(url.searchParams.get("page"))) || 1);
+
+  const { data: catRows } = await client.from("categories").select("id, parent_id, depth, name_ar, name_en")
+    .lte("depth", 2).is("deleted_at", null).order("depth").order("sort");
+  const cats = (catRows ?? []) as Array<{ id: string; parent_id: string | null; depth: number; name_ar: string; name_en: string }>;
+  const catIds = cat ? [cat, ...cats.filter((c) => c.parent_id === cat).map((c) => c.id)] : [];
+
+  const from = (page - 1) * PER_PAGE;
+  let query = client.from("brands")
+    .select(`id, name_ar, name_en, slug_ar, slug_en, thumb_path, country_ar, country_en, founded_year, is_active, brand_categories${cat ? "!inner" : ""}(category_id)`, { count: "exact" })
+    .is("deleted_at", null).order("sort").order("id").range(from, from + PER_PAGE - 1);
+  const term = safeLikeTerm(q, 60);
+  if (term) query = query.or(`name_ar.ilike.%${term}%,name_en.ilike.%${term}%`);
+  if (cat && /^[0-9a-f-]{36}$/i.test(cat)) query = query.in("brand_categories.category_id", catIds);
+  if (logo === "with") query = query.not("thumb_path", "is", null);
+  if (logo === "without") query = query.is("thumb_path", null);
+  if (status === "active") query = query.eq("is_active", true);
+  if (status === "hidden") query = query.eq("is_active", false);
+  const { data: rows, count, error } = await query;
+  if (error) throw new Error(error.message);
+  const list = (rows ?? []) as Row[];
+
+  // full category links for the rows on this page (the !inner filter trims them)
+  const ids = list.map((r) => r.id);
+  const [{ data: links }, { data: prods }, totals] = await Promise.all([
+    ids.length ? client.from("brand_categories").select("brand_id, category_id").in("brand_id", ids) : Promise.resolve({ data: [] }),
+    ids.length ? client.from("products").select("brand_id").in("brand_id", ids).is("deleted_at", null) : Promise.resolve({ data: [] }),
+    Promise.all([
+      client.from("brands").select("id", { count: "exact", head: true }).is("deleted_at", null),
+      client.from("brands").select("id", { count: "exact", head: true }).is("deleted_at", null).is("thumb_path", null),
+    ]),
+  ]);
+  const linkMap = new Map<string, string[]>();
+  for (const l of (links ?? []) as Array<{ brand_id: string; category_id: string }>) linkMap.set(l.brand_id, [...(linkMap.get(l.brand_id) ?? []), l.category_id]);
+  const prodCount = new Map<string, number>();
+  for (const p of (prods ?? []) as Array<{ brand_id: string }>) prodCount.set(p.brand_id, (prodCount.get(p.brand_id) ?? 0) + 1);
+
   return {
-    lang,
-    brands: (rows ?? []) as BrandRow[],
-    media: parseMediaSettings(mediaRow?.value),
-    uid: viewer.user.id,
+    lang, q, cat, logo, status, page, perPage: PER_PAGE, total: count ?? 0,
+    stats: { all: totals[0].count ?? 0, noLogo: totals[1].count ?? 0 },
+    cats,
     supabaseUrl: process.env.SUPABASE_URL ?? "",
+    brands: list.map(({ brand_categories: _bc, ...r }) => ({ ...r, category_ids: linkMap.get(r.id) ?? [], products: prodCount.get(r.id) ?? 0 })),
   };
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
-  if (!client) return { ok: false as const, reason: "db" };
-  // Writes are is_admin()-gated in RLS, but the loader-only guard meant a
-  // non-admin POST surfaced a raw DB error instead of a 403.
+  if (!client) return data({ ok: false, reason: "db" }, { status: 503 });
   await requirePanelAccess(client, lang, "admin", request);
   const form = await request.formData();
-  const intent = String(form.get("intent"));
-  const id = form.get("id") ? String(form.get("id")) : null;
-
-  if (intent === "create" || intent === "update") {
-    const patch = {
-      name_ar: String(form.get("name_ar") ?? "").trim(),
-      name_en: String(form.get("name_en") ?? "").trim(),
-      slug_ar: String(form.get("slug_ar") ?? "").trim(),
-      slug_en: String(form.get("slug_en") ?? "").trim(),
-      thumb_path: String(form.get("thumb_path") ?? "").trim() || null,
-      is_active: form.get("is_active") !== "false",
-    };
-    if (!patch.name_ar || !patch.name_en || !patch.slug_ar || !patch.slug_en) return { ok: false as const, reason: "invalid" };
-    if (intent === "create") {
-      const { error } = await client.from("brands").insert(patch);
-      if (error) return { ok: false as const, reason: error.message.includes("duplicate") ? "duplicate" : error.message };
-    } else if (id) {
-      const { error } = await client.from("brands").update(patch).eq("id", id);
-      if (error) return { ok: false as const, reason: error.message.includes("duplicate") ? "duplicate" : error.message };
-    }
-    return { ok: true as const };
-  }
-  if (intent === "reorder" && id) {
-    const { error } = await client.from("brands").update({ sort: Number(form.get("sort") ?? 0) }).eq("id", id);
-    if (error) return { ok: false as const, reason: error.message };
-    return { ok: true as const };
-  }
-  if (intent === "delete" && id) {
+  const id = String(form.get("id") ?? "");
+  if (form.get("intent") === "delete" && id) {
     const { error } = await client.from("brands").update({ deleted_at: new Date().toISOString(), is_active: false }).eq("id", id);
-    if (error) return { ok: false as const, reason: "error" };
-    return { ok: true as const };
+    return error ? data({ ok: false, reason: error.message }, { status: 400 }) : { ok: true as const };
   }
-  return { ok: false as const, reason: "invalid" };
+  if (form.get("intent") === "toggle" && id) {
+    const { error } = await client.from("brands").update({ is_active: form.get("active") === "true" }).eq("id", id);
+    return error ? data({ ok: false, reason: error.message }, { status: 400 }) : { ok: true as const };
+  }
+  return data({ ok: false, reason: "bad_intent" }, { status: 400 });
 }
 
 export default function AdminBrands({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation();
-  const toast = useToast();
+  const listLoading = useListLoading();
+  const { t, i18n } = useTranslation();
+  const en = i18n.language?.startsWith("en");
+  const { lang, q, cat, logo, status, page, perPage, total, stats, cats, brands, supabaseUrl } = loaderData;
+  const navigate = useNavigate();
+  const submit = useSubmit();
   const fetcher = useFetcher<typeof action>();
-  const { brands, media, uid, supabaseUrl } = loaderData;
-  const [editing, setEditing] = useState<BrandRow | null>(null);
-  const [creating, setCreating] = useState(false);
-  const [deleting, setDeleting] = useState<BrandRow | null>(null);
-  const [thumb, setThumb] = useState<string | null>(null);
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const busy = fetcher.state !== "idle";
+  useActionToast(fetcher);
+  const [text, setText] = useState(q);
+  const [deleting, setDeleting] = useState<(typeof brands)[number] | null>(null);
+  useEffect(() => { if (fetcher.state === "idle" && fetcher.data?.ok) setDeleting(null); }, [fetcher.state, fetcher.data]);
 
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data) {
-      if (fetcher.data.ok) {
-        toast.showToast("success", t("catalog.saved"));
-        setEditing(null);
-        setCreating(false);
-        setDeleting(null);
-      } else {
-        toast.showToast("error", fetcher.data.reason === "duplicate" ? t("catalog.slugTaken") : t("catalog.saveFailed"));
-      }
-    }
-  }, [fetcher.state, fetcher.data, toast, t]);
-
-  const moveStep = (row: BrandRow, dir: -1 | 1) => {
-    const idx = brands.findIndex((b) => b.id === row.id);
-    const j = idx + dir;
-    if (j < 0 || j >= brands.length) return;
-    const ordered = [...brands];
-    const tmp = ordered[idx];
-    ordered[idx] = ordered[j]!;
-    ordered[j] = tmp!;
-    ordered.forEach((b, i) => {
-      if (b.sort !== i) {
-        const fd = new FormData();
-        fd.set("intent", "reorder");
-        fd.set("id", b.id);
-        fd.set("sort", String(i));
-        fetcher.submit(fd, { method: "post" });
-      }
-    });
+  const href = (next: Partial<{ q: string; cat: string; logo: string; status: string; page: number }>) => {
+    const v = { q, cat, logo, status, page: 1, ...next };
+    const sp = new URLSearchParams();
+    for (const [k, val] of Object.entries(v)) if (val && !(k === "page" && val === 1)) sp.set(k, String(val));
+    return `?${sp.toString()}`;
   };
+  useEffect(() => {
+    if (text.trim() === q) return;
+    const id = window.setTimeout(() => navigate(href({ q: text.trim() }), { replace: true, preventScrollReset: true }), 350);
+    return () => window.clearTimeout(id);
+  }, [text]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const dialogOpen = creating || editing !== null;
-  const current = editing;
+  const catName = new Map(cats.map((c) => [c.id, en ? c.name_en : c.name_ar]));
+  const mains = cats.filter((c) => c.depth === 1);
+  const SELECT = "h-10 rounded-md border border-border bg-surface px-3 text-sm text-text focus:border-action focus:outline-none";
 
   return (
     <div className="flex flex-col gap-4">
       <PageHeader
         title={t("catalog.brands")}
-        count={loaderData.brands.length}
-        actions={<Button type="button" onClick={() => { setCreating(true); setEditing(null); setThumb(null); }}>{t("catalog.addBrand")}</Button>}
+        subtitle={t("ab.subtitle", { all: stats.all, noLogo: stats.noLogo })}
+        count={stats.all}
+        actions={<Link to={`/${lang}/admin/catalog/brands/new`} className="inline-flex items-center gap-1.5 rounded-md bg-action px-3.5 py-2 text-sm font-extrabold text-on-action hover:bg-action-hover"><PlusIcon className="size-4" />{t("catalog.addBrand")}</Link>}
       />
 
-      <ul className="flex flex-col gap-2">
-        {brands.map((b, i) => (
-          <li key={b.id} className="flex items-center gap-2 rounded-md border border-border bg-surface px-2.5 py-2">
-            {b.thumb_path ? (
-              <img src={`${supabaseUrl}/storage/v1/object/public/media/${b.thumb_path}`} alt="" width={40} height={40} loading="lazy" className="size-10 rounded-md bg-surface-tint object-cover" />
-            ) : (
-              <span className="flex size-10 items-center justify-center rounded-md bg-surface-tint text-2xs font-bold text-text-faint">{b.name_en.slice(0, 2)}</span>
-            )}
-            <span className="min-w-0 flex-1 truncate text-sm font-bold text-text">
-              {b.name_ar} <span className="font-normal text-text-faint">/ {b.name_en}</span>
-            </span>
-            <button type="button" aria-label={t("catalog.moveUp")} onClick={() => moveStep(b, -1)} className="cursor-pointer text-text-muted hover:text-action"><ChevronRightIcon className="size-4 rotate-90" /></button>
-            <button type="button" aria-label={t("catalog.moveDown")} onClick={() => moveStep(b, 1)} className="cursor-pointer text-text-muted hover:text-action"><ChevronRightIcon className="size-4 -rotate-90" /></button>
-            <button type="button" aria-label={t("common.edit")} onClick={() => { setEditing(b); setThumb(b.thumb_path); }} className="cursor-pointer text-text-muted hover:text-action"><PencilIcon className="size-4" /></button>
-            <button type="button" aria-label={t("common.delete")} onClick={() => setDeleting(b)} className="cursor-pointer text-text-muted hover:text-danger"><TrashIcon className="size-4" /></button>
-            <span className="hidden">{i}</span>
-          </li>
-        ))}
-        {brands.length === 0 ? <li className="rounded-lg border border-dashed border-border bg-surface py-10 text-center text-sm text-text-muted">{t("catalog.noBrands")}</li> : null}
-      </ul>
+      <form className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-3 shadow-1 lg:flex-row lg:items-center" onSubmit={(e) => e.preventDefault()}>
+        <label className="relative block min-w-0 flex-1">
+          <span className="sr-only">{t("ab.search")}</span>
+          <SearchIcon aria-hidden="true" className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+          <input type="search" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("ab.search")}
+            className="h-10 w-full rounded-md border border-border bg-surface ps-9 pe-3 text-sm text-text focus:border-action focus:outline-none" />
+        </label>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:flex">
+          <select aria-label={t("ab.f.category")} value={cat} onChange={(e) => navigate(href({ cat: e.target.value }), { preventScrollReset: true })} className={`${SELECT} col-span-2 sm:col-span-1 lg:w-56`}>
+            <option value="">{t("ab.f.allCategories")}</option>
+            {mains.map((m) => (
+              <optgroup key={m.id} label={en ? m.name_en : m.name_ar}>
+                <option value={m.id}>{t("ab.f.allOf", { name: en ? m.name_en : m.name_ar })}</option>
+                {cats.filter((c) => c.parent_id === m.id).map((c) => <option key={c.id} value={c.id}>{en ? c.name_en : c.name_ar}</option>)}
+              </optgroup>
+            ))}
+          </select>
+          <select aria-label={t("ab.f.logo")} value={logo} onChange={(e) => navigate(href({ logo: e.target.value }), { preventScrollReset: true })} className={SELECT}>
+            <option value="">{t("ab.f.anyLogo")}</option>
+            <option value="with">{t("ab.f.withLogo")}</option>
+            <option value="without">{t("ab.f.withoutLogo")}</option>
+          </select>
+          <select aria-label={t("ab.f.status")} value={status} onChange={(e) => navigate(href({ status: e.target.value }), { preventScrollReset: true })} className={SELECT}>
+            <option value="">{t("ab.f.anyStatus")}</option>
+            <option value="active">{t("ab.f.active")}</option>
+            <option value="hidden">{t("ab.f.hidden")}</option>
+          </select>
+        </div>
+      </form>
 
-      <Dialog open={dialogOpen} onClose={() => { setCreating(false); setEditing(null); }} title={current ? t("catalog.editBrand") : t("catalog.addBrand")}>
-        <fetcher.Form method="post" className="flex flex-col gap-3">
-          <input type="hidden" name="intent" value={current ? "update" : "create"} />
-          {current ? <input type="hidden" name="id" value={current.id} /> : null}
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Input label={t("catalog.nameAr")} name="name_ar" defaultValue={current?.name_ar} required maxLength={80} inputClassName="bg-surface" />
-            <Input label={t("catalog.nameEn")} name="name_en" defaultValue={current?.name_en} required maxLength={80} dir="ltr" inputClassName="bg-surface" />
-            <Input label={t("catalog.slugAr")} name="slug_ar" defaultValue={current?.slug_ar} required dir="ltr" pattern="[a-z0-9-]+" inputClassName="bg-surface" />
-            <Input label={t("catalog.slugEn")} name="slug_en" defaultValue={current?.slug_en} required dir="ltr" pattern="[a-z0-9-]+" inputClassName="bg-surface" />
+      <p className="num text-xs font-bold text-text-muted">{t("ab.showing", { from: total ? (page - 1) * perPage + 1 : 0, to: Math.min(page * perPage, total), total })}</p>
+
+      {listLoading ? <ListSkeleton /> : brands.length === 0 ? (
+        <div className="rounded-lg border border-border bg-surface p-6 shadow-1"><EmptyState title={t("catalog.noBrands")} body={t("ab.emptyHint")} /></div>
+      ) : (
+        <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-1">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[880px] text-start text-sm">
+              <thead>
+                <tr className="border-b border-border bg-surface-tint/50 text-2xs font-extrabold uppercase tracking-wide text-text-muted">
+                  <th scope="col" className="px-4 py-2.5 text-start">{t("ab.col.brand")}</th>
+                  <th scope="col" className="px-4 py-2.5 text-start">{t("ab.col.categories")}</th>
+                  <th scope="col" className="px-4 py-2.5 text-start">{t("ab.col.origin")}</th>
+                  <th scope="col" className="px-4 py-2.5 text-start">{t("ab.col.products")}</th>
+                  <th scope="col" className="px-4 py-2.5 text-start">{t("ab.col.status")}</th>
+                  <th scope="col" className="w-24 px-4 py-2.5"><span className="sr-only">{t("ab.col.actions")}</span></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {brands.map((b) => {
+                  const to = `/${lang}/admin/catalog/brands/${b.id}`;
+                  return (
+                    <tr key={b.id} className="cursor-pointer transition-colors hover:bg-surface-tint/40" onClick={(e) => { if (!(e.target as HTMLElement).closest("a,button,form")) navigate(to); }}>
+                      <td className="px-4 py-2.5">
+                        <Link to={to} className="flex items-center gap-3">
+                          <span className="relative flex h-11 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-white p-1">
+                            {b.thumb_path ? <img src={publicMediaUrl(supabaseUrl, b.thumb_path)} alt="" width={64} height={44} loading="lazy" className="absolute inset-0 size-full p-1 object-contain" />
+                              : <span className="text-2xs font-bold text-text-faint">{t("ab.noLogo")}</span>}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block truncate font-extrabold text-text">{en ? b.name_en : b.name_ar}</span>
+                            <span className="block truncate text-xs text-text-muted" dir={en ? "rtl" : "ltr"}>{en ? b.name_ar : b.name_en}</span>
+                          </span>
+                        </Link>
+                      </td>
+                      <td className="max-w-[260px] px-4 py-2.5">
+                        <span className="flex flex-wrap gap-1">
+                          {b.category_ids.slice(0, 3).map((id) => <span key={id} className="rounded-full bg-surface-tint px-2 py-0.5 text-2xs font-bold text-text-muted">{catName.get(id) ?? "—"}</span>)}
+                          {b.category_ids.length > 3 ? <span className="text-2xs font-bold text-text-faint">+{b.category_ids.length - 3}</span> : null}
+                          {b.category_ids.length === 0 ? <span className="text-2xs font-bold text-warning-strong">{t("ab.noCategory")}</span> : null}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2.5 text-xs text-text-muted">
+                        {[en ? b.country_en : b.country_ar, b.founded_year].filter(Boolean).join(" · ") || "—"}
+                      </td>
+                      <td className="num px-4 py-2.5 text-xs font-bold text-text">{b.products}</td>
+                      <td className="px-4 py-2.5">
+                        <button type="button" onClick={() => submit({ intent: "toggle", id: b.id, active: String(!b.is_active) }, { method: "post", navigate: false, fetcherKey: `toggle-${b.id}` })}
+                          className={`rounded-full px-2.5 py-1 text-2xs font-extrabold ${b.is_active ? "bg-success-soft text-success-strong" : "bg-surface-tint text-text-muted"}`}>
+                          {b.is_active ? t("ab.f.active") : t("ab.f.hidden")}
+                        </button>
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <span className="flex justify-end gap-1">
+                          <Link to={to} aria-label={t("common.edit")} title={t("common.edit")} className="grid size-8 place-items-center rounded-md text-text-muted hover:bg-surface-tint hover:text-action"><PencilIcon className="size-4" /></Link>
+                          <button type="button" aria-label={t("common.delete")} title={t("common.delete")} onClick={() => setDeleting(b)} className="grid size-8 place-items-center rounded-md text-text-muted hover:bg-danger-soft hover:text-danger"><TrashIcon className="size-4" /></button>
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-          <div className="flex items-center gap-3">
-            {thumb ? (
-              <img src={`${supabaseUrl}/storage/v1/object/public/media/${thumb}`} alt="" width={48} height={48} className="size-12 rounded-md bg-surface-tint object-cover" />
-            ) : (
-              <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-2xs text-text-faint">{t("catalog.logo")}</span>
-            )}
-            <input type="hidden" name="thumb_path" value={thumb ?? ""} />
-            <Button type="button" size="sm" variant="outline" onClick={() => setPickerOpen(true)}>{t("media.choose")}</Button>
-          </div>
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="ghost" onClick={() => { setCreating(false); setEditing(null); }}>{t("common.cancel")}</Button>
-            <Button type="submit" loading={busy}>{t("common.save")}</Button>
-          </div>
-        </fetcher.Form>
-      </Dialog>
+        </div>
+      )}
+      <Pagination page={page} total={total} perPage={perPage} hrefFor={(p) => href({ page: p })} />
 
       <Dialog open={deleting !== null} onClose={() => setDeleting(null)} title={t("common.confirm")}>
         {deleting ? (
           <fetcher.Form method="post" className="flex flex-col gap-3">
             <input type="hidden" name="intent" value="delete" />
             <input type="hidden" name="id" value={deleting.id} />
-            <p className="text-sm text-text">{t("catalog.deleteConfirm", { name: deleting.name_ar })}</p>
+            <p className="text-sm text-text">{t("catalog.deleteConfirm", { name: en ? deleting.name_en : deleting.name_ar })}</p>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="ghost" onClick={() => setDeleting(null)}>{t("common.cancel")}</Button>
-              <Button type="submit" loading={busy}>{t("common.confirm")}</Button>
+              <Button type="submit" loading={fetcher.state !== "idle"} className="bg-danger hover:bg-danger">{t("common.delete")}</Button>
             </div>
           </fetcher.Form>
         ) : null}
       </Dialog>
-
-      <MediaPickerDialog
-        open={pickerOpen}
-        onClose={() => setPickerOpen(false)}
-        title={t("media.pickImage")}
-        settings={media}
-        uid={uid}
-        supabaseUrl={supabaseUrl}
-        mode="single"
-        kinds={["image"]}
-        onConfirm={(files) => setThumb(files[0]?.path ?? null)}
-      />
     </div>
   );
 }
@@ -228,11 +265,6 @@ export function HydrateFallback() {
   return <SkeletonTable />;
 }
 
-/**
- * Without a route boundary a loader throw (or a guard redirect) escaped the
- * panel layout and rendered the standalone root error document, losing the
- * sidebar. Every other admin route already had one.
- */
 export function ErrorBoundary() {
   return <RouteErrorBoundary />;
 }

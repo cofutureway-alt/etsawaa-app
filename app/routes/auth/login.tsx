@@ -1,3 +1,5 @@
+import { PhoneInput } from "~/components/phone/PhoneInput";
+import { GoogleButton, OrDivider } from "~/components/auth/GoogleButton";
 import { useEffect, useRef } from "react";
 import type { Route } from "./+types/login";
 import { Link, data, redirect, useActionData, useFetcher, useNavigate, useSearchParams } from "react-router";
@@ -7,8 +9,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { loginSchema } from "~/features/auth/schemas";
+import { resolveEmailFromPhone } from "~/features/auth/phone-email.server";
+import { clientKey, isRateLimited, recordHit } from "~/lib/rate-limit.server";
 import { Button, Card, CardBody, Input, AlertIcon } from "~/components/ui";
 import { requireLang } from "~/lib/lang.server";
+import { rememberLocale } from "~/lib/locale-preference.server";
+import { getSiteUrl } from "~/lib/env.server";
 import { safeNext } from "~/lib/auth/next";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
@@ -24,10 +30,14 @@ type LoginActionData =
 /** JS mode result comes from the fetcher; no-JS from useActionData. */
 
 /**
- * POST /auth/login (F-10): email OR phone. Phone is resolved to its email via
- * the `fn_resolve_email_from_phone` RPC, then a real Supabase password
+ * POST /auth/login (F-10): email OR phone. Phone is resolved to its email
+ * server-side (service-role RPC, after the rate limit), then a real Supabase password
  * sign-in runs. Unverified emails get a fresh OTP and are routed to /verify.
  */
+const LOGIN_MAX_FAILURES = 10;
+const LOGIN_MAX_FAILURES_PER_IP = 50;
+const LOGIN_FAILURE_WINDOW_MS = 15 * 60_000;
+
 export async function action({ request, params }: Route.ActionArgs) {
   const lang = requireLang(params);
   // Document POST (no-JS) follows a redirect; fetcher POST navigates client-side.
@@ -51,29 +61,45 @@ export async function action({ request, params }: Route.ActionArgs) {
   }
 
   const { identifier, password } = parsed.data;
+
+  // App-level brute-force cap (app/lib/rate-limit.server.ts). Only FAILED
+  // attempts count, so successful sign-ins never use up the budget. The
+  // account key is what stops password guessing; the per-IP key (only when a
+  // trusted proxy supplies the address) is looser because many customers
+  // share one carrier-grade NAT address. Supabase Auth still throttles too.
+  const ip = clientKey(request);
+  const failureKeys = [`login:acct:${identifier.value.toLowerCase()}`];
+  if (ip) failureKeys.push(`login:ip:${ip}`);
+  if (isRateLimited(failureKeys[0]!, LOGIN_MAX_FAILURES) || (ip && isRateLimited(failureKeys[1]!, LOGIN_MAX_FAILURES_PER_IP))) {
+    return data<LoginActionData>({ ok: false, formError: "rate_limited" }, { status: 429 });
+  }
+  const recordFailure = () => {
+    for (const key of failureKeys) recordHit(key, LOGIN_FAILURE_WINDOW_MS);
+  };
   let email: string;
   if (identifier.kind === "email") {
     email = identifier.value;
   } else {
-    const { data: resolved, error: rpcError } = await client.rpc("fn_resolve_email_from_phone", {
-      p_phone_e164: identifier.value,
-    });
-    if (rpcError || !resolved) {
+    const resolved = await resolveEmailFromPhone(identifier.value);
+    if (!resolved) {
+      recordFailure();
       return data<LoginActionData>({ ok: false, formError: "invalid" });
     }
-    email = String(resolved);
+    email = resolved;
   }
 
   const { error } = await client.auth.signInWithPassword({ email, password });
   if (error) {
     if (error.message === "Email not confirmed") {
       // Send a fresh OTP and route to the verify screen (US-04 edge).
-      await client.auth.resend({ type: "signup", email });
-      throw redirect(`/${lang}/auth/verify?email=${encodeURIComponent(email)}&fresh=1`);
+      await client.auth.resend({ type: "signup", email, options: { emailRedirectTo: `${getSiteUrl(request.url)}/${lang}/auth/verify` } });
+      throw redirect(`/${lang}/auth/verify?email=${encodeURIComponent(email)}&fresh=1&sent=${Date.now()}`);
     }
+    recordFailure();
     return data<LoginActionData>({ ok: false, formError: "invalid" });
   }
 
+  await rememberLocale(client, lang);
   const url = new URL(request.url);
   const next = url.searchParams.get("next");
   const redirectTo = safeNext(next, `/${lang}/account`);
@@ -85,6 +111,7 @@ const ERROR_MESSAGE_KEYS: Record<string, string> = {
   invalid: "auth.login.invalid",
   db_not_connected: "auth.errors.generic",
   blocked: "auth.login.blocked",
+  rate_limited: "auth.login.rateLimited",
 };
 
 export default function LoginPage({ loaderData }: Route.ComponentProps) {
@@ -153,9 +180,9 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
           noValidate
           className="flex flex-col gap-4"
         >
-          <Input
+          <PhoneInput
+            mode="smart"
             label={t("auth.login.identifier")}
-            hint={t("auth.login.identifierHint")}
             placeholder="you@example.com"
             autoComplete="username"
             error={errors.identifier?.message ?? fieldErrors.identifier}
@@ -179,16 +206,8 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
           </Button>
         </fetcher.Form>
 
-        <div className="relative text-center">
-          <span aria-hidden="true" className="absolute inset-x-0 top-1/2 border-t border-border" />
-          <span className="relative z-10 bg-surface px-3 text-xs text-text-faint">{t("auth.login.google")}</span>
-        </div>
-        <form method="post" action={`/${lang}/auth/google`}>
-          <input type="hidden" name="next" value={searchParams.get("next") ?? ""} />
-          <Button type="submit" variant="outline" size="lg" block>
-            {t("auth.login.google")}
-          </Button>
-        </form>
+        <OrDivider />
+        <GoogleButton lang={lang} next={searchParams.get("next")} />
 
         <p className="text-center text-sm text-text-muted">
           {t("auth.login.noAccount")}{" "}

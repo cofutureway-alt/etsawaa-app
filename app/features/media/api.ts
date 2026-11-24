@@ -1,5 +1,14 @@
-import { getSupabaseBrowserClient } from "~/lib/supabase/browser";
-import { buildObjectPath, detectKind, type MediaKind } from "~/lib/media.shared";
+import type { MediaKind } from "~/lib/media.shared";
+
+/**
+ * Browser-side media library client.
+ *
+ * Every call is a request to /api/media-library, which runs it under the
+ * request's httpOnly session cookie. Nothing here queries PostgREST or
+ * Storage directly: the browser cannot see the session token, so a direct
+ * call would reach RLS as `anon` (401) — that is what made the picker show
+ * "تعذر تحميل البيانات" and swallow uploads.
+ */
 
 export interface MediaFolderRow {
   id: string;
@@ -21,19 +30,9 @@ export interface MediaFileRow {
   height: number | null;
 }
 
-function client() {
-  const c = getSupabaseBrowserClient();
-  if (!c) throw new Error("db_unavailable");
-  return c;
-}
-
-export async function listFolders(): Promise<MediaFolderRow[]> {
-  const { data, error } = await client()
-    .from("media_folders")
-    .select("id,parent_id,name,depth")
-    .order("name");
-  if (error) throw new Error(error.message);
-  return data ?? [];
+export interface MediaUsageRef {
+  ref_type: string;
+  ref_label: string;
 }
 
 export const MEDIA_PAGE_SIZE = 20;
@@ -47,95 +46,74 @@ export interface ListFilesOpts {
   page: number;
 }
 
-/** Server-side pagination — 20 rows/page + exact count (M-02 pagination). */
+type Envelope<T> = ({ ok: true } & T) | { ok: false; reason: string };
+
+async function request<T>(init: RequestInit, url: string): Promise<T> {
+  const res = await fetch(url, init);
+  const body = (await res.json().catch(() => ({ ok: false, reason: "network" }))) as Envelope<T>;
+  if (!body.ok) throw new Error(body.reason);
+  return body as T & { ok: true };
+}
+
+const get = <T>(query: string) => request<T>({ credentials: "same-origin" }, `/api/media-library?${query}`);
+
+async function post<T>(fields: Record<string, string | File>): Promise<T> {
+  const form = new FormData();
+  for (const [key, value] of Object.entries(fields)) form.append(key, value);
+  return request<T>({ method: "POST", body: form, credentials: "same-origin" }, "/api/media-library");
+}
+
+export async function listFolders(): Promise<MediaFolderRow[]> {
+  const res = await get<{ folders: MediaFolderRow[] }>("op=folders");
+  return res.folders;
+}
+
 export async function listFilesPage(opts: ListFilesOpts): Promise<{ rows: MediaFileRow[]; count: number }> {
-  const from = opts.page * MEDIA_PAGE_SIZE;
-  let q = client()
-    .from("media_files")
-    .select("id,folder_id,bucket,path,original_name,mime,size_bytes,kind,width,height", { count: "exact" })
-    .is("deleted_at", null)
-    .order("created_at", { ascending: false })
-    .range(from, from + MEDIA_PAGE_SIZE - 1);
-  if (opts.search) q = q.ilike("original_name", `%${opts.search}%`);
-  if (opts.selfId === null) {
-    if (opts.search && opts.folderIds.length > 0) {
-      q = q.or(`folder_id.is.null,folder_id.in.(${opts.folderIds.join(",")})`);
-    } else {
-      q = q.is("folder_id", null);
-    }
-  } else {
-    if (opts.search && opts.folderIds.length > 0) {
-      q = q.or(`folder_id.eq.${opts.selfId},folder_id.in.(${opts.folderIds.join(",")})`);
-    } else {
-      q = q.eq("folder_id", opts.selfId);
-    }
-  }
-  const { data, error, count } = await q;
-  if (error) throw new Error(error.message);
-  return { rows: (data ?? []).map((row) => ({ ...row, kind: row.kind as MediaKind })), count: count ?? 0 };
+  const params = new URLSearchParams({
+    op: "files",
+    self: opts.selfId ?? "",
+    search: opts.search,
+    page: String(opts.page),
+  });
+  const res = await get<{ rows: MediaFileRow[]; count: number }>(params.toString());
+  return { rows: res.rows, count: res.count };
 }
 
 export async function createFolder(name: string, parentId: string | null): Promise<MediaFolderRow> {
-  const { data, error } = await client()
-    .from("media_folders")
-    .insert({ name, parent_id: parentId })
-    .select("id,parent_id,name,depth")
-    .single();
-  if (error) throw new Error(error.message);
-  return data;
+  const res = await post<{ folder: MediaFolderRow }>({ op: "createFolder", name, parentId: parentId ?? "" });
+  return res.folder;
 }
 
-export async function renameFolder(id: string, name: string): Promise<void> {
-  const { error } = await client().from("media_folders").update({ name }).eq("id", id);
-  if (error) throw new Error(error.message);
-}
-
-export async function deleteFolder(id: string): Promise<void> {
-  const { error } = await client().from("media_folders").delete().eq("id", id);
-  if (error) throw new Error(error.message);
-}
-
-export async function renameFile(id: string, originalName: string): Promise<void> {
-  const { error } = await client().from("media_files").update({ original_name: originalName }).eq("id", id);
-  if (error) throw new Error(error.message);
-}
-
-export async function moveFile(id: string, folderId: string | null): Promise<void> {
-  const { error } = await client().from("media_files").update({ folder_id: folderId }).eq("id", id);
-  if (error) throw new Error(error.message);
-}
+export const renameFolder = (id: string, name: string) => post<object>({ op: "renameFolder", id, name });
+export const deleteFolder = (id: string) => post<object>({ op: "deleteFolder", id });
+export const renameFile = (id: string, name: string) => post<object>({ op: "renameFile", id, name });
+export const moveFile = (id: string, folderId: string | null) =>
+  post<object>({ op: "moveFile", id, folderId: folderId ?? "" });
 
 /** Soft delete the row; physical object removal happens only when unused. */
-export async function softDeleteFile(id: string): Promise<void> {
-  const { error } = await client().from("media_files").update({ deleted_at: new Date().toISOString() }).eq("id", id);
-  if (error) throw new Error(error.message);
-}
-
-export interface MediaUsageRef {
-  ref_type: string;
-  ref_label: string;
-}
+export const softDeleteFile = (id: string) => post<object>({ op: "softDeleteFile", id });
 
 /** Usage check before physical delete (fn_media_usage, security definer). */
 export async function fileUsage(path: string): Promise<MediaUsageRef[]> {
-  const { data, error } = await client().rpc("fn_media_usage", { p_path: path });
-  if (error) throw new Error(error.message);
-  return (data ?? []) as MediaUsageRef[];
+  const res = await post<{ usage: MediaUsageRef[] }>({ op: "fileUsage", path });
+  return res.usage;
 }
 
 /** Physical delete — only after the usage check passes (M-07). */
 export async function physicalDelete(row: MediaFileRow): Promise<void> {
-  const usage = await fileUsage(row.path);
-  if (usage.length > 0) {
-    const err = new Error("in_use") as Error & { usage?: MediaUsageRef[] };
-    err.usage = usage;
+  const form = new FormData();
+  form.append("op", "physicalDelete");
+  form.append("id", row.id);
+  const res = await fetch("/api/media-library", { method: "POST", body: form, credentials: "same-origin" });
+  const body = (await res.json().catch(() => ({ ok: false, reason: "network" }))) as
+    | Envelope<object>
+    | { ok: false; reason: "in_use"; usage: MediaUsageRef[] };
+  if (!body.ok) {
+    // keep the usage list on the error — the library's toast names the places
+    const err = new Error(body.reason) as Error & { usage?: MediaUsageRef[] };
+    if ("usage" in body) err.usage = body.usage;
     throw err;
   }
-  const c = client();
-  const { error: objErr } = await c.storage.from(row.bucket).remove([row.path]);
-  if (objErr) throw new Error(objErr.message);
-  const { error: rowErr } = await c.from("media_files").delete().eq("id", row.id);
-  if (rowErr) throw new Error(rowErr.message);
 }
 
 export interface UploadItem {
@@ -147,56 +125,42 @@ export interface UploadItem {
   row?: MediaFileRow;
 }
 
-/** XHR upload — per-file progress + abort support (supabase-js has no progress). */
+/**
+ * Upload with progress and abort. fetch cannot report upload progress, so
+ * this stays on XHR — against our own route, which holds the session.
+ */
 export function uploadFile(
-  uid: string,
-  bucket: string,
   file: File,
   folderId: string | null,
+  bucket: string,
   onProgress: (pct: number) => void,
   signal: { aborted: boolean; abort?: () => void },
 ): Promise<MediaFileRow> {
   return new Promise((resolve, reject) => {
-    const c = client();
-    void c.auth.getSession().then(({ data }) => {
-      const token = data.session?.access_token;
-      if (!token) return reject(new Error("not_signed_in"));
-      const path = buildObjectPath(uid, file.name);
-      const base = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-      if (!base) return reject(new Error("db_unavailable"));
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", `${base}/storage/v1/object/${bucket}/${path}`);
-      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-      xhr.setRequestHeader("x-upsert", "false");
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
-      };
-      xhr.onload = async () => {
-        if (signal.aborted) return reject(new Error("cancelled"));
-        if (xhr.status >= 200 && xhr.status < 300) {
-          const { data: row, error } = await c
-            .from("media_files")
-            .insert({
-              bucket,
-              path,
-              folder_id: folderId,
-              original_name: file.name,
-              mime: file.type || "application/octet-stream",
-              size_bytes: file.size,
-              kind: detectKind(file.type),
-            })
-            .select("id,folder_id,bucket,path,original_name,mime,size_bytes,kind,width,height")
-            .single();
-          if (error) return reject(new Error(error.message));
-          resolve(row as MediaFileRow);
-        } else {
-          reject(new Error(`upload_${xhr.status}`));
-        }
-      };
-      xhr.onerror = () => reject(new Error("network"));
-      xhr.onabort = () => reject(new Error("cancelled"));
-      signal.abort = () => xhr.abort();
-      xhr.send(file);
-    });
+    const form = new FormData();
+    form.append("op", "upload");
+    form.append("bucket", bucket);
+    form.append("folderId", folderId ?? "");
+    form.append("file", file);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/media-library");
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => {
+      if (signal.aborted) return reject(new Error("cancelled"));
+      try {
+        const body = JSON.parse(xhr.responseText) as Envelope<{ row: MediaFileRow }>;
+        if (body.ok) return resolve(body.row);
+        reject(new Error(body.reason));
+      } catch {
+        reject(new Error(`upload_${xhr.status}`));
+      }
+    };
+    xhr.onerror = () => reject(new Error("network"));
+    xhr.onabort = () => reject(new Error("cancelled"));
+    signal.abort = () => xhr.abort();
+    xhr.send(form);
   });
 }

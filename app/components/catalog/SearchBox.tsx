@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { MediaImg } from "~/components/catalog/MediaImg";
 import { SearchIcon, StoreIcon } from "~/components/ui/icons";
 
 interface Suggestions {
   products: Array<{ id: string; slug_ar: string; slug_en: string; name_ar: string; name_en: string; main_image_path: string | null; price_piastres: number | null }>;
   stores: Array<{ slug: string; name_ar: string; name_en: string; logo_path: string | null }>;
   categories: Array<{ slug_ar: string; slug_en: string; name_ar: string; name_en: string; depth: number }>;
+  brands: Array<{ slug_ar: string; slug_en: string; name_ar: string; name_en: string; thumb_path: string | null }>;
 }
 
-const EMPTY: Suggestions = { products: [], stores: [], categories: [] };
+const EMPTY: Suggestions = { products: [], stores: [], categories: [], brands: [] };
 
 /**
  * Header search (S-04 / US-04): instant suggestions under the input
@@ -48,7 +50,7 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
       try {
         const res = await fetch(`/api/search-suggest?q=${encodeURIComponent(trimmed)}`);
         const body = (await res.json()) as Suggestions;
-        setItems({ products: body.products ?? [], stores: body.stores ?? [], categories: body.categories ?? [] });
+        setItems({ products: body.products ?? [], stores: body.stores ?? [], categories: body.categories ?? [], brands: body.brands ?? [] });
         setOpen(true);
       } catch {
         setItems(EMPTY);
@@ -65,12 +67,19 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
     void navigate(`/${lang}/search?q=${encodeURIComponent(trimmed)}`);
   };
 
-  const hasAny = items.products.length > 0 || items.stores.length > 0 || items.categories.length > 0;
+  const hasAny = items.products.length > 0 || items.stores.length > 0 || items.categories.length > 0 || items.brands.length > 0;
 
   return (
     <div ref={boxRef} className={`relative ${compact ? "w-full" : "min-w-0 flex-1 max-w-[560px]"}`}>
-      <div className="flex items-center overflow-hidden rounded-md border-2 border-primary bg-surface transition-shadow duration-200 focus-within:shadow-focus">
-        <SearchIcon aria-hidden="true" className="ms-3 shrink-0 text-text-faint" />
+      <div
+        className={
+          compact
+            ? // phone: soft pill, one icon, round red button tucked inside
+              "flex h-12 items-center gap-1 rounded-full border border-border bg-surface-tint p-1 ps-4 transition-[background-color,border-color,box-shadow] duration-200 focus-within:border-primary focus-within:bg-surface focus-within:shadow-focus"
+            : "flex items-center overflow-hidden rounded-md border-2 border-primary bg-surface transition-shadow duration-200 focus-within:shadow-focus"
+        }
+      >
+        {compact ? null : <SearchIcon aria-hidden="true" className="ms-3 shrink-0 text-text-faint" />}
         <input
           type="search"
           value={q}
@@ -87,15 +96,22 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
           role="combobox"
           aria-autocomplete="list"
           maxLength={80}
-          className="min-w-0 flex-1 border-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-text-faint"
+          className={`min-w-0 flex-1 border-none bg-transparent outline-none placeholder:text-text-faint [&::-webkit-search-cancel-button]:hidden ${
+            compact ? "h-full px-1 text-base" : "px-3 py-2.5 text-sm"
+          }`}
         />
         <button
           type="button"
           onClick={submit}
-          className="flex shrink-0 cursor-pointer items-center gap-1.5 bg-action px-3.5 py-2.5 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+          aria-label={t("common.search")}
+          className={
+            compact
+              ? "grid size-10 shrink-0 cursor-pointer place-items-center rounded-full bg-action text-on-action shadow-1 transition-colors duration-150 hover:bg-action-hover active:scale-95"
+              : "flex shrink-0 cursor-pointer items-center gap-1.5 bg-action px-3.5 py-2.5 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover"
+          }
         >
           <SearchIcon aria-hidden="true" />
-          <span className="hidden lg:inline">{t("common.search")}</span>
+          {compact ? null : <span className="hidden lg:inline">{t("common.search")}</span>}
         </button>
       </div>
 
@@ -129,6 +145,26 @@ export function SearchBox({ lang, compact = false }: { lang: string; compact?: b
                       <span className="text-2xs text-text-faint">{t("store.search.categoryDepth", { depth: c.depth })}</span>
                     </SuggestItem>
                   ))}
+                </SuggestGroup>
+              ) : null}
+              {items.brands.length > 0 ? (
+                <SuggestGroup title={t("store.search.brands")}>
+                  {items.brands.map((b) => {
+                    const name = lang === "ar" ? b.name_ar || b.name_en : b.name_en || b.name_ar;
+                    const slug = lang === "en" ? b.slug_en || b.slug_ar : b.slug_ar || b.slug_en;
+                    return (
+                      <SuggestItem key={`${b.slug_ar}-${b.slug_en}`} to={`/${lang}/brand/${encodeURIComponent(slug)}`} onPick={() => setOpen(false)}>
+                        <span className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded bg-white">
+                          {b.thumb_path ? (
+                            <MediaImg path={b.thumb_path} alt="" width={24} height={24} className="size-6 object-contain" />
+                          ) : (
+                            <span aria-hidden="true" className="text-2xs font-black text-action">{name.slice(0, 2)}</span>
+                          )}
+                        </span>
+                        <span className="truncate font-bold">{name}</span>
+                      </SuggestItem>
+                    );
+                  })}
                 </SuggestGroup>
               ) : null}
               {items.stores.length > 0 ? (

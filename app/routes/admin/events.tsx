@@ -8,7 +8,7 @@ import { requireLang } from "~/lib/lang.server";
 import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
-import { PlusIcon, CheckIcon, StoreIcon, TagIcon, AlertIcon } from "~/components/ui/icons";
+import { PlusIcon, CheckIcon, StoreIcon, TagIcon } from "~/components/ui/icons";
 import { Dialog } from "~/components/ui/Overlay";
 import { Input } from "~/components/ui/Input";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
@@ -17,6 +17,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
 import { PageHeader } from "~/components/layout/PageHeader";
+import { fetchAll } from "~/lib/supabase/fetch-all";
 
 
 /**
@@ -57,7 +58,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       return { vendor_id: r.vendor_id as string, store_ar: vd.store_name_ar, store_en: vd.store_name_en, status: r.status as string };
     });
   }
-  const cats = await client.from("categories").select("id, name_ar, name_en").eq("is_active", true).is("deleted_at", null).order("path");
+  // paged (browse tree + level-4 product types > 1000 rows); a category
+  // discount on any node applies to its whole subtree (fn_category_within)
+  const cats = {
+    data: await fetchAll((from, to) =>
+      client.from("categories").select("id, name_ar, name_en").eq("is_active", true).is("deleted_at", null).order("path").range(from, to)),
+  };
   return {
     lang, events: JSON.parse(JSON.stringify(active.data ?? [])) as EventRow[],
     discounts, vendors,

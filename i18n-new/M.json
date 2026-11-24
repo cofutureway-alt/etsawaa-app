@@ -1,0 +1,766 @@
+{
+  "ads.sponsored": {
+    "ar": "مُموَّل",
+    "en": "Sponsored"
+  },
+  "ads.sponsoredTitle": {
+    "ar": "منتجات مُموَّلة",
+    "en": "Sponsored products"
+  },
+  "ads.sponsoredBy": {
+    "ar": "إعلان من {{store}}",
+    "en": "Ad by {{store}}"
+  },
+  "ads.popup.cta": {
+    "ar": "شوف المنتج",
+    "en": "View product"
+  },
+  "ads.popup.dealKicker": {
+    "ar": "عرض خاص",
+    "en": "Special offer"
+  },
+  "ads.popup.dealTitle": {
+    "ar": "عرض لفترة محدودة",
+    "en": "Limited-time offer"
+  },
+  "ads.popup.save": {
+    "ar": "وفّر {{percent}}٪",
+    "en": "Save {{percent}}%"
+  },
+  "ads.tpl.spotlight": {
+    "ar": "صورة كبيرة",
+    "en": "Spotlight"
+  },
+  "ads.tpl.deal": {
+    "ar": "عرض وخصم",
+    "en": "Deal"
+  },
+  "ads.tpl.minimal": {
+    "ar": "بسيط",
+    "en": "Minimal"
+  },
+  "va.hint2": {
+    "ar": "اشترِ باقة إعلانية، اختار منتجاتك وأماكن ظهورها، وادفع بالبطاقة أو من محفظتك — الإعلان يبدأ فور موافقة الإدارة.",
+    "en": "Buy an ad package, choose your products and where they appear, pay by card or from your wallet — the ad starts once approved."
+  },
+  "va.statWaiting": {
+    "ar": "طلبات قيد المعالجة",
+    "en": "Orders in progress"
+  },
+  "va.wallet": {
+    "ar": "رصيد المحفظة",
+    "en": "Wallet balance"
+  },
+  "va.ctr": {
+    "ar": "نسبة النقر {{ctr}}٪",
+    "en": "CTR {{ctr}}%"
+  },
+  "va.tab.packages": {
+    "ar": "الباقات",
+    "en": "Packages"
+  },
+  "va.tab.orders": {
+    "ar": "طلباتي",
+    "en": "My orders"
+  },
+  "va.tab.campaigns": {
+    "ar": "حملاتي",
+    "en": "My campaigns"
+  },
+  "va.noPackages": {
+    "ar": "لا توجد باقات متاحة حالياً",
+    "en": "No packages available yet"
+  },
+  "va.noPackagesHint": {
+    "ar": "تابع الصفحة دي — الإدارة بتضيف باقات جديدة باستمرار.",
+    "en": "Check back soon — new packages are added regularly."
+  },
+  "va.popular": {
+    "ar": "الأكثر طلباً",
+    "en": "Most popular"
+  },
+  "va.forDays": {
+    "ar": "لمدة {{count}} يوم",
+    "en": "For {{count}} days"
+  },
+  "va.forImpressions": {
+    "ar": "{{count}} ظهور خلال {{days}} يوم",
+    "en": "{{count}} impressions within {{days}} days"
+  },
+  "va.itemCount": {
+    "ar": "{{count}} × {{name}}",
+    "en": "{{count}} × {{name}}"
+  },
+  "va.buy": {
+    "ar": "اشترِ الباقة",
+    "en": "Buy package"
+  },
+  "va.noOrders": {
+    "ar": "لا توجد طلبات إعلانات بعد",
+    "en": "No ad orders yet"
+  },
+  "va.noOrdersHint": {
+    "ar": "اختار باقة من تبويب الباقات وابدأ أول إعلان ليك.",
+    "en": "Pick a package from the Packages tab to start your first ad."
+  },
+  "va.emptyHint2": {
+    "ar": "إعلاناتك هتظهر هنا بعد موافقة الإدارة، مع عدد مرات الظهور والنقرات.",
+    "en": "Your ads show here once approved, with their impressions and clicks."
+  },
+  "va.impressions": {
+    "ar": "الظهور",
+    "en": "Impressions"
+  },
+  "va.clicks": {
+    "ar": "النقرات",
+    "en": "Clicks"
+  },
+  "va.ctrShort": {
+    "ar": "نسبة النقر",
+    "en": "CTR"
+  },
+  "va.daysLeft": {
+    "ar": "أيام متبقية",
+    "en": "Days left"
+  },
+  "va.order.pending_payment": {
+    "ar": "بانتظار الدفع",
+    "en": "Awaiting payment"
+  },
+  "va.order.in_review": {
+    "ar": "قيد المراجعة",
+    "en": "In review"
+  },
+  "va.order.approved": {
+    "ar": "معتمد",
+    "en": "Approved"
+  },
+  "va.order.rejected": {
+    "ar": "مرفوض",
+    "en": "Rejected"
+  },
+  "va.order.cancelled": {
+    "ar": "ملغي",
+    "en": "Cancelled"
+  },
+  "va.step.pending_payment": {
+    "ar": "الدفع",
+    "en": "Payment"
+  },
+  "va.step.in_review": {
+    "ar": "المراجعة",
+    "en": "Review"
+  },
+  "va.step.approved": {
+    "ar": "يعمل",
+    "en": "Live"
+  },
+  "va.paidBy.card": {
+    "ar": "الدفع بالبطاقة",
+    "en": "Paid by card"
+  },
+  "va.paidBy.wallet": {
+    "ar": "الدفع من المحفظة",
+    "en": "Paid from wallet"
+  },
+  "va.runsUntil": {
+    "ar": "يعمل حتى {{date}}",
+    "en": "Runs until {{date}}"
+  },
+  "va.rejectedBecause": {
+    "ar": "سبب الرفض:",
+    "en": "Reason:"
+  },
+  "va.refundedWallet": {
+    "ar": "تم رد المبلغ لمحفظتك.",
+    "en": "The amount was refunded to your wallet."
+  },
+  "va.refundedWithdrawal": {
+    "ar": "سيتم تحويل المبلغ لوسيلة السحب الخاصة بك (يظهر في طلبات السحب).",
+    "en": "The amount will be paid to your payout method (see withdrawals)."
+  },
+  "va.payNow": {
+    "ar": "ادفع الآن",
+    "en": "Pay now"
+  },
+  "va.cancelOrder": {
+    "ar": "إلغاء الطلب",
+    "en": "Cancel order"
+  },
+  "va.stepSlots": {
+    "ar": "اختار منتجاتك وأماكنها",
+    "en": "Choose products & places"
+  },
+  "va.stepPay": {
+    "ar": "الدفع",
+    "en": "Payment"
+  },
+  "va.noSlots": {
+    "ar": "الباقة دي خدمات بس — مفيش أماكن تحتاج تختارها.",
+    "en": "This package is services only — nothing to choose."
+  },
+  "va.slotN": {
+    "ar": "المكان {{n}}",
+    "en": "Slot {{n}}"
+  },
+  "va.moveUp": {
+    "ar": "تقديم",
+    "en": "Move up"
+  },
+  "va.moveDown": {
+    "ar": "تأخير",
+    "en": "Move down"
+  },
+  "va.pickProduct": {
+    "ar": "المنتج",
+    "en": "Product"
+  },
+  "va.bannerImage": {
+    "ar": "صورة البانر",
+    "en": "Banner image"
+  },
+  "va.chooseImage": {
+    "ar": "اختار صورة البانر",
+    "en": "Choose the banner image"
+  },
+  "va.heroSize": {
+    "ar": "المقاس المناسب 1280×560 بكسل، بدون أرقام تليفونات أو علامات مائية.",
+    "en": "Best size 1280×560 px, no phone numbers or watermarks."
+  },
+  "va.bannerSize": {
+    "ar": "المقاس المناسب 1280×320 بكسل، بدون أرقام تليفونات أو علامات مائية.",
+    "en": "Best size 1280×320 px, no phone numbers or watermarks."
+  },
+  "va.bannerLink": {
+    "ar": "البانر يفتح",
+    "en": "The banner opens"
+  },
+  "va.linkNone": {
+    "ar": "بدون رابط",
+    "en": "No link"
+  },
+  "va.linkStore": {
+    "ar": "صفحة متجري",
+    "en": "My store page"
+  },
+  "va.linkProducts": {
+    "ar": "منتج",
+    "en": "A product"
+  },
+  "va.pickSection": {
+    "ar": "القسم في الصفحة الرئيسية",
+    "en": "Home page section"
+  },
+  "va.pickSpot": {
+    "ar": "مكان البانر",
+    "en": "Banner spot"
+  },
+  "va.pickCategory": {
+    "ar": "القسم",
+    "en": "Category"
+  },
+  "va.pickTemplate": {
+    "ar": "تصميم الإعلان المنبثق",
+    "en": "Popup design"
+  },
+  "va.servicesIncluded": {
+    "ar": "خدمات ضمن الباقة",
+    "en": "Services included"
+  },
+  "va.servicesHint": {
+    "ar": "فريق المنصة هيتواصل معاك لتنفيذها بعد الموافقة.",
+    "en": "The platform team contacts you to deliver them after approval."
+  },
+  "va.notes": {
+    "ar": "ملاحظات للإدارة",
+    "en": "Notes for the team"
+  },
+  "va.notesPh": {
+    "ar": "مثلاً: تفاصيل العرض أو المحتوى المطلوب",
+    "en": "e.g. offer details or the content you need"
+  },
+  "va.fillAll": {
+    "ar": "كمّل كل الأماكن المطلوبة عشان تكمل.",
+    "en": "Fill every required slot to continue."
+  },
+  "va.total": {
+    "ar": "الإجمالي",
+    "en": "Total"
+  },
+  "va.payCard": {
+    "ar": "بطاقة / محفظة إلكترونية",
+    "en": "Card / e-wallet"
+  },
+  "va.payCardHint": {
+    "ar": "دفع آمن عبر كاشير",
+    "en": "Secure payment via Kashier"
+  },
+  "va.cardOff": {
+    "ar": "الدفع الإلكتروني غير متاح حالياً",
+    "en": "Online payment is unavailable right now"
+  },
+  "va.payWallet": {
+    "ar": "من رصيد المحفظة",
+    "en": "From wallet balance"
+  },
+  "va.balance": {
+    "ar": "رصيدك {{amount}}",
+    "en": "Your balance {{amount}}"
+  },
+  "va.notEnough": {
+    "ar": "الرصيد غير كافٍ",
+    "en": "not enough"
+  },
+  "va.reviewNote": {
+    "ar": "بعد الدفع، الإدارة بتراجع الإعلان. لو اتقبل يبدأ فوراً ويتحسب وقته من لحظة القبول، ولو اترفض بيترد المبلغ بالكامل.",
+    "en": "After payment the team reviews your ad. Approved ads start at once and their time counts from approval; a rejected ad is refunded in full."
+  },
+  "va.payAndSend": {
+    "ar": "ادفع وأرسل للمراجعة",
+    "en": "Pay and send for review"
+  },
+  "va.sendForReview": {
+    "ar": "ادفع من المحفظة وأرسل",
+    "en": "Pay from wallet and send"
+  },
+  "va.err.failed": {
+    "ar": "حصلت مشكلة، حاول مرة تانية.",
+    "en": "Something went wrong, please try again."
+  },
+  "va.err.insufficient_balance": {
+    "ar": "رصيد المحفظة غير كافٍ.",
+    "en": "Not enough wallet balance."
+  },
+  "va.err.card_unavailable": {
+    "ar": "الدفع الإلكتروني غير متاح حالياً.",
+    "en": "Online payment is unavailable right now."
+  },
+  "va.err.slots_incomplete": {
+    "ar": "كمّل كل الأماكن المطلوبة.",
+    "en": "Fill every slot."
+  },
+  "va.err.bad_product": {
+    "ar": "اختار منتج معتمد من منتجاتك.",
+    "en": "Choose one of your approved products."
+  },
+  "va.err.image_required": {
+    "ar": "اختار صورة البانر من الوسائط بتاعتك.",
+    "en": "Choose the banner image from your media."
+  },
+  "va.err.package_unavailable": {
+    "ar": "الباقة دي مش متاحة دلوقتي.",
+    "en": "This package is no longer available."
+  },
+  "va.err.store_not_active": {
+    "ar": "متجرك لازم يكون مفعّل.",
+    "en": "Your store must be active."
+  },
+  "aa.title": {
+    "ar": "الإعلانات",
+    "en": "Ads"
+  },
+  "aa.hint": {
+    "ar": "راجع طلبات الإعلانات، وابنِ الباقات، وتابع الحملات الشغالة.",
+    "en": "Review ad orders, build packages and follow live campaigns."
+  },
+  "aa.newPackage": {
+    "ar": "باقة جديدة",
+    "en": "New package"
+  },
+  "aa.editPackage": {
+    "ar": "تعديل الباقة",
+    "en": "Edit package"
+  },
+  "aa.toReview": {
+    "ar": "بانتظار المراجعة",
+    "en": "To review"
+  },
+  "aa.live": {
+    "ar": "حملات شغالة",
+    "en": "Live campaigns"
+  },
+  "aa.activePackages": {
+    "ar": "باقات مفعّلة",
+    "en": "Active packages"
+  },
+  "aa.revenue": {
+    "ar": "إيراد الإعلانات",
+    "en": "Ads revenue"
+  },
+  "aa.tab.orders": {
+    "ar": "الطلبات",
+    "en": "Orders"
+  },
+  "aa.tab.packages": {
+    "ar": "الباقات",
+    "en": "Packages"
+  },
+  "aa.tab.campaigns": {
+    "ar": "الحملات",
+    "en": "Campaigns"
+  },
+  "aa.noOrders": {
+    "ar": "لا توجد طلبات بعد",
+    "en": "No orders yet"
+  },
+  "aa.noOrdersHint": {
+    "ar": "طلبات التجار بتظهر هنا بعد الدفع.",
+    "en": "Vendor orders appear here once paid."
+  },
+  "aa.noPackages": {
+    "ar": "لا توجد باقات",
+    "en": "No packages"
+  },
+  "aa.noPackagesHint": {
+    "ar": "ابدأ بباقة جديدة من الزر بالأعلى.",
+    "en": "Start with a new package from the button above."
+  },
+  "aa.noCampaigns": {
+    "ar": "لا توجد حملات",
+    "en": "No campaigns"
+  },
+  "aa.noCampaignsHint": {
+    "ar": "الحملات بتبدأ بعد قبول الطلبات.",
+    "en": "Campaigns start once orders are approved."
+  },
+  "aa.review": {
+    "ar": "مراجعة",
+    "en": "Review"
+  },
+  "aa.stop": {
+    "ar": "إيقاف الإعلان",
+    "en": "Stop the ad"
+  },
+  "aa.approve": {
+    "ar": "قبول",
+    "en": "Approve"
+  },
+  "aa.reject": {
+    "ar": "رفض",
+    "en": "Reject"
+  },
+  "aa.approveHint": {
+    "ar": "الإعلان هيبدأ فوراً لمدة {{days}} يوم من دلوقتي.",
+    "en": "The ad starts now and runs for {{days}} days."
+  },
+  "aa.reason": {
+    "ar": "سبب الرفض (بيوصل للتاجر)",
+    "en": "Reason (sent to the vendor)"
+  },
+  "aa.refundTo": {
+    "ar": "رد المبلغ ({{amount}}) إلى:",
+    "en": "Refund ({{amount}}) to:"
+  },
+  "aa.refund.wallet": {
+    "ar": "محفظة التاجر",
+    "en": "Vendor wallet"
+  },
+  "aa.refund.withdrawal": {
+    "ar": "وسيلة السحب الخاصة بالتاجر",
+    "en": "Vendor payout method"
+  },
+  "aa.refundHint.wallet": {
+    "ar": "يتضاف لرصيده فوراً ويقدر يستخدمه أو يسحبه.",
+    "en": "Added to their balance at once."
+  },
+  "aa.refundHint.withdrawal": {
+    "ar": "يتعمل طلب سحب بالمبلغ على آخر وسيلة سحب استخدمها، وتنفذه من صفحة السحوبات.",
+    "en": "A withdrawal request is created on their last payout method; pay it from Withdrawals."
+  },
+  "aa.err.reason_required": {
+    "ar": "اكتب سبب الرفض.",
+    "en": "Write the reason."
+  },
+  "aa.err.not_in_review": {
+    "ar": "الطلب مش قيد المراجعة.",
+    "en": "The order is not in review."
+  },
+  "aa.err.no_items": {
+    "ar": "أضف مكان إعلان واحد على الأقل.",
+    "en": "Add at least one placement."
+  },
+  "aa.err.name_required": {
+    "ar": "اكتب اسم الباقة بالعربي والإنجليزي.",
+    "en": "Name the package in Arabic and English."
+  },
+  "aa.active": {
+    "ar": "مفعّلة",
+    "en": "Active"
+  },
+  "aa.inactive": {
+    "ar": "موقوفة",
+    "en": "Inactive"
+  },
+  "aa.activate": {
+    "ar": "تفعيل",
+    "en": "Activate"
+  },
+  "aa.deactivate": {
+    "ar": "إيقاف",
+    "en": "Deactivate"
+  },
+  "aa.vis.vendors": {
+    "ar": "متاحة للتجار",
+    "en": "For vendors"
+  },
+  "aa.vis.rewards": {
+    "ar": "مكافآت المستويات",
+    "en": "Level rewards"
+  },
+  "aa.vis.admins": {
+    "ar": "للإدارة فقط",
+    "en": "Admins only"
+  },
+  "aa.nameAr": {
+    "ar": "اسم الباقة (عربي)",
+    "en": "Package name (Arabic)"
+  },
+  "aa.nameEn": {
+    "ar": "اسم الباقة (إنجليزي)",
+    "en": "Package name (English)"
+  },
+  "aa.descAr": {
+    "ar": "وصف مختصر (عربي)",
+    "en": "Short description (Arabic)"
+  },
+  "aa.descEn": {
+    "ar": "وصف مختصر (إنجليزي)",
+    "en": "Short description (English)"
+  },
+  "aa.items": {
+    "ar": "أماكن الإعلان في الباقة",
+    "en": "Placements in the package"
+  },
+  "aa.itemsHint": {
+    "ar": "اختار مكان أو أكثر، وعدد المنتجات/البانرات لكل مكان. التاجر بيحدد المنتج أو البانر لكل مكان ويرتبهم.",
+    "en": "Pick one or more placements and how many products / banners each holds; the vendor fills and orders them."
+  },
+  "aa.placement": {
+    "ar": "المكان",
+    "en": "Placement"
+  },
+  "aa.count": {
+    "ar": "العدد",
+    "en": "Count"
+  },
+  "aa.addItem": {
+    "ar": "إضافة مكان",
+    "en": "Add a placement"
+  },
+  "aa.allowedSections": {
+    "ar": "الأقسام المسموحة (فاضي = الكل)",
+    "en": "Allowed sections (none = all)"
+  },
+  "aa.allowedSpots": {
+    "ar": "أماكن البانر المسموحة (فاضي = الكل)",
+    "en": "Allowed spots (none = all)"
+  },
+  "aa.allowedTemplates": {
+    "ar": "تصميمات الإعلان المنبثق المتاحة (فاضي = الكل)",
+    "en": "Popup designs offered (none = all)"
+  },
+  "aa.kind.banner": {
+    "ar": "بانرات",
+    "en": "Banners"
+  },
+  "aa.kind.featured": {
+    "ar": "منتجات مميزة",
+    "en": "Featured products"
+  },
+  "aa.kind.popup": {
+    "ar": "منبثق",
+    "en": "Popup"
+  },
+  "aa.kind.product_page": {
+    "ar": "صفحة المنتج",
+    "en": "Product page"
+  },
+  "aa.kind.store": {
+    "ar": "المتاجر",
+    "en": "Stores"
+  },
+  "aa.kind.campaign": {
+    "ar": "حملات",
+    "en": "Campaigns"
+  },
+  "aa.kind.service": {
+    "ar": "خدمات",
+    "en": "Services"
+  },
+  "aa.price": {
+    "ar": "السعر (ج.م)",
+    "en": "Price (EGP)"
+  },
+  "aa.days": {
+    "ar": "المدة (أيام)",
+    "en": "Duration (days)"
+  },
+  "aa.model": {
+    "ar": "طريقة الحساب",
+    "en": "Pricing"
+  },
+  "aa.modelName.fixed": {
+    "ar": "باقة ثابتة",
+    "en": "Fixed package"
+  },
+  "aa.modelName.cpm": {
+    "ar": "لكل ظهور",
+    "en": "Per impressions"
+  },
+  "aa.modelName.cpc": {
+    "ar": "لكل نقرة",
+    "en": "Per click"
+  },
+  "aa.impressions": {
+    "ar": "عدد مرات الظهور",
+    "en": "Impressions included"
+  },
+  "aa.discount": {
+    "ar": "خصم مؤقت ٪",
+    "en": "Temporary discount %"
+  },
+  "aa.discountEnds": {
+    "ar": "ينتهي الخصم",
+    "en": "Discount ends"
+  },
+  "aa.visibility": {
+    "ar": "الظهور",
+    "en": "Visibility"
+  },
+  "aa.sort": {
+    "ar": "الترتيب",
+    "en": "Order"
+  },
+  "aa.featuredPkg": {
+    "ar": "تمييز كـ \"الأكثر طلباً\"",
+    "en": "Mark as \"Most popular\""
+  },
+  "aa.col.store": {
+    "ar": "المتجر",
+    "en": "Store"
+  },
+  "aa.col.placement": {
+    "ar": "المكان",
+    "en": "Placement"
+  },
+  "aa.col.product": {
+    "ar": "المنتج",
+    "en": "Product"
+  },
+  "aa.col.period": {
+    "ar": "الفترة",
+    "en": "Period"
+  },
+  "aa.col.impressions": {
+    "ar": "الظهور",
+    "en": "Impressions"
+  },
+  "aa.col.clicks": {
+    "ar": "النقرات",
+    "en": "Clicks"
+  },
+  "aa.col.status": {
+    "ar": "الحالة",
+    "en": "Status"
+  },
+  "wd.adRefund": {
+    "ar": "استرداد إعلان {{number}}",
+    "en": "Ad refund {{number}}"
+  },
+  "legal.acceptHint": {
+    "ar": "الموافقة مطلوبة لاستخدام حسابك. نسجل تاريخ ووقت موافقتك.",
+    "en": "Accepting is required to use your account. We record the date and time of your acceptance."
+  },
+  "legal.acceptTerms": {
+    "ar": "قرأت الشروط والأحكام وأوافق عليها.",
+    "en": "I have read and accept the Terms & Conditions."
+  },
+  "legal.acceptSeller": {
+    "ar": "قرأت عقد البائع وأوافق عليه نيابة عن متجري.",
+    "en": "I have read and accept the vendor agreement on behalf of my store."
+  },
+  "wallet.readyToWithdraw": {
+    "ar": "رصيدك جاهز للسحب.",
+    "en": "Your balance is ready to withdraw."
+  },
+  "wallet.pendingHint": {
+    "ar": "أرباح الطلبات بتتحول لرصيد متاح بعد فترة حماية العميل.",
+    "en": "Order earnings become available after the customer-protection period."
+  },
+  "wallet.last30": {
+    "ar": "آخر 30 يوم",
+    "en": "Last 30 days"
+  },
+  "wallet.earned": {
+    "ar": "أرباح الطلبات",
+    "en": "Order earnings"
+  },
+  "wallet.fees": {
+    "ar": "عمولات ورسوم",
+    "en": "Commission & fees"
+  },
+  "wallet.withdrawnTotal": {
+    "ar": "إجمالي ما تم سحبه",
+    "en": "Total withdrawn"
+  },
+  "wallet.levelProgress": {
+    "ar": "التقدم للمستوى التالي",
+    "en": "Progress to the next level"
+  },
+  "wallet.levelHint": {
+    "ar": "عمولتك الحالية {{commission}}٪ والأرباح بتتحول بعد {{days}} يوم من التسليم.",
+    "en": "Your commission is {{commission}}% and earnings clear {{days}} days after delivery."
+  },
+  "wallet.pendingWithdrawal": {
+    "ar": "عندك طلب سحب قيد المراجعة بقيمة {{amount}}.",
+    "en": "You have a withdrawal of {{amount}} under review."
+  },
+  "wallet.group.in": {
+    "ar": "وارد",
+    "en": "Money in"
+  },
+  "wallet.group.out": {
+    "ar": "خصومات",
+    "en": "Deductions"
+  },
+  "wallet.group.withdrawals": {
+    "ar": "السحوبات",
+    "en": "Withdrawals"
+  },
+  "wallet.group.ads": {
+    "ar": "الإعلانات",
+    "en": "Ads"
+  },
+  "wallet.noWithdrawals": {
+    "ar": "لا توجد طلبات سحب",
+    "en": "No withdrawals yet"
+  },
+  "wallet.noWithdrawalsHint": {
+    "ar": "لما رصيدك المتاح يوصل للحد الأدنى تقدر تطلب سحب من الزر بالأعلى.",
+    "en": "Once your available balance reaches the minimum you can request a withdrawal."
+  },
+  "wallet.withdrawAll": {
+    "ar": "سحب الرصيد بالكامل",
+    "en": "Withdraw the full balance"
+  },
+  "wallet.holderName": {
+    "ar": "اسم صاحب الحساب",
+    "en": "Account holder name"
+  },
+  "wallet.accountLabel_bank": {
+    "ar": "رقم الحساب أو IBAN",
+    "en": "Account number or IBAN"
+  },
+  "wallet.accountLabel_instapay": {
+    "ar": "عنوان إنستاباي أو رقم الموبايل",
+    "en": "InstaPay address or mobile number"
+  },
+  "wallet.accountLabel_wallet": {
+    "ar": "رقم المحفظة الإلكترونية",
+    "en": "Mobile wallet number"
+  },
+  "tx.type_ad_refund": {
+    "ar": "استرداد إعلان",
+    "en": "Ad refund"
+  }
+}

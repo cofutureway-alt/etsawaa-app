@@ -1,6 +1,7 @@
 import type { Route } from "./+types/rss[.xml]";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { siteUrl } from "~/lib/seo";
+import { getI18n } from "~/lib/i18n/config";
 
 
 /**
@@ -10,6 +11,7 @@ import { siteUrl } from "~/lib/seo";
 export async function loader({ request }: Route.LoaderArgs) {
   const base = siteUrl();
   const lang = new URL(request.url).searchParams.get("lang") === "en" ? "en" : "ar";
+  const t = getI18n(lang).t;
   const { client } = createSupabaseServerClient(request);
   type Row = {
     slug_ar: string; slug_en: string; title_ar: string; title_en: string;
@@ -35,9 +37,9 @@ export async function loader({ request }: Route.LoaderArgs) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${lang === "en" ? "Etsawaa Blog" : "مدونة اتسوء"}</title>
+    <title>${t("pubBlog.collectionName")}</title>
     <link>${base}/${lang}/blog</link>
-    <description>${lang === "en" ? "Guides and news from the Etsawaa marketplace" : "مقالات وأخبار من سوق اتسوء"}</description>
+    <description>${t("pubBlog.rssDescription")}</description>
     <language>${lang}</language>
     <atom:link href="${base}/rss.xml?lang=${lang}" rel="self" type="application/rss+xml" />
 ${items.join("\n")}

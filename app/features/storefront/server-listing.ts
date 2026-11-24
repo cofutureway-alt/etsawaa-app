@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parseListingState } from "./listing";
 import {
-  getBrandBySlug, getCategoryBySlug, getCategories, searchProducts,
+  getBrandBySlug, getCategoryById, getCategoryBySlug, getCategoryChain, searchProducts,
   type BrandCard, type CategoryNode, type SearchResult,
 } from "./api";
 import type { FacetDef } from "~/components/catalog/FacetPanel";
@@ -25,51 +25,29 @@ export async function resolveScope(
   client: SupabaseClient,
   opts: { categorySlug?: string; categoryId?: string; brandSlug?: string } = {},
 ): Promise<ListingScope> {
-  let category: CategoryNode | null = null;
   let chain: CategoryNode[] = [];
-  let brand: BrandCard | null = null;
-  let all: CategoryNode[] = [];
+  // category (by slug, or by the `?cat=` id that /products, /search and
+  // /brand narrow with) and brand are independent: one parallel round instead
+  // of up to three sequential lookups
+  const [category, brand] = await Promise.all([
+    opts.categorySlug
+      ? getCategoryBySlug(client, opts.categorySlug)
+      : opts.categoryId ? getCategoryById(client, opts.categoryId) : Promise.resolve(null),
+    opts.brandSlug ? getBrandBySlug(client, opts.brandSlug) : Promise.resolve(null),
+  ]);
 
-  if (opts.categorySlug || opts.categoryId) {
-    if (opts.categorySlug) {
-      category = await getCategoryBySlug(client, opts.categorySlug);
-    }
-    if (!category) {
-      // /products, /search and /brand narrow by the `?cat=` URL param instead of
-      // a slug; without this the scope stayed empty and every attribute facet
-      // was dropped even though fn_search_products returned them.
-      all = await getCategories(client);
-      category = all.find((c) => c.id === (opts.categoryId ?? "")) ?? null;
-    }
-    if (category) {
-      if (all.length === 0) all = await getCategories(client);
-      const byId = new Map(all.map((c) => [c.id, c]));
-      const parts = category.path.split("/").filter(Boolean);
-      chain = parts
-        .slice(0, -1)
-        .map((id) => byId.get(id))
-        .filter((c): c is CategoryNode => Boolean(c));
-    }
-  }
-  if (opts.brandSlug) {
-    brand = await getBrandBySlug(client, opts.brandSlug);
-  }
-
-  const defs = (await client.from("v_storefront_facet_defs").select("*")) as {
-    data: Array<FacetDef & { leaf_category_id: string }> | null;
-    error: { message: string } | null;
-  };
+  // Breadcrumbs come from the node's own path and facets from one RPC over
+  // the subtree: loading the whole tree (~1,600 nodes with the level-4
+  // product types) per request was both slow and past PostgREST's row cap.
   let facetDefs: FacetDef[] = [];
-  if (!defs.error && defs.data) {
-    if (category) {
-      // the scope covers the whole subtree: category itself + every descendant
-      const subtree = new Set([category.id]);
-      for (const node of all) {
-        if (node.path.startsWith(`${category.path}/`)) subtree.add(node.id);
-      }
-      facetDefs = defs.data.filter((d) => subtree.has(d.leaf_category_id));
-    } else {
-      facetDefs = [];
+  if (category) {
+    const [ancestors, defs] = await Promise.all([
+      getCategoryChain(client, category),
+      client.rpc("fn_storefront_facet_defs", { p_category: category.id }),
+    ]);
+    chain = ancestors;
+    if (!defs.error && defs.data) {
+      facetDefs = (defs.data as Array<FacetDef & { sort: number }>).sort((a, b) => a.sort - b.sort);
     }
   }
   return { category, chain, brand, defs: facetDefs };
@@ -89,6 +67,12 @@ export async function loadListing(
 ): Promise<ListingData> {
   const url = new URL(request.url);
   const urlCat = (url.searchParams.get("cat") ?? "").match(/^[0-9a-f-]{36}$/i)?.[0];
+  // the session check runs alongside the scope lookups (it used to start
+  // only after them), and the viewer's hearts load alongside the search
+  const viewerP = getViewer(client);
+  const wishedP: Promise<{ data: Array<{ product_id: string }> | null }> = viewerP.then(async (r) => r?.viewer
+    ? await client.from("wishlist_items").select("product_id").eq("user_id", r.viewer.user.id).limit(500)
+    : { data: null });
   const scope = await resolveScope(client, {
     categorySlug: opts.fixedCategorySlug,
     categoryId: opts.fixedCategorySlug ? undefined : urlCat,
@@ -97,7 +81,11 @@ export async function loadListing(
   const state = parseListingState(url, scope.defs, {
     fixedCategory: scope.category?.id ?? null,
   });
-  const { viewer } = (await getViewer(client)) ?? { viewer: null };
+  // a plain visit shows a fresh random order; in-page navigation carries the
+  // seed so page 2 / a filter change keep the same shuffle
+  if (state.sort === "recommended" && !state.seed) {
+    state.seed = crypto.randomUUID().replace(/-/g, "").slice(0, 8);
+  }
   const [result, wished] = await Promise.all([
     searchProducts(client, {
       q: opts.forceQ ?? state.q,
@@ -109,12 +97,11 @@ export async function loadListing(
       rating: state.rating,
       inStock: state.inStock,
       sort: state.sort,
+      seed: state.seed,
       page: state.page,
       perPage: opts.perPage ?? 24,
     }),
-    viewer
-      ? client.from("wishlist_items").select("product_id").eq("user_id", viewer.user.id)
-      : Promise.resolve({ data: null, error: null }),
+    wishedP,
   ]);
   const wishedIds = new Set(
     ((wished.data ?? []) as Array<{ product_id: string }>).map((r) => r.product_id),

@@ -1,0 +1,10 @@
+{
+  "results": [
+    "Authenticated Arabic studio and branded preview: PASS",
+    "English studio, persisted account preference and mobile layout: PASS",
+    "Switching back persists Arabic: PASS",
+    "Guest language cookie, private editor and CSRF protection: PASS"
+  ],
+  "errors": [],
+  "at": "2026-11-22T02:36:45.452Z"
+}

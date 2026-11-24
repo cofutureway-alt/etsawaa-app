@@ -106,7 +106,7 @@ export default function AdminLogs({ loaderData }: Route.ComponentProps) {
             {logs.map((row) => (
               <details key={row.id} className="rounded-md border border-border/60 bg-surface px-2.5 py-2">
                 <summary className="flex cursor-pointer flex-wrap items-center gap-2 text-sm">
-                  <span className="num text-xs text-text-muted" dir="ltr">{new Date(row.created_at).toLocaleString("ar-EG")}</span>
+                  <span className="num text-xs text-text-muted" dir="ltr">{new Date(row.created_at).toLocaleString("ar-EG-u-nu-latn")}</span>
                   <Badge tone="info">{row.action}</Badge>
                   <span className="num text-xs">
                     {row.entity}

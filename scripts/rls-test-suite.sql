@@ -113,7 +113,11 @@ begin
   on conflict (id) do update set label = excluded.label, passed = excluded.passed, detail = excluded.detail;
 end $$;
 
--- 4) Guest settings read = public allowlist only
+-- 4) Guest settings read = public allowlist only. The allowlist is
+--    is_public_setting_key() in phase01_foundation: site.general,
+--    settings.design and media (upload limits, read before an upload starts).
+--    Seeded databases only hold the keys that exist, hence the comparison
+--    against the full allowlist.
 do $$
 declare v_keys text;
 begin
@@ -124,7 +128,7 @@ begin
   reset role;
   insert into rls_results (id, label, passed, detail)
   values (4, 'Guest sees only public setting keys',
-          coalesce((v_keys = 'settings.design,site.general'), false), coalesce(v_keys, 'none'))
+          coalesce((v_keys = 'media,settings.design,site.general'), false), coalesce(v_keys, 'none'))
   on conflict (id) do update set label = excluded.label, passed = excluded.passed, detail = excluded.detail;
 end $$;
 

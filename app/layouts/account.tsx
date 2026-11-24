@@ -4,13 +4,11 @@ import type { Route } from "./+types/account";
 import { useTranslation } from "react-i18next";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
-import { requirePanelAccess } from "~/lib/auth/guards";
-import { NotificationBellLink } from "~/features/notifications/NotificationBellLink";
-import { MediaImg } from "~/components/catalog/MediaImg";
-import { listNotifications } from "~/features/notifications/api";
-import { BellIcon } from "~/components/ui/icons";
+import { getViewerContext, requirePanelAccess } from "~/lib/auth/guards";
+import { IdentityCard } from "~/features/account/IdentityCard";
 import { RoutePending } from "~/components/layout/RoutePending";
 import {
+  BellIcon,
   ChartIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -18,7 +16,6 @@ import {
   PackageIcon,
   ReceiptIcon,
   RotateIcon,
-  ShieldIcon,
   StarIcon,
   TruckIcon,
   UserIcon,
@@ -32,14 +29,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     throw Response.redirect(new URL(`/${lang}/auth/login?error=db`, request.url).toString(), 302);
   }
   const viewer = await requirePanelAccess(client, lang, "account", request);
-  let unread = 0;
-  try {
-    const rows = await listNotifications(client, viewer.user.id);
-    unread = rows.filter((row) => row.read_at === null).length;
-  } catch {
-    unread = 0;
-  }
-  return { lang, viewer, unread };
+  // unread count comes with the request's viewer context — no extra query
+  const { ctx } = await getViewerContext(client);
+  return { lang, viewer, unread: ctx?.unread ?? 0 };
 }
 
 /**
@@ -68,8 +60,6 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
     { to: `/${lang}/account/profile`, label: t("account.profile"), end: false, Icon: UserIcon },
   ].filter((n) => n.to);
 
-  const first = viewer.profile.full_name?.trim()?.[0] ?? "؟";
-
   return (
     <div className="mx-auto w-full max-w-page px-4 py-6">
       <meta name="robots" content="noindex, nofollow" />
@@ -80,40 +70,14 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
         <span aria-current="page" className="font-bold text-text">{t("account.title")}</span>
       </nav>
 
-      {/* identity banner — brand-tone card; stacks centred on phones, row ≥sm */}
-      <section aria-label={t("account.title")} className="mb-5 overflow-hidden rounded-lg border border-border bg-side text-side-text">
-        <div className="flex flex-col items-center gap-3 p-5 text-center sm:flex-row sm:flex-wrap sm:gap-4 sm:p-6 sm:text-start">
-          {viewer.profile.avatar_url ? (
-            <MediaImg path={viewer.profile.avatar_url} alt="" width={64} height={64} className="size-16 shrink-0 rounded-full border-2 border-white/40 object-cover sm:size-14" />
-          ) : (
-            <span aria-hidden="true" className="flex size-16 shrink-0 items-center justify-center rounded-full bg-surface text-2xl font-black text-action sm:size-14 sm:text-xl">
-              {first}
-            </span>
-          )}
-          <div className="min-w-0 flex-1">
-            <h1 className="break-words text-base font-extrabold text-side-text-strong sm:text-lg">{viewer.profile.full_name || t("account.title")}</h1>
-            {viewer.profile.phone ? (
-              <p className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-2xs font-bold text-side-text-strong">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={11} height={11}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <span className="num" dir="ltr">{viewer.profile.phone}</span>
-              </p>
-            ) : null}
-          </div>
-          <div className="flex w-full items-center justify-center gap-2 sm:w-auto">
-            <span className="relative">
-              <NotificationBellLink lang={lang} initialCount={unread} />
-            </span>
-            <form method="post" action={`/${lang}/auth/logout`}>
-              <button
-                type="submit"
-                className="flex min-h-11 cursor-pointer items-center gap-2 rounded-md border border-white/30 px-4 text-sm font-bold text-side-text-strong transition-colors duration-150 hover:bg-white/10"
-              >
-                {t("nav.logout")}
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
+      <IdentityCard
+        lang={lang}
+        fullName={viewer.profile.full_name}
+        phone={viewer.profile.phone}
+        avatarPath={viewer.profile.avatar_url}
+        bannerPath={viewer.profile.banner_url ?? null}
+        unread={unread}
+      />
 
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
         {/* desktop sidebar */}

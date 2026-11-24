@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { EmptyState } from "./EmptyState";
 import { Input } from "./Input";
 import { TCell, Table, TRow } from "./Table";
+import { foldSearch } from "~/lib/search-fold";
 
 export interface DataTableColumn<Row> {
   key: string;
@@ -23,6 +24,8 @@ export interface DataTableProps<Row> {
   caption?: string;
   /** Mobile card title (G5: tables become cards on phones) */
   cardTitle: (row: Row) => ReactNode;
+  /** A page's own phone card; replaces the generic label/value card */
+  renderCard?: (row: Row) => ReactNode;
 }
 
 /**
@@ -38,16 +41,20 @@ export function DataTable<Row>({
   rowKey,
   caption,
   cardTitle,
+  renderCard,
 }: DataTableProps<Row>) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
 
   const visibleRows = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return rows;
-    return rows.filter((row) =>
-      columns.some((column) => column.text(row).toLowerCase().includes(q)),
-    );
+    // folded (hamza, ى/ي, digits…) and word by word, so a pasted title still matches
+    const words = foldSearch(query.replace(/[\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g, ""))
+      .split(/[\s,.;:()[\]"'\u060c\u061b\-\u2013\u2014/|+]+/).filter(Boolean);
+    if (!words.length) return rows;
+    return rows.filter((row) => {
+      const hay = foldSearch(columns.map((column) => column.text(row)).join(" ").replace(/[\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g, ""));
+      return words.every((w) => hay.includes(w));
+    });
   }, [rows, columns, query]);
 
   return (
@@ -87,7 +94,9 @@ export function DataTable<Row>({
           </div>
           {/* Mobile: cards */}
           <ul className="flex flex-col gap-2 md:hidden">
-            {visibleRows.map((row) => (
+            {visibleRows.map((row) => renderCard ? (
+              <li key={rowKey(row)}>{renderCard(row)}</li>
+            ) : (
               <li key={rowKey(row)} className="rounded-lg border border-border bg-surface p-3 shadow-1">
                 <div className="text-sm font-extrabold text-text">{cardTitle(row)}</div>
                 <dl className="mt-2 flex flex-col gap-1 text-sm">

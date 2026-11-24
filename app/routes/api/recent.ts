@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { getViewer } from "~/lib/auth/guards";
 import type { ProductCard } from "~/features/storefront/api";
+import { PRODUCT_CARD_COLUMNS } from "~/features/storefront/api";
 
 /**
  * POST/DELETE/GET /:lang/api/recent — recently viewed (S-22).
@@ -19,9 +20,9 @@ const MAX_IDS = 20;
 
 async function hydrateCards(client: SupabaseClient, ids: string[]): Promise<ProductCard[]> {
   if (ids.length === 0) return [];
-  const { data, error } = await client.from("v_storefront_products").select("*").in("id", ids);
+  const { data, error } = await client.from("v_storefront_products").select(PRODUCT_CARD_COLUMNS).in("id", ids);
   if (error || !data) return [];
-  const byId = new Map(data.map((row) => [row.id, row]));
+  const byId = new Map((data as unknown as ProductCard[]).map((row) => [row.id, row]));
   return ids.map((id) => byId.get(id)).filter((row): row is ProductCard => Boolean(row));
 }
 

@@ -1,14 +1,19 @@
 import { Link, data, useFetcher } from "react-router";
+import { useState } from "react";
 import type { Route } from "./+types/order-detail";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
+import { parseReviewMedia, type ReviewMediaItem } from "~/lib/review-media";
+import { Rating } from "~/components/ui/Rating";
+import { ReviewMediaPicker } from "~/components/catalog/ReviewMediaPicker";
 import {
   getOwnOrder, getOrderParts, getGeoNames, requestedQtyByItem,
 } from "~/features/orders/api";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { afterSaleKind, canCompletePayment } from "~/features/orders/customer-actions";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
@@ -17,20 +22,27 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "account", request);
-  const order = await getOwnOrder(client, params.number ?? "");
+  // round 1: guard + order together (RLS only ever returns the caller's own order)
+  const [viewer, order] = await Promise.all([
+    requirePanelAccess(client, lang, "account", request),
+    getOwnOrder(client, params.number ?? ""),
+  ]);
   if (!order) throw new Response("Not found", { status: 404 });
+  // round 2: lines/groups/history + place names
   const [parts, geo] = await Promise.all([
     getOrderParts(client, order.id),
     getGeoNames(client, order.governorate_id, order.area_id),
   ]);
-  // already-requested quantities per item (partial remainder rule)
-  const requested = await requestedQtyByItem(client, parts.items.map((i) => i.id));
-  // items already reviewed
-  const { data: reviewed } = await client
-    .from("reviews")
-    .select("order_item_id")
-    .eq("customer_id", (await client.auth.getUser()).data.user?.id ?? "");
+  // round 3: per-line refund quantities and reviews, together — reviews are
+  // limited to THIS order's lines (it used to load every review the customer
+  // ever wrote, after a second auth.getUser() call)
+  const itemIds = parts.items.map((i) => i.id);
+  const [requested, { data: reviewed }] = await Promise.all([
+    requestedQtyByItem(client, itemIds),
+    itemIds.length
+      ? client.from("reviews").select("order_item_id").eq("customer_id", viewer.user.id).in("order_item_id", itemIds)
+      : Promise.resolve({ data: [] }),
+  ]);
   const reviewedSet = new Set(((reviewed ?? []) as Array<{ order_item_id: string | null }>).map((r) => r.order_item_id));
 
   return {
@@ -60,6 +72,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       p_rating: rating,
       p_title: String(form.get("title") ?? ""),
       p_body: String(form.get("body") ?? ""),
+      p_media: parseReviewMedia(form.get("media")),
     });
     if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
     const r = res as { ok: boolean; reason?: string };
@@ -85,7 +98,6 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
   const { order, groups, items, requested, reviewed } = loaderData;
-  const reviewFetcher = useFetcher<typeof action>();
   const cancelFetcher = useFetcher<typeof action>();
 
   const delivered = order.delivered_at !== null;
@@ -107,6 +119,24 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
         </span>
       </div>
 
+      {/* what the customer can still do with this order */}
+      {canCompletePayment(order) || afterSaleKind(order) ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {canCompletePayment(order) ? (
+            <Link to={`/${loaderData.lang}/order/${encodeURIComponent(order.number)}`}
+              className="rounded-md bg-action px-4 py-2 text-sm font-extrabold text-on-action hover:opacity-90">
+              {t("orders.completePayment")}
+            </Link>
+          ) : null}
+          {afterSaleKind(order) ? (
+            <Link to={`/${loaderData.lang}/account/orders/${encodeURIComponent(order.number)}/return${afterSaleKind(order) === "warranty" ? "?kind=warranty" : ""}`}
+              className="rounded-md border border-action px-4 py-2 text-sm font-bold text-action hover:bg-surface-tint">
+              {t(afterSaleKind(order) === "warranty" ? "returns.warrantyButton" : "returns.requestButton")}
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
+
       {delivered && !withinReturn && !withinWarranty ? (
         <p className="mt-3 rounded-md border border-border bg-surface-tint p-3 text-sm text-text-muted">
           {t("returns.windowsClosed")}
@@ -124,7 +154,7 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
               </div>
               <ul className="mt-2 flex flex-col divide-y divide-border">
                 {own.map((it: {
-                  id: string; product_name_ar: string; product_name_en: string; option_key: string;
+                  id: string; product_name_ar: string; product_name_en: string; option_key: string; option_label_ar?: string | null; option_label_en?: string | null;
                   qty: number; line_total_piastres: number; image_path: string | null;
                 }) => {
                   const remaining = it.qty - (requested[it.id] ?? 0);
@@ -133,7 +163,7 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
                     <li key={it.id} className="py-2.5">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="text-sm font-bold text-text">
-                          {en ? it.product_name_en : it.product_name_ar}{it.option_key ? ` (${it.option_key})` : ""} × {it.qty}
+                          {en ? it.product_name_en : it.product_name_ar}{(en ? it.option_label_en : it.option_label_ar) ? ` (${en ? it.option_label_en : it.option_label_ar})` : ""} × {it.qty}
                         </span>
                         <span className="text-sm font-extrabold text-text">{money(it.line_total_piastres)}</span>
                       </div>
@@ -167,34 +197,13 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
                       {delivered && !isReviewed ? (
                         <details id={`review-${it.id}`} className="mt-2 rounded-md border border-border p-3">
                           <summary className="cursor-pointer text-sm font-bold text-text">{t("reviews.write")}</summary>
-                          <reviewFetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
-                            <input type="hidden" name="intent" value="review" />
-                            <input type="hidden" name="order_item_id" value={it.id} />
-                            <label className="text-xs font-bold text-text">
-                              {t("reviews.rating")}
-                              <select name="rating" defaultValue="5" className="ms-2 rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text">
-                                {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((v) => (
-                                  <option key={v} value={v}>{v} / 5</option>
-                                ))}
-                              </select>
-                            </label>
-                            <input name="title" maxLength={200} placeholder={t("reviews.titlePlaceholder")} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
-                            <textarea name="body" maxLength={2000} rows={3} placeholder={t("reviews.bodyPlaceholder")} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
-                            <button type="submit" className="w-fit cursor-pointer rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action hover:bg-action-hover">
-                              {t("reviews.submit")}
-                            </button>
-                          </reviewFetcher.Form>
+                          <ReviewForm itemId={it.id} />
                         </details>
                       ) : null}
                     </li>
                   );
                 })}
               </ul>
-              {reviewFetcher.data && !reviewFetcher.data.ok ? (
-                <p role="alert" className="mt-1 text-xs text-danger">
-                  {reviewFetcher.data.reason === "already_reviewed" ? t("reviews.duplicate") : t("reviews.failed")}
-                </p>
-              ) : null}
             </section>
           );
         })}
@@ -231,6 +240,39 @@ export default function AccountOrderDetail({ loaderData }: Route.ComponentProps)
   );
 }
 
+
+/** One line's review form: real stars + optional photos/videos. */
+function ReviewForm({ itemId }: { itemId: string }) {
+  const { t } = useTranslation();
+  const fetcher = useFetcher<{ ok: boolean; reason?: string }>();
+  const [rating, setRating] = useState(5);
+  const [media, setMedia] = useState<ReviewMediaItem[]>([]);
+  const failed = fetcher.data && !fetcher.data.ok;
+  return (
+    <fetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
+      <input type="hidden" name="intent" value="review" />
+      <input type="hidden" name="order_item_id" value={itemId} />
+      <input type="hidden" name="rating" value={rating} />
+      <div className="flex flex-col gap-1">
+        <span className="text-xs font-bold text-text">{t("reviews.rating")}</span>
+        <Rating value={rating} onChange={setRating} size="lg" />
+      </div>
+      <input name="title" maxLength={200} placeholder={t("reviews.titlePlaceholder")} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
+      <textarea name="body" maxLength={2000} rows={3} placeholder={t("reviews.bodyPlaceholder")} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
+      <ReviewMediaPicker value={media} onChange={setMedia} />
+      <button type="submit" disabled={fetcher.state !== "idle"} className="w-fit cursor-pointer rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action hover:bg-action-hover disabled:opacity-50">
+        {t("reviews.submit")}
+      </button>
+      {failed ? (
+        <p role="alert" className="text-xs text-danger">
+          {fetcher.data?.reason === "bad_media" ? t("reviews.badMedia")
+            : fetcher.data?.reason === "already_reviewed" ? t("reviews.duplicate")
+            : t("reviews.failed")}
+        </p>
+      ) : null}
+    </fetcher.Form>
+  );
+}
 
 /** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */
 export function ErrorBoundary() {

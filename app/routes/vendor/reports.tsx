@@ -7,7 +7,6 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
-import { Badge } from "~/components/ui/Badge";
 import { Card, CardBody } from "~/components/ui";
 import { ReceiptIcon, CashIcon, TruckIcon, StoreIcon, FilterIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
@@ -133,7 +132,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-text" dir="ltr">
               {money(sales)}
             </p>
-            <p className="mt-1 text-2xs text-text-faint">إجمالي مبيعات المنتجات المسلمة</p>
+            <p className="mt-1 text-2xs text-text-faint">{t("report.salesHint")}</p>
           </CardBody>
         </Card>
 
@@ -149,7 +148,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-danger" dir="ltr">
               −{money(commission)}
             </p>
-            <p className="mt-1 text-2xs text-text-faint">نسبة عمولة منصة إتسوق</p>
+            <p className="mt-1 text-2xs text-text-faint">{t("report.commissionHint")}</p>
           </CardBody>
         </Card>
 
@@ -157,7 +156,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
         <Card className="border-t-4 border-t-info shadow-1 hover:shadow-2 transition-shadow">
           <CardBody className="p-4 sm:p-5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-text-muted">اللوجستيات والشحن</span>
+              <span className="text-xs font-bold text-text-muted">{t("report.logistics")}</span>
               <div className="flex size-8 items-center justify-center rounded-lg bg-info/10 text-info">
                 <TruckIcon className="size-4" />
               </div>
@@ -165,7 +164,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-text" dir="ltr">
               {money(shipping - pickup)}
             </p>
-            <p className="mt-1 text-2xs text-text-faint">صافي إيرادات ورسوم الشحن</p>
+            <p className="mt-1 text-2xs text-text-faint">{t("report.logisticsHint")}</p>
           </CardBody>
         </Card>
 
@@ -181,7 +180,7 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
             <p className="mt-2 text-xl sm:text-2xl font-black font-mono text-success-strong" dir="ltr">
               {money(net)}
             </p>
-            <p className="mt-1 text-2xs text-success-strong/80 font-medium">صافي الرصيد المضاف للمحفظة</p>
+            <p className="mt-1 text-2xs text-success-strong/80 font-medium">{t("report.netWalletHint")}</p>
           </CardBody>
         </Card>
       </div>
@@ -191,13 +190,13 @@ export default function ReportPage({ loaderData }: Route.ComponentProps) {
         <div className="rounded-lg border border-dashed border-border bg-surface p-12 text-center shadow-1">
           <ReceiptIcon className="mx-auto size-8 text-text-muted" />
           <p className="mt-3 text-sm font-bold text-text">{t("report.empty")}</p>
-          <p className="mt-1 text-xs text-text-muted">لا توجد معاملات مكتملة في هذه الفترة المحددة</p>
+          <p className="mt-1 text-xs text-text-muted">{t("report.emptyHint")}</p>
         </div>
       ) : (
         <div className="rounded-lg border border-border bg-surface shadow-1 overflow-hidden">
           <div className="border-b border-border/60 bg-surface-tint/30 px-4 sm:px-6 py-4">
-            <h2 className="text-sm font-extrabold text-text">تفاصيل التسوية المالية للفترة</h2>
-            <p className="text-xs text-text-muted mt-0.5">مطابقة حسابية دقيقة متصلة بسجل المعاملات المباشر</p>
+            <h2 className="text-sm font-extrabold text-text">{t("report.breakdownTitle")}</h2>
+            <p className="text-xs text-text-muted mt-0.5">{t("report.breakdownSubtitle")}</p>
           </div>
 
           <div className="divide-y divide-border/50">

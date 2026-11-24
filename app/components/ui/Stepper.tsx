@@ -9,13 +9,18 @@ export interface StepperProps {
 
 /** Horizontal stepper with numbered circles; current step marked via aria-current. */
 export function Stepper({ steps, current, label }: StepperProps) {
+  // Scrolls sideways on a phone instead of wrapping: wrapping let each label
+  // shrink to its narrowest word and the active step read as a vertical stack.
   return (
-    <ol className="flex flex-wrap items-center gap-2" aria-label={label}>
+    <ol
+      className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      aria-label={label}
+    >
       {steps.map((step, index) => {
         const done = index < current;
         const active = index === current;
         return (
-          <li key={step} className="flex items-center gap-2" aria-current={active ? "step" : undefined}>
+          <li key={step} className="flex shrink-0 items-center gap-2 whitespace-nowrap" aria-current={active ? "step" : undefined}>
             <span
               className={`flex size-7 items-center justify-center rounded-full border-2 text-xs font-extrabold ${
                 done

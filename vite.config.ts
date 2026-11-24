@@ -3,6 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, loadEnv } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+const ASSET_REV = "r2";
+
 export default defineConfig(({ mode }) => {
   // Load .env into process.env so server-side code (loaders/actions) can read
   // secrets like RESEND_API_KEY in dev; production provides them via the host.
@@ -13,6 +15,19 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [reactRouter(), tailwindcss(), tsconfigPaths()],
+    // ASSET_REV is part of every built file name. Bump it to give all JS/CSS
+    // new URLs when browsers may hold bad cached copies (e.g. 404s cached
+    // during a broken deploy: the same content would otherwise keep the same
+    // hashed name and the stale 404 would stick).
+    build: {
+      rollupOptions: {
+        output: {
+          entryFileNames: `assets/[name]-[hash]-${ASSET_REV}.js`,
+          chunkFileNames: `assets/[name]-[hash]-${ASSET_REV}.js`,
+          assetFileNames: `assets/[name]-[hash]-${ASSET_REV}[extname]`,
+        },
+      },
+    },
     // The browser client (Realtime) reads VITE_*_SUPABASE_*; alias the two
     // public SUPABASE_* values onto it so .env stays single-source. Deliberately
     // explicit: a SUPABASE_ envPrefix would expose SUPABASE_SERVICE_ROLE_KEY.

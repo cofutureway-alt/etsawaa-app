@@ -3,6 +3,7 @@ import type { Route } from "./+types/vendors";
 import { data, Link, useFetcher } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Badge, Button, Card, CardBody, DataTable, Dialog, EmptyState, useToast } from "~/components/ui";
+import { CashIcon, ChevronLeftIcon, EyeIcon, EyeOffIcon, PencilIcon, ShieldIcon, StoreIcon } from "~/components/ui/icons";
 import { MediaImage } from "~/features/media/components/media-ui";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
@@ -10,6 +11,8 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { PageHeader } from "~/components/layout/PageHeader";
+import { egpToPiastres } from "~/lib/money";
+import { ListSkeleton, useListLoading } from "~/components/ui/ListLoading";
 
 
 /**
@@ -30,6 +33,7 @@ interface VendorQueueRow {
   logo_path: string | null;
   hidden_from_listings?: boolean;
   owner_email: string | null;
+  owner_id: string | null;
   created_at: string;
 }
 
@@ -45,7 +49,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const verify = new URL(request.url).searchParams.get("verify");
   let query = client
     .from("vendors")
-    .select("id, store_name_ar, store_name_en, slug, status, verification_status, grace_until, logo_path, hidden_from_listings, created_at")
+    .select("id, owner_id, store_name_ar, store_name_en, slug, status, verification_status, grace_until, logo_path, hidden_from_listings, created_at")
     .order("created_at", { ascending: false })
     .limit(200);
   if (["pending", "active", "rejected", "suspended"].includes(status)) query = query.eq("status", status);
@@ -87,6 +91,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       logo_path: (row.logo_path as string | null) ?? null,
       hidden_from_listings: (row.hidden_from_listings as boolean | null) ?? false,
       owner_email: emailByVendor.get(row.id as string) ?? null,
+      owner_id: (row.owner_id as string | null) ?? null,
       created_at: row.created_at as string,
     };
   });
@@ -160,7 +165,8 @@ export async function action({ request, params }: Route.ActionArgs) {
     return r.ok ? { ok: true } : data<ActionData>({ ok: false, error: r.reason ?? "rpc" }, { status: 400 });
   }
   if (intent === "penalty") {
-    const amount = Math.trunc(Number(form.get("amount_piastres") ?? 0)) || 0;
+    const amount = egpToPiastres(form.get("amount_egp")) ?? 0;
+    if (amount <= 0) return data<ActionData>({ ok: false, error: "bad_amount" }, { status: 400 });
     const { data: res, error } = await client.rpc("fn_admin_apply_penalty", {
       p_vendor_id: vendorId, p_amount_piastres: amount, p_reason: reason,
     });
@@ -174,6 +180,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 const FILTERS = ["pending", "active", "rejected", "suspended", ""] as const;
 
 export default function AdminVendors({ loaderData }: Route.ComponentProps) {
+  const listLoading = useListLoading();
   const { t } = useTranslation();
   const lang = loaderData.lang;
   const isAr = lang === "ar";
@@ -190,6 +197,8 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
   const [actionError, setActionError] = useState<string | null>(null);
   const lastToast = useRef<string | null>(null);
 
+  /* one toast + dialog reset per completed action; the lastToast ref guard
+     makes the extra dep-triggered runs (t/locale change) no-ops */
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
     const stamp = fetcher.data.ok ? "ok" : (fetcher.data.error ?? "err");
@@ -206,8 +215,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
       setActionError(fetcher.data.error ?? "rpc");
       toast.showToast("error", t("errors.generic"));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetcher.state, fetcher.data]);
+  }, [fetcher.state, fetcher.data, toast, t]);
 
   function submit(decision: "approve" | "reject") {
     if (!dialog) return;
@@ -237,11 +245,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
       <PageHeader
         title={t("adminVendors.title")}
         count={loaderData.queue.length}
-        subtitle={
-          isAr
-            ? "متابعة حسابات التجار، التحقق من الوثائق الرسمية، وإدارة صلاحيات الظهور في السوق."
-            : "Review vendor stores, verify commercial documents, and manage marketplace visibility."
-        }
+        subtitle={t("adminVendors.subtitle")}
       />
 
       <div className="flex flex-wrap gap-1.5 rounded-lg border border-border bg-surface p-2 shadow-1" role="tablist" aria-label={t("adminVendors.filter")}>
@@ -269,7 +273,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
         ))}
       </div>
 
-      {loaderData.queue.length === 0 ? (
+      {listLoading ? <ListSkeleton /> : loaderData.queue.length === 0 ? (
         <Card>
           <CardBody>
             <EmptyState title={t("adminVendors.emptyTitle")} body={t("adminVendors.emptyBody")} />
@@ -283,6 +287,83 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
           emptyTitle={t("adminVendors.emptySearch")}
           emptyBody={t("adminVendors.emptySearchBody")}
           cardTitle={(row) => (isAr ? row.store_name_ar : row.store_name_en)}
+          renderCard={(row) => {
+            const name = isAr ? row.store_name_ar : row.store_name_en;
+            const profile = row.owner_id ? `/${loaderData.lang}/admin/users/${row.owner_id}?tab=verification` : `/${loaderData.lang}/admin/vendors/${row.id}`;
+            const needsReview = row.status === "pending" || row.verification_status === "submitted";
+            const managed = row.status === "active" || row.status === "suspended";
+            const action = "flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-border bg-surface px-2 text-sm font-bold text-text transition-colors hover:bg-surface-tint active:bg-surface-tint";
+            return (
+              <article className="overflow-hidden rounded-xl border border-border bg-surface shadow-1">
+                <Link to={profile} className="flex items-center gap-3 p-3.5 active:bg-surface-tint">
+                  <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-surface-tint">
+                    {row.logo_path ? (
+                      <MediaImage path={row.logo_path} alt="" width={56} height={56} supabaseUrl={loaderData.supabaseUrl} className="size-full object-cover" />
+                    ) : (
+                      <StoreIcon aria-hidden="true" className="size-6 text-text-faint" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-base font-extrabold text-text">{name}</p>
+                    <p className="num truncate text-xs text-text-muted" dir="ltr">{row.owner_email}</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      <Badge tone={statusTone(row.status)}>{t(`vendorStates.status.${row.status}`)}</Badge>
+                      <Badge tone={row.verification_status === "verified" ? "success" : row.verification_status === "grace_expired" ? "danger" : "neutral"}>
+                        {t(`vendorStates.verification.${row.verification_status}`)}
+                      </Badge>
+                      {row.hidden_from_listings ? <Badge tone="warning">{t("adminVendors.productsHidden")}</Badge> : null}
+                    </div>
+                  </div>
+                  <ChevronLeftIcon aria-hidden="true" className="size-5 shrink-0 text-text-faint ltr:rotate-180" />
+                </Link>
+
+                {needsReview || managed ? (
+                  <div className="flex flex-col gap-2 border-t border-border bg-surface-alt/50 p-3">
+                    {needsReview && row.owner_id ? (
+                      <Link to={profile} className="flex min-h-11 items-center justify-center rounded-md bg-action px-3 text-sm font-bold text-on-action hover:bg-action-hover">
+                        {t("adminVendors.review")}
+                      </Link>
+                    ) : null}
+                    {managed ? (
+                      <div className="grid grid-cols-2 gap-2">
+                        <Link to={`/${loaderData.lang}/admin/vendors/${row.id}/edit`} className={action}>
+                          <PencilIcon aria-hidden="true" className="size-4 text-text-muted" />
+                          {t("adminVendors.edit")}
+                        </Link>
+                        {row.hidden_from_listings ? (
+                          <button type="button" onClick={() => submitIntent("unhide", row)} className={action}>
+                            <EyeIcon aria-hidden="true" className="size-4 text-text-muted" />
+                            {t("adminVendors.unhide")}
+                          </button>
+                        ) : (
+                          <button type="button" onClick={() => { setHideTarget(row); setReason(""); setActionError(null); }} className={action}>
+                            <EyeOffIcon aria-hidden="true" className="size-4 text-text-muted" />
+                            {t("adminVendors.hide")}
+                          </button>
+                        )}
+                        <button type="button" onClick={() => { setPenaltyTarget(row); setReason(""); setPenaltyAmount(""); setActionError(null); }} className={action}>
+                          <CashIcon aria-hidden="true" className="size-4 text-text-muted" />
+                          {t("adminVendors.penalty")}
+                        </button>
+                        {row.status === "active" ? (
+                          <button type="button" onClick={() => { setBanTarget(row); setReason(""); setActionError(null); }}
+                            className={`${action} border-danger/40 text-danger hover:bg-danger-soft active:bg-danger-soft`}>
+                            <ShieldIcon aria-hidden="true" className="size-4" />
+                            {t("adminVendors.ban")}
+                          </button>
+                        ) : (
+                          <button type="button" onClick={() => submitIntent("unban", row)} className={action}>
+                            <ShieldIcon aria-hidden="true" className="size-4 text-text-muted" />
+                            {t("adminVendors.unban")}
+                          </button>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+              </article>
+            );
+          }}
           columns={[
             {
               key: "store",
@@ -297,7 +378,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
                   </div>
                   <div className="min-w-0">
                     {/* H-25: the store NAME opens the full detail page */}
-                    <Link to={`/${loaderData.lang}/admin/vendors/${row.id}`} className="block truncate text-sm font-bold text-primary hover:underline">
+                    <Link to={row.owner_id ? `/${loaderData.lang}/admin/users/${row.owner_id}?tab=verification` : `/${loaderData.lang}/admin/vendors/${row.id}`} className="block truncate text-sm font-bold text-primary hover:underline">
                       {isAr ? row.store_name_ar : row.store_name_en}
                     </Link>
                     <p className="num truncate text-2xs text-text-muted">{row.owner_email}</p>
@@ -324,33 +405,12 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
               text: () => "",
               render: (row) => (
                 <div className="flex flex-wrap items-center gap-1.5">
-                  {row.status === "pending" ? (
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setDialog({ row, intent: "review" });
-                        setReason("");
-                        setReasonError(false);
-                      }}
-                    >
-                      {t("adminVendors.review")}
-                    </Button>
-                  ) : null}
-                  {row.status === "active" && row.verification_status !== "verified" ? (
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setDialog({ row, intent: "verify" });
-                        setReason("");
-                        setReasonError(false);
-                      }}
-                    >
-                      {t("adminVendors.verify")}
-                    </Button>
+                  {/* review lives on the seller's profile (verification tab), not in a popup */}
+                  {row.owner_id ? (
+                    <Link to={`/${loaderData.lang}/admin/users/${row.owner_id}?tab=verification`}
+                      className={`rounded-md border px-3 py-1.5 text-sm font-bold ${row.status === "pending" || row.verification_status === "submitted" ? "border-action bg-action text-on-action" : "border-border text-text hover:bg-surface-tint"}`}>
+                      {row.status === "pending" || row.verification_status === "submitted" ? t("adminVendors.review") : t("adminVendors.openProfile")}
+                    </Link>
                   ) : null}
                   {row.status === "active" || row.status === "suspended" ? (
                     <>
@@ -474,7 +534,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
           <div className="flex flex-col gap-3">
             <label htmlFor="penalty-amount" className="flex flex-col gap-1.5 text-sm font-bold text-text">
               {t("adminVendors.penaltyAmount")}
-              <input id="penalty-amount" type="number" min={1} step={1} dir="ltr" value={penaltyAmount}
+              <input id="penalty-amount" type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr" value={penaltyAmount}
                 onChange={(e) => setPenaltyAmount(e.target.value)}
                 className="rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" />
             </label>
@@ -487,7 +547,7 @@ export default function AdminVendors({ loaderData }: Route.ComponentProps) {
             <div className="flex justify-end gap-2">
               <Button variant="ghost" onClick={() => setPenaltyTarget(null)}>{t("common.cancel")}</Button>
               <Button disabled={!(Number(penaltyAmount) > 0) || reason.trim().length < 3 || fetcher.state !== "idle"}
-                onClick={() => submitIntent("penalty", penaltyTarget, { amount_piastres: String(Math.trunc(Number(penaltyAmount))) })}>
+                onClick={() => submitIntent("penalty", penaltyTarget, { amount_egp: penaltyAmount })}>
                 {t("adminVendors.penaltyConfirm")}
               </Button>
             </div>

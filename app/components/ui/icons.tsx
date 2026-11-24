@@ -34,6 +34,9 @@ function Icon({ title, children, ...props }: IconProps) {
 export const SearchIcon = (p: IconProps) => (
   <Icon {...p}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></Icon>
 );
+export const HomeIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" /></Icon>
+);
 export const UserIcon = (p: IconProps) => (
   <Icon {...p}><circle cx="12" cy="8" r="4" /><path d="M4 20c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5" /></Icon>
 );
@@ -47,6 +50,10 @@ export const HeartIcon = ({ filled, ...p }: IconProps & { filled?: boolean }) =>
 );
 export const ScaleIcon = (p: IconProps) => (
   <Icon {...p}><path d="M12 4v16M8 20h8" /><path d="M6 8h12" /><path d="m6 8-3 6a3 3 0 0 0 6 0L6 8ZM18 8l-3 6a3 3 0 0 0 6 0l-3-6Z" /></Icon>
+);
+/** two opposite arrows: "compare" */
+export const CompareArrowsIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M7 4 3 8l4 4" /><path d="M3 8h14" /><path d="m17 20 4-4-4-4" /><path d="M21 16H7" /></Icon>
 );
 export const FilterIcon = (p: IconProps) => (
   <Icon {...p}><path d="M4 6h16M7 12h10M10 18h4" /></Icon>
@@ -117,9 +124,6 @@ export const CashIcon = (p: IconProps) => (
 export const RotateIcon = (p: IconProps) => (
   <Icon {...p}><path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" /></Icon>
 );
-export const LogoutIcon = (p: IconProps) => (
-  <Icon {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></Icon>
-);
 export const SettingsIcon = (p: IconProps) => (
   <Icon {...p}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" /></Icon>
 );
@@ -170,4 +174,29 @@ export const PlusIcon = (p: IconProps) => <Icon {...p}><path d="M12 5v14M5 12h14
 /** Map pin (H-23 saved-location badge on address cards). */
 export const PinIcon = (p: IconProps) => (
   <Icon {...p}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="3" /></Icon>
+);
+/** Vendor services (photography, editing, starter bundles …). */
+export const CameraIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z" /><circle cx="12" cy="13" r="3.5" /></Icon>
+);
+export const WandIcon = (p: IconProps) => (
+  <Icon {...p}><path d="m15 4 5 5L9 20H4v-5L15 4Z" /><path d="m13 6 5 5" /><path d="M19 2v3M17.5 3.5h3" /></Icon>
+);
+export const RocketIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1Z" /><path d="m12 15-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22.4 22.4 0 0 1-4 2Z" /><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5" /></Icon>
+);
+export const SparklesIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" /><path d="M5 3v4M3 5h4M19 17v4M17 19h4" /></Icon>
+);
+export const CalendarIcon = (p: IconProps) => (
+  <Icon {...p}><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></Icon>
+);
+export const ClockIcon = (p: IconProps) => (
+  <Icon {...p}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Icon>
+);
+export const LinkIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" /><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" /></Icon>
+);
+export const DownloadIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" /></Icon>
 );

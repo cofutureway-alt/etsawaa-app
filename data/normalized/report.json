@@ -1,0 +1,25 @@
+{
+ "categories": {
+  "l1": 10,
+  "l2": 38,
+  "l3": 170,
+  "category_rows": 1391,
+  "product_types": 1354
+ },
+ "specs": {
+  "dictionary": 1270,
+  "groups": 1000,
+  "links": 10409
+ },
+ "templates": {
+  "exact": 955,
+  "new_family": 399
+ },
+ "geo": {
+  "governorates": 27,
+  "areas": 572,
+  "shipping_fee_egp": 100,
+  "pickup_fee_egp": 20
+ },
+ "shared_products": 32
+}

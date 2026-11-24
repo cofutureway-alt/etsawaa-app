@@ -5,7 +5,7 @@
  */
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { applyEventDiscount } from "../app/features/checkout/pricing.server.ts";
+import { applyEventDiscount, categoryWithin } from "../app/features/checkout/pricing.server.ts";
 
 test("percent discount applies when under the cap", () => {
   // 1000 piastres, 10% off, cap 500 → discount 100 (< cap) → 900
@@ -42,4 +42,17 @@ test("integer piastres only — truncates, never floats", () => {
   const out = applyEventDiscount(999, 33, null);
   assert.equal(Number.isInteger(out), true);
   assert.equal(out, 999 - Math.trunc((999 * 33) / 100));
+});
+
+test("category-scoped discounts cover the subtree (mirrors fn_category_within)", () => {
+  const L1 = "11111111-1111-1111-1111-111111111111";
+  const L3 = "33333333-3333-3333-3333-333333333333";
+  const TYPE = "44444444-4444-4444-4444-444444444444";
+  const OTHER = "99999999-9999-9999-9999-999999999999";
+  const path = `${L1}/22222222-2222-2222-2222-222222222222/${L3}/${TYPE}`;
+  assert.equal(categoryWithin(TYPE, path, TYPE), true); // exact leaf
+  assert.equal(categoryWithin(TYPE, path, L3), true); // parent browse category
+  assert.equal(categoryWithin(TYPE, path, L1), true); // root
+  assert.equal(categoryWithin(TYPE, path, OTHER), false);
+  assert.equal(categoryWithin(TYPE, null, L3), false); // unknown path: exact match only
 });

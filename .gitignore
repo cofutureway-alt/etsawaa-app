@@ -14,3 +14,7 @@ evidence/*.zip
 
 # Supabase CLI scratch
 supabase/.temp/
+
+# Local screenshots and agent scratch
+.shots/
+.video_agent/

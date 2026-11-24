@@ -6,22 +6,28 @@ import { z } from "zod";
  * vendors must never read the settings table directly (RLS).
  */
 
+/** Verification documents; each type accepts several images (front/back, pages). */
 export const DOCUMENT_TYPES = [
-  "id_front",
-  "id_back",
   "commercial_register",
   "tax_card",
-  "residence",
+  "national_id",
 ] as const;
 export type DocumentType = (typeof DOCUMENT_TYPES)[number];
 
-const requiredDocumentsSchema = z.object({
-  id_front: z.boolean(),
-  id_back: z.boolean(),
-  commercial_register: z.boolean(),
-  tax_card: z.boolean(),
-  residence: z.boolean(),
-});
+// older settings used id_front/id_back — they now mean the national ID
+const requiredDocumentsSchema = z
+  .object({
+    commercial_register: z.boolean().optional(),
+    tax_card: z.boolean().optional(),
+    national_id: z.boolean().optional(),
+    id_front: z.boolean().optional(),
+    id_back: z.boolean().optional(),
+  })
+  .transform((r) => ({
+    commercial_register: r.commercial_register ?? true,
+    tax_card: r.tax_card ?? true,
+    national_id: r.national_id ?? (r.id_front || r.id_back || true),
+  }));
 
 export const vendorConfigSchema = z.object({
   registration_enabled: z.boolean(),
@@ -51,11 +57,9 @@ export function parseVendorConfig(raw: unknown): VendorConfig {
     review_required: true,
     allow_clone: true,
     required_documents: {
-      id_front: true,
-      id_back: true,
-      commercial_register: false,
-      tax_card: false,
-      residence: false,
+      commercial_register: true,
+      tax_card: true,
+      national_id: true,
     },
     grace_value: 7,
     grace_unit: "days",
@@ -70,6 +74,7 @@ export type VendorStatus = "draft" | "pending" | "active" | "rejected" | "suspen
 export type VerificationStatus =
   | "unverified"
   | "submitted"
+  | "needs_changes"
   | "verified"
   | "rejected"
   | "grace_expired";

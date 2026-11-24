@@ -94,10 +94,22 @@ export const otpCodeSchema = z
   .trim()
   .regex(/^\d{6}$/, "otp:six_digits");
 
-export const completeGoogleSchema = z.object({
-  phone: phone,
-  terms: z.boolean().refine((value) => value === true, { message: "terms:required" }),
-});
+/**
+ * Complete-profile form (Google sign-ups, and anyone missing a phone):
+ * name + two different Egyptian mobiles; the Terms box only when the person
+ * has not accepted the current Terms yet.
+ */
+export function completeProfileSchema(needsTerms: boolean) {
+  return z
+    .object({
+      fullName: z.string().trim().min(2, "name:short").max(120),
+      phone: phone,
+      phoneAlternate: phone,
+      terms: z.boolean(),
+    })
+    .refine((d) => !needsTerms || d.terms, { path: ["terms"], message: "terms:required" })
+    .refine((d) => d.phone !== d.phoneAlternate, { path: ["phoneAlternate"], message: "phone:equal" });
+}
 
 /**
  * 0..4 password strength score for the visible strength meter (US-02).

@@ -3,11 +3,11 @@ import type { FilterState, FacetDef } from "~/components/catalog/FacetPanel";
 /**
  * Listing URL state (S-03 DoD: URL reflects filters, back restores exact
  * state). Params: q · cat · brand · <attribute-code>=opt1,opt2 · pmin/pmax
- * (EGP) · rating · stock=1 · sort · page. Attribute params are keyed by the
- * human-readable code and resolved through the facet defs.
+ * (EGP) · rating · stock=1 · sort · page · seed (recommended order). Attribute
+ * params are keyed by the human-readable code and resolved through the facet defs.
  */
 
-export const SORT_OPTIONS = ["newest", "price_asc", "price_desc", "rating"] as const;
+export const SORT_OPTIONS = ["recommended", "newest", "price_asc", "price_desc", "rating", "best_selling", "discount"] as const;
 
 export function parseListingState(
   url: URL,
@@ -37,8 +37,9 @@ export function parseListingState(
     priceMax: toPiastres(sp.get("pmax")),
     rating: [2, 3, 4].includes(Number(sp.get("rating"))) ? Number(sp.get("rating")) : null,
     inStock: sp.get("stock") === "1",
-    sort: SORT_OPTIONS.includes(sp.get("sort") as never) ? sp.get("sort")! : "newest",
+    sort: SORT_OPTIONS.includes(sp.get("sort") as never) ? sp.get("sort")! : "recommended",
     page: Math.max(1, Math.min(500, Number(sp.get("page")) || 1)),
+    seed: sp.get("seed")?.match(/^[a-z0-9]{4,12}$/)?.[0] ?? "",
   };
 }
 
@@ -56,7 +57,8 @@ export function buildListingQuery(state: FilterState, defs: FacetDef[]): string 
   if (state.priceMax != null) sp.set("pmax", String(state.priceMax / 100));
   if (state.rating != null) sp.set("rating", String(state.rating));
   if (state.inStock) sp.set("stock", "1");
-  if (state.sort && state.sort !== "newest") sp.set("sort", state.sort);
+  if (state.sort !== "recommended") sp.set("sort", state.sort);
+  if (state.sort === "recommended" && state.seed) sp.set("seed", state.seed);
   if (state.page > 1) sp.set("page", String(state.page));
   const qs = sp.toString();
   return qs ? `?${qs}` : "";

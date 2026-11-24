@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useToast } from "~/components/ui/Toast";
 
@@ -19,9 +19,15 @@ export function useActionToast(
 ) {
   const toast = useToast();
   const { t } = useTranslation();
+  // `toast` gets a new identity whenever a toast is shown, which re-runs the
+  // effect below — remember which result was already announced so each
+  // action produces exactly one toast (it used to loop: toast → re-render → toast).
+  const shown = useRef<unknown>(null);
 
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
+    if (shown.current === fetcher.data) return;
+    shown.current = fetcher.data;
     const d = fetcher.data as { ok?: boolean; reason?: string };
     if (d.ok === true) {
       toast.showToast("success", messages.success ?? t("common.saved"));

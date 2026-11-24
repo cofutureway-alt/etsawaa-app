@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { data } from "react-router";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
-import { getViewer } from "~/lib/auth/guards";
+import { getViewer, getViewerContext } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import {
   listNotifications,
@@ -12,15 +12,18 @@ import {
 /** GET /:lang/api/notifications — the signed-in user's rows (RLS-scoped). */
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const lang = requireLang(params);
-  const { client } = createSupabaseServerClient(request);
+  // headers: a session refreshed here reaches the browser (this 60 s poll
+  // runs in idle tabs, so it must not refresh the same token every minute)
+  const { client, headers } = createSupabaseServerClient(request);
   if (!client) return data({ notifications: null, reason: "db_not_connected" });
-  const { viewer } = (await getViewer(client)) ?? { viewer: null };
-  if (!viewer) return data({ notifications: null, reason: "unauthenticated" });
+  const { ctx } = await getViewerContext(client);
+  if (!ctx) return data({ notifications: null, reason: "unauthenticated" }, { headers });
   try {
-    const notifications = await listNotifications(client, viewer.user.id);
-    return data({ notifications, lang });
+    const notifications = await listNotifications(client, ctx.user.id);
+    // the real unread total (the list itself is only the latest 20)
+    return data({ notifications, unread: ctx.unread, lang }, { headers });
   } catch {
-    return data({ notifications: null, reason: "query_failed" });
+    return data({ notifications: null, reason: "query_failed" }, { headers });
   }
 }
 

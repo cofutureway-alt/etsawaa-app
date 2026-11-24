@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
-import { formatPiastres } from "~/lib/money";
+import { formatPiastres, signedEgpToPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { Card, CardBody, CardHeader } from "~/components/ui";
 import { Badge } from "~/components/ui/Badge";
@@ -16,7 +16,7 @@ import { SkeletonForm } from "~/components/ui/Skeleton";
 
 /**
  * A-05/A-06/A-07 — Vendor edit · three independent tabs:
- *   General (selling permissions, featured, store data read-out),
+ *   General (featured, store data read-out),
  *   Commissions (inherit | fixed | category, with a next-order preview),
  *   Social + verification + penalties + wallet + ads history.
  * Each tab saves independently (form-per-tab → its own fetcher call).
@@ -32,8 +32,6 @@ interface EditorVendor {
   socials: Record<string, string>;
   commission_mode: "inherit" | "fixed" | "category";
   commission_fixed_percent: number | null;
-  allow_direct_publish: boolean;
-  can_change_order_status: boolean;
   featured_permanent: boolean; featured_until: string | null;
   level_name: string | null;
   area_name: string | null;
@@ -43,11 +41,11 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "admin", request);
+  const viewerForTabs = await requirePanelAccess(client, lang, "admin", request);
   const id = String(params.id ?? "");
   const { data: v, error } = await client.from("vendors").select(
     `id, slug, store_name_ar, store_name_en, status, verification_status, logo_path, socials,
-     commission_mode, commission_fixed_percent, allow_direct_publish, can_change_order_status,
+     commission_mode, commission_fixed_percent,
      featured_permanent, featured_until, level_id, area_id,
      vendor_levels(name_ar, name_en), areas(name_ar, name_en)`
   ).eq("id", id).maybeSingle();
@@ -78,14 +76,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     socials: (row.socials ?? {}) as Record<string, string>,
     commission_mode: (row.commission_mode ?? "inherit") as EditorVendor["commission_mode"],
     commission_fixed_percent: (row.commission_fixed_percent as number | null) ?? null,
-    allow_direct_publish: (row.allow_direct_publish as boolean) ?? false,
-    can_change_order_status: (row.can_change_order_status as boolean) ?? true,
     featured_permanent: (row.featured_permanent as boolean) ?? false,
     featured_until: (row.featured_until as string | null) ?? null,
     level_name: lvl ? (lang === "en" ? lvl.name_en : lvl.name_ar) : null,
     area_name: area ? (lang === "en" ? area.name_en : area.name_ar) : null,
   };
   return {
+    canCommission: viewerForTabs.profile.role === "admin",
     lang, vendor,
     overrides: JSON.parse(JSON.stringify(overrides.data ?? [])) as Array<{ category_id: string; percent: number }>,
     penalties: JSON.parse(JSON.stringify(pen.data ?? [])) as Array<{ id: string; amount_piastres: number; reason: string; status: string; created_at: string }>,
@@ -105,17 +102,13 @@ export async function action({ request, params }: Route.ActionArgs) {
   const intent = String(form.get("intent") ?? "");
 
   if (intent === "general") {
-    // direct publish permission + order-status permission + featured (timed/permanent)
-    const allowDirect = form.get("allow_direct_publish") === "on";
-    const canChange = form.get("can_change_order_status") === "on";
+    // featured (timed/permanent) only — seller permissions are not editable
     const featuredPermanent = form.get("featured_permanent") === "on";
     const featuredDays = Math.max(0, Math.trunc(Number(form.get("featured_days") ?? 0)) || 0);
     const featuredUntil = featuredPermanent
       ? null
       : featuredDays > 0 ? new Date(Date.now() + featuredDays * 86400000).toISOString() : null;
     const { error } = await client.from("vendors").update({
-      allow_direct_publish: allowDirect,
-      can_change_order_status: canChange,
       featured_permanent: featuredPermanent,
       featured_until: featuredUntil,
       updated_at: new Date().toISOString(),
@@ -124,7 +117,7 @@ export async function action({ request, params }: Route.ActionArgs) {
     await client.rpc("fn_audit", {
       p_action: "vendor.general.updated", p_entity: "vendors", p_entity_id: vendorId,
       p_before: null,
-      p_after: { allow_direct_publish: allowDirect, can_change_order_status: canChange, featured_until: featuredUntil },
+      p_after: { featured_until: featuredUntil },
     });
     return { ok: true as const };
   }
@@ -163,7 +156,8 @@ export async function action({ request, params }: Route.ActionArgs) {
 
   if (intent === "adjust") {
     // A-29 — manual wallet adjustment (reason mandatory, audited, signed)
-    const amount = Math.trunc(Number(form.get("amount_piastres") ?? 0)) || 0;
+    const amount = signedEgpToPiastres(form.get("amount_egp"));
+    if (!amount) return data({ ok: false, reason: "bad_amount" }, { status: 400 });
     const reason = String(form.get("reason") ?? "").trim();
     const res = await client.rpc("fn_admin_adjust_wallet", {
       p_vendor_id: vendorId, p_amount_piastres: amount, p_reason: reason,
@@ -201,7 +195,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
 
   const tabs: Array<{ key: TabKey; label: string }> = [
     { key: "general", label: t("ve.tabGeneral") },
-    { key: "commissions", label: t("ve.tabCommissions") },
+    ...(loaderData.canCommission ? [{ key: "commissions" as TabKey, label: t("ve.tabCommissions") }] : []),
     { key: "details", label: t("ve.tabDetails") },
   ];
 
@@ -242,8 +236,6 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
           <CardBody>
             <genFetcher.Form method="post" className="flex flex-col gap-3">
               <input type="hidden" name="intent" value="general" />
-              <Toggle id="f-direct" name="allow_direct_publish" label={t("ve.directPublish")} defaultChecked={v.allow_direct_publish} />
-              <Toggle id="f-status" name="can_change_order_status" label={t("ve.changeStatus")} defaultChecked={v.can_change_order_status} />
               <Toggle id="f-feat-perm" name="featured_permanent" label={t("ve.featuredPermanent")} defaultChecked={v.featured_permanent} />
               <label htmlFor="f-feat-days" className="flex flex-col gap-1.5 text-sm font-bold text-text">
                 {t("ve.featuredDays")}
@@ -369,7 +361,7 @@ export default function AdminVendorEdit({ loaderData }: Route.ComponentProps) {
                 <input type="hidden" name="intent" value="adjust" />
                 <label className="flex flex-col gap-1 text-xs font-bold text-text">
                   {t("ve.adjustAmount")}
-                  <input name="amount_piastres" type="number" required dir="ltr" placeholder="+/−"
+                  <input name="amount_egp" type="number" step="0.01" inputMode="decimal" required dir="ltr" placeholder="+/−"
                     className="w-28 rounded-md border border-border bg-surface px-2 py-1.5" />
                 </label>
                 <label className="flex flex-1 flex-col gap-1 text-xs font-bold text-text">

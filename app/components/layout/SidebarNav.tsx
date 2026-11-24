@@ -28,10 +28,13 @@ export function SidebarNav({
   groups,
   label,
   collapsed = false,
+  onNavigate,
 }: {
   groups: SidebarGroup[];
   label: string;
   collapsed?: boolean;
+  /** Phone drawer calls this to close itself after a link tap. */
+  onNavigate?: () => void;
 }) {
   return (
     <nav aria-label={label} className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2.5">
@@ -39,7 +42,7 @@ export function SidebarNav({
         <div key={group.label ?? groupIndex} className="flex flex-col gap-0.5">
           {group.label ? (
             <p
-              className={`px-2.5 pb-1 pt-3 text-2xs font-extrabold uppercase tracking-[1.5px] text-side-muted ${
+              className={`px-2.5 pb-1 pt-3.5 text-xs font-black uppercase tracking-[1px] text-white ${
                 collapsed ? "sr-only" : ""
               }`}
             >
@@ -75,6 +78,9 @@ export function SidebarNav({
                 key={item.to}
                 to={item.to}
                 end={item.end}
+                onClick={onNavigate}
+                // hovering a panel link starts loading the page (code + data), so the click feels instant
+                prefetch="intent"
                 title={collapsed ? item.label : undefined}
                 className={({ isActive }) =>
                   `flex items-center gap-2.5 rounded-md py-2.5 text-sm font-semibold transition-colors duration-150 ${
@@ -86,17 +92,20 @@ export function SidebarNav({
                   }`
                 }
               >
-                <span aria-hidden="true" className="shrink-0 text-lg leading-none">
+                <span aria-hidden="true" className="relative shrink-0 text-lg leading-none">
                   {item.icon}
+                  {collapsed && item.badge ? (
+                    <span className="absolute -end-1 -top-1 size-2.5 rounded-full bg-featured ring-2 ring-side" />
+                  ) : null}
                 </span>
                 <span className={collapsed ? "sr-only" : "truncate"}>{item.label}</span>
                 {item.badge !== undefined && item.badge > 0 ? (
                   <span
-                    className={`num ms-auto rounded-full bg-featured px-1.5 text-2xs font-extrabold text-ink ${
-                      collapsed ? "hidden" : ""
+                    className={`num ms-auto grid h-5 min-w-5 place-items-center rounded-full bg-featured px-1.5 text-2xs font-extrabold leading-none text-ink ${
+                      collapsed ? "sr-only" : ""
                     }`}
                   >
-                    {item.badge}
+                    {item.badge > 99 ? "99+" : item.badge}
                   </span>
                 ) : null}
               </NavLink>

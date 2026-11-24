@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { getServiceRoleKey, getSupabaseEnv } from "~/lib/env.server";
+import { supabaseFetch } from "./fetch.server";
 
 let admin: SupabaseClient | null = null;
 
@@ -16,6 +17,7 @@ export function getSupabaseAdminClient(): SupabaseClient | null {
   if (!admin) {
     admin = createClient(env.url, serviceKey, {
       auth: { autoRefreshToken: false, persistSession: false },
+      global: { fetch: supabaseFetch },
     });
   }
   return admin;

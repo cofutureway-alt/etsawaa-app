@@ -1,17 +1,15 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
- * Notifications (F-17). Rows carry bilingual payloads:
- * payload: { ar: { title, body }, en: { title, body } }
+ * Notifications (F-17). Payloads are bilingual { ar, en, link } or, from
+ * older flows, plain fields; formatNotification (format.ts) reads both.
  */
 
 export interface NotificationRow {
   id: string;
   type: string;
-  payload: {
-    ar?: { title: string; body: string };
-    en?: { title: string; body: string };
-  };
+  /** bilingual { ar, en, link } — or, for older flows, plain fields (see format.ts) */
+  payload: Record<string, unknown> | null;
   read_at: string | null;
   created_at: string;
 }
@@ -50,15 +48,4 @@ export async function markAllNotificationsRead(client: SupabaseClient): Promise<
     .update({ read_at: new Date().toISOString() })
     .is("read_at", null);
   return !error;
-}
-
-/** Bilingual payload for the current locale, falling back to the other. */
-export function notificationText(
-  row: NotificationRow,
-  locale: "ar" | "en",
-): { title: string; body: string } {
-  const primary = row.payload?.[locale];
-  const fallback = row.payload?.[locale === "ar" ? "en" : "ar"];
-  const chosen = primary ?? fallback ?? { title: "—", body: "" };
-  return chosen;
 }

@@ -27,7 +27,9 @@ test("safeSlug rejects injection payloads", () => {
   assert.equal(safeSlug("slug*"), null);
   assert.equal(safeSlug(""), null);
   assert.equal(safeSlug(null), null);
-  assert.equal(safeSlug("a".repeat(201)), null);
+  assert.equal(safeSlug("a".repeat(401)), null);
+  // long product slugs made from a full title still resolve (they 404'd at 200)
+  assert.equal(safeSlug("ب".repeat(287)), "ب".repeat(287));
 });
 
 test("isSafeFilterValue flags reserved characters", () => {

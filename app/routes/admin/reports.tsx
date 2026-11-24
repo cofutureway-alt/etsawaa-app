@@ -9,7 +9,7 @@ import { formatPiastres } from "~/lib/money";
 import { Card, CardBody, CardHeader } from "~/components/ui";
 import { DataTable } from "~/components/ui/DataTable";
 import { Badge } from "~/components/ui/Badge";
-import { ChartIcon, CashIcon, ReceiptIcon, UsersIcon, PackageIcon } from "~/components/ui/icons";
+import { ChartIcon, ReceiptIcon, UsersIcon } from "~/components/ui/icons";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { PageHeader } from "~/components/layout/PageHeader";
@@ -35,7 +35,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "admin", request);
+  const viewer = await requirePanelAccess(client, lang, "admin", request);
+  // sales / earnings reports are the owner's eyes only
+  if (viewer.profile.role !== "admin") throw new Response("Forbidden", { status: 403 });
 
   const since = new Date(Date.now() - DAYS * 86400000).toISOString();
 
@@ -49,6 +51,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     client.from("orders")
       .select("total_piastres, status, created_at")
       .gte("created_at", since)
+      .eq("payment_mode", "live") // Kashier test-mode orders are not sales
       .in("status", ["processing", "completed"]),
     client.from("v_admin_daily_sales").select("*").order("day", { ascending: true }),
     client.from("audit_logs")
@@ -131,7 +134,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
     <div className="space-y-6">
       <PageHeader
         title={t("rpt.title")}
-        subtitle="مؤشرات الأداء التشغيلي والمالي لمنصة اتسوء مع سجل التدقيق والمطابقة الشاملة"
+        subtitle="مؤشرات الأداء التشغيلي والمالي لمنصة إتسوء مع سجل التدقيق والمطابقة الشاملة"
         actions={<Badge tone="featured" dot>{t("rpt.period30")}</Badge>}
       />
 
@@ -277,7 +280,7 @@ export default function AdminReports({ loaderData }: Route.ComponentProps) {
                 header: t("admin.logs.at"),
                 render: (r) => (
                   <span dir="ltr" className="text-xs font-mono text-text-muted">
-                    {new Date(r.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}
+                    {new Date(r.created_at).toLocaleString(en ? "en-EG" : "ar-EG-u-nu-latn")}
                   </span>
                 ),
                 text: (r) => r.created_at,

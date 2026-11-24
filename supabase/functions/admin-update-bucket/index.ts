@@ -60,13 +60,17 @@ Deno.serve(async (req: Request) => {
     );
     const results: Record<string, unknown> = {};
     const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-    for (const bucket of ["media", "documents"]) {
+    // Media settings govern the public `media` bucket only. The private
+    // `documents` bucket (KYC PDFs, refund evidence) keeps its own fixed
+    // policy from 20261103000012_security_hardening.sql — applying media
+    // settings there (PDF off by default) would reject vendor KYC uploads.
+    for (const bucket of ["media"]) {
       // This storage build exposes bucket updates on PUT (supabase-js PATCH no-ops).
       const res = await fetch(`${url}/storage/v1/bucket/${bucket}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${svcKey}`, apikey: svcKey, "Content-Type": "application/json" },
         body: JSON.stringify({
-          public: bucket === "media",
+          public: true,
           file_size_limit: maxBytes > 0 ? maxBytes : null,
           allowed_mime_types: allowed.length > 0 ? allowed : null,
         }),

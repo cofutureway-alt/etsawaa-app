@@ -37,24 +37,10 @@ export function recordRecentGuest(productId: string): RecentEntry[] {
   return next;
 }
 
-/** Remove one product from the guest history (e.g. deleted product page). */
-export function removeFromRecentGuest(productId: string): void {
-  const next = readRecent().filter((e) => e.id !== productId);
-  try {
-    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
-  } catch { /* non-critical */ }
-}
-
 export async function recordViewRemote(productId: string): Promise<void> {
   await fetch("/api/recent", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ intent: "record", product_id: productId }),
-  }).catch(() => undefined);
-}
-
-export async function clearRecentRemote(): Promise<void> {
-  await fetch("/api/recent", {
-    method: "DELETE",
   }).catch(() => undefined);
 }

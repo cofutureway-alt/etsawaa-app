@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requireLang } from "~/lib/lang.server";
 import { publicMeta, jsonLd, breadcrumbLd } from "~/lib/seo";
-import { publicMediaUrl } from "~/lib/media.shared";
+import { getI18n } from "~/lib/i18n/config";
 import { Breadcrumbs } from "~/components/ui/Breadcrumbs";
 import { EmptyState } from "~/components/ui/EmptyState";
-import { FallbackCover } from "~/components/blog/FallbackCover";
+import { BlogCard } from "~/components/blog/BlogCard";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
@@ -32,7 +32,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (!client) throw data({ reason: "db" }, { status: 503 });
   const url = new URL(request.url);
   const cat = url.searchParams.get("cat") ?? "";
-  const isAr = lang === "ar";
 
   let query = client
     .from("blog_posts")
@@ -46,12 +45,11 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     client.from("blog_categories").select("id, name_ar, name_en, slug_ar, slug_en").order("sort"),
   ]);
 
+  const t = getI18n(lang).t;
   const meta = publicMeta({
     lang, path: "/blog",
-    title: `${t_BlogTitle(isAr)} — Etsawaa`,
-    description: isAr
-      ? "مقالات ونصائح حول البيع والشراء من سوق اتسوء متعدد البائعين."
-      : "Guides and news from the Etsawaa multi-vendor marketplace.",
+    title: `${t("pubBlog.title")} — ${t("app.name")}`,
+    description: t("pubBlog.metaDescription"),
   });
   return {
     lang,
@@ -62,8 +60,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   };
 }
 
-function t_BlogTitle(isAr: boolean) { return isAr ? "المدونة" : "Blog"; }
-
 export function meta({ loaderData }: Route.MetaArgs) {
   return loaderData.meta as unknown as ReturnType<typeof publicMeta>;
 }
@@ -72,7 +68,6 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const lang = loaderData.lang;
   const en = lang === "en";
-  const supabaseUrl = process.env.SUPABASE_URL ?? "";
   const catName = (id: string | null) => {
     if (!id) return undefined;
     const c = loaderData.cats.find((x) => x.id === id);
@@ -82,7 +77,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
   const ld = jsonLd({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: en ? "Etsawaa Blog" : "مدونة اتسوء",
+    name: t("pubBlog.collectionName"),
     itemListElement: loaderData.posts.map((p, i) => ({
       "@type": "ListItem", position: i + 1,
       url: `${site_()}/${lang}/blog/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`,
@@ -103,13 +98,14 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
         { label: t("nav.home"), href: `/${lang}` },
         { label: t("pubBlog.title") },
       ]} />
-      <h1 className="mt-2 text-2xl font-extrabold text-text">{t("pubBlog.title")}</h1>
+      <h1 className="mt-2 text-2xl font-extrabold text-text sm:text-3xl">{t("pubBlog.title")}</h1>
+      <p className="mt-1 max-w-2xl text-sm leading-relaxed text-text-muted">{t("pubBlog.metaDescription")}</p>
 
       {/* category chips */}
-      <nav aria-label={t("pubBlog.cats")} className="mt-3 flex flex-wrap gap-1.5">
+      <nav aria-label={t("pubBlog.cats")} className="-mx-4 mt-4 flex gap-1.5 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden">
         <Link to={`/${lang}/blog`}
           aria-current={!loaderData.activeCat ? "page" : undefined}
-          className={`rounded-md border px-3 py-1.5 text-sm font-bold ${
+          className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-bold transition-colors ${
             !loaderData.activeCat ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
           }`}>
           {t("common.all")}
@@ -117,7 +113,7 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
         {loaderData.cats.map((c) => (
           <Link key={c.id} to={`/${lang}/blog?cat=${c.id}`}
             aria-current={loaderData.activeCat === c.id ? "page" : undefined}
-            className={`rounded-md border px-3 py-1.5 text-sm font-bold ${
+            className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-bold transition-colors ${
               loaderData.activeCat === c.id ? "border-primary bg-primary-soft text-primary" : "border-border text-text-muted hover:bg-surface-tint"
             }`}>
             {en ? c.name_en : c.name_ar}
@@ -140,34 +136,10 @@ export default function PublicBlog({ loaderData }: Route.ComponentProps) {
           />
         </div>
       ) : (
-        <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {loaderData.posts.map((p) => (
             <li key={p.slug_en} className="flex">
-              <Link to={`/${lang}/blog/${encodeURIComponent(en ? p.slug_en : p.slug_ar)}`}
-                className="flex h-full w-full flex-col overflow-hidden rounded-md border border-border bg-surface transition-colors duration-150 hover:border-primary/40 hover:bg-surface-tint">
-                {p.cover_path ? (
-                  <img src={publicMediaUrl(supabaseUrl, p.cover_path)} alt="" width={600} height={315}
-                    loading="lazy" decoding="async" className="aspect-[600/315] w-full object-cover" />
-                ) : (
-                  /* U2 — deterministic branded cover, never an empty slot */
-                  <FallbackCover
-                    title={en ? p.title_en : p.title_ar}
-                    category={catName(p.category_id)}
-                    seed={p.slug_en}
-                  />
-                )}
-                <div className="flex flex-1 flex-col gap-1.5 p-4">
-                  <h2 className="text-lg font-extrabold leading-snug text-text">
-                    {en ? p.title_en : p.title_ar}
-                  </h2>
-                  <p className="line-clamp-3 text-sm leading-relaxed text-text-muted">{en ? p.excerpt_en : p.excerpt_ar}</p>
-                  {p.published_at ? (
-                    <time className="mt-auto pt-2 text-xs text-text-faint" dateTime={p.published_at} dir="ltr">
-                      {new Date(p.published_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
-                    </time>
-                  ) : null}
-                </div>
-              </Link>
+              <BlogCard post={p} lang={lang} category={catName(p.category_id)} />
             </li>
           ))}
         </ul>

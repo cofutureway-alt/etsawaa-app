@@ -14,6 +14,8 @@ export interface CartLine {
   stock?: number;
   sku?: string | null;
   option_key?: string;
+  option_label_ar?: string | null;
+  option_label_en?: string | null;
   price_piastres?: number;
   regular_price_piastres?: number;
   on_sale?: boolean;
@@ -82,14 +84,12 @@ export interface CouponResult {
 }
 
 export async function applyCoupon(code: string, lines: CartLine[]): Promise<CouponResult> {
+  // The endpoint only accepts identifiers + qty — the server recomputes
+  // every price (see /api/coupon). Anything else is ignored.
   const payload = lines.map((line) => ({
     product_id: line.product_id,
-    vendor_id: line.vendor_id ?? null,
-    leaf_category_id: line.leaf_category_id ?? null,
-    brand_id: line.brand_id ?? null,
-    unit_price_piastres: line.price_piastres ?? 0,
+    variant_id: line.variant_id,
     qty: line.qty,
-    on_sale: line.on_sale ?? false,
   }));
   const res = await fetch("/api/coupon", {
     method: "POST",

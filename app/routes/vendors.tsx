@@ -1,11 +1,14 @@
 import type { Route } from "./+types/vendors";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getI18n } from "~/lib/i18n/config";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { publicMeta } from "~/lib/seo";
 import { getCategories, getFeaturedStores, listStores, type CategoryNode, type StoreCard } from "~/features/storefront/api";
 import { VendorCard } from "~/components/catalog/VendorCard";
+import { getSpotlightStores } from "~/features/ads/ads.server";
+import { useAdImpressions } from "~/features/ads/ad-tracking";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { Breadcrumbs } from "~/components/ui/Breadcrumbs";
 import { SkeletonPage } from "~/components/ui/Skeleton";
@@ -18,29 +21,31 @@ import { SkeletonPage } from "~/components/ui/Skeleton";
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
-  if (!client) return { lang, featured: [] as StoreCard[], stores: [] as StoreCard[], categories: [] as CategoryNode[] };
-  const [featured, stores, categories] = await Promise.all([
+  if (!client) return { lang, featured: [] as StoreCard[], stores: [] as StoreCard[], categories: [] as CategoryNode[], sponsored: {} as Record<string, string> };
+  const [featuredRaw, stores, categories, spot] = await Promise.all([
     getFeaturedStores(client).catch(() => []),
     listStores(client).catch(() => []),
-    getCategories(client).catch(() => []),
+    getCategories(client, { maxDepth: 1 }).catch(() => []),
+    getSpotlightStores(client, 4).catch(() => ({ stores: [] as StoreCard[], campaignOf: {} as Record<string, string> })),
   ]);
-  return { lang, featured, stores, categories };
+  // paid "Featured store" campaigns lead the featured row
+  const featured = [...spot.stores, ...featuredRaw.filter((s) => !spot.campaignOf[s.id])];
+  return { lang, featured, stores, categories, sponsored: spot.campaignOf };
 }
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const lang = (data?.lang as "ar" | "en") ?? "ar";
+  const t = getI18n(lang).t;
   return publicMeta({
     lang,
     path: "/vendors",
-    title: lang === "ar" ? "المتاجر — اتسوء" : "Stores — Etsawaa",
-    description:
-      lang === "ar"
-        ? "كل المتاجر الموثوقة على اتسوء: تصفح حسب القسم والمستوى وتسوق من بائعين معتمدين."
-        : "Every vetted store on Etsawaa: browse by category and level, shop from approved sellers.",
+    title: `${t("vendors.metaTitle")} — ${t("app.name")}`,
+    description: t("vendors.metaDescription"),
   });
 };
 
 export default function VendorsPage({ loaderData }: Route.ComponentProps) {
+  useAdImpressions(Object.values(loaderData.sponsored ?? {}).filter((id) => loaderData.featured.slice(0, 4).some((st) => loaderData.sponsored?.[st.id] === id)));
   const { t } = useTranslation();
   const lang = loaderData.lang;
   const [category, setCategory] = useState<string>("");
@@ -69,13 +74,16 @@ export default function VendorsPage({ loaderData }: Route.ComponentProps) {
         items={[{ label: t("nav.home"), href: `/${lang}` }, { label: t("nav.vendors") }]}
       />
 
+      <h1 className="text-xl font-black text-text">{t("nav.vendors")}</h1>
+
       {loaderData.featured.length > 0 ? (
         <section aria-label={t("store.vendor.featured")} className="flex flex-col gap-3">
-          <h1 className="text-lg font-black text-text">{t("store.vendor.featured")}</h1>
+          <h2 className="text-lg font-black text-text">{t("store.vendor.featured")}</h2>
           <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
             {loaderData.featured.slice(0, 4).map((store) => (
-              <li key={store.id} className="min-w-0">
+              <li key={store.id} className="relative min-w-0">
                 <VendorCard store={store} lang={lang} />
+                {loaderData.sponsored?.[store.id] ? <span className="pointer-events-none absolute end-2 top-2 rounded-full border border-border bg-surface/95 px-2 py-0.5 text-2xs font-bold text-text-muted">{t("ads.sponsored")}</span> : null}
               </li>
             ))}
           </ul>

@@ -1,0 +1,392 @@
+[
+ {
+  "type_en": "Backpacks",
+  "type_ar": "شنطة الظهر",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Backpacks (حقائب ظهر)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Accessories (إكسسوارات رياضية عامة)",
+   "Books & Stationery (الكتب والأدوات المكتبية)",
+   "Stationery & Office (الأدوات المكتبية والمدرسية)",
+   "School Supplies (مستلزمات مدرسية)"
+  ]
+ },
+ {
+  "type_en": "Bluetooth Speakers",
+  "type_ar": "سماعات بلوتوث",
+  "categories": [
+   "Electronics & Mobiles (الإلكترونيات والموبايل)",
+   "Phones & Tablets (الهواتف والتابلت)",
+   "Mobile Accessories (إكسسوارات موبايل)",
+   "Electronics & Mobiles (الإلكترونيات والموبايل)",
+   "Televisions & Audio (الشاشات والأنظمة الصوتية)",
+   "Home Theater & Speakers (أنظمة الصوت والمسرح المنزلي)"
+  ]
+ },
+ {
+  "type_en": "Board Games",
+  "type_ar": "ألعاب طاولة",
+  "categories": [
+   "Baby Products (منتجات الأطفال)",
+   "Toys & Games (الألعاب والتسلية)",
+   "Board Games (ألعاب طاولة)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Burkinis",
+  "type_ar": "البوركيني",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Caps and Hats",
+  "type_ar": "الكاب والقبعة",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Accessories & Jewellery (مجوهرات/إكسسوارات)",
+   "Men's Suit Accessories (إكسسوارات البدل الرجالي)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Accessories (إكسسوارات رياضية عامة)"
+  ]
+ },
+ {
+  "type_en": "Clocks",
+  "type_ar": "ساعات حائط",
+  "categories": [
+   "Home & Kitchen (المنزل والمطبخ)",
+   "Home Essentials (مستلزمات وديكور المنزل)",
+   "Home Decor (ديكور)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Flip Flops",
+  "type_ar": "شبشب فليب فلوب",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Unisex (للجنسين (مشترك))",
+   "Flip Flops (شباشب فليب فلوب)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Water Sports & Beach (الرياضات المائية وأدوات البحر)",
+   "Beach & Pool Accessories (مستلزمات شاطئ وحمام سباحة)"
+  ]
+ },
+ {
+  "type_en": "Handbags",
+  "type_ar": "شنطة اليد",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Handbags (حقائب يد)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Headphones",
+  "type_ar": "سماعات بلوتوث",
+  "categories": [
+   "Electronics & Mobiles (الإلكترونيات والموبايل)",
+   "Phones & Tablets (الهواتف والتابلت)",
+   "Mobile Accessories (إكسسوارات موبايل)",
+   "Electronics & Mobiles (الإلكترونيات والموبايل)",
+   "Televisions & Audio (الشاشات والأنظمة الصوتية)",
+   "Home Theater & Speakers (أنظمة الصوت والمسرح المنزلي)"
+  ]
+ },
+ {
+  "type_en": "Jewelry Sets",
+  "type_ar": "طقم الحلي",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Accessories & Jewellery (مجوهرات/إكسسوارات)",
+   "Jewelry & Precious Metals (المجوهرات والمعادن الثمينة)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Leggings",
+  "type_ar": "ليجنز",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Perfumes",
+  "type_ar": "العطر",
+  "categories": [
+   "Health & Beauty (الصحة والجمال)",
+   "Men & Women Perfumes (العطور الرجالية والنسائية)",
+   "Perfumes & Fragrance Products (العطور ومنتجات التعطير)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Photo Frames",
+  "type_ar": "برواز صور",
+  "categories": [
+   "Home & Kitchen (المنزل والمطبخ)",
+   "Home Essentials (مستلزمات وديكور المنزل)",
+   "Home Decor (ديكور)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Plush Toys",
+  "type_ar": "اللعبة القماشية",
+  "categories": [
+   "Baby Products (منتجات الأطفال)",
+   "Toys & Games (الألعاب والتسلية)",
+   "Plush Toys (ألعاب قطيفة)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Power Banks",
+  "type_ar": "باور بانك",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Travel Gear (مستلزمات سفر)",
+   "Electronics & Mobiles (الإلكترونيات والموبايل)",
+   "Phones & Tablets (الهواتف والتابلت)",
+   "Mobile Accessories (إكسسوارات موبايل)"
+  ]
+ },
+ {
+  "type_en": "Scented Candles",
+  "type_ar": "شموع معطرة",
+  "categories": [
+   "Home & Kitchen (المنزل والمطبخ)",
+   "Home Essentials (مستلزمات وديكور المنزل)",
+   "Home Decor (ديكور)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "School Bags",
+  "type_ar": "شنط مدرسة",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Backpacks (حقائب ظهر)",
+   "Books & Stationery (الكتب والأدوات المكتبية)",
+   "Stationery & Office (الأدوات المكتبية والمدرسية)",
+   "School Supplies (مستلزمات مدرسية)"
+  ]
+ },
+ {
+  "type_en": "Smartwatches",
+  "type_ar": "ساعات ذكية",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Accessories & Jewellery (مجوهرات/إكسسوارات)",
+   "Smartwatches (ساعات ذكية)",
+   "Electronics & Mobiles (الإلكترونيات والموبايل)",
+   "Phones & Tablets (الهواتف والتابلت)",
+   "Wearables & Smart Devices (أجهزة قابلة للارتداء وأجهزة ذكية)"
+  ]
+ },
+ {
+  "type_en": "Sneakers",
+  "type_ar": "كوتشيات",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Men's Shoes (أحذية رجالي)",
+   "Sports Shoes (أحذية رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Men Sports Shoes (أحذية رياضية رجالي)"
+  ]
+ },
+ {
+  "type_en": "Sports Bras",
+  "type_ar": "حمالة الصدر الرياضية",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Sunglasses",
+  "type_ar": "نظارات شمسية",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Accessories & Jewellery (مجوهرات/إكسسوارات)",
+   "Eyewear (النظارات)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Accessories (إكسسوارات رياضية عامة)"
+  ]
+ },
+ {
+  "type_en": "Sweatshirts",
+  "type_ar": "سويت شيرت",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Towels",
+  "type_ar": "فوط",
+  "categories": [
+   "Home & Kitchen (المنزل والمطبخ)",
+   "Home Essentials (مستلزمات وديكور المنزل)",
+   "Bedding (مفروشات)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Water Sports & Beach (الرياضات المائية وأدوات البحر)",
+   "Beach & Pool Accessories (مستلزمات شاطئ وحمام سباحة)"
+  ]
+ },
+ {
+  "type_en": "Travel Backpacks",
+  "type_ar": "شنط ظهر للسفر",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Backpacks (حقائب ظهر)",
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Travel Gear (مستلزمات سفر)"
+  ]
+ },
+ {
+  "type_en": "Wall Art",
+  "type_ar": "تابلوهات حوائط",
+  "categories": [
+   "Home & Kitchen (المنزل والمطبخ)",
+   "Home Essentials (مستلزمات وديكور المنزل)",
+   "Home Decor (ديكور)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Wallets",
+  "type_ar": "المحفظة",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Bags & Leather Goods (الحقائب والمصنوعات الجلدية)",
+   "Wallets (محافظ)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Watches",
+  "type_ar": "ساعات",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Unisex (للجنسين (مشترك))",
+   "Watches (ساعات)",
+   "Handmade Products & More (منتجات يدوية وأقسام أخرى)",
+   "Gifts & Events (هدايا وتوزيعات ومناسبات)",
+   "Gifts & Favors (مناسبات وهدايا)"
+  ]
+ },
+ {
+  "type_en": "Water Bottles",
+  "type_ar": "زجاجات مياه",
+  "categories": [
+   "Home & Kitchen (المنزل والمطبخ)",
+   "Kitchen & Dining (المطبخ وغرفة الطعام)",
+   "Containers (علب وحاويات)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Accessories (إكسسوارات رياضية عامة)"
+  ]
+ },
+ {
+  "type_en": "Women's Running Shoes",
+  "type_ar": "حذاء جري حريمي",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Fashion (الأزياء)",
+   "Women's Shoes (أحذية حريمي)",
+   "Sports Shoes (أحذية رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sports Shoes (أحذية رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Women's Sports Shorts",
+  "type_ar": "شورت رياضي حريمي",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Women's Yoga Pants",
+  "type_ar": "بنطلون يوجا حريمي",
+  "categories": [
+   "Fashion (الأزياء)",
+   "Women's Fashion (الأزياء النسائية)",
+   "Sportswear (ملابس رياضية)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ },
+ {
+  "type_en": "Yoga Mats",
+  "type_ar": "سجاجيد يوجا",
+  "categories": [
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Fitness & Sports (اللياقة البدنية والرياضة)",
+   "Gym Equipment (أجهزة جيم)",
+   "Sporting Goods (المستلزمات الرياضية)",
+   "Sportswear & Shoes & Accessories (الملابس والأحذية الرياضية وإكسسوارات رياضية)",
+   "Women Sportswear (ملابس رياضية حريمي)"
+  ]
+ }
+]

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import type { Route } from "./+types/cart";
 import { useTranslation } from "react-i18next";
+import { getI18n } from "~/lib/i18n/config";
 import { requireLang } from "~/lib/lang.server";
 import { publicMeta } from "~/lib/seo";
 import { formatPiastres } from "~/lib/money";
@@ -27,11 +28,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const lang = (data?.lang as "ar" | "en") ?? "ar";
+  const t = getI18n(lang).t;
   return publicMeta({
     lang,
     path: "/cart",
-    title: lang === "ar" ? "سلة التسوق — اتسوء" : "Shopping cart — Etsawaa",
-    description: lang === "ar" ? "راجع سلتك قبل إتمام الطلب." : "Review your cart before checkout.",
+    title: `${t("cart.title")} — ${t("app.name")}`,
+    description: t("cart.metaDescription"),
     noindex: true,
   });
 };
@@ -64,11 +66,14 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
       return;
     }
     let alive = true;
-    void ensureGuestDetails(cart.lines).then((detailed) => {
-      if (!alive) return;
-      setLines(detailed);
-      setHydrated(true);
-    });
+    // network failure → fall back to the raw lines instead of a rejection
+    void ensureGuestDetails(cart.lines)
+      .catch(() => cart.lines)
+      .then((detailed) => {
+        if (!alive) return;
+        setLines(detailed);
+        setHydrated(true);
+      });
     return () => { alive = false; };
   }, [cart.ready, cart.lines]);
 
@@ -200,6 +205,9 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                 <ul>
                   {vendorLines.map((line) => {
                     const name = lang === "ar" ? line.name_ar || line.name_en : line.name_en || line.name_ar;
+                    const option = lang === "ar"
+                      ? line.option_label_ar || line.option_label_en
+                      : line.option_label_en || line.option_label_ar;
                     return (
                       <li key={line.variant_id} className="flex gap-3 border-b border-border p-4 last:border-none">
                         <div className="size-20 shrink-0 overflow-hidden rounded-md border border-border">
@@ -230,6 +238,7 @@ export default function CartPage({ loaderData }: Route.ComponentProps) {
                             </button>
                           </div>
                           {line.sku ? <span className="num text-2xs text-text-faint">SKU: {line.sku}</span> : null}
+                          {option ? <span className="text-2xs font-bold text-text-muted">{option}</span> : null}
                           <span className="num text-sm font-extrabold text-text">
                             {line.price_piastres != null ? formatPiastres(line.price_piastres, lang === "en" ? "en" : "ar") : ""}
                           </span>

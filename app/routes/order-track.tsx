@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { getViewer } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { publicMeta } from "~/lib/seo";
+import { getI18n } from "~/lib/i18n/config";
 import { getOwnOrder, getOrderParts, type GroupRow } from "~/features/orders/api";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
@@ -14,14 +15,17 @@ import { SkeletonPage } from "~/components/ui/Skeleton";
  * States are ordered; a group with no updates yet shows "preparing your
  * shipment" rather than an empty timeline.
  */
-export const meta: Route.MetaFunction = ({ params }) =>
-  publicMeta({
-    lang: params.lang === "en" ? "en" : "ar",
+export const meta: Route.MetaFunction = ({ params }) => {
+  const lang = params.lang === "en" ? "en" : "ar";
+  const t = getI18n(lang).t;
+  return publicMeta({
+    lang,
     path: "/order/track",
-    title: params.lang === "en" ? "Track order — Etsawaa" : "تتبع الطلب — اتسوء",
-    description: params.lang === "en" ? "Follow your order." : "تابع حالة طلبك.",
+    title: `${t("nav.trackOrder")} — ${t("app.name")}`,
+    description: t("orderTrack.metaDescription"),
     noindex: true,
   });
+};
 
 const FLOW = ["pending", "preparing", "handed_to_carrier", "out_for_delivery", "delivered"] as const;
 
@@ -104,7 +108,7 @@ export default function TrackPage({ loaderData }: Route.ComponentProps) {
                           </p>
                           {update ? (
                             <p className="text-xs text-text-muted" dir="ltr">
-                              {new Date(update.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}
+                              {new Date(update.created_at).toLocaleString(en ? "en-EG" : "ar-EG-u-nu-latn")}
                               {update.note && !update.note.startsWith("fn_") ? ` — ${update.note}` : ""}
                             </p>
                           ) : null}

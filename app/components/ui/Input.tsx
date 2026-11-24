@@ -40,9 +40,14 @@ export function Input({
   const actualType = showPasswordToggle ? (visible ? "text" : "password") : type;
 
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`}>
+    <div className={`flex min-w-0 flex-col gap-1.5 ${className}`}>
       <label htmlFor={id} className="text-sm font-bold text-text">
         {label}
+        {rest.required ? (
+          <span aria-hidden="true" className="ms-0.5 text-danger">
+            *
+          </span>
+        ) : null}
       </label>
       <div className="relative">
         <input

@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { sendEmail } from "~/lib/email/server";
 import { formatPiastres } from "~/lib/money";
 import type { Locale } from "~/lib/i18n/config";
+import { loadRouting, routeFor, sendEventTexts } from "~/lib/messaging/dispatch.server";
 
 /**
  * Order lifecycle emails (O-13) — templates come from the `email_templates`
@@ -20,6 +21,8 @@ export type OrderEmailKind =
 interface OrderEmailContext {
   number: string;
   email: string;
+  phone: string | null;
+  user_id: string | null;
   full_name: string;
   total_piastres: number;
   payment_method: "kashier" | "cod";
@@ -28,10 +31,10 @@ interface OrderEmailContext {
   site_url: string;
 }
 
-async function loadContext(admin: SupabaseClient, orderNumber: string): Promise<OrderEmailContext | null> {
+async function loadContext(admin: SupabaseClient, orderNumber: string, locale?: Locale): Promise<OrderEmailContext | null> {
   const { data: order } = await admin
     .from("orders")
-    .select("number, email, total_piastres, payment_method, cancel_reason, profiles(full_name, locale)")
+    .select("number, email, phone_primary, user_id, total_piastres, payment_method, cancel_reason, profiles(full_name, locale)")
     .eq("number", orderNumber)
     .maybeSingle();
   if (!order) return null;
@@ -39,11 +42,13 @@ async function loadContext(admin: SupabaseClient, orderNumber: string): Promise<
   return {
     number: order.number,
     email: order.email,
+    phone: (order as { phone_primary?: string | null }).phone_primary ?? null,
+    user_id: (order as { user_id?: string | null }).user_id ?? null,
     full_name: profiles?.full_name ?? "",
     total_piastres: order.total_piastres,
     payment_method: order.payment_method,
     cancel_reason: order.cancel_reason,
-    locale: profiles?.locale === "en" ? "en" : "ar",
+    locale: locale ?? (profiles?.locale === "en" ? "en" : "ar"),
     site_url: process.env.SITE_URL?.replace(/\/$/, "") ?? "",
   };
 }
@@ -70,9 +75,18 @@ export async function sendOrderEmail(
   admin: SupabaseClient,
   orderNumber: string,
   kind: OrderEmailKind,
+  locale?: Locale,
 ): Promise<{ status: string; error?: string }> {
-  const ctx = await loadContext(admin, orderNumber);
+  const ctx = await loadContext(admin, orderNumber, locale);
   if (!ctx) return { status: "failed", error: "order_not_found" };
+  // the order confirmation also goes by SMS / WhatsApp, as Admin → Messages says
+  let emailOn = true;
+  if (kind === "order_confirmation") {
+    const routing = await loadRouting(admin);
+    emailOn = routeFor(routing, kind, "customer").email;
+    void sendEventTexts(admin, { eventKey: kind, audience: "customer", phone: ctx.phone, locale: ctx.locale, variables: varsFor(ctx), userId: ctx.user_id, reference: ctx.number, routing }).catch(() => undefined);
+  }
+  if (!emailOn) return { status: "skipped", error: "email_off" };
   if (!ctx.email) return { status: "failed", error: "no_email" };
   const result = await sendEmail(admin, {
     to: ctx.email,
@@ -83,7 +97,15 @@ export async function sendOrderEmail(
   return { status: result.status === "sent" ? "sent" : result.status, error: result.status === "sent" ? undefined : result.error };
 }
 
+/** Card orders: the confirmation texts go out once the payment succeeds. */
+export async function sendOrderConfirmationTexts(admin: SupabaseClient, orderNumber: string): Promise<void> {
+  const ctx = await loadContext(admin, orderNumber);
+  if (!ctx) return;
+  await sendEventTexts(admin, { eventKey: "order_confirmation", audience: "customer", phone: ctx.phone, locale: ctx.locale, variables: varsFor(ctx), userId: ctx.user_id, reference: ctx.number });
+}
+
 /* Webhook-friendly aliases (fire-and-forget call sites in the webhook route). */
 export async function sendPaymentEmails(admin: SupabaseClient, orderNumber: string, kind: "payment_success" | "payment_failed"): Promise<void> {
   await sendOrderEmail(admin, orderNumber, kind);
+  if (kind === "payment_success") await sendOrderConfirmationTexts(admin, orderNumber);
 }

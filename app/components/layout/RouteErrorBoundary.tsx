@@ -13,9 +13,20 @@ import { useEffect, useState } from "react";
 export function RouteErrorBoundary({ backHref }: { backHref?: string }) {
   const error = useRouteError();
   const location = useLocation();
-  const [correlationId] = useState(() => `CORERR-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`);
+  // made in the browser after hydration: a random id rendered on the server
+  // never matches the browser's own, which threw React hydration error #418
+  const [correlationId, setCorrelationId] = useState("");
+  useEffect(() => {
+    setCorrelationId(`CORERR-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`);
+  }, [error]);
 
   useEffect(() => {
+    if (!correlationId) return;
+    // stale build after a deploy (old route chunk gone) → reload into the new build
+    if (error instanceof Error) {
+      const w = window as unknown as { __etsawaaChunkReload?: (m: string) => boolean };
+      if (w.__etsawaaChunkReload?.(error.message)) return;
+    }
     if (isRouteErrorResponse(error) && (error.status === 403 || error.status === 404)) return;
     // server logs already carry the stack; client logs carry the correlation id
     console.error(`[${correlationId}] route=${location.pathname}`, error);
@@ -35,7 +46,7 @@ export function RouteErrorBoundary({ backHref }: { backHref?: string }) {
       <p className="num text-4xl font-black text-danger" dir="ltr">{status}</p>
       <h1 className="mt-2 text-lg font-extrabold text-text">{title}</h1>
       <p className="mt-2 text-sm text-text-muted">{body}</p>
-      {status >= 500 ? (
+      {status >= 500 && correlationId ? (
         <p className="mt-3 rounded-md bg-surface-tint px-3 py-2 font-mono text-xs text-text-muted" dir="ltr">
           {correlationId}
         </p>

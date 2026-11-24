@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-22T02:35:33.719201+00:00",
+  "templates": 57,
+  "languages": [
+    "ar",
+    "en"
+  ],
+  "tests": 202,
+  "failures": 0,
+  "typecheck": "passed",
+  "lint": "passed (existing repository warnings)",
+  "build": "passed",
+  "browser_harness": {
+    "results": [
+      "Arabic editor, cursor insertion, draft/publish isolation, toggle revision, unsaved test and restore: PASS",
+      "Both UI languages, desktop/mobile, no horizontal overflow: PASS",
+      "Bilingual email frame at 360/600 px, no browser errors: PASS"
+    ],
+    "errors": []
+  },
+  "production": {
+    "results": [
+      "Authenticated Arabic studio and branded preview: PASS",
+      "English studio, persisted account preference and mobile layout: PASS",
+      "Switching back persists Arabic: PASS",
+      "Guest language cookie, private editor and CSRF protection: PASS"
+    ],
+    "errors": [],
+    "at": "2026-11-22T02:36:45.452Z"
+  },
+  "smtp_check": "authentication and NOOP; automated delivery tests capture mail locally",
+  "original_local_backup": "H:\\z etsawaa\\91-Backups\\email-redesign-20261122-034633",
+  "original_server_backup": "/opt/etsawaa/backups/email-studio-20261122T022118Z",
+  "final_server_backup": "/opt/etsawaa/backups/email-studio-20261122T023510Z",
+  "final_image": "etsawaa-app:email-studio-20261122T023510Z",
+  "completed_at": "2026-11-22T02:37:14.472187+00:00"
+}

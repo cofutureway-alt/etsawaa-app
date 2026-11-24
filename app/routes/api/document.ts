@@ -1,4 +1,4 @@
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import type { Route } from "./+types/document";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { getViewer } from "~/lib/auth/guards";
@@ -36,6 +36,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     // RLS denied, or the object does not exist — do not distinguish (that
     // would leak whether another user's evidence exists).
     return data({ reason: "not_found" }, { status: 404 });
+  }
+  // ?redirect=1 — for plain links (vendor KYC "open"): go straight to the
+  // object instead of returning JSON. Same RLS check, same 60 s link.
+  if (url.searchParams.get("redirect") === "1") {
+    return redirect(signed.signedUrl, {
+      headers: { "Cache-Control": "private, no-store", "X-Robots-Tag": "noindex" },
+    });
   }
   return data(
     { url: signed.signedUrl },

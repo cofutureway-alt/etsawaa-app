@@ -1,0 +1,10162 @@
+[
+ {
+  "id": 1,
+  "en": "3.5mm jack",
+  "ar": "مدخل السماعة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 2,
+  "en": "Abaya Length",
+  "ar": "طول العبايه",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 3,
+  "en": "Abaya Type",
+  "ar": "نوع العبايه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 4,
+  "en": "Abrasiveness",
+  "ar": "درجة الخشونة (كشط)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 5,
+  "en": "AC Outlet Count",
+  "ar": "عدد مخارج الكهرباء",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 6,
+  "en": "Active Noise Cancellation",
+  "ar": "عزل ضوضاء نشط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 7,
+  "en": "Active SIM Count",
+  "ar": "عدد الشرائح النشطة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 8,
+  "en": "Active Stylus Support",
+  "ar": "دعم القلم الإلكتروني",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 9,
+  "en": "Activity type",
+  "ar": "نوع النشاط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 10,
+  "en": "Adhesive Form",
+  "ar": "شكل اللاصق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 11,
+  "en": "Adhesive Type",
+  "ar": "نوع اللاصق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 12,
+  "en": "Adjustable Height",
+  "ar": "ارتفاع قابل للتعديل",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 13,
+  "en": "Adjustable Seat",
+  "ar": "المقعد قابل للتعديل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 14,
+  "en": "Adjustable Seat Height",
+  "ar": "ارتفاع مقعد قابل للتعديل",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 15,
+  "en": "Adjustable Size",
+  "ar": "قابل لتعديل المقاس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 16,
+  "en": "Adjustable Straps",
+  "ar": "أحزمة قابلة للتعديل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 17,
+  "en": "Adjustable Temperature",
+  "ar": "حرارة قابلة للتعديل",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "text"
+ },
+ {
+  "id": 18,
+  "en": "Advertised Battery Life",
+  "ar": "مدة تشغيل البطارية المعلنة",
+  "unit_en": "h",
+  "unit_ar": "ساعة",
+  "type": "number"
+ },
+ {
+  "id": 20,
+  "en": "Advertised Data Transfer Rate",
+  "ar": "معدل نقل البيانات المعلن",
+  "unit_en": "MT/s",
+  "unit_ar": "مليون نقل/ثانية",
+  "type": "number"
+ },
+ {
+  "id": 21,
+  "en": "Advertised Hot Water Flow",
+  "ar": "معدل تدفق المياه المعلن",
+  "unit_en": "L/min",
+  "unit_ar": "لتر/دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 22,
+  "en": "Advertised HP Class",
+  "ar": "القدرة بالحصان المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 23,
+  "en": "Advertised Range",
+  "ar": "مدى السير المعلن",
+  "unit_en": "km",
+  "unit_ar": "كم",
+  "type": "number"
+ },
+ {
+  "id": 24,
+  "en": "Advertised Read Speed",
+  "ar": "أقصى سرعة قراءة معلنة",
+  "unit_en": "MB/s",
+  "unit_ar": "ميجابايت/ثانية",
+  "type": "number"
+ },
+ {
+  "id": 25,
+  "en": "Advertised Runtime",
+  "ar": "مدة التشغيل المعلنة",
+  "unit_en": "min",
+  "unit_ar": "دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 26,
+  "en": "Advertised Sequential Read Speed",
+  "ar": "أقصى سرعة قراءة متتابعة معلنة",
+  "unit_en": "MB/s",
+  "unit_ar": "ميجابايت/ثانية",
+  "type": "number"
+ },
+ {
+  "id": 27,
+  "en": "age and safety warnings",
+  "ar": "تحذيرات العمر والسلامه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 28,
+  "en": "Age group",
+  "ar": "الفئه العمريه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 29,
+  "en": "Air Conditioner Type",
+  "ar": "نوع التكييف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 30,
+  "en": "Air Extraction Rate",
+  "ar": "معدل شفط الهواء",
+  "unit_en": "m³/h",
+  "unit_ar": "متر مكعب/ساعة",
+  "type": "number"
+ },
+ {
+  "id": 31,
+  "en": "Air Fryer Type",
+  "ar": "نوع القلاية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 32,
+  "en": "Air Removal Method",
+  "ar": "طريقة إخراج الهواء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 33,
+  "en": "Airflow Operation Modes",
+  "ar": "أوضاع تدوير الهواء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 34,
+  "en": "Alcohol-free as Labeled",
+  "ar": "خال من الكحول حسب الملصق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 35,
+  "en": "Allergen Statement",
+  "ar": "مسببات الحساسية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 36,
+  "en": "Ammonia-free",
+  "ar": "خاليه من الامونيا",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 37,
+  "en": "Anti-colic System",
+  "ar": "نظام مضاد للمغص",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 38,
+  "en": "Application Area",
+  "ar": "منطقة الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 39,
+  "en": "Application Type",
+  "ar": "نوع الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 40,
+  "en": "assembled length",
+  "ar": "الطول بعد التجميع",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 41,
+  "en": "assembled width",
+  "ar": "العرض بعد التجميع",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 42,
+  "en": "Attachment Clip Type",
+  "ar": "نوع خطاف التثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 43,
+  "en": "Attachment Method",
+  "ar": "طريقة تثبيت الملحقات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 44,
+  "en": "Autofocus",
+  "ar": "التركيز التلقائي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 45,
+  "en": "Automatic Boil Shut-off",
+  "ar": "ايقاف تلقائي بعد الغليان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 46,
+  "en": "Automatic Duplex Printing",
+  "ar": "الطباعة التلقائية على الوجهين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 47,
+  "en": "Automatic Pressure shutoff",
+  "ar": "إيقاف تلقائي عند الضغط المحدد",
+  "unit_en": "bar",
+  "unit_ar": "بار",
+  "type": "text"
+ },
+ {
+  "id": 48,
+  "en": "Automatic Shut-off",
+  "ar": "إيقاف تلقائي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 49,
+  "en": "Auxiliary Power Connectors",
+  "ar": "موصلات الطاقة الإضافية",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 50,
+  "en": "Backing Material",
+  "ar": "خامة القاعدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 51,
+  "en": "Bag Dimensions",
+  "ar": "مقاسات الأكياس",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 53,
+  "en": "Bag or Case Type",
+  "ar": "نوع الشنطة أو الجراب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 54,
+  "en": "Bag or Sleeve Type",
+  "ar": "نوع الحافظة أو الشنطة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 55,
+  "en": "Bag Style",
+  "ar": "شكل الشنطة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 56,
+  "en": "Bags Per Offer",
+  "ar": "عدد الأكياس في العرض",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 57,
+  "en": "Band Size",
+  "ar": "مقاس محيط الصدر حسب نظام المقاسات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 58,
+  "en": "Barrel Diameter",
+  "ar": "قطر أسطوانة التجعيد",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 59,
+  "en": "Barrel Material or Coating",
+  "ar": "خامة أو طلاء الأسطوانة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 60,
+  "en": "Bars per Pack",
+  "ar": "عدد الألواح في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 61,
+  "en": "Base Material",
+  "ar": "خامه القطعه الاساسيه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 62,
+  "en": "Base Oil Type",
+  "ar": "نوع الزيت المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 63,
+  "en": "Bath Tool Type",
+  "ar": "نوع إدارة الاستحمام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 64,
+  "en": "Battery capacity",
+  "ar": "سعة الباطرية",
+  "unit_en": "Ah",
+  "unit_ar": "أمبير ساعة",
+  "type": "text"
+ },
+ {
+  "id": 65,
+  "en": "Battery Life",
+  "ar": "عمر البطاريه",
+  "unit_en": "h",
+  "unit_ar": "ساعة",
+  "type": "text"
+ },
+ {
+  "id": 66,
+  "en": "Battery size",
+  "ar": "حجم البطارية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 67,
+  "en": "Battery Technology",
+  "ar": "تقنيه البطاريه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 68,
+  "en": "Bed Size Category",
+  "ar": "فئة مقاس السرير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 69,
+  "en": "Belt Length Range",
+  "ar": "نطاق طول الحزام",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 70,
+  "en": "Belt Size Code",
+  "ar": "كود مقاس السير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 71,
+  "en": "Belt Type",
+  "ar": "نوع السير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 72,
+  "en": "Belt Width",
+  "ar": "عرض الحزام",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 73,
+  "en": "Beverage Type",
+  "ar": "نوع المشروب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 74,
+  "en": "Bib Type",
+  "ar": "نوع المريلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 75,
+  "en": "Bicycle Type",
+  "ar": "نوع الدراجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 76,
+  "en": "Biscuit Type",
+  "ar": "نوع البسكويت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 77,
+  "en": "Bit Holder Type",
+  "ar": "نوع حامل اللقم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 78,
+  "en": "Blade Diameter",
+  "ar": "قطر الريش",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "number"
+ },
+ {
+  "id": 79,
+  "en": "Blade lengths",
+  "ar": "أطوال الاتصال",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 80,
+  "en": "Blade Material",
+  "ar": "خامة الشفرات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 81,
+  "en": "Blade or Cartridge Type",
+  "ar": "نوع الشفرة أو الرأس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 82,
+  "en": "Blade Width",
+  "ar": "عرض شفرة المسح",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 83,
+  "en": "Blades",
+  "ar": "الشفرات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 84,
+  "en": "Blades per Cartridge",
+  "ar": "عدد الشفرات في الرأس",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 85,
+  "en": "Blender Type",
+  "ar": "نوع الخلاط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 86,
+  "en": "Bluetooth",
+  "ar": "البلوتوث",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 87,
+  "en": "Bluetooth Calling",
+  "ar": "إجراء مكالمات Bluetooth",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 88,
+  "en": "Body Material",
+  "ar": "خامة الجسم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 89,
+  "en": "Bottle Capacity",
+  "ar": "سعة الزجاجة",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "text"
+ },
+ {
+  "id": 90,
+  "en": "Bottle Volume",
+  "ar": "حجم العبوة",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 91,
+  "en": "Bottles per Pack",
+  "ar": "عدد الزجاجات في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 92,
+  "en": "Bottom Length",
+  "ar": "فئة طول الجزء السفلي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 94,
+  "en": "Bowl Capacity",
+  "ar": "سعة الوعاء",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 95,
+  "en": "Bowl Material",
+  "ar": "خامه الوعاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 96,
+  "en": "Boxing Glove Type",
+  "ar": "نوع قفازات الملاكمة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 97,
+  "en": "Bra Type",
+  "ar": "نوع حماله الصدر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 98,
+  "en": "Brake Disc Type",
+  "ar": "نوع قرص الفرامل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 99,
+  "en": "Brake Type",
+  "ar": "نوع الفرامل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 100,
+  "en": "Brand",
+  "ar": "العلامه التجاريه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 101,
+  "en": "Brightness",
+  "ar": "أقصي سطوع",
+  "unit_en": "nit",
+  "unit_ar": "نت",
+  "type": "text"
+ },
+ {
+  "id": 102,
+  "en": "Brightness Control",
+  "ar": "التحكم في السطوع",
+  "unit_en": "nit",
+  "unit_ar": "نت",
+  "type": "text"
+ },
+ {
+  "id": 103,
+  "en": "Bristle Firmness",
+  "ar": "درجة نعومة الشعيرات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 104,
+  "en": "Bristle Material",
+  "ar": "خامة الشعيرات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 105,
+  "en": "Brush Head Sizes",
+  "ar": "مقاسات رؤوس الفرشاة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 106,
+  "en": "Brush Rotation",
+  "ar": "دوران الفرشاة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 107,
+  "en": "Brush Use",
+  "ar": "استخدام الفرشاة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 108,
+  "en": "Brushing Technology",
+  "ar": "تقنية حركة الفرشاة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 109,
+  "en": "Bucket Included",
+  "ar": "دلو مرفق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 110,
+  "en": "Buckle Type",
+  "ar": "نوع الإبزيم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 111,
+  "en": "Build material",
+  "ar": "خامات التصنيع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 112,
+  "en": "Built-in DSL Modem",
+  "ar": "مودم DSL مدمج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 113,
+  "en": "Built-in Grinder",
+  "ar": "مطحنة مدمجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 114,
+  "en": "Built-in Lock",
+  "ar": "قفل مدمج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 115,
+  "en": "Built-in Microphone",
+  "ar": "ميكروفون مدمج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 116,
+  "en": "Built-in Positioning Systems",
+  "ar": "أنظمة تحديد الموقع المدمجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 117,
+  "en": "Built-in Satellite Receiver",
+  "ar": "مستقبل أقمار صناعية مدمج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 118,
+  "en": "Built-in Wireless Charging",
+  "ar": "شحن لاسلكي مدمج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 119,
+  "en": "Built-in Wireless Connectivity",
+  "ar": "الاتصال اللاسلكي المدمج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 120,
+  "en": "Bulb Base Code",
+  "ar": "كود قاعدة اللمبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 121,
+  "en": "Bulb Included",
+  "ar": "اللمبة مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 122,
+  "en": "Bulb Type Code",
+  "ar": "كود نوع اللمبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 123,
+  "en": "Burner / Cooking Zone Count",
+  "ar": "عدد الشعلات أو مناطق الطهي",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 124,
+  "en": "Bus Interface",
+  "ar": "واجهة التوصيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 125,
+  "en": "Cable Function",
+  "ar": "وظيفة الكابل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 126,
+  "en": "Cable Included",
+  "ar": "كابل مرفق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 127,
+  "en": "Cable Length",
+  "ar": "طول الكابل",
+  "unit_en": "m",
+  "unit_ar": "متر",
+  "type": "number"
+ },
+ {
+  "id": 128,
+  "en": "Camera ISO Range",
+  "ar": "نطاق حساسية ISO للكاميرا",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 129,
+  "en": "Camera Resolution",
+  "ar": "دقة الكاميرا",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 130,
+  "en": "camera type",
+  "ar": "نوع الكاميرا",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 131,
+  "en": "Canopy Material",
+  "ar": "خامة المظلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 132,
+  "en": "Cap Construction",
+  "ar": "تصميم قاعدة الشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 133,
+  "en": "Cap Size",
+  "ar": "مقاس القاعدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 134,
+  "en": "Cap Type",
+  "ar": "نوع القاعدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 135,
+  "en": "Capacity",
+  "ar": "السعة",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "text"
+ },
+ {
+  "id": 136,
+  "en": "Capacity per Container",
+  "ar": "السعه للعلبه الواحدة",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 137,
+  "en": "Car seat type",
+  "ar": "نوع الكرسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 138,
+  "en": "Carbonation",
+  "ar": "درجة الغازية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 139,
+  "en": "Card Format",
+  "ar": "نوع الكارت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 140,
+  "en": "Card Length",
+  "ar": "طول الكارت",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 141,
+  "en": "Card Slot Count",
+  "ar": "عدد فتحات البطاقات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 142,
+  "en": "Card Slot Width",
+  "ar": "سمك الكارت بالفتحات",
+  "unit_en": "slot",
+  "unit_ar": "فتحة",
+  "type": "number"
+ },
+ {
+  "id": 143,
+  "en": "Carrying Method",
+  "ar": "طريقة الحمل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 144,
+  "en": "Carrying Positions",
+  "ar": "أوضاع الحمل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 145,
+  "en": "Case Material",
+  "ar": "خامة جسم الساعة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 146,
+  "en": "Case Type",
+  "ar": "نوع الجراب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 147,
+  "en": "Case Width",
+  "ar": "عرض جسم الساعة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 148,
+  "en": "CCA Test Standard",
+  "ar": "معيار اختبار cca",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 149,
+  "en": "Chair Weight",
+  "ar": "وزن الكرسي",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 150,
+  "en": "Channel Count",
+  "ar": "عدد القنوات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 151,
+  "en": "Character",
+  "ar": "الشخصية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 152,
+  "en": "Character or Shape",
+  "ar": "الشخصية أو الشكل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 153,
+  "en": "Charger type",
+  "ar": "نوع الشحن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 154,
+  "en": "Charging Port Type",
+  "ar": "نوع منفذ الشحن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 156,
+  "en": "Chin Strap Closure",
+  "ar": "نوع قفل حزام الذقن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 157,
+  "en": "Chipset",
+  "ar": "الشريحة الرئيسية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 158,
+  "en": "Chocolate Type",
+  "ar": "نوع الشوكولاتة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 159,
+  "en": "Clasp Type",
+  "ar": "نوع القفل (إبزيم)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 160,
+  "en": "Clean Air Delivery Rate",
+  "ar": "معدل تنقية الهواء CADR",
+  "unit_en": "m³/h",
+  "unit_ar": "متر مكعب/ساعة",
+  "type": "number"
+ },
+ {
+  "id": 161,
+  "en": "Cleaner Form",
+  "ar": "شكل المنظف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 162,
+  "en": "Cleaning Method",
+  "ar": "طريقة التنظيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 163,
+  "en": "Cleaning Tool Type",
+  "ar": "نوع أداة التنظيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 164,
+  "en": "Cleansing Bar Type",
+  "ar": "نوع المنظف الصلب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 165,
+  "en": "Cleansing Technology",
+  "ar": "تقنيه التنظيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 166,
+  "en": "Clip or Pin Type",
+  "ar": "نوع المشبك أو الدبوس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 167,
+  "en": "Closure Type",
+  "ar": "طريقه الإغلاق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 168,
+  "en": "Clutch Disc Diameter",
+  "ar": "قطر قرص الدبرياج",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 169,
+  "en": "Clutch Disc Spline Count",
+  "ar": "عدد أسنان تعشيق القرص",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 170,
+  "en": "Coarseness",
+  "ar": "درجه الخشونه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 172,
+  "en": "Coffee Form",
+  "ar": "شكل القهوه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 173,
+  "en": "Cold Cranking Current",
+  "ar": "تيار التشغيل البارد cca",
+  "unit_en": "A",
+  "unit_ar": "أمبير",
+  "type": "number"
+ },
+ {
+  "id": 174,
+  "en": "color",
+  "ar": "اللون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 175,
+  "en": "Color Family",
+  "ar": "مجموعة الألوان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 176,
+  "en": "Color or Design Code",
+  "ar": "اللون أو كود التصميم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 177,
+  "en": "Color Permanence",
+  "ar": "درجه دوام اللون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 178,
+  "en": "Color Temperature",
+  "ar": "درجة حرارة لون الإضاءة",
+  "unit_en": "K",
+  "unit_ar": "كلفن",
+  "type": "number"
+ },
+ {
+  "id": 179,
+  "en": "Color-Treated Hair Safe",
+  "ar": "مناسب للشعر المصبوغ",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 180,
+  "en": "Compatible Braking System",
+  "ar": "نظام الفرامل المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 181,
+  "en": "Compatible Brush Handle Sizes",
+  "ar": "مقاسات مقابض الفرش المتوافقة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 182,
+  "en": "Compatible Brush Heads",
+  "ar": "رؤوس الفرشاة المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 183,
+  "en": "Compatible Bulb Base",
+  "ar": "قاعدة اللمبة المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 184,
+  "en": "Compatible Cameras",
+  "ar": "الكاميرات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 185,
+  "en": "Compatible Capsule Systems",
+  "ar": "أنظمة الكبسولات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 186,
+  "en": "Compatible Chain Size Code",
+  "ar": "كود مقاس الجنزير المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 187,
+  "en": "Compatible Color Systems",
+  "ar": "أنظمة الصبغ المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 188,
+  "en": "Compatible Devices",
+  "ar": "الأجهزة المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 189,
+  "en": "Compatible Gel Types",
+  "ar": "انواع الجل المتوافقه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 190,
+  "en": "Compatible Hair Dryers",
+  "ar": "الاستشوارات المرافقه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 191,
+  "en": "Compatible Hob Types",
+  "ar": "أنواع المواقد المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 192,
+  "en": "Compatible Lash Types",
+  "ar": "أنواع الرموش المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 193,
+  "en": "Compatible Luggage Dimensions",
+  "ar": "أبعاد الشنطة المتوافقة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 194,
+  "en": "Compatible Makeup System",
+  "ar": "نظام المكياج المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 195,
+  "en": "Compatible Motorcycles and Scooters",
+  "ar": "الموتوسيكلات والسكوترات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 196,
+  "en": "Compatible Nail Types",
+  "ar": "انواع الأظافر المتناسقه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 197,
+  "en": "Compatible Pencil Diameters",
+  "ar": "أقطار الأقلام المتوافقة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 198,
+  "en": "Compatible Phone Models",
+  "ar": "موديلات الموبايل المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 199,
+  "en": "Compatible Phone Operating Systems",
+  "ar": "أنظمة الهواتف المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 200,
+  "en": "Compatible Platforms",
+  "ar": "المنصات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 201,
+  "en": "Compatible Polish Types",
+  "ar": "أنواع الطلاء المناسبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 202,
+  "en": "Compatible Razors",
+  "ar": "الماكينات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 203,
+  "en": "Compatible Refill System",
+  "ar": "نظام الرؤوس البديلة المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 204,
+  "en": "Compatible Sensor Format",
+  "ar": "مقاس المستشعر المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 205,
+  "en": "Compatible Socket Types",
+  "ar": "أنواع المخارج المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 206,
+  "en": "Compatible Tablet Models",
+  "ar": "موديلات النابلت المنوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 207,
+  "en": "Compatible Tips",
+  "ar": "الفوهات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 208,
+  "en": "Compatible Tool Types",
+  "ar": "أنواع الأدوات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 209,
+  "en": "Compatible Toothbrush Models",
+  "ar": "موديلات الفرشاة المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 210,
+  "en": "Compatible Transmission Code",
+  "ar": "كود ناقل الحركة المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 211,
+  "en": "Compatible Vehicles",
+  "ar": "المركبات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 212,
+  "en": "Compatible Vehicles and Engines",
+  "ar": "المركبات والمحركات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 213,
+  "en": "Compatible Vehicles and Seats",
+  "ar": "السيارات والمقاعد المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 214,
+  "en": "Compatible Vehicles or Size Class",
+  "ar": "السيارات أو فئة المقاس المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 215,
+  "en": "Compatible Wax Types",
+  "ar": "أنواع الشمع المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 216,
+  "en": "Compression Zipper",
+  "ar": "بسحاب ضغط إضافي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 217,
+  "en": "Concentrated or Ready to Use",
+  "ar": "مركز أم جاهز للاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 219,
+  "en": "Connection Interface",
+  "ar": "واجهة الاتصال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 220,
+  "en": "Connection Type",
+  "ar": "نوع التوصيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 221,
+  "en": "Connectivity",
+  "ar": "طرق الاتصال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 222,
+  "en": "Connectivity Type",
+  "ar": "نوع الاتصال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 223,
+  "en": "Connector A",
+  "ar": "نوع الموصل الاول",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 224,
+  "en": "Connector b",
+  "ar": "نوع الموصل التاني",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 225,
+  "en": "Connector Type",
+  "ar": "نوع وصلة التثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 226,
+  "en": "Console Edition",
+  "ar": "نسخه الجهاز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 227,
+  "en": "Contact Surface Material",
+  "ar": "خامه سطح التلامس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 228,
+  "en": "Container Count",
+  "ar": "عدد العلب",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 229,
+  "en": "Contains Acetone",
+  "ar": "يحتوي على أسيتون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 230,
+  "en": "Contains Alcohol",
+  "ar": "يحتوي على كحل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 231,
+  "en": "Contains Fluoride",
+  "ar": "يحتوي على فلورايد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 232,
+  "en": "Contains Latex",
+  "ar": "يحتوي على لاتكس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 233,
+  "en": "Continuous Drainage",
+  "ar": "تصريف مستمر للمياه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 234,
+  "en": "Continuous Steam Rate",
+  "ar": "معدل البخار المستمر",
+  "unit_en": "g/min",
+  "unit_ar": "جم/دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 235,
+  "en": "Control Method",
+  "ar": "طريقة التحكم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 236,
+  "en": "Control Panel Type",
+  "ar": "نوع لوحة التحكم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 237,
+  "en": "Control Type",
+  "ar": "نوع التحكم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 238,
+  "en": "Controller Power Source",
+  "ar": "مصدر طاقة الريموت",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 239,
+  "en": "Convection Fan",
+  "ar": "مروحة توزيع حرارة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 240,
+  "en": "Converts to a Bed",
+  "ar": "تتحول إلى سرير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 241,
+  "en": "Cooking Plate Coating",
+  "ar": "طلاء ألواح الطهي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 242,
+  "en": "Cooking Plate Type",
+  "ar": "نوع ألواح الطهي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 243,
+  "en": "Cooking surface Material",
+  "ar": "خامه سطح الطهي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 244,
+  "en": "Cool Shot",
+  "ar": "هواء بارد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 245,
+  "en": "Cooler Included",
+  "ar": "مبرد موفق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 246,
+  "en": "Cordless Runtime",
+  "ar": "مدة التشغيل اللاسلكي",
+  "unit_en": "min",
+  "unit_ar": "دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 247,
+  "en": "Core Count",
+  "ar": "عدد الانوية",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 248,
+  "en": "cot type",
+  "ar": "نوع السرير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 249,
+  "en": "Count Basis",
+  "ar": "وحدة العد",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 250,
+  "en": "Counting Unit",
+  "ar": "وحده العد",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 251,
+  "en": "Country",
+  "ar": "بلد الصنع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 252,
+  "en": "Cover Material",
+  "ar": "خامة الغطاء الخارجي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 253,
+  "en": "Coverage Area",
+  "ar": "منطقة التغطية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 254,
+  "en": "CPU Socket",
+  "ar": "سوكت المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 255,
+  "en": "CPU Speed",
+  "ar": "سرعة المعالج",
+  "unit_en": "GHz",
+  "unit_ar": "جيجاهرتز",
+  "type": "text"
+ },
+ {
+  "id": 256,
+  "en": "Cup Padding",
+  "ar": "تبطين الكوب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 257,
+  "en": "Cup Size",
+  "ar": "مقاس الكوب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 258,
+  "en": "Curing Lamp Required",
+  "ar": "يحتاج مصباح تجفيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 259,
+  "en": "Curler Count",
+  "ar": "عدد أدوات التجعيد",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 260,
+  "en": "Curler Design",
+  "ar": "تصميم المكبس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 261,
+  "en": "Curler Type",
+  "ar": "نوع جهاز التجعيد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 262,
+  "en": "Curtain Panel Count",
+  "ar": "عدد قطع الستارة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 263,
+  "en": "Cut Style",
+  "ar": "طريقة التقطيع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 264,
+  "en": "Cutout Depth",
+  "ar": "عمق فتحة التركيب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 265,
+  "en": "Cutout Width",
+  "ar": "عرض فتحة التركيب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 266,
+  "en": "Damper Type",
+  "ar": "نوع المساعد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 267,
+  "en": "Data Transfer Support",
+  "ar": "يدعم نقل البيانات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 268,
+  "en": "Date Form",
+  "ar": "شكل التمر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 269,
+  "en": "Date Variety",
+  "ar": "صنف التمر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 270,
+  "en": "Declared Absorbency Class",
+  "ar": "فئة الامتصاص المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 271,
+  "en": "Declared Active Ingredient",
+  "ar": "المادة الفعالة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 272,
+  "en": "Declared Age Group",
+  "ar": "الفئة العمرية المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 274,
+  "en": "Declared Airflow",
+  "ar": "تدفق الهواء المعلن",
+  "unit_en": "L/min",
+  "unit_ar": "لتر/دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 275,
+  "en": "Declared Anti-fog Treatment",
+  "ar": "مقاومة الضباب المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 276,
+  "en": "Declared Application Area",
+  "ar": "منطقه الاستخدام المعلنه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 277,
+  "en": "Declared Application Areas",
+  "ar": "مناطق الاستخدام المعلنه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 278,
+  "en": "Declared Application Scope",
+  "ar": "نطاق التطبيق المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 279,
+  "en": "Declared Approval Standard",
+  "ar": "معيار الاعتماد المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 280,
+  "en": "Declared Caffeine Status",
+  "ar": "حالة الكافيين المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 281,
+  "en": "Declared Capacity",
+  "ar": "السعة المعلنة",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 282,
+  "en": "Declared Cocoa Content",
+  "ar": "نسبة الكاكاو المعلنة",
+  "unit_en": "%",
+  "unit_ar": "نسبة مئوية",
+  "type": "number"
+ },
+ {
+  "id": 283,
+  "en": "Declared Comfort Temperature",
+  "ar": "درجة حرارة الراحة المعلنة",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "number"
+ },
+ {
+  "id": 284,
+  "en": "Declared Compatibility and Approvals",
+  "ar": "التوافق والاعتمادات المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 285,
+  "en": "Declared Compatible Developers",
+  "ar": "المطورات المتوافقة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 286,
+  "en": "Declared Compatible Hair Colors",
+  "ar": "ألوان الشعر المناسبة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 287,
+  "en": "Declared Compatible Skin Tones",
+  "ar": "درجات البشرة المناسبة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 288,
+  "en": "Declared Concentration Type",
+  "ar": "درجة التركيز المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 289,
+  "en": "Declared Connector Diameter",
+  "ar": "قطر فتحة التثبيت المعلن",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 290,
+  "en": "Declared Coolant Technology",
+  "ar": "تقنية سائل التبريد المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 291,
+  "en": "Declared Cordless Runtime",
+  "ar": "مدة التشغيل اللاسلكي المعلنة",
+  "unit_en": "min",
+  "unit_ar": "دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 292,
+  "en": "Declared Cosmetic Purpose",
+  "ar": "الغرض التجميلي المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 293,
+  "en": "Declared Coverage Area",
+  "ar": "مساحة التغطية المعلنة",
+  "unit_en": "m²",
+  "unit_ar": "متر مربع",
+  "type": "number"
+ },
+ {
+  "id": 294,
+  "en": "Declared Dimensions",
+  "ar": "الأبعاد المعلنه",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 295,
+  "en": "Declared Duty Grade",
+  "ar": "فئة السماكة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 296,
+  "en": "Declared Electrical Insulation Rating",
+  "ar": "تصنيف العزل الكهربائي المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 297,
+  "en": "Declared Electrode Gap",
+  "ar": "فجوة الأقطاب المعلنة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 298,
+  "en": "Declared Exfoliation Type",
+  "ar": "نوع التقشير المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 299,
+  "en": "Declared Fiber Material",
+  "ar": "خامة الألياف المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 300,
+  "en": "Declared Fill Height",
+  "ar": "ارتفاع التعبئة المعلن",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 301,
+  "en": "Declared Fixture Dimensions",
+  "ar": "أبعاد الوحدة المعلنة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 302,
+  "en": "Declared Food-contact Suitability",
+  "ar": "ملاءمة ملامسة الطعام المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 303,
+  "en": "Declared grinding rate",
+  "ar": "معدل الفرم المعلن",
+  "unit_en": "kg/min",
+  "unit_ar": "كجم/دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 304,
+  "en": "Declared Heat Protection Limit",
+  "ar": "أقصى حماية حرارية معلنة",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "number"
+ },
+ {
+  "id": 305,
+  "en": "Declared Heat Styling Suitability",
+  "ar": "ملاءمة التصفيف الحراري المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 306,
+  "en": "Declared Hot Retention",
+  "ar": "مدة حفظ السخونه المعلنة",
+  "unit_en": "h",
+  "unit_ar": "ساعة",
+  "type": "number"
+ },
+ {
+  "id": 307,
+  "en": "Declared Intended Use",
+  "ar": "الغرض المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 308,
+  "en": "Declared IP Rating",
+  "ar": "درجة الحماية المعلنة IP",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 309,
+  "en": "Declared Key Ingredient",
+  "ar": "المكون الأساسي المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 310,
+  "en": "Declared Key Ingredients",
+  "ar": "المكونات الرئيسية المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 312,
+  "en": "Declared Light Modes",
+  "ar": "أنماط الضوء المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 313,
+  "en": "Declared Luminous Flux",
+  "ar": "التدفق الضوئي المعلن",
+  "unit_en": "lm",
+  "unit_ar": "لومن",
+  "type": "number"
+ },
+ {
+  "id": 314,
+  "en": "Declared Main Oil or Ingredient",
+  "ar": "الزيت أو المكون الرئيسي المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 315,
+  "en": "Declared Main Oils",
+  "ar": "الزيوت الرئيسية المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 316,
+  "en": "Declared Main Purpose",
+  "ar": "الاستخدام الاساسي المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 317,
+  "en": "Declared Maximum Heat Resistance",
+  "ar": "أقصى حرارة تحمل معلنة",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "text"
+ },
+ {
+  "id": 318,
+  "en": "Declared Maximum Load",
+  "ar": "أقصى حمولة معلنة",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 319,
+  "en": "Declared Maximum Pressure",
+  "ar": "أقصي ضغط معلن",
+  "unit_en": "bar",
+  "unit_ar": "بار",
+  "type": "number"
+ },
+ {
+  "id": 320,
+  "en": "Declared Maximum Runtime",
+  "ar": "أقصى مدة تشغيل معلنة",
+  "unit_en": "h",
+  "unit_ar": "ساعة",
+  "type": "number"
+ },
+ {
+  "id": 321,
+  "en": "Declared Maximum Speed",
+  "ar": "أقصي سرعه معلنه",
+  "unit_en": "km/h",
+  "unit_ar": "كم/ساعة",
+  "type": "text"
+ },
+ {
+  "id": 322,
+  "en": "Declared Maximum Torque",
+  "ar": "أقصي عزم معلن",
+  "unit_en": "N·m",
+  "unit_ar": "نيوتن متر",
+  "type": "number"
+ },
+ {
+  "id": 323,
+  "en": "Declared Maximum TV Size",
+  "ar": "أقصى مقاس تلفزيون معلن",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "number"
+ },
+ {
+  "id": 324,
+  "en": "Declared Maximum User weight",
+  "ar": "قصى وزن مستخدم معلن",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 325,
+  "en": "Declared Moisture Extraction Rate",
+  "ar": "معدل إزالة الرطوبة المعلن",
+  "unit_en": "L/day",
+  "unit_ar": "لتر/يوم",
+  "type": "number"
+ },
+ {
+  "id": 326,
+  "en": "Declared Nominal Length",
+  "ar": "الطول الاسمي المعلن",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 327,
+  "en": "Declared Overload Protection",
+  "ar": "حماية زيادة الحمل المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 328,
+  "en": "Declared Pot Capacity",
+  "ar": "سعة الوعاء المعلنة .",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 329,
+  "en": "Declared Powder Base",
+  "ar": "قاعدة البودرة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 330,
+  "en": "Declared Rider Height Range",
+  "ar": "نطاق طول الراكب المعلن",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 332,
+  "en": "Declared Seating Capacity",
+  "ar": "عدد المقاعد المناسب المعلن",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 333,
+  "en": "Declared Side-Airbag Compatibility",
+  "ar": "توافق الوسائد الهوائية الجانبية المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 334,
+  "en": "Declared Size",
+  "ar": "المقاس المعلن",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 335,
+  "en": "Declared Sizes",
+  "ar": "المقاسات المعلنة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 336,
+  "en": "Declared Spill Resistance",
+  "ar": "منع التسرب المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 337,
+  "en": "Declared Standard or Certification",
+  "ar": "المواصفة أو الاعتماد المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 338,
+  "en": "Declared Suitable Surfaces",
+  "ar": "الأسطح المناسبة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 339,
+  "en": "Declared Tan Shade",
+  "ar": "درجة التسمير المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 340,
+  "en": "Declared Temperature Range",
+  "ar": "نطاق الحرارة المعلن",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "text"
+ },
+ {
+  "id": 341,
+  "en": "Declared Use",
+  "ar": "الاستخدام المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 342,
+  "en": "Declared Use Location",
+  "ar": "مكان الاستخدام المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 343,
+  "en": "Declared UV Protection",
+  "ar": "حماية الأشعة فوق البنفسجية المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 344,
+  "en": "Declared Video Resolution",
+  "ar": "دقة الفيديو المعلنة",
+  "unit_en": "px",
+  "unit_ar": "بكسل",
+  "type": "text"
+ },
+ {
+  "id": 345,
+  "en": "Declared Water Capacity",
+  "ar": "سعة المياه المعلنة",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 346,
+  "en": "Declared Water Resistance",
+  "ar": "مقاومه الماء المعلنه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 347,
+  "en": "Declared Water Resistance Rating",
+  "ar": "تصنيف مقاومة الماء المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 348,
+  "en": "Declared Water Type",
+  "ar": "نوع المياه المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 349,
+  "en": "Declared Wax Capacity",
+  "ar": "سعة الشمع المعلنة",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "text"
+ },
+ {
+  "id": 350,
+  "en": "Declared Weight",
+  "ar": "الوزن المعلن",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 351,
+  "en": "Declared Wet or Dry Use",
+  "ar": "الاستخدام الجاف أو الرطب المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 352,
+  "en": "Dedicated Graphics Memory",
+  "ar": "ذاكرة كارت الشاشة",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 353,
+  "en": "Defrost System",
+  "ar": "نظام إزالة الثلج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 354,
+  "en": "Denier",
+  "ar": "سمك النسيج بالدنيير",
+  "unit_en": "denier",
+  "unit_ar": "دنيير",
+  "type": "number"
+ },
+ {
+  "id": 355,
+  "en": "Depth",
+  "ar": "العمق",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 356,
+  "en": "Detachable Handheld Unit",
+  "ar": "نتحول لوحدة محمولة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 357,
+  "en": "Detergent Form",
+  "ar": "شكل مسحوق الغسيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 358,
+  "en": "Device Design",
+  "ar": "تصميم الجهاز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 359,
+  "en": "Device Type",
+  "ar": "نوع الجهاز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 360,
+  "en": "diameter",
+  "ar": "القطر",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 361,
+  "en": "Diaper Type",
+  "ar": "نوع الحفاض",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 362,
+  "en": "Diapers per Pack",
+  "ar": "عدد الحفاضات في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 363,
+  "en": "Dimensions (L x W)",
+  "ar": "الأبعاد (طول x عرض)",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 364,
+  "en": "Dimensions (W × D × H)",
+  "ar": "الأبعاد (عرض × عمق × ارتفاع)",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 365,
+  "en": "Dimmable",
+  "ar": "قابلة لتعتيم الإضاءة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 366,
+  "en": "Dishwasher Safe",
+  "ar": "مناسب لغسالة الأطباق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 367,
+  "en": "Dispensing Type",
+  "ar": "طريقة التوزيع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 368,
+  "en": "Display Outputs",
+  "ar": "مخارج الصورة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 369,
+  "en": "Display Resolution",
+  "ar": "دقة الشاشة",
+  "unit_en": "px",
+  "unit_ar": "بكسل",
+  "type": "text"
+ },
+ {
+  "id": 370,
+  "en": "Display Type",
+  "ar": "نوع الشاشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 371,
+  "en": "Doll Type",
+  "ar": "نوع الدمية Doll Type",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 372,
+  "en": "Door Count",
+  "ar": "عدد الأبواب",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 373,
+  "en": "Dough Hooks Included",
+  "ar": "خطافات عجن مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 374,
+  "en": "Drained Weight",
+  "ar": "الوزن بعد التصفية",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 375,
+  "en": "Drawer Count",
+  "ar": "عدد الأدراج",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 376,
+  "en": "Drawer or Compartment Count",
+  "ar": "عدد الإدراج او الأقسام",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 377,
+  "en": "Dress Length",
+  "ar": "فئة طول الفستان",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 378,
+  "en": "Dress style",
+  "ar": "نوع الفستان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 379,
+  "en": "Drinking Spout Type",
+  "ar": "نوع فتحة الشرب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 380,
+  "en": "Drip Tray Included",
+  "ar": "صينية لتجميع الماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 381,
+  "en": "Drive Form Factor",
+  "ar": "الشكل والمقاس القياسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 382,
+  "en": "Drying capacity",
+  "ar": "سعه التجفيف",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "text"
+ },
+ {
+  "id": 383,
+  "en": "Drying Capacity if Available",
+  "ar": "سعة التجفيف إن وجدت",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 384,
+  "en": "Drying Function",
+  "ar": "خاصيه التجفيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 385,
+  "en": "Drying Technology",
+  "ar": "تقنية التجفيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 386,
+  "en": "Dust Capacity",
+  "ar": "سعة حاوية الغبار أو الكيس",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 387,
+  "en": "Dust Collection Type",
+  "ar": "نوع تجميع الغبار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 388,
+  "en": "Dustpan Included",
+  "ar": "جاروف مرفق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 389,
+  "en": "Efficiency Certification",
+  "ar": "شهادة كفاءة الطاقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 390,
+  "en": "Electrical Power",
+  "ar": "القدرة الكهربائية",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 391,
+  "en": "Electrode Material",
+  "ar": "خامة قطب الإشعال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 392,
+  "en": "Empty Weight",
+  "ar": "الوزن الفارغ",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "text"
+ },
+ {
+  "id": 393,
+  "en": "Empty-Tank Shut-Off",
+  "ar": "إيقاف عند نفاد المياه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 394,
+  "en": "End Fitting Type",
+  "ar": "نوع نهايات التوصيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 395,
+  "en": "Energy Efficiency Rating",
+  "ar": "تصنيف كفاءة الطاقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 397,
+  "en": "Energy Source",
+  "ar": "مصدر الطاقه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 398,
+  "en": "Engine Application",
+  "ar": "نوع المحرك المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 399,
+  "en": "Exercise Bike Type",
+  "ar": "نوع الدراجة الرياضية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 400,
+  "en": "Exfoliation Type",
+  "ar": "نوع التقشير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 401,
+  "en": "Expandable",
+  "ar": "قابلة للتوسعة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 402,
+  "en": "External Depth",
+  "ar": "العمق الخارجي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 403,
+  "en": "External Graphics",
+  "ar": "الرسومات الخارجيه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 404,
+  "en": "External Height",
+  "ar": "الارتفاع الخارجي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 405,
+  "en": "External Width",
+  "ar": "العرض الخارجي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 406,
+  "en": "Eye Protection Included",
+  "ar": "حماية عين مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 407,
+  "en": "Fabric Material",
+  "ar": "خامة القماش",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 408,
+  "en": "Face Shield Type",
+  "ar": "نوع واقي الوجه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 409,
+  "en": "Face unlock",
+  "ar": "الفتح بالوجه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 410,
+  "en": "Fast Charging Support",
+  "ar": "دعم الشحن السريع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 411,
+  "en": "Fastening Type",
+  "ar": "طريقة الإغلاق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 412,
+  "en": "Fat content class",
+  "ar": "نسبه الدسم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 414,
+  "en": "Filing Surface Material",
+  "ar": "خامة سطح البرد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 415,
+  "en": "Filling Material",
+  "ar": "نوع الحشو",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 416,
+  "en": "Filling or Coating",
+  "ar": "الحشو او التغطية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 417,
+  "en": "Filter Construction",
+  "ar": "تصميم الفلتر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 418,
+  "en": "Filter Height",
+  "ar": "ارتفاع الفلتر",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 419,
+  "en": "Filter Media Type",
+  "ar": "وضع وسط الترشيح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 420,
+  "en": "Filter Shape",
+  "ar": "شكل الفلتر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 421,
+  "en": "Filter Types",
+  "ar": "أنواع الفلاتر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 422,
+  "en": "Filtration Stage Count",
+  "ar": "عدد مراحل الفلترة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 423,
+  "en": "Fingerprint",
+  "ar": "بصمة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 424,
+  "en": "Finish",
+  "ar": "اللمسة النهائية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 425,
+  "en": "Firmness",
+  "ar": "درجة الصلابة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 426,
+  "en": "Fish Type",
+  "ar": "نوع السمك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 427,
+  "en": "Fit",
+  "ar": "قصة البنطلون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 428,
+  "en": "Fitting Axle and Side",
+  "ar": "محور وجهة التركيب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 429,
+  "en": "Fitting Position",
+  "ar": "موضع التركيب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 430,
+  "en": "Fitting Side",
+  "ar": "جهة التركيب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 431,
+  "en": "Fixing Method",
+  "ar": "طريقة التثبيت (أدوات التثبيت)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 432,
+  "en": "Fixture Type",
+  "ar": "نوع وحدة الإضاءة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 433,
+  "en": "Flame Failure Safety",
+  "ar": "أمان انطفاء الشعلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 434,
+  "en": "Flash",
+  "ar": "فلاش",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 435,
+  "en": "Flavor",
+  "ar": "النكهه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 436,
+  "en": "Floss Length",
+  "ar": "طول الخيط",
+  "unit_en": "m",
+  "unit_ar": "متر",
+  "type": "number"
+ },
+ {
+  "id": 437,
+  "en": "Floss Type",
+  "ar": "نوع الخيط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 438,
+  "en": "Flour Source",
+  "ar": "مصدر الدقيق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 439,
+  "en": "Focal Length",
+  "ar": "البعد البؤري",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 440,
+  "en": "Foldable",
+  "ar": "قابل للطي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 441,
+  "en": "Folded Dimensions",
+  "ar": "الأبعاد عند الطي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 442,
+  "en": "Folding Type",
+  "ar": "طريقة الطي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 443,
+  "en": "Footed or footless",
+  "ar": "بقدم أو بدون قدم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 444,
+  "en": "Footwear Style",
+  "ar": "نوع الصندل او الشبشب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 445,
+  "en": "Form Factor",
+  "ar": "نوع الهيكل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 446,
+  "en": "Forward and Reverse Rotation",
+  "ar": "دوران في الاتجاهين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 447,
+  "en": "Fragrance",
+  "ar": "الرائحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 448,
+  "en": "Fragrance Concentration",
+  "ar": "درجة التركيز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 449,
+  "en": "Fragrance Family",
+  "ar": "العائلة العطرية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 450,
+  "en": "Fragrance Free",
+  "ar": "خال من العطر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 451,
+  "en": "Fragrance-Free",
+  "ar": "خالٍ من العطر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 453,
+  "en": "Frame Color",
+  "ar": "لون الإطار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 454,
+  "en": "frame material",
+  "ar": "خامة الإطار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 455,
+  "en": "Frame Rate at Stated Resolution",
+  "ar": "معدل الإطارات عند الدقة المذكورة",
+  "unit_en": "fps",
+  "unit_ar": "إطار/ثانية",
+  "type": "number"
+ },
+ {
+  "id": 456,
+  "en": "Frame Shape",
+  "ar": "شكل الإطار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 457,
+  "en": "Frame Size",
+  "ar": "مقاس الاطار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 458,
+  "en": "Freezer Safe",
+  "ar": "مناسب للفريزر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 459,
+  "en": "Front Camera Resolution",
+  "ar": "دقة الكاميرا الأمامية",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "number"
+ },
+ {
+  "id": 460,
+  "en": "Front Sprocket Tooth Count",
+  "ar": "عدد أسنان الترس الأمامي",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 461,
+  "en": "Fuel Type",
+  "ar": "نوع الوقود",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 462,
+  "en": "Full-Tank Shut-Off",
+  "ar": "إيقاف عند امتلاء الخزان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 463,
+  "en": "Functions",
+  "ar": "الوظائف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 464,
+  "en": "game language",
+  "ar": "لغه اللعبه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 465,
+  "en": "Gear Count",
+  "ar": "عدد التروس",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 466,
+  "en": "Gloves per pack",
+  "ar": "عدد القفازات في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 467,
+  "en": "GPU Model",
+  "ar": "موديل المعالج الرسومي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 468,
+  "en": "GPU Power Connectors",
+  "ar": "موصلات كارت الشاشة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 469,
+  "en": "GPU Version",
+  "ar": "نسخة كرت الشاشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 470,
+  "en": "Grade",
+  "ar": "الدرجه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 471,
+  "en": "Grain Form",
+  "ar": "شكل الحبوب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 472,
+  "en": "Graphics Card",
+  "ar": "كارت الشاشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 473,
+  "en": "Grease Filter Type",
+  "ar": "نوع فلتر الدهون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 474,
+  "en": "Grill Function",
+  "ar": "خاصية الشواية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 475,
+  "en": "Grill Type",
+  "ar": "نوع الشواية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 476,
+  "en": "Grind Size",
+  "ar": "درجه الطحن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 477,
+  "en": "Grip Length",
+  "ar": "طول المقبض",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 478,
+  "en": "Grit Grade",
+  "ar": "درجة حبيبات الصنفرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 479,
+  "en": "Hair Color or Shade Code",
+  "ar": "لون أو كود درجة الشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 480,
+  "en": "Hair Length",
+  "ar": "طول الشعر",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 481,
+  "en": "Hair Material",
+  "ar": "خامة الشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 482,
+  "en": "Hair Texture",
+  "ar": "ملمس وشكل الشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 483,
+  "en": "Hair tie type",
+  "ar": "نوع ربطه الشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 484,
+  "en": "Half Load Option",
+  "ar": "خيار نصف حمولة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 485,
+  "en": "hand orientation",
+  "ar": "اليد المناسبه للاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 486,
+  "en": "Handle Material",
+  "ar": "خامه المقبض",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 487,
+  "en": "Handlebar Height Range",
+  "ar": "نطاق ارتفاع المقود",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 488,
+  "en": "Hanger Type",
+  "ar": "نوع الشماعة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 489,
+  "en": "Harness Type",
+  "ar": "نوع حزام الأمان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 490,
+  "en": "HDMI Output",
+  "ar": "مخرج HDMI",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 491,
+  "en": "HDMI Port Count",
+  "ar": "عدد منافذ HDMI",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 492,
+  "en": "Head Coarseness Grades",
+  "ar": "درجات خشونة الرؤوس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 493,
+  "en": "Head Strap Size or Range",
+  "ar": "مقاس أو نطاق رباط الرأس",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 494,
+  "en": "Headband Type",
+  "ar": "نوع الطوق أو العصابه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 495,
+  "en": "Heading Type",
+  "ar": "طريقة التعليق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 496,
+  "en": "Headphone Form Factor",
+  "ar": "شكل السماعة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 497,
+  "en": "Heads per Pack",
+  "ar": "عدد الرؤوس في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 498,
+  "en": "Heat Range Code",
+  "ar": "كود المدى الحراري",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 499,
+  "en": "Heat Setting Count",
+  "ar": "عدد مستويات الحرارة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 500,
+  "en": "Heated Surface Material or Coating",
+  "ar": "خامه او طلاء سطح التسخين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 501,
+  "en": "Heater Type",
+  "ar": "نوع الدفاية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 502,
+  "en": "Heating Function",
+  "ar": "خاصية التسخين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 503,
+  "en": "Heating Required",
+  "ar": "يحتاج الي تسخين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 504,
+  "en": "Heating Type",
+  "ar": "نوع التسخين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 505,
+  "en": "Heel Height",
+  "ar": "ارتفاع الكعب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 506,
+  "en": "Heel Type",
+  "ar": "نوع الكعب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 507,
+  "en": "Height",
+  "ar": "الارتفاع",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 508,
+  "en": "Helmet Type",
+  "ar": "نوع الخوذة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 509,
+  "en": "Hob Type",
+  "ar": "نوع سطح الطهي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 510,
+  "en": "Hold level",
+  "ar": "درجه التثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 511,
+  "en": "Hooded",
+  "ar": "مزود بغطاء الرأس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 512,
+  "en": "Hot-Water Safety Lock",
+  "ar": "قفل أمان للمياه الساخنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 513,
+  "en": "Ignition Type",
+  "ar": "نوع الإشعال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 514,
+  "en": "Image Stabilization",
+  "ar": "تثبيت الصورة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 515,
+  "en": "In-body Image Stabilization",
+  "ar": "تثبيت صورة داخل الجسم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 516,
+  "en": "Included Accessories",
+  "ar": "الملحقات المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 517,
+  "en": "Included Attachments",
+  "ar": "المرفقات المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 518,
+  "en": "Included Batteries",
+  "ar": "البطاريات المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 519,
+  "en": "Included Bit Count",
+  "ar": "عدد رؤوس البرد المؤقته",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 520,
+  "en": "Included Controller Count",
+  "ar": "عدد أذرع التحكم المرفقة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 521,
+  "en": "Included Drive Capacity",
+  "ar": "سعة القرص المرفق",
+  "unit_en": "TB",
+  "unit_ar": "تيرابايت",
+  "type": "text"
+ },
+ {
+  "id": 522,
+  "en": "Included Fan Count",
+  "ar": "عدد المراوح المرفقة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 523,
+  "en": "Included Items and Accessories",
+  "ar": "المحتويات والملحقات المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 524,
+  "en": "Included Lens Model",
+  "ar": "طراز العدسة المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 525,
+  "en": "Included Sizes",
+  "ar": "المقاسات المتضمنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 526,
+  "en": "Included Tool Types",
+  "ar": "أنواع الأدوات المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 527,
+  "en": "Included Treatment Heads",
+  "ar": "رؤوس الاستخدام المرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 528,
+  "en": "Individual Container Capacities",
+  "ar": "سعه كل عبوه",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "text"
+ },
+ {
+  "id": 529,
+  "en": "Individual Pad Count",
+  "ar": "عدد القطع الفرديه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 530,
+  "en": "Indoor or Outdoor Use",
+  "ar": "مكان الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 531,
+  "en": "Inflated Dimensions",
+  "ar": "الابعاد بعد النفخ",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 532,
+  "en": "Ingress Protection Rating",
+  "ar": "تصنيف الحماية من الماء والغبار (IP)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 533,
+  "en": "inner circumference or length",
+  "ar": "المحيط او الطول الخارجي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 534,
+  "en": "Inner Liner Material",
+  "ar": "خامه البطانه الداخليه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 535,
+  "en": "Inner Pot Coating",
+  "ar": "طلاء الوعاء الداخلي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 536,
+  "en": "Inner Wire Length",
+  "ar": "طول السلك الداخلي",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 537,
+  "en": "Input Plug Type",
+  "ar": "نوع فيشة الدخول",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 538,
+  "en": "Input type",
+  "ar": "النوع المستخدم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 539,
+  "en": "In-shell or Shelled",
+  "ar": "بالقشر أم مقشرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 540,
+  "en": "Installation Cutout (W × H × D)",
+  "ar": "أبعاد فتحة التركيب (عرض × ارتفاع × عمق)",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 541,
+  "en": "Installation Method",
+  "ar": "طريقة التركيب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 542,
+  "en": "Installation Type",
+  "ar": "نوع التركيب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 543,
+  "en": "Insulated",
+  "ar": "معزوله حراريا",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 544,
+  "en": "Insulated Lining",
+  "ar": "بطانة عازلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 545,
+  "en": "Integrated Graphics",
+  "ar": "رسوميات مدمجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 546,
+  "en": "Intended Areas",
+  "ar": "مناطق الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 547,
+  "en": "Intended Use",
+  "ar": "الاستخدام المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 548,
+  "en": "Interchangeable Lens",
+  "ar": "عدسة قابلة للتبديل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 549,
+  "en": "Interior Coating",
+  "ar": "نوع الطلاء الداخلي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 550,
+  "en": "Internal Laptop Compartment Dimensions",
+  "ar": "أبعاد حيز اللابتوب الداخلية",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 551,
+  "en": "Internal Memory",
+  "ar": "الذاكرة الداخلية",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 552,
+  "en": "Internal or External",
+  "ar": "داخلي أم خارجي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 553,
+  "en": "Internal Sleeping Length",
+  "ar": "طول سطح النوم الداخلي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 554,
+  "en": "Internal Sleeping Width",
+  "ar": "عرض سطح النوم الداخلي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 555,
+  "en": "Internal Storage Capacity",
+  "ar": "سعة التخزين الداخلية",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 556,
+  "en": "Inverter Technology",
+  "ar": "تقنية إنفرتر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 557,
+  "en": "Ionic Technology",
+  "ar": "خاصية الأيونات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 558,
+  "en": "Iron Type",
+  "ar": "نوع المكواه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 559,
+  "en": "Ironing Surface Length",
+  "ar": "طول سطح الكي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 560,
+  "en": "Ironing Surface Width",
+  "ar": "عرض سطح الكي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 561,
+  "en": "Item Length",
+  "ar": "طول القطعه",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 562,
+  "en": "Jar Capacity",
+  "ar": "سعة الدورق",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 563,
+  "en": "Jar Material",
+  "ar": "خامة الإبريق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 564,
+  "en": "Jaw Material",
+  "ar": "خامة الفك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 565,
+  "en": "Juice Container Capacity",
+  "ar": "سعة وعاء العصير",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 566,
+  "en": "Juicing Technology",
+  "ar": "تقنية العصر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 567,
+  "en": "Kettle Body Material",
+  "ar": "خامه جسم الغلايه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 568,
+  "en": "Key Switch Technology",
+  "ar": "تقنية المفاتيح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 569,
+  "en": "Keyboard Form Factor",
+  "ar": "حجم لوحة المفاتيح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 570,
+  "en": "Keyboard Language",
+  "ar": "لغة الكيبورد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 571,
+  "en": "Keyboard Layout and Language",
+  "ar": "لغة وتخطيط المفاتيح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 572,
+  "en": "Knife type or set contents",
+  "ar": "نوع السكين أو محتويات الطقم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 573,
+  "en": "Labelled as Concentrated",
+  "ar": "مركز حسب العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 574,
+  "en": "Labelled as Iodized",
+  "ar": "مدعم باليود حسب العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 575,
+  "en": "Labelled Fragrance Free",
+  "ar": "خال من العطر حسب العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 576,
+  "en": "Labelled Sugar Claim",
+  "ar": "بيان السكر على العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 577,
+  "en": "LAN Port Count",
+  "ar": "عدد منافذ LAN",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 578,
+  "en": "Lash Material",
+  "ar": "خامه الرموش",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 579,
+  "en": "Lash Type",
+  "ar": "نوع الرموش",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 580,
+  "en": "Leakproof",
+  "ar": "مانع للتسرب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 581,
+  "en": "Length",
+  "ar": "الطول",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 582,
+  "en": "Length Style",
+  "ar": "فئة طول البنطلون",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 583,
+  "en": "Lens Color",
+  "ar": "لون العدسة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 584,
+  "en": "Lens Filter Category",
+  "ar": "فئة مرشح العدسة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 585,
+  "en": "Lens Mount",
+  "ar": "حامل العدسة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 586,
+  "en": "Lens Width",
+  "ar": "عرض العدسة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 587,
+  "en": "Lid Included",
+  "ar": "غطاء مرفق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 588,
+  "en": "Lid Opening Mechanism",
+  "ar": "طريقه فتح الغطاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 589,
+  "en": "Lid Type",
+  "ar": "نوع الغطاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 590,
+  "en": "Light Color or Color Mode",
+  "ar": "لون الإضاءة أو نظام الألوان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 591,
+  "en": "Light Filtering Level",
+  "ar": "مستوى حجب الضوء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 592,
+  "en": "Light Source Count",
+  "ar": "عدد مصادر الإضاءة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 593,
+  "en": "Light Source Type",
+  "ar": "نوع مصدر الضوء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 594,
+  "en": "Lighting Application",
+  "ar": "موضع الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 595,
+  "en": "Lighting Technology",
+  "ar": "تقنية الإضاءة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 596,
+  "en": "Lined",
+  "ar": "مبطن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 597,
+  "en": "Lining Material",
+  "ar": "خامه البطانه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 599,
+  "en": "Load Index",
+  "ar": "مؤشر الحموله",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 600,
+  "en": "Loading Type",
+  "ar": "نوع التحميل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 601,
+  "en": "Lock Type",
+  "ar": "نوع القفل (أمان)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 602,
+  "en": "Low-water Shut-off",
+  "ar": "ايقاف عند نفاذ الكميه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 604,
+  "en": "Lumbar Support",
+  "ar": "دعم أسفل الظهر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 605,
+  "en": "Luminous Flux",
+  "ar": "التدفق الضوئي",
+  "unit_en": "lm",
+  "unit_ar": "لومن",
+  "type": "number"
+ },
+ {
+  "id": 606,
+  "en": "M.2 Storage Slot Count",
+  "ar": "عدد فتحات تخزين M.2",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 607,
+  "en": "Machine Washable",
+  "ar": "قابلة للغسل في الغسالة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 608,
+  "en": "Main Effect",
+  "ar": "التأثير الأساسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 609,
+  "en": "Main Ingredient",
+  "ar": "المكون الأساسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 610,
+  "en": "Main Material",
+  "ar": "الخامة الأساسية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 611,
+  "en": "Main Rear Camera Resolution",
+  "ar": "دقة الكاميرا الخلفية الرئيسية",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "number"
+ },
+ {
+  "id": 612,
+  "en": "Main Sheet Length",
+  "ar": "طول الملاية الرئيسية",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 613,
+  "en": "Main Sheet Width",
+  "ar": "عرض الملاية الرئيسية",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 614,
+  "en": "Main Use",
+  "ar": "الاستخدام الأساسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 615,
+  "en": "Makeup Cup Capacity",
+  "ar": "سعة خزان المكياج",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 616,
+  "en": "Manufacturer Part Number",
+  "ar": "رقم قطعه المصنع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 617,
+  "en": "Manufacturer-stated Microwave Suitability",
+  "ar": "مناسب للميكروويف حسب المصنع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 618,
+  "en": "Manufacturing Date Code",
+  "ar": "رمز تاريخ الانتاج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 619,
+  "en": "Mask Design",
+  "ar": "تصميم القناع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 620,
+  "en": "Mask Material",
+  "ar": "خامة القناع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 621,
+  "en": "Massage Mechanism",
+  "ar": "آلية التدليك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 622,
+  "en": "Massage Tip Material",
+  "ar": "خامة أطراف التدليك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 623,
+  "en": "Massage Types",
+  "ar": "أنواع التدليك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 624,
+  "en": "Material",
+  "ar": "الخامه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 625,
+  "en": "Material Composition",
+  "ar": "تركيب الخامة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 626,
+  "en": "Mattress Included",
+  "ar": "المرتبه مرفقه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 627,
+  "en": "Mattress Type",
+  "ar": "نوع المرتبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 628,
+  "en": "Max Memory",
+  "ar": "الحد الأقصى للذاكرة",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 629,
+  "en": "Max Shutter Speed",
+  "ar": "السرعة القصوى للغالق",
+  "unit_en": "s",
+  "unit_ar": "ثانية",
+  "type": "text"
+ },
+ {
+  "id": 630,
+  "en": "Maximum Aperture",
+  "ar": "اقصى فتحة عدسة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 631,
+  "en": "Maximum Baby Weight",
+  "ar": "اقصي وزن للحفاض",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "text"
+ },
+ {
+  "id": 632,
+  "en": "Maximum Child Height",
+  "ar": "أقصى طول للطفل",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 633,
+  "en": "Maximum Child Weight",
+  "ar": "أقصى وزن للطفل",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 634,
+  "en": "Maximum Child Weight per Seat",
+  "ar": "أقصى وزن للطفل لكل مقعد",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 635,
+  "en": "Maximum Chuck Capacity",
+  "ar": "أقصي مقاس لظرف الريش",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 636,
+  "en": "Maximum CPU Cooler Height",
+  "ar": "قصى ارتفاع لمبرد المعالج",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 637,
+  "en": "Maximum Cutting Length",
+  "ar": "أقصى طول قص",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 638,
+  "en": "Maximum Declared Height",
+  "ar": "أقصى ارتفاع معلن",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 639,
+  "en": "Maximum Declared Temperature",
+  "ar": "أقصي حرارة معلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 640,
+  "en": "Maximum Ethernet Port Speed",
+  "ar": "أقصى سرعة لمنفذ إيثرنت",
+  "unit_en": "Mbps",
+  "unit_ar": "ميجابت/ثانية",
+  "type": "number"
+ },
+ {
+  "id": 641,
+  "en": "Maximum GPU Length",
+  "ar": "أقصى طول لكارت الشاشة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 642,
+  "en": "Maximum Handle Length",
+  "ar": "أقصى طول للمقبض",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 643,
+  "en": "Maximum Laptop Size",
+  "ar": "اقصي مقاس لابتوب مناسب",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "number"
+ },
+ {
+  "id": 644,
+  "en": "Maximum Magnification",
+  "ar": "أقصى معامل تكبير",
+  "unit_en": "x",
+  "unit_ar": "مرة",
+  "type": "number"
+ },
+ {
+  "id": 645,
+  "en": "Maximum Mattress Depth",
+  "ar": "أقصى سمك مرتبة مناسب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 646,
+  "en": "Maximum No-load Speed",
+  "ar": "أقصى سرعة دون حمل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 648,
+  "en": "Maximum Paper Size",
+  "ar": "أقصى مقاس ورق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 649,
+  "en": "maximum players",
+  "ar": "الحد الاقصي للاعبين",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 650,
+  "en": "Maximum Power",
+  "ar": "أقصى قدرة كهربائية",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 651,
+  "en": "maximum recommended age",
+  "ar": "اقصي عمر موصي به",
+  "unit_en": "month",
+  "unit_ar": "شهر",
+  "type": "text"
+ },
+ {
+  "id": 652,
+  "en": "Maximum Recording Resolution",
+  "ar": "أقصى دقّة تسجيل",
+  "unit_en": "px",
+  "unit_ar": "بكسل",
+  "type": "text"
+ },
+ {
+  "id": 653,
+  "en": "Maximum Rotational Speed",
+  "ar": "أقصي سرعه دوران",
+  "unit_en": "rpm",
+  "unit_ar": "دورة/دقيقة",
+  "type": "text"
+ },
+ {
+  "id": 654,
+  "en": "Maximum Sensor Sensitivity",
+  "ar": "أقصى حساسية للمستشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 656,
+  "en": "Maximum Size",
+  "ar": "أقصى مقاس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 657,
+  "en": "Maximum Speed",
+  "ar": "السرعة القصوى",
+  "unit_en": "km/h",
+  "unit_ar": "كم/ساعة",
+  "type": "number"
+ },
+ {
+  "id": 658,
+  "en": "Maximum Spin Speed",
+  "ar": "أقصى سرعة عصر",
+  "unit_en": "rpm",
+  "unit_ar": "دورة/دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 659,
+  "en": "Maximum Suitable User Height",
+  "ar": "أقصى طول مستخدم مناسب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 660,
+  "en": "Maximum Supported Charging Power",
+  "ar": "أقصى قدرة شحن مدعومة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 661,
+  "en": "Maximum Supported Foot size",
+  "ar": "أقصى مقاس قدم مدعوم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 662,
+  "en": "Maximum Supported Memory",
+  "ar": "أقصى سعة ذاكرة مدعومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 663,
+  "en": "Maximum Temperature",
+  "ar": "أقصى درجة حرارة",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "number"
+ },
+ {
+  "id": 664,
+  "en": "Maximum Total Output Power",
+  "ar": "إجمالي قدرة الخرج القصوى",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 665,
+  "en": "Maximum User Weight",
+  "ar": "أقصى وزن للمستخدم",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 666,
+  "en": "Maximum Video Resolution",
+  "ar": "أقصى دقة تصوير الفيديو",
+  "unit_en": "px",
+  "unit_ar": "بكسل",
+  "type": "text"
+ },
+ {
+  "id": 667,
+  "en": "Maximum Wattage per Light Source",
+  "ar": "أقصى قدرة لكل مصدر إضاءة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 668,
+  "en": "Maximum Weighing Capacity",
+  "ar": "أقصى وزن قابل للقياس",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 669,
+  "en": "Measurement Scale System",
+  "ar": "نظام تدريج القياس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 670,
+  "en": "Megapixels",
+  "ar": "دقة الكاميرات",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 671,
+  "en": "Memory Card Type",
+  "ar": "نوع بطاقة الذاكرة",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 672,
+  "en": "Memory Generation",
+  "ar": "جيل الذاكرة",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 673,
+  "en": "Memory Slot Count",
+  "ar": "عدد فتحات الذاكرة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 674,
+  "en": "Memory type",
+  "ar": "نوع الذاكرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 676,
+  "en": "Mesh Support",
+  "ar": "يدعم شبكة Mesh",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 677,
+  "en": "Metal Fineness or Purity",
+  "ar": "عيار أو نقاء المعدن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 678,
+  "en": "Metal or Plating Color",
+  "ar": "لون المعدن أو الطلاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 679,
+  "en": "Microphone Type",
+  "ar": "نوع الميكروفون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 680,
+  "en": "Microwave Output Power",
+  "ar": "قدرة خرج الميكروويف",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 681,
+  "en": "Microwave Safe",
+  "ar": "مناسب للميكروويف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 682,
+  "en": "Microwave Type",
+  "ar": "نوع الميكروويف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 683,
+  "en": "Milk Preparation System",
+  "ar": "نظام تحضير الحليب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 684,
+  "en": "Minimum Baby Weight",
+  "ar": "اقل وزن للحفاض",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "text"
+ },
+ {
+  "id": 685,
+  "en": "Minimum Child Height",
+  "ar": "أقل طول للطفل",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 686,
+  "en": "Minimum Child Weight",
+  "ar": "أقل وزن للطفل",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 687,
+  "en": "Minimum Cutting Length",
+  "ar": "أقل طول قص",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 688,
+  "en": "minimum players",
+  "ar": "الحد الادني للاعبين",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 689,
+  "en": "Minimum Recommended Age",
+  "ar": "أقل عمر موصى به",
+  "unit_en": "month",
+  "unit_ar": "شهر",
+  "type": "number"
+ },
+ {
+  "id": 690,
+  "en": "Mirror Surface Size",
+  "ar": "مقاس سطح المرآة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 691,
+  "en": "Mobile Network Support",
+  "ar": "شبكات المحمول المدعومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 692,
+  "en": "Model",
+  "ar": "موديل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 693,
+  "en": "Model length",
+  "ar": "طول المجسم",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 694,
+  "en": "Model Name",
+  "ar": "اسم الموديل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 695,
+  "en": "Model Number",
+  "ar": "رقم الطراز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 697,
+  "en": "Model Series",
+  "ar": "سلسلة النماذج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 698,
+  "en": "Module Count",
+  "ar": "عدد الواحدات في الطقم",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 699,
+  "en": "Module Form Factor",
+  "ar": "شكل واحده الذاكرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 700,
+  "en": "Moisture Sensor",
+  "ar": "مستشعر رطوبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 701,
+  "en": "Monitor Included or Built-in",
+  "ar": "شاشة مدمجة أو مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 702,
+  "en": "Mop Head Material",
+  "ar": "خامة رأس المسح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 703,
+  "en": "Mop Type",
+  "ar": "نوع الممسحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 704,
+  "en": "Mounting Bore Diameters",
+  "ar": "أقطار فتحات التثبيت",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 705,
+  "en": "Mounting Location",
+  "ar": "مكان التثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 706,
+  "en": "Mounting Size and Thread Direction",
+  "ar": "مقاس واتجاه وصلة التثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 707,
+  "en": "Mounting Type",
+  "ar": "نوع التثبيت (تعليق)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 708,
+  "en": "Movement Type",
+  "ar": "نوع الحركة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 709,
+  "en": "Nail Length Category",
+  "ar": "فئة طول الظفر",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 710,
+  "en": "Nail Shape",
+  "ar": "شكل الظفر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 711,
+  "en": "Neckline",
+  "ar": "شكل فتحة الرقبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 712,
+  "en": "Net Capacity",
+  "ar": "السعة الصافية",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 713,
+  "en": "Net Volume",
+  "ar": "الحجم الصافي",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 714,
+  "en": "Net Weight",
+  "ar": "الوزن الصافي",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 715,
+  "en": "Net weight per pack",
+  "ar": "الوزن الصافي للعبوه",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 716,
+  "en": "Network",
+  "ar": "الشبكة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 717,
+  "en": "NFC",
+  "ar": "الاتصال القريب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 718,
+  "en": "Night Vision",
+  "ar": "الروية الليلية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 719,
+  "en": "Nominal Belt Size",
+  "ar": "مقاس الحزام الاسمي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 720,
+  "en": "Nominal Glove Weight",
+  "ar": "الوزن الاسمي للقفاز",
+  "unit_en": "oz",
+  "unit_ar": "أونصة",
+  "type": "number"
+ },
+ {
+  "id": 721,
+  "en": "Nominal New Disc Thickness",
+  "ar": "السمك الاسمي الجديد",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 722,
+  "en": "Number of Cores",
+  "ar": "عدد الأنوية",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 725,
+  "en": "Number of pieces per pack",
+  "ar": "العدد في العبوه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 727,
+  "en": "Nursing Access Type",
+  "ar": "طريقه فتح الرضاعه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 728,
+  "en": "Nut Type or Mix",
+  "ar": "نوع المكسرات أو الخلطة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 729,
+  "en": "OE Reference Numbers",
+  "ar": "الأرقام الأصلية المرجعية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 730,
+  "en": "Oil Source",
+  "ar": "مصدر الزيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 731,
+  "en": "OIS",
+  "ar": "تثبيت الصورة البصري (OIS)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 732,
+  "en": "Opacity",
+  "ar": "درجه الشفافية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 733,
+  "en": "Open Canopy Diameter",
+  "ar": "قطر المظلة عند الفتح",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 734,
+  "en": "Open Dimensions",
+  "ar": "الأبعاد عند الفتح",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 735,
+  "en": "Opening and Closing Mechanism",
+  "ar": "آلية الفتح والإغلاق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 736,
+  "en": "Operating Modes",
+  "ar": "اوضاع التشغيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 737,
+  "en": "Operating System",
+  "ar": "نظام التشغيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 738,
+  "en": "Operating Voltage",
+  "ar": "جهد التشغيل",
+  "unit_en": "V",
+  "unit_ar": "فولت",
+  "type": "number"
+ },
+ {
+  "id": 739,
+  "en": "Operation Type",
+  "ar": "نوع التشغيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 740,
+  "en": "Organic / Chemical",
+  "ar": "طبيعي عضوي أم كيميائي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 741,
+  "en": "Organizer Type",
+  "ar": "نوع المنظم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 742,
+  "en": "OS Version",
+  "ar": "اصدار نظام التشغيل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 743,
+  "en": "Outer Conduit Length",
+  "ar": "طول الغلاف الخارجي",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 744,
+  "en": "Outer Diameter",
+  "ar": "القطر الخارجي",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 745,
+  "en": "Outer Fabric Material",
+  "ar": "خامة القماش الخارجي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 746,
+  "en": "Outer Material",
+  "ar": "الخامة الخارجية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 747,
+  "en": "Outlet Type",
+  "ar": "نوع مخارج الكهرباء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 748,
+  "en": "Output Port Types",
+  "ar": "أنواع منافذ الخرج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 749,
+  "en": "Oven Energy Source",
+  "ar": "مصدر طاقة الفرن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 750,
+  "en": "Oven Net Capacity",
+  "ar": "سعة الفرن الصافية",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 751,
+  "en": "Oven Safe",
+  "ar": "مناسب للفرن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 752,
+  "en": "Overall Length",
+  "ar": "الطول الكلي",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 753,
+  "en": "Overheat Protection",
+  "ar": "حماية من ارتفاع الحرارة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 754,
+  "en": "Pacifiers per Pack",
+  "ar": "عدد اللهايات في العبوه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 755,
+  "en": "Pack Contents",
+  "ar": "محتويات العبوه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 756,
+  "en": "Pack Count",
+  "ar": "عدد العبوات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 757,
+  "en": "Pack Format",
+  "ar": "شكل العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 758,
+  "en": "Pack Unit Count",
+  "ar": "عدد وحدات العبوه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 759,
+  "en": "Pack Volume",
+  "ar": "حجم العبوة",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 760,
+  "en": "Packing Medium",
+  "ar": "سائل الحفظ",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 761,
+  "en": "Packs per Offer",
+  "ar": "عدد العبوات في العرض",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 762,
+  "en": "Pad Type",
+  "ar": "نوع الفوطه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 763,
+  "en": "Pads per Pack",
+  "ar": "عدد الفوط في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 764,
+  "en": "Pairs or Clusters per Pack",
+  "ar": "عدد الأزواج أو مجموعات الرموش",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 765,
+  "en": "Pairs per Pack",
+  "ar": "عدد الازواج",
+  "unit_en": "pair",
+  "unit_ar": "زوج",
+  "type": "number"
+ },
+ {
+  "id": 766,
+  "en": "Panel Height",
+  "ar": "ارتفاع القطعة الواحدة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 767,
+  "en": "Panel Type",
+  "ar": "نوع اللوحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 768,
+  "en": "Panel Width",
+  "ar": "عرض القطعة الواحدة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 769,
+  "en": "Parental Remote Control",
+  "ar": "تحكم أبوي عن بعد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 770,
+  "en": "Passport Capacity",
+  "ar": "عدد جوازات السفر",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 771,
+  "en": "Pasta Shape",
+  "ar": "شكل المكرونة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 772,
+  "en": "Pattern",
+  "ar": "النقشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 773,
+  "en": "PC Power Standard",
+  "ar": "معيار طاقة الكمبيوتر",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 774,
+  "en": "Performance Classifications",
+  "ar": "تصنيفات الأداء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 775,
+  "en": "Permitted Hair Condition",
+  "ar": "حالة الشعر المناسبة للجهاز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 776,
+  "en": "Person capacity",
+  "ar": "سعه الأشخاص",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 777,
+  "en": "Phone Retention Method",
+  "ar": "طريقة تثبيت الموبايل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 778,
+  "en": "Pickup Pattern",
+  "ar": "نمط النقاط الصوت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 779,
+  "en": "Piece Count",
+  "ar": "عدد القطع",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 780,
+  "en": "Piece Dimensions",
+  "ar": "مقاسات القطع",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 781,
+  "en": "Pieces per Pack",
+  "ar": "عدد القطع في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 782,
+  "en": "Pillow Shape",
+  "ar": "شكل المخدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 783,
+  "en": "Place Setting Capacity",
+  "ar": "السعة بعدد الأطقم",
+  "unit_en": "place settings",
+  "unit_ar": "أطقم مائدة",
+  "type": "number"
+ },
+ {
+  "id": 784,
+  "en": "Place Settings",
+  "ar": "عدد الاشخاص",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 785,
+  "en": "Plate Material or Coating",
+  "ar": "خامة أو طلاء الألواح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 786,
+  "en": "Plate Width",
+  "ar": "عرض الألواح",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 787,
+  "en": "Plating Type",
+  "ar": "نوع الطلاء المعدني",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 788,
+  "en": "Play theme",
+  "ar": "موضوع اللعب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 789,
+  "en": "Ply Count",
+  "ar": "عدد الطبقات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 790,
+  "en": "Pods or Sachets per Pack",
+  "ar": "عدد الكبسولات أو الأظرف بالعبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 791,
+  "en": "Pods or Tablets per Pack",
+  "ar": "عدد الكبسولات أو الأقراص بالعبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 792,
+  "en": "Polarized Lenses",
+  "ar": "عدسات مستقطبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 793,
+  "en": "Polish Type",
+  "ar": "نوع التلميع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 794,
+  "en": "Powder Color",
+  "ar": "لون البودرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 795,
+  "en": "Powder Type",
+  "ar": "نوع البودرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 796,
+  "en": "Powdered",
+  "ar": "تحتوي علي بودرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 797,
+  "en": "Powdered Sheets",
+  "ar": "مزود ببودرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 798,
+  "en": "Power",
+  "ar": "القدرة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 799,
+  "en": "Power Consumption",
+  "ar": "استهلاك الطاقة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 800,
+  "en": "Power per Meter",
+  "ar": "القدرة لكل متر",
+  "unit_en": "W/m",
+  "unit_ar": "واط/متر",
+  "type": "number"
+ },
+ {
+  "id": 801,
+  "en": "Power Source",
+  "ar": "مصدر الطاقة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 802,
+  "en": "Power Supply Included",
+  "ar": "مزود طاقة مرفق",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 803,
+  "en": "Powerful",
+  "ar": "قوه المحرك",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 804,
+  "en": "Pre-cut Sheets per Pack",
+  "ar": "عدد العبوات المقطعة بالعبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 805,
+  "en": "Preparation Method",
+  "ar": "طريقة التحضير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 806,
+  "en": "Pressure Sensor",
+  "ar": "مستشعر الضغط",
+  "unit_en": "bar",
+  "unit_ar": "بار",
+  "type": "text"
+ },
+ {
+  "id": 807,
+  "en": "Primary camera",
+  "ar": "الكاميرا الامامية",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 808,
+  "en": "Print Color Mode",
+  "ar": "نوع الطباعة اللونية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 809,
+  "en": "Print Technology",
+  "ar": "تقنية الطباعة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 810,
+  "en": "Processing Functions",
+  "ar": "وظائف التحضير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 811,
+  "en": "Processing Grade",
+  "ar": "درجة المعالجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 812,
+  "en": "Processor name",
+  "ar": "اسم المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 813,
+  "en": "Processor number",
+  "ar": "رقم المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 814,
+  "en": "Processor Version",
+  "ar": "إصدار المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 815,
+  "en": "Processor Version Number/Generation",
+  "ar": "رقم/جيل المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 816,
+  "en": "Product Depth",
+  "ar": "عمق المنتج",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 817,
+  "en": "Product Form",
+  "ar": "شكل المستحضر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 818,
+  "en": "Product Height",
+  "ar": "ارتفاع المنتج",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 819,
+  "en": "Product type",
+  "ar": "نوع المنتج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 820,
+  "en": "Product Width",
+  "ar": "عرض المنتج",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 821,
+  "en": "Professional Use Only",
+  "ar": "للاستخدام المهني فقط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 822,
+  "en": "Program Count",
+  "ar": "عدد البرامج",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 823,
+  "en": "Protection Type",
+  "ar": "نوع الحمايه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 824,
+  "en": "Protector Type",
+  "ar": "نوع واقي الشاشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 825,
+  "en": "PSU Form Factor",
+  "ar": "المقاس القياسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 826,
+  "en": "Pulse Type",
+  "ar": "نوع البقوليات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 827,
+  "en": "Pump Included",
+  "ar": "مضخة مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 828,
+  "en": "Purification Technology",
+  "ar": "تقنية التنقية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 829,
+  "en": "RAM",
+  "ar": "رمات",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 830,
+  "en": "RAM Capacity",
+  "ar": "الذاكرة العشوائية RAM",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 831,
+  "en": "RAM Size",
+  "ar": "حجم الرامات",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 832,
+  "en": "RAM Type",
+  "ar": "نوع الرام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 833,
+  "en": "Rated Cooling Capacity",
+  "ar": "قدرة التبريد الاسمية",
+  "unit_en": "BTU/h",
+  "unit_ar": "وحدة حرارية بريطانية/ساعة",
+  "type": "number"
+ },
+ {
+  "id": 834,
+  "en": "Rated input power",
+  "ar": "القدره الكهربائيه الاسميه",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 835,
+  "en": "Rated Maximum Current",
+  "ar": "أقصى تيار معلن",
+  "unit_en": "A",
+  "unit_ar": "أمبير",
+  "type": "number"
+ },
+ {
+  "id": 836,
+  "en": "Rated Maximum Total Load",
+  "ar": "أقصى حمل إجمالي معلن",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 837,
+  "en": "Rated Output Power",
+  "ar": "قدرة الخرج المقننة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 838,
+  "en": "Rated Power",
+  "ar": "القدرة الكهربائية المقننة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "number"
+ },
+ {
+  "id": 839,
+  "en": "Rated Voltage",
+  "ar": "جهد التشغيل المعلن",
+  "unit_en": "V",
+  "unit_ar": "فولت",
+  "type": "number"
+ },
+ {
+  "id": 840,
+  "en": "Razor Type",
+  "ar": "نوع ماكينه الحلاقه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 841,
+  "en": "Razors per Pack",
+  "ar": "عدد الماكينات في العبوه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 842,
+  "en": "Ready-to-use or Concentrated",
+  "ar": "جاهز للاستخدام أم مركز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 843,
+  "en": "Rear Sprocket Tooth Count",
+  "ar": "عدد أسنان الترس الخلفي",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 844,
+  "en": "Recline Adjustment",
+  "ar": "إمكانية الإمالة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 845,
+  "en": "Reclining Backrest",
+  "ar": "ظهر قابل للإمالة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 846,
+  "en": "recommended age group",
+  "ar": "الفئه العمريه الموصي بها",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 847,
+  "en": "Recommended PSU Power",
+  "ar": "قدرة مزود الطاقة الموصى بها",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 848,
+  "en": "Recorder Type",
+  "ar": "نوع المسجل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 849,
+  "en": "Refill Method",
+  "ar": "طريقة إعادة التعبئة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 850,
+  "en": "Refill Units per Pack",
+  "ar": "عدد الشفرات أو الرؤوس البديلة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 851,
+  "en": "Refresh rate",
+  "ar": "معدل التحديث",
+  "unit_en": "Hz",
+  "unit_ar": "هرتز",
+  "type": "text"
+ },
+ {
+  "id": 852,
+  "en": "Remote Control",
+  "ar": "ريموت كنترول",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 853,
+  "en": "Removable Cover",
+  "ar": "غطاء قابل للإزالة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 854,
+  "en": "Removable Tray",
+  "ar": "صينية قابلة للإزالة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 855,
+  "en": "Removes Waterproof Makeup",
+  "ar": "يزيل المكياج المقاوم للماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 856,
+  "en": "Replaceable Head",
+  "ar": "رأس قابل للاستبدال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 857,
+  "en": "Replacement Cartridge Code",
+  "ar": "كود الفلاتر البديلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 858,
+  "en": "Requires Electricity",
+  "ar": "يحتاج كهرباء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 859,
+  "en": "Resistance Mechanism",
+  "ar": "آلية المقاومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 860,
+  "en": "Resolution",
+  "ar": "الدقة",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 861,
+  "en": "Reusability",
+  "ar": "نوع إعادة الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 862,
+  "en": "Reusable",
+  "ar": "قابل لإعادة الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 863,
+  "en": "Reversible",
+  "ar": "قابل للاستخدام على الوجهين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 864,
+  "en": "Reversible Seat",
+  "ar": "مقعد قابل لعكس الاتجاه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 865,
+  "en": "Rice Variety",
+  "ar": "نوع الأرز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 866,
+  "en": "Rinse-out or Leave-in",
+  "ar": "يُشطف أم يُترك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 867,
+  "en": "Rinsing Required",
+  "ar": "يتطلب الشطف بالماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 868,
+  "en": "RMS Audio Output Power",
+  "ar": "القدرة الصوتية المستمرة RMS",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 869,
+  "en": "Roast Level",
+  "ar": "درجه التحميص",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 870,
+  "en": "Roll Length",
+  "ar": "طول اللفة",
+  "unit_en": "m",
+  "unit_ar": "متر",
+  "type": "number"
+ },
+ {
+  "id": 871,
+  "en": "Roller Count",
+  "ar": "عدد اللفافات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 872,
+  "en": "Roller Diameter",
+  "ar": "قطر اللفافة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 873,
+  "en": "Roller Dimensions: Diameter × Width",
+  "ar": "أبعاد البكرة: قطر × عرض",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 874,
+  "en": "Roller Material or Coating",
+  "ar": "خامه او طلاء الفافات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 875,
+  "en": "Rolls or packs per offer",
+  "ar": "عدد اللفات او العبوات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 876,
+  "en": "Rolls per offer",
+  "ar": "عدد اللفات في العرض",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 877,
+  "en": "Rolls per Pack",
+  "ar": "عدد اللفات في العبوه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 878,
+  "en": "Rotating Base",
+  "ar": "قاعدة دوارة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 879,
+  "en": "Router Type",
+  "ar": "نوع الراوتر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 880,
+  "en": "SAE Viscosity Grade",
+  "ar": "درجه اللزوجه sae",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 881,
+  "en": "Safety Lid Lock",
+  "ar": "قفل أمان الغطاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 882,
+  "en": "Safety Locking System",
+  "ar": "نظام قفل الأمان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 883,
+  "en": "Salt Type",
+  "ar": "نوع الملح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 884,
+  "en": "Sandwich Capacity",
+  "ar": "عدد الساندوبتشات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 885,
+  "en": "SATA Port Count",
+  "ar": "SATA عدد منافذ",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 886,
+  "en": "Sauce Type",
+  "ar": "نوع الصلصة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 887,
+  "en": "Scale Type",
+  "ar": "نوع الميزان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 889,
+  "en": "Scented",
+  "ar": "معطرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 890,
+  "en": "Scissor Type",
+  "ar": "نوع المقص",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 891,
+  "en": "Screen protection",
+  "ar": "حماية الشاشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 892,
+  "en": "Screen Size",
+  "ar": "حجم الشاشة",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "text"
+ },
+ {
+  "id": 893,
+  "en": "Screen Size if Included",
+  "ar": "مقاس الشاشة إن وجدت",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "number"
+ },
+ {
+  "id": 894,
+  "en": "Screwdriver Tip Types",
+  "ar": "انواع رؤوس المفكات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 895,
+  "en": "SD Card Slot",
+  "ar": "فتحة بطاقة SD",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 896,
+  "en": "Season Classification",
+  "ar": "تصنيف الموسم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 897,
+  "en": "Seasoning or Flavor",
+  "ar": "التتبيل أو النكهة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 898,
+  "en": "Seat Belt",
+  "ar": "حزام تثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 899,
+  "en": "Seat Count",
+  "ar": "عدد المقاعد",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 900,
+  "en": "Seat Coverage",
+  "ar": "المقاعد التي يغطيها الطقم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 901,
+  "en": "Seat Height",
+  "ar": "ارتفاع المقعد",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 902,
+  "en": "Seat Material",
+  "ar": "خامه المقعد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 903,
+  "en": "Seat Upholstery Material",
+  "ar": "خامة تنجيد المقعد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 904,
+  "en": "Seat Weight",
+  "ar": "وزن المقعد",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 905,
+  "en": "Seating Orientation",
+  "ar": "اتجاه الجلوس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 906,
+  "en": "Secondary Camera",
+  "ar": "الكاميرا الخلفية",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 907,
+  "en": "Sensor Size",
+  "ar": "حجم المستشعر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 908,
+  "en": "Sensors",
+  "ar": "مستشعرات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 909,
+  "en": "Set Contents",
+  "ar": "محتويات الطقم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 910,
+  "en": "Set Contents and Sizes",
+  "ar": "محتويات الطقم وأحجامها",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 911,
+  "en": "Set Piece Count",
+  "ar": "عدد قطع الطقم",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 912,
+  "en": "Shackle Type",
+  "ar": "نوع حلقة القفل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 913,
+  "en": "Shade Count",
+  "ar": "عدد درجات اللون",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 914,
+  "en": "Shade Name or Code",
+  "ar": "اسم أو كود درجة اللون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 915,
+  "en": "Shades per Pack",
+  "ar": "عدد الدرجات في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 916,
+  "en": "Shaft and Tip Material",
+  "ar": "خامة الساق والرأس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 917,
+  "en": "shape",
+  "ar": "الشكل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 918,
+  "en": "Shaving System",
+  "ar": "نظام الحلاقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 919,
+  "en": "Sheet Type",
+  "ar": "نوع الملاية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 920,
+  "en": "Sheet width",
+  "ar": "عرض الورق",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 921,
+  "en": "Sheets per Pack",
+  "ar": "عدد الأوراق في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 922,
+  "en": "Sheets per roll",
+  "ar": "عدد الأوراق في اللفة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 923,
+  "en": "Shell Material",
+  "ar": "خامة الغلاف الخارجي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 924,
+  "en": "Shoe Pairs per Bag",
+  "ar": "عدد أزواج الأحذية للكيس",
+  "unit_en": "pair",
+  "unit_ar": "زوج",
+  "type": "number"
+ },
+ {
+  "id": 925,
+  "en": "Shoe Style",
+  "ar": "تصميم الحذاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 926,
+  "en": "Silhouette",
+  "ar": "قصة الفستان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 927,
+  "en": "Sim",
+  "ar": "الشريحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 928,
+  "en": "SIM Card Support",
+  "ar": "يدعم شريحة اتصال",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 929,
+  "en": "Single Use",
+  "ar": "للاستخدام مرة واحدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 930,
+  "en": "Size",
+  "ar": "المقاس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 931,
+  "en": "Size Category",
+  "ar": "فئة الحجم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 932,
+  "en": "Size Class",
+  "ar": "فئة المقاس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 933,
+  "en": "Sizes and Tip codes",
+  "ar": "المقاسات واكواد الرؤوس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 934,
+  "en": "Sizing System",
+  "ar": "نظام المقاسات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 935,
+  "en": "Skills / education value",
+  "ar": "المهاره المستهدفه للالعاب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 936,
+  "en": "Skin Coverage",
+  "ar": "تغطية البشرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 937,
+  "en": "Skin Tone",
+  "ar": "لون البشرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 938,
+  "en": "Skin Tone Sensor",
+  "ar": "مستشعر لون البشرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 939,
+  "en": "Sleeve Length",
+  "ar": "طول الكم",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 940,
+  "en": "Slice Capacity",
+  "ar": "عدد شرايح الخبز",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 941,
+  "en": "Smart TV",
+  "ar": "تلفزيون ذكي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 942,
+  "en": "Snack Type",
+  "ar": "نوع الوجبة الخفيفة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 943,
+  "en": "Software updates",
+  "ar": "تحديثات النظام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 944,
+  "en": "Sole Material",
+  "ar": "خامة النعل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 945,
+  "en": "Soleplate Material",
+  "ar": "خامة قاعدة المكواة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 946,
+  "en": "Sorting Compartment Count",
+  "ar": "عدد أقسام الفرز",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 947,
+  "en": "Sound System",
+  "ar": "نظام الصوت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 949,
+  "en": "Speed Class Ratings",
+  "ar": "تصنيفات السرعه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 950,
+  "en": "Speed Count",
+  "ar": "عدد السرعات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 951,
+  "en": "Speed Rating",
+  "ar": "رمز السرعه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 952,
+  "en": "Speed Setting Count",
+  "ar": "عدد إعدادات السرعة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 953,
+  "en": "Speed Settings",
+  "ar": "نظام السرعات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 954,
+  "en": "Speeds",
+  "ar": "السرعات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 955,
+  "en": "SPF Rating",
+  "ar": "عامل الحماية SPF",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 956,
+  "en": "Spice Form",
+  "ar": "شكل التابل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 957,
+  "en": "Spice Level",
+  "ar": "درجة الحدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 958,
+  "en": "Spice or Blend Name",
+  "ar": "اسم التابل أو الخلطة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 959,
+  "en": "Spindle Thread",
+  "ar": "مقاس قلاوظ محور القرص",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 960,
+  "en": "Sport Type",
+  "ar": "نوع الرياضه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 961,
+  "en": "Spray Pattern",
+  "ar": "نوع الرذاذ",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 962,
+  "en": "Squeegee Blade Material",
+  "ar": "خامة شفرة المسح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 963,
+  "en": "Start-Stop Compatibility",
+  "ar": "متوافقة مع نظام Start-Stop",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 964,
+  "en": "Steam Release Mechanism",
+  "ar": "آلية تفريغ البخار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 965,
+  "en": "Steam Types",
+  "ar": "انواع البخار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 966,
+  "en": "Steamer Design",
+  "ar": "تصميم جهاز البخار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 967,
+  "en": "Steamer Type",
+  "ar": "نوع جهاز البخار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 968,
+  "en": "Stereo speaker",
+  "ar": "سماعات ستيريو",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 969,
+  "en": "Stone Type",
+  "ar": "نوع الحجر أو الفص",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 970,
+  "en": "Storage Capacity",
+  "ar": "سعة التخزين",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 971,
+  "en": "Storage Condition Before Opening",
+  "ar": "حالة التخزين قبل الفتح",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 972,
+  "en": "Storage Conditions",
+  "ar": "ظروف الحفظ",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 973,
+  "en": "Storage Drive Type",
+  "ar": "نوع قرص التخزين",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 974,
+  "en": "Storage method",
+  "ar": "وسيلة التخزين",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 975,
+  "en": "Storage Tank Capacity",
+  "ar": "سعة خزان التخزين",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 976,
+  "en": "Storage Technology",
+  "ar": "تقنية التخزين",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 977,
+  "en": "Strap Length Range",
+  "ar": "نطاق طول الحمالة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 978,
+  "en": "Strap Material",
+  "ar": "خامة السوار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 979,
+  "en": "Strap Type",
+  "ar": "نوع الحمالة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 980,
+  "en": "Strap Width",
+  "ar": "عرض الحمالة",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 981,
+  "en": "Strength as Labeled",
+  "ar": "التركيز كما على العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 982,
+  "en": "Stretchable",
+  "ar": "قابل للتمدد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 983,
+  "en": "Strip Length",
+  "ar": "طول الشريط",
+  "unit_en": "m",
+  "unit_ar": "متر",
+  "type": "number"
+ },
+ {
+  "id": 984,
+  "en": "Strip Operating Voltage",
+  "ar": "جهد تشغيل الشريط",
+  "unit_en": "V",
+  "unit_ar": "فولت",
+  "type": "number"
+ },
+ {
+  "id": 985,
+  "en": "Strip Width",
+  "ar": "عرض الشريط",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 986,
+  "en": "Strips per Pack",
+  "ar": "عدد الشرائح في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 987,
+  "en": "Strips per Roll",
+  "ar": "عدد الشرائط في اللفه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 988,
+  "en": "Stroller Type",
+  "ar": "نوع العربة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 989,
+  "en": "Stroller Weight",
+  "ar": "وزن العربة",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 990,
+  "en": "Style",
+  "ar": "التصميم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 991,
+  "en": "Styling Functions",
+  "ar": "وظائف التصفيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 992,
+  "en": "Styling Technology",
+  "ar": "تقنية التصفيف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 993,
+  "en": "Suction Base",
+  "ar": "قاعدة تثبيت بالشفط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 994,
+  "en": "Suction Level Count",
+  "ar": "عدد مستويات الشفط",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 995,
+  "en": "Sugar Form",
+  "ar": "شكل السكر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 996,
+  "en": "Suitable Age Group",
+  "ar": "الفئة العمرية المناسبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 997,
+  "en": "Suitable Floor Types",
+  "ar": "نوع الأرضيات المناسبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 998,
+  "en": "Suitable Hair Colors",
+  "ar": "الوان الشعر المناسبه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 999,
+  "en": "Suitable Hair Length",
+  "ar": "طول الشعر المناسب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 1000,
+  "en": "Suitable Hair Type",
+  "ar": "نوع الشعر المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1001,
+  "en": "Suitable Playing Surface",
+  "ar": "سطح اللعب المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1002,
+  "en": "Suitable Scalp Type",
+  "ar": "نوع فروة الرأس المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1003,
+  "en": "Suitable Skin Type",
+  "ar": "نوع البشره المناسب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1004,
+  "en": "Suitable Surfaces",
+  "ar": "الأسطح المناسبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1005,
+  "en": "Suitable Washing Method",
+  "ar": "طريقة الغسيل المناسبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1006,
+  "en": "Supplied Component",
+  "ar": "الجزء المعروض",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1007,
+  "en": "Support level",
+  "ar": "مستوي الدعم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1008,
+  "en": "Supported Memory Generation",
+  "ar": "جيل الذاكرة المدعوم",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 1009,
+  "en": "Supported Motherboard Form Factors",
+  "ar": "مقاسات اللوحات المدعومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1010,
+  "en": "Supported Phone Width Range",
+  "ar": "نطاق عرض الموبايل المتوافق",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 1011,
+  "en": "Supported PSU Form Factors",
+  "ar": "مقاسات الباور المدعومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1012,
+  "en": "Surface Material",
+  "ar": "خامة السطح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1013,
+  "en": "System Type",
+  "ar": "نوع النظام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1014,
+  "en": "Tablets or Pods per Pack",
+  "ar": "عدد الأقراص أو الكبسولات بالعبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1015,
+  "en": "Tank Capacity if Applicable",
+  "ar": "سعة الخزان إن وجد",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 1016,
+  "en": "Tape Length",
+  "ar": "طول الشريط اللاصق",
+  "unit_en": "m",
+  "unit_ar": "متر",
+  "type": "number"
+ },
+ {
+  "id": 1017,
+  "en": "Target Fabrics or Colors",
+  "ar": "الأقمشة أو الألوان المستهدفة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1018,
+  "en": "Target Group",
+  "ar": "الفئة المستهدفة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1019,
+  "en": "Target Skin",
+  "ar": "نوع البشرة المستهدف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1020,
+  "en": "Tea Bags per Pack",
+  "ar": "عدد الأكياس في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1021,
+  "en": "Tea Format",
+  "ar": "شكل الشاي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1022,
+  "en": "Tea Type",
+  "ar": "نوع الشاي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1023,
+  "en": "Teat Flow Level",
+  "ar": "مستوى تدفق الحلمة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1024,
+  "en": "Teat Material",
+  "ar": "خامة الحلمة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1025,
+  "en": "Teat Shape",
+  "ar": "شكل الحمله",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1026,
+  "en": "Temperature Control",
+  "ar": "تحكم في درجة الحرارة",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "text"
+ },
+ {
+  "id": 1027,
+  "en": "Terminal Layout",
+  "ar": "ترتيب الأقطاب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1028,
+  "en": "theme or character",
+  "ar": "الموضوع او الشخصيه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1029,
+  "en": "theme or picture",
+  "ar": "الموضوع او الصوره",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1030,
+  "en": "Thermostat",
+  "ar": "ترموستات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1031,
+  "en": "Thickness",
+  "ar": "السمك",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 1032,
+  "en": "Thread Count",
+  "ar": "عدد الخيوط المعالجه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1033,
+  "en": "Thread Specification",
+  "ar": "مقاس القلاوظ",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1034,
+  "en": "Tier Count",
+  "ar": "عدد المستويات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1035,
+  "en": "Timer Settings",
+  "ar": "اعدادات المؤقت",
+  "unit_en": "s",
+  "unit_ar": "ثانية",
+  "type": "text"
+ },
+ {
+  "id": 1036,
+  "en": "Tint or Shade",
+  "ar": "الدرجه او اللون",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1037,
+  "en": "Tip Material",
+  "ar": "خامه الطرف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1038,
+  "en": "Tip Shape",
+  "ar": "شكل الطرف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1039,
+  "en": "Tip Types",
+  "ar": "أنواع الرؤوس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1040,
+  "en": "Tip-Over Protection",
+  "ar": "فصل عند الانقلاب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1041,
+  "en": "Tire Size Code",
+  "ar": "كود مقاس الإطار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1042,
+  "en": "Tissues Per Pack",
+  "ar": "عدد المناديل الورقية في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1043,
+  "en": "Tool Count",
+  "ar": "عدد الادوات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1044,
+  "en": "Tool Length",
+  "ar": "طول الأداة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 1045,
+  "en": "Tool Type",
+  "ar": "نوع الأداة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1046,
+  "en": "Tools in set",
+  "ar": "الأدوات الموجودة بالطقم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1047,
+  "en": "Tools Included",
+  "ar": "أدوات مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1049,
+  "en": "Tooth or Bristle Material",
+  "ar": "خامة الأسنان أو الشعيرات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1050,
+  "en": "Tooth or Rib Count",
+  "ar": "عدد الأسنان أو الأضلاع",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1051,
+  "en": "Top Material",
+  "ar": "خامة السطح العلوي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1052,
+  "en": "Total Capacity",
+  "ar": "إجمالي السعة",
+  "unit_en": "L",
+  "unit_ar": "لتر",
+  "type": "number"
+ },
+ {
+  "id": 1053,
+  "en": "Total Drying Line Length",
+  "ar": "إجمالي طول حبال أو قضبان النشر",
+  "unit_en": "m",
+  "unit_ar": "متر",
+  "type": "number"
+ },
+ {
+  "id": 1054,
+  "en": "Total Hair Weight",
+  "ar": "اجمالي وزن الشعر",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 1055,
+  "en": "Total Item Weight",
+  "ar": "وزن القطعة الكامل",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 1056,
+  "en": "Total Kit Capacity",
+  "ar": "إجمالي سعة الطقم",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 1057,
+  "en": "Total Storage Capacity",
+  "ar": "إجمالي سعة التخزين",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 1058,
+  "en": "Touchscreen",
+  "ar": "شاشة لمس",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1059,
+  "en": "Tube Type",
+  "ar": "نوع الأنبوب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1061,
+  "en": "Type of storage",
+  "ar": "نوع التخزين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1062,
+  "en": "Umbrella Type",
+  "ar": "نوع المظلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1063,
+  "en": "Underwired",
+  "ar": "بسلك سفلي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1064,
+  "en": "Unfolded Dimensions",
+  "ar": "الأبعاد عند الفرد",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1065,
+  "en": "Unfolded Length",
+  "ar": "الطول عند الفرد",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1066,
+  "en": "Unfolded Width",
+  "ar": "العرض عند الفرد",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1067,
+  "en": "Units per Pack",
+  "ar": "عدد الوحدات داخل العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1068,
+  "en": "Unlocking Method",
+  "ar": "طريقة فتح القفل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1069,
+  "en": "Upholstery Material",
+  "ar": "خامه التجنيد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1070,
+  "en": "Upper Material",
+  "ar": "خامة الجزء العلوي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1071,
+  "en": "Usage",
+  "ar": "الاستخدام",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1072,
+  "en": "USB",
+  "ar": "الوصلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1073,
+  "en": "USB Connector Type",
+  "ar": "نوع موصل USB",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1074,
+  "en": "USB Port Count",
+  "ar": "عدد منافذ USB",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1075,
+  "en": "USB Standard",
+  "ar": "معيار USB",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1076,
+  "en": "UV Protection",
+  "ar": "الحماية من الأشعة فوق البنفسجية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1077,
+  "en": "UVA Protection Label",
+  "ar": "تصنيف حماية UVA",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1078,
+  "en": "Vacuum Type",
+  "ar": "نوع المكنسة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1079,
+  "en": "Video Recording",
+  "ar": "تصوير الفيديو",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1080,
+  "en": "Vegetable or Fruit Type",
+  "ar": "نوع الخضار أو الفاكهة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1081,
+  "en": "Vehicle Category",
+  "ar": "فئه المركبه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1082,
+  "en": "Vehicle Manufacturer Approvals",
+  "ar": "اعتمادات مصنعي المركبات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1083,
+  "en": "Vehicle Power Source",
+  "ar": "مصدر طاقة السيارة",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 1084,
+  "en": "Video Memory Capacity",
+  "ar": "سعة ذاكرة الفديو",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "number"
+ },
+ {
+  "id": 1085,
+  "en": "Video Memory Type",
+  "ar": "نوع ذاكرة الفديو",
+  "unit_en": "GB",
+  "unit_ar": "جيجابايت",
+  "type": "text"
+ },
+ {
+  "id": 1086,
+  "en": "View Finder",
+  "ar": "مُحدِّد الرؤية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1087,
+  "en": "Voltage",
+  "ar": "الجهد",
+  "unit_en": "V",
+  "unit_ar": "فولت",
+  "type": "number"
+ },
+ {
+  "id": 1089,
+  "en": "Waist Rise",
+  "ar": "ارتفاع الخصر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1090,
+  "en": "Wallet Type",
+  "ar": "نوع المحفظة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1091,
+  "en": "Warmer Type",
+  "ar": "نوع السخان",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1092,
+  "en": "Warmth Level",
+  "ar": "مستوى الدفء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1094,
+  "en": "Warranty Period",
+  "ar": "مدة الضمان",
+  "unit_en": "month",
+  "unit_ar": "شهر",
+  "type": "number"
+ },
+ {
+  "id": 1095,
+  "en": "Washability",
+  "ar": "قابلية الغسل بالماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1096,
+  "en": "Washable Head",
+  "ar": "راس قابل للغسل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1097,
+  "en": "Washing Capacity",
+  "ar": "سعة الغسيل",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "text"
+ },
+ {
+  "id": 1098,
+  "en": "Water Heating Function",
+  "ar": "وظيفة تسخين المياه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1099,
+  "en": "Water Pressure Level Count",
+  "ar": "عدد مستويات ضغط المياه",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 1100,
+  "en": "Water resistance",
+  "ar": "مقاومة المياه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1101,
+  "en": "Water Resistance Rating",
+  "ar": "تصنيف مقاومة الماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1102,
+  "en": "Water Supply Method",
+  "ar": "طريقة تغذية المياه",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1103,
+  "en": "Water Tank Capacity",
+  "ar": "سعة خزان المياه",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 1104,
+  "en": "Water Temperature Options",
+  "ar": "خيارات حرارة المياه",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "text"
+ },
+ {
+  "id": 1105,
+  "en": "Water/Dust Properties",
+  "ar": "خصائص مقاومة الماء والغبار",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1106,
+  "en": "Waterproof",
+  "ar": "مقاومة للماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1107,
+  "en": "Water-resistant Backing",
+  "ar": "قاعده مقاومه للماء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1108,
+  "en": "Wattage",
+  "ar": "القوة الكهربائية",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "text"
+ },
+ {
+  "id": 1109,
+  "en": "Wax or Strip Type",
+  "ar": "نوع الشمع أو الشرائح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1110,
+  "en": "Wear Indicator Type",
+  "ar": "نوع مؤشر التآكل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1111,
+  "en": "Weight",
+  "ar": "الوزن",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "text"
+ },
+ {
+  "id": 1112,
+  "en": "Weight per Bar",
+  "ar": "وزن القطعة الواحدة",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 1113,
+  "en": "Weight per Roller",
+  "ar": "وزن البكرة الواحدة",
+  "unit_en": "g",
+  "unit_ar": "جرام",
+  "type": "number"
+ },
+ {
+  "id": 1114,
+  "en": "Wet and Dry Use",
+  "ar": "استخدام رطب وجاف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1115,
+  "en": "Wetness Indicator",
+  "ar": "مؤشر البلل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1116,
+  "en": "What's In The Box",
+  "ar": "لمحتويات في العلبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1117,
+  "en": "Wheel Assembly Count",
+  "ar": "عدد مجموعات العجلات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "text"
+ },
+ {
+  "id": 1118,
+  "en": "Wheel count",
+  "ar": "عدد العجلات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1119,
+  "en": "Wheel Mounting Hole Count",
+  "ar": "عدد فتحات تثبيت العجلة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1120,
+  "en": "Wheel Size",
+  "ar": "مقاس العجلة",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "number"
+ },
+ {
+  "id": 1121,
+  "en": "Wheels",
+  "ar": "مزود بعجلات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1122,
+  "en": "White Color Temperature",
+  "ar": "درجة حرارة اللون الأبيض",
+  "unit_en": "K",
+  "unit_ar": "كلفن",
+  "type": "text"
+ },
+ {
+  "id": 1123,
+  "en": "Wi Fi",
+  "ar": "الواي فاي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1124,
+  "en": "Width",
+  "ar": "العرض",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 1125,
+  "en": "Wi-Fi Frequency Bands",
+  "ar": "نطاقات الواي فاي",
+  "unit_en": "GHz",
+  "unit_ar": "جيجاهرتز",
+  "type": "text"
+ },
+ {
+  "id": 1126,
+  "en": "Wi-Fi Speed Class",
+  "ar": "فئة سرعة الواي فاي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1127,
+  "en": "Wi-Fi Standard",
+  "ar": "معيار الواي فاي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1128,
+  "en": "Window Position",
+  "ar": "موضع الزجاج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1129,
+  "en": "Wings",
+  "ar": "مزودة بأجنحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1130,
+  "en": "Wiper Blade Lengths",
+  "ar": "طوال شفرات المساحات",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 1131,
+  "en": "Wiper Blade Type",
+  "ar": "نوع شفرة المساحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1132,
+  "en": "Wipes per Pack",
+  "ar": "عدد المناديل المبللة في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1133,
+  "en": "Wired Charging Power",
+  "ar": "قدرة الشحن السلكي",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 1134,
+  "en": "Wringing Method",
+  "ar": "طريقة العصر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1135,
+  "en": "Zoom",
+  "ar": "تكبير",
+  "unit_en": "x",
+  "unit_ar": "مرة",
+  "type": "text"
+ },
+ {
+  "id": 1136,
+  "en": "Advertised Sequential Write Speed",
+  "ar": "أقصى سرعة كتابة متتابعة معلنة",
+  "unit_en": "MB/s",
+  "unit_ar": "ميجابايت/ثانية",
+  "type": "number"
+ },
+ {
+  "id": 1137,
+  "en": "Bags per Pack",
+  "ar": "عدد الأكياس في العبوة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1138,
+  "en": "Ball Size",
+  "ar": "مقاس الكرة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1139,
+  "en": "Band Length",
+  "ar": "طول الشريط",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1140,
+  "en": "Basket / Cooking Zone Count",
+  "ar": "عدد السلال أو مناطق الطهي",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1141,
+  "en": "Battery Voltage",
+  "ar": "جهد البطارية",
+  "unit_en": "V",
+  "unit_ar": "فولت",
+  "type": "number"
+ },
+ {
+  "id": 1142,
+  "en": "Block Type",
+  "ar": "نوع المكعبات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1143,
+  "en": "Board Type",
+  "ar": "نوع اللوح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1144,
+  "en": "Boot Height Style",
+  "ar": "طول ساق البوت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1145,
+  "en": "Bottle Material",
+  "ar": "خامة الزجاجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1146,
+  "en": "Bottles per Cycle",
+  "ar": "عدد الرضاعات في الدورة",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1147,
+  "en": "Brush Type",
+  "ar": "نوع الفرشاة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1148,
+  "en": "Bulbs Included",
+  "ar": "اللمبات مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1149,
+  "en": "Capacity per Bag",
+  "ar": "سعة الكيس الواحد",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 1150,
+  "en": "Chain Seal Type",
+  "ar": "نوع حلقات العزل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1151,
+  "en": "Chain Size Code",
+  "ar": "كود مقاس الجنزير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1152,
+  "en": "Changing Mat Type",
+  "ar": "نوع المفرش",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1153,
+  "en": "Cheese Type",
+  "ar": "نوع الجبن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1154,
+  "en": "Coffee Input Type",
+  "ar": "نوع القهوة المستخدمة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1155,
+  "en": "Coffee Machine Type",
+  "ar": "نوع ماكينة القهوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1156,
+  "en": "Color or Design",
+  "ar": "اللون أو التصميم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1157,
+  "en": "Compatible Applications",
+  "ar": "أماكن الاستخدام المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1158,
+  "en": "Compatible Capsule System",
+  "ar": "نظام الكبسولات المتوافق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1159,
+  "en": "Compatible Containers",
+  "ar": "العبوات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1160,
+  "en": "Compatible Items",
+  "ar": "الأدوات المتوافقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1161,
+  "en": "Conditioner Type",
+  "ar": "نوع البلسم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1162,
+  "en": "Connecting Link Type",
+  "ar": "نوع وصلة إغلاق الجنزير",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1163,
+  "en": "Container Types",
+  "ar": "أنواع العبوات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1164,
+  "en": "Continuous Motor Power",
+  "ar": "قدرة المحرك المستمرة",
+  "unit_en": "hp",
+  "unit_ar": "حصان ميكانيكي",
+  "type": "number"
+ },
+ {
+  "id": 1165,
+  "en": "Coverage",
+  "ar": "درجة التغطية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1166,
+  "en": "Curved Screen",
+  "ar": "شاشة منحنية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1167,
+  "en": "Deck Length",
+  "ar": "طول اللوح",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1168,
+  "en": "Deck Material",
+  "ar": "خامة سطح اللوح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1169,
+  "en": "Deck Width",
+  "ar": "عرض اللوح",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1170,
+  "en": "Declared Earth Connection",
+  "ar": "توصيل أرضي معلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1171,
+  "en": "Declared Main Ingredient",
+  "ar": "المكون الأساسي المعلن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1172,
+  "en": "Declared Material",
+  "ar": "الخامة المعلنة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1173,
+  "en": "Declared Tip Sizes",
+  "ar": "مقاسات الأطراف المعلنة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 1174,
+  "en": "Decoration Type",
+  "ar": "نوع الزينة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1175,
+  "en": "Desk Type",
+  "ar": "نوع المكتب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1176,
+  "en": "Dimensions (L × W × H)",
+  "ar": "الأبعاد: طول × عرض × ارتفاع",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 1177,
+  "en": "Disc Diameter",
+  "ar": "قطر القرص",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "number"
+ },
+ {
+  "id": 1178,
+  "en": "Door Type",
+  "ar": "نوع الأبواب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1179,
+  "en": "Dumbbell Type",
+  "ar": "نوع الدمبل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1180,
+  "en": "Earring Type",
+  "ar": "نوع الحلق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1181,
+  "en": "Emergency Stop",
+  "ar": "إيقاف طوارئ",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1182,
+  "en": "eSIM Support",
+  "ar": "دعم الشريحة الإلكترونية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1183,
+  "en": "Extendable",
+  "ar": "قابلة للتمديد",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1184,
+  "en": "Fan Type",
+  "ar": "نوع المروحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1185,
+  "en": "Fast Charging Protocols",
+  "ar": "بروتوكولات الشحن السريع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1186,
+  "en": "Filter Dimensions",
+  "ar": "أبعاد الفلتر",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 1187,
+  "en": "Filter Type",
+  "ar": "نوع الفلتر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1188,
+  "en": "Flavor or Additions",
+  "ar": "النكهة أو الإضافات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1189,
+  "en": "Flavor or Filling",
+  "ar": "النكهة أو الحشو",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1190,
+  "en": "Flavor or Scent",
+  "ar": "النكهة أو الرائحة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1191,
+  "en": "Floor Included",
+  "ar": "أرضية مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1192,
+  "en": "Flour Type",
+  "ar": "نوع الدقيق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1193,
+  "en": "Football Type",
+  "ar": "نوع كرة القدم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1194,
+  "en": "Freezer Type",
+  "ar": "نوع الفريزر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1195,
+  "en": "Fruit or Flavor",
+  "ar": "الفاكهة أو النكهة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1196,
+  "en": "Game Type",
+  "ar": "نوع اللعبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1197,
+  "en": "Garment Bag Type",
+  "ar": "نوع الحافظة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1198,
+  "en": "Honey Type",
+  "ar": "نوع العسل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1199,
+  "en": "Hood Type",
+  "ar": "نوع الشفاط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1200,
+  "en": "Humidification Technology",
+  "ar": "تقنية الترطيب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1201,
+  "en": "Incline Adjustment Type",
+  "ar": "نوع ضبط الميل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1202,
+  "en": "Included Breast Shield Sizes",
+  "ar": "مقاسات قمع الشفط المرفقة",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 1203,
+  "en": "Infant Support Included",
+  "ar": "دعامة رضيع مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1204,
+  "en": "Instrument Type",
+  "ar": "نوع الآلة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1205,
+  "en": "Labelled Microwave Suitability",
+  "ar": "ملائم للميكروويف حسب العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1206,
+  "en": "Layer Count",
+  "ar": "عدد الطبقات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1207,
+  "en": "Lens Type",
+  "ar": "نوع العدسة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1208,
+  "en": "Link Count",
+  "ar": "عدد حلقات الجنزير",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1209,
+  "en": "Manufacturer-stated Cooling Suitability",
+  "ar": "مناسب للتبريد حسب المصنع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1210,
+  "en": "Manufacturer-stated Pre-sterilization",
+  "ar": "معقم مسبقًا حسب المصنع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1211,
+  "en": "Mask Type",
+  "ar": "نوع الماسك",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1212,
+  "en": "Mat Material",
+  "ar": "خامة السجادة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1213,
+  "en": "Maximum Compatible Bottle Capacity",
+  "ar": "أقصى سعة رضاعة متوافقة",
+  "unit_en": "mL",
+  "unit_ar": "مل",
+  "type": "number"
+ },
+ {
+  "id": 1214,
+  "en": "Maximum Compatible Opening Width",
+  "ar": "أقصى عرض فتحة متوافق",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1215,
+  "en": "Maximum Incline",
+  "ar": "أقصى ميل",
+  "unit_en": "%",
+  "unit_ar": "نسبة مئوية",
+  "type": "number"
+ },
+ {
+  "id": 1216,
+  "en": "Maximum Rope Length",
+  "ar": "أقصى طول للحبل",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1217,
+  "en": "Milk Type",
+  "ar": "نوع الحليب",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1218,
+  "en": "Minimum Adjustable Weight",
+  "ar": "أقل وزن قابل للضبط",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 1219,
+  "en": "Minimum Compatible Opening Width",
+  "ar": "أقل عرض فتحة متوافق",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1220,
+  "en": "Monitor Type",
+  "ar": "نوع المراقبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1221,
+  "en": "Motion Type",
+  "ar": "نوع حركة الكرسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1222,
+  "en": "Motor Power",
+  "ar": "قدرة المحرك",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 1223,
+  "en": "Mounting Method",
+  "ar": "طريقة التثبيت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1224,
+  "en": "Nipple Brush Included",
+  "ar": "فرشاة حلمات مرفقة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1225,
+  "en": "Non-slip Base",
+  "ar": "قاعدة مانعة للانزلاق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1226,
+  "en": "Non-Slip Surface",
+  "ar": "سطح مانع للانزلاق",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1227,
+  "en": "Pack Form",
+  "ar": "شكل العبوة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1228,
+  "en": "Pan Type",
+  "ar": "نوع المقلاة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1229,
+  "en": "Parent-unit Screen Size",
+  "ar": "مقاس شاشة وحدة الوالدين",
+  "unit_en": "in",
+  "unit_ar": "بوصة",
+  "type": "number"
+ },
+ {
+  "id": 1230,
+  "en": "Pasta Type",
+  "ar": "نوع المكرونة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1231,
+  "en": "Play Area Dimensions",
+  "ar": "مقاس مساحة اللعب",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 1232,
+  "en": "Plier Type",
+  "ar": "نوع الكماشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1233,
+  "en": "Primary Use",
+  "ar": "الاستخدام الأساسي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1234,
+  "en": "Processing Type",
+  "ar": "طريقة المعالجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1235,
+  "en": "Processor",
+  "ar": "المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1236,
+  "en": "Protection Product Type",
+  "ar": "نوع مادة الحماية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1237,
+  "en": "Pump Type",
+  "ar": "نوع الشفاط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1238,
+  "en": "Rated Voltage Range",
+  "ar": "نطاق الجهد المعلن",
+  "unit_en": "V",
+  "unit_ar": "فولت",
+  "type": "text"
+ },
+ {
+  "id": 1239,
+  "en": "Rattle Type",
+  "ar": "نوع الخشخيشة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1240,
+  "en": "Refrigerator Type",
+  "ar": "نوع الثلاجة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1241,
+  "en": "Resistance Band Type",
+  "ar": "نوع شريط المقاومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1242,
+  "en": "Resistance Level",
+  "ar": "مستوى المقاومة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1243,
+  "en": "Ring Size",
+  "ar": "مقاس الخاتم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1244,
+  "en": "Roll Width",
+  "ar": "عرض الرول",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1245,
+  "en": "Roller Diameters",
+  "ar": "أقطار اللفافات",
+  "unit_en": "mm",
+  "unit_ar": "مم",
+  "type": "text"
+ },
+ {
+  "id": 1246,
+  "en": "Rope Material",
+  "ar": "خامة الحبل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1247,
+  "en": "Running Surface Length",
+  "ar": "طول سطح الجري",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1248,
+  "en": "Running Surface Width",
+  "ar": "عرض سطح الجري",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "number"
+ },
+ {
+  "id": 1249,
+  "en": "Scrub Type",
+  "ar": "نوع المقشر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1250,
+  "en": "Shell Type",
+  "ar": "نوع الهيكل",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1251,
+  "en": "Single Dumbbell Weight or Maximum",
+  "ar": "وزن الدمبل الواحد أو أقصى وزن",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 1252,
+  "en": "Single or Double Pumping",
+  "ar": "نظام الشفط",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1253,
+  "en": "Single-use",
+  "ar": "مخصص للاستخدام مرة واحدة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1254,
+  "en": "Skate Type",
+  "ar": "نوع التزلج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1255,
+  "en": "Skipping Rope Type",
+  "ar": "نوع حبل القفز",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1256,
+  "en": "Sofa Type",
+  "ar": "نوع الكنبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1257,
+  "en": "Sound or Lights",
+  "ar": "صوت أو إضاءة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1258,
+  "en": "Speaker Type",
+  "ar": "نوع مكبر الصوت",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1259,
+  "en": "Sterilization Method",
+  "ar": "طريقة التعقيم",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1260,
+  "en": "Sugar Type",
+  "ar": "نوع السكر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1261,
+  "en": "Tip Shapes",
+  "ar": "أشكال الأطراف",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1262,
+  "en": "Two-way Audio",
+  "ar": "صوت باتجاهين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1263,
+  "en": "Vehicle Type",
+  "ar": "نوع المركبة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1264,
+  "en": "Video Inputs",
+  "ar": "مداخل الصورة",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1265,
+  "en": "Video Resolution",
+  "ar": "دقة الفيديو",
+  "unit_en": "px",
+  "unit_ar": "بكسل",
+  "type": "text"
+ },
+ {
+  "id": 1266,
+  "en": "Warming Method",
+  "ar": "طريقة التسخين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1267,
+  "en": "Wearable",
+  "ar": "قابل للارتداء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1268,
+  "en": "Wrench Type",
+  "ar": "نوع المفتاح",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1269,
+  "en": "Yogurt Type",
+  "ar": "نوع الزبادي",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1270,
+  "en": "Processor Model",
+  "ar": "نموذج المعالج",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1271,
+  "en": "Front Camera",
+  "ar": "الكاميرا الأمامية",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 1272,
+  "en": "Rear Camera",
+  "ar": "الكاميرا الخلفية",
+  "unit_en": "MP",
+  "unit_ar": "ميجابكسل",
+  "type": "text"
+ },
+ {
+  "id": 1273,
+  "en": "Bluetooth Version",
+  "ar": "إصدار البلوتوث",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1274,
+  "en": "Charging Type",
+  "ar": "نوع الشحن",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1275,
+  "en": "Port Type",
+  "ar": "نوع المنفذ",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1276,
+  "en": "Speaker Power",
+  "ar": "قدرة مكبر الصوت",
+  "unit_en": "W",
+  "unit_ar": "واط",
+  "type": "number"
+ },
+ {
+  "id": 1277,
+  "en": "Noise Level",
+  "ar": "مستوى الضوضاء",
+  "unit_en": "dB",
+  "unit_ar": "ديسيبل",
+  "type": "number"
+ },
+ {
+  "id": 1278,
+  "en": "Gender",
+  "ar": "الفئة (رجالي/حريمي/أطفال)",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1279,
+  "en": "Temperature Range",
+  "ar": "نطاق درجة الحرارة",
+  "unit_en": "°C",
+  "unit_ar": "درجة مئوية",
+  "type": "text"
+ },
+ {
+  "id": 1280,
+  "en": "Dimensions",
+  "ar": "الأبعاد",
+  "unit_en": "cm",
+  "unit_ar": "سم",
+  "type": "text"
+ },
+ {
+  "id": 1281,
+  "en": "Battery Type",
+  "ar": "نوع البطارية",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1282,
+  "en": "Shelf Life",
+  "ar": "مدة الصلاحية",
+  "unit_en": "month",
+  "unit_ar": "شهر",
+  "type": "number"
+ },
+ {
+  "id": 1283,
+  "en": "Calories",
+  "ar": "السعرات الحرارية",
+  "unit_en": "kcal",
+  "unit_ar": "سعرة حرارية",
+  "type": "number"
+ },
+ {
+  "id": 1284,
+  "en": "Load Capacity",
+  "ar": "قدرة التحميل",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 1285,
+  "en": "Spin Speed",
+  "ar": "سرعة العصر",
+  "unit_en": "rpm",
+  "unit_ar": "دورة/دقيقة",
+  "type": "number"
+ },
+ {
+  "id": 1286,
+  "en": "Contrast Ratio",
+  "ar": "نسبة التباين",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1287,
+  "en": "Response Time",
+  "ar": "زمن الاستجابة",
+  "unit_en": "ms",
+  "unit_ar": "مللي ثانية",
+  "type": "number"
+ },
+ {
+  "id": 1288,
+  "en": "Viewing Angle",
+  "ar": "زاوية الرؤية",
+  "unit_en": "°",
+  "unit_ar": "درجة",
+  "type": "number"
+ },
+ {
+  "id": 1289,
+  "en": "Aspect Ratio",
+  "ar": "نسبة العرض إلى الارتفاع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1290,
+  "en": "Gross Weight",
+  "ar": "الوزن الإجمالي",
+  "unit_en": "kg",
+  "unit_ar": "كجم",
+  "type": "number"
+ },
+ {
+  "id": 1291,
+  "en": "Aperture",
+  "ar": "فتحة العدسة",
+  "unit_en": "f/",
+  "unit_ar": "فتحة",
+  "type": "text"
+ },
+ {
+  "id": 1292,
+  "en": "Certification",
+  "ar": "الشهادات",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1293,
+  "en": "Seating Capacity",
+  "ar": "سعة المقاعد",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1294,
+  "en": "Burner Count",
+  "ar": "عدد الشعلات",
+  "unit_en": "count",
+  "unit_ar": "عدد",
+  "type": "number"
+ },
+ {
+  "id": 1295,
+  "en": "Wax Capacity",
+  "ar": "سعة الشمع",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1296,
+  "en": "Expiry Date",
+  "ar": "تاريخ الانتهاء",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ },
+ {
+  "id": 1297,
+  "en": "Ink Color",
+  "ar": "لون الحبر",
+  "unit_en": "—",
+  "unit_ar": "—",
+  "type": "text"
+ }
+]

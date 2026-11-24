@@ -35,7 +35,7 @@ export function Pagination({ page, total, perPage, hrefFor, window: span = 5 }: 
           aria-label={t("common.back")}
           className="flex size-10 items-center justify-center rounded-md border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
         >
-          <ChevronRightIcon aria-hidden="true" className="mirr" />
+          <ChevronLeftIcon aria-hidden="true" className="mirr" />
         </Link>
       ) : null}
       {items.map((p) => (
@@ -60,7 +60,7 @@ export function Pagination({ page, total, perPage, hrefFor, window: span = 5 }: 
           aria-label={t("common.next")}
           className="flex size-10 items-center justify-center rounded-md border border-border bg-surface text-text transition-colors duration-150 hover:bg-surface-tint"
         >
-          <ChevronLeftIcon aria-hidden="true" className="mirr" />
+          <ChevronRightIcon aria-hidden="true" className="mirr" />
         </Link>
       ) : null}
       <span className="sr-only">{t("store.listing.pageOf", { page, total: pages })}</span>

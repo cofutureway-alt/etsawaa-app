@@ -1,0 +1,7 @@
+{
+  "common.typeToNarrow": { "ar": "اكتب للبحث عن المزيد", "en": "Type to narrow the list" },
+  "store.listing.sort_recommended": { "ar": "مقترحة لك", "en": "Recommended" },
+  "store.search.brands": { "ar": "الماركات", "en": "Brands" },
+  "store.filters.allBrands": { "ar": "كل الماركات", "en": "All brands" },
+  "store.brands.byLetter": { "ar": "تصفية بالحرف الأول", "en": "Filter by first letter" }
+}

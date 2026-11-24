@@ -1,0 +1,46 @@
+{
+  "expected": {
+    "l1": 10,
+    "l2": 38,
+    "l3": 170,
+    "l4": 1391,
+    "specs": 1339,
+    "options": 51,
+    "links": 12158,
+    "areas": 570,
+    "govs": 27
+  },
+  "dictionary": {
+    "from_specs_json": 1269,
+    "added_for_family_templates": 70,
+    "variant_axes": [
+      "color",
+      "size"
+    ]
+  },
+  "templates": {
+    "exact": 955,
+    "new_family": 399
+  },
+  "shared": {
+    "types": 32,
+    "missingPlacements": []
+  },
+  "rejects": [
+    {
+      "dataset": "specs",
+      "reason": "brand_is_not_a_spec",
+      "row": "Brand"
+    },
+    {
+      "dataset": "areas",
+      "reason": "duplicate_area_name_in_governorate",
+      "row": "Cairo/الجمالية"
+    },
+    {
+      "dataset": "areas",
+      "reason": "duplicate_area_name_in_governorate",
+      "row": "Matrouh/مرسي مطروح"
+    }
+  ]
+}

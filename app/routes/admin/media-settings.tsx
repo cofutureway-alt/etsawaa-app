@@ -68,12 +68,18 @@ export async function action({ request, params }: Route.ActionArgs) {
   const { error } = await client.from("settings").upsert({ key: "media", value: checked.data }, { onConflict: "key" });
   if (error) return { ok: false as const, reason: error.message };
 
-  // apply the limits to the buckets through the service-role edge function
+  // apply the limits to the media bucket through the service-role edge
+  // function. Same as the probe above: a form POST carries cookies, not an
+  // Authorization header, so send the admin's own access token (the anon key
+  // fallback made the function answer 401 on every save).
+  const { data: sessionData } = await client.auth.getSession();
+  const accessToken = sessionData.session?.access_token;
+  if (!accessToken) return { ok: false as const, reason: "no_session" };
   const fnUrl = `${process.env.SUPABASE_URL}/functions/v1/admin-update-bucket`;
   const res = await fetch(fnUrl, {
     method: "POST",
     headers: {
-      Authorization: request.headers.get("Authorization") ?? `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+      Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json",
       apikey: process.env.SUPABASE_ANON_KEY ?? "",
     },
@@ -112,21 +118,28 @@ export default function AdminMediaSettings({ loaderData }: Route.ComponentProps)
             ["allow_video", "mediaSettings.video"],
             ["allow_pdf", "mediaSettings.pdf"],
           ] as const).map(([key, label]) => (
-            <label key={key} className="flex items-center gap-2 text-sm font-bold text-text">
-              <input
-                type="checkbox"
-                name={key}
-                checked={m[key]}
-                onChange={(e) => setM((cur) => ({ ...cur, [key]: e.target.checked }))}
-                className="size-4 accent-[var(--color-action)]"
-              />
-              {t(label)}
-            </label>
+            <div key={key}>
+              <label className="flex items-center gap-2 text-sm font-bold text-text">
+                <input
+                  type="checkbox"
+                  name={key}
+                  checked={m[key]}
+                  onChange={(e) => setM((cur) => ({ ...cur, [key]: e.target.checked }))}
+                  className="size-4 accent-[var(--color-action)]"
+                />
+                {t(label)}
+              </label>
+              {/* the switch alone is enough: the three video formats are always accepted */}
+              {key === "allow_video" ? (
+                <p className="ms-6 text-xs font-normal text-text-muted">{t("mediaSettings.videoHint")}</p>
+              ) : null}
+            </div>
           ))}
         </fieldset>
 
         <fieldset className="flex flex-col gap-2">
           <legend className="text-sm font-extrabold text-text">{t("mediaSettings.mimes")}</legend>
+          <p className="text-xs text-text-muted">{t("mediaSettings.mimesHint")}</p>
           {mimeList.map((mime) => (
             <label key={mime} className="flex items-center gap-2 text-sm text-text">
               <input

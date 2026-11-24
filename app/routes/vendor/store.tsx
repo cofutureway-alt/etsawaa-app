@@ -19,12 +19,16 @@ import { fetchVendorRow, type VendorDocumentRow } from "~/features/vendor/api";
 import { parseMediaSettings } from "~/lib/media.shared";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { ChangeDiff, type ChangeRequest } from "~/features/vendor/components/ChangeDiff";
 
 
 /**
  * /vendor/store — store settings (V-10): edit the store profile the vendor
  * filled during onboarding. RLS-protected owner columns; status/verification
- * stay server-managed.
+ * stay server-managed. Once the store is active, changes are not applied
+ * directly: they become a change request an admin approves or rejects
+ * (fn_vendor_request_store_change; a DB trigger refuses direct writes). The
+ * form shows the pending values, the banner the old → new diff.
  */
 
 interface GovRow { id: number; name_ar: string; name_en: string }
@@ -42,7 +46,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (!vendor) {
     throw redirect(`/${lang}/vendor/onboarding`);
   }
-  const [govs, areas, cats, mediaRow] = await Promise.all([
+  const [govs, areas, cats, mediaRow, requests] = await Promise.all([
     client.from("governorates").select("id, name_ar, name_en").eq("is_active", true).order("sort"),
     client.from("areas").select("id, governorate_id, name_ar, name_en").eq("is_active", true).order("sort"),
     client
@@ -50,13 +54,22 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       .select("id, parent_id, name_ar, name_en")
       .eq("is_active", true)
       .is("deleted_at", null)
+      .lte("depth", 2) // the store-category picker shows roots + their subs only
       .order("sort"),
     client.from("settings").select("value").eq("key", "media").maybeSingle(),
+    client.from("vendor_change_requests").select("id, changes, previous, status, reason, created_at, reviewed_at")
+      .eq("vendor_id", vendor.id).order("created_at", { ascending: false }).limit(10),
   ]);
+  const history = (requests.data ?? []) as ChangeRequest[];
+  const pending = history.find((r) => r.status === "pending") ?? null;
   return data({
     lang,
     uid: viewer.user.id,
-    vendor,
+    // the form edits the pending values, so a new submission builds on them
+    vendor: pending ? { ...vendor, ...(pending.changes as Partial<typeof vendor>) } : vendor,
+    reviewed: vendor.status === "active",
+    pending,
+    history: history.filter((r) => r.status !== "pending" && r.status !== "cancelled"),
     documents: [] as VendorDocumentRow[],
     governorates: (govs.data ?? []) as GovRow[],
     areas: (areas.data ?? []) as AreaRow[],
@@ -66,7 +79,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   });
 }
 
-type ActionData = { ok: boolean; error?: string };
+type ActionData = { ok: boolean; error?: string; pending?: boolean; unchanged?: boolean };
 
 export async function action({ request, params }: Route.ActionArgs) {
   const lang = requireLang(params);
@@ -77,6 +90,10 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (!vendor) return data<ActionData>({ ok: false, error: "no_store" }, { status: 400 });
 
   const form = await request.formData();
+  if (form.get("intent") === "cancel") {
+    const { error } = await client.rpc("fn_vendor_cancel_store_change");
+    return error ? data<ActionData>({ ok: false, error: error.message }, { status: 400 }) : { ok: true, unchanged: true };
+  }
   const categoryIds = form.getAll("categoryIds").map(String).filter(Boolean);
   const update = {
     store_name_ar: String(form.get("store_name_ar") ?? "").trim(),
@@ -117,6 +134,13 @@ export async function action({ request, params }: Route.ActionArgs) {
       .maybeSingle();
     if (!area) return data<ActionData>({ ok: false, error: "area_mismatch" }, { status: 400 });
   }
+  if (vendor.status === "active") {
+    const { data: res, error } = await client.rpc("fn_vendor_request_store_change", { p_changes: update });
+    if (error) return data<ActionData>({ ok: false, error: error.message.includes("store_suspended") ? "store_suspended" : error.message }, { status: 400 });
+    const r = res as { ok: boolean; reason?: string; unchanged?: boolean };
+    if (!r.ok) return data<ActionData>({ ok: false, error: r.reason ?? "failed" }, { status: 400 });
+    return { ok: true, pending: !r.unchanged, unchanged: Boolean(r.unchanged) };
+  }
   const { error } = await client.from("vendors").update(update).eq("id", vendor.id);
   if (error) return data<ActionData>({ ok: false, error: error.message }, { status: 400 });
   return { ok: true };
@@ -137,25 +161,50 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
   const [areaId, setAreaId] = useState(vendor.area_id ? String(vendor.area_id) : "");
   const lastToast = useRef<string | null>(null);
 
+  /* one toast per completed action; the lastToast ref guard makes the
+     extra dep-triggered runs (t/locale change) no-ops */
   useEffect(() => {
     if (fetcher.state !== "idle" || !fetcher.data) return;
     const stamp = fetcher.data.ok ? "ok" : (fetcher.data.error ?? "err");
     if (lastToast.current === stamp) return;
     lastToast.current = stamp;
-    if (fetcher.data.ok) toast.showToast("success", t("vendorStore.saved"));
+    if (fetcher.data.ok) toast.showToast("success", t(fetcher.data.pending ? "storeChange.sent" : fetcher.data.unchanged ? "storeChange.nothing" : "vendorStore.saved"));
+    else if (fetcher.data.error === "store_suspended") toast.showToast("error", t("verify.suspendedAction"));
     else if (fetcher.data.error === "area_mismatch") toast.showToast("error", t("vendorOnboarding.errors.area_required"));
     else toast.showToast("error", t("errors.generic"));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetcher.state, fetcher.data]);
+  }, [fetcher.state, fetcher.data, toast, t]);
 
   const areas = loaderData.areas.filter((a) => a.governorate_id === Number(govId));
   const [selectedCats, setSelectedCats] = useState<string[]>(vendor.category_ids ?? []);
 
   const roots = loaderData.categories.filter((c) => c.parent_id === null);
+  const lookups = {
+    categories: new Map(loaderData.categories.map((c) => [c.id, isAr ? c.name_ar : c.name_en])),
+    governorates: new Map(loaderData.governorates.map((g) => [String(g.id), isAr ? g.name_ar : g.name_en])),
+    areas: new Map(loaderData.areas.map((a) => [String(a.id), isAr ? a.name_ar : a.name_en])),
+    supabaseUrl: loaderData.supabaseUrl,
+  };
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-lg font-extrabold text-text">{t("vendorStore.title")}</h1>
+      {loaderData.reviewed ? <p className="-mt-2 text-sm text-text-muted">{t("storeChange.intro")}</p> : null}
+
+      {loaderData.pending ? (
+        <section className="flex flex-col gap-3 rounded-xl border-2 border-warning bg-warning-soft/60 p-4" role="status">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="font-extrabold text-text">{t("storeChange.pendingTitle")}</p>
+              <p className="text-xs text-text-muted">{t("storeChange.pendingHint")} · <span className="num">{new Date(loaderData.pending.created_at).toLocaleString(isAr ? "ar-EG-u-nu-latn" : "en-GB")}</span></p>
+            </div>
+            <fetcher.Form method="post">
+              <input type="hidden" name="intent" value="cancel" />
+              <Button type="submit" size="sm" variant="ghost" className="text-danger">{t("storeChange.cancel")}</Button>
+            </fetcher.Form>
+          </div>
+          <div className="rounded-lg bg-surface p-3"><ChangeDiff changes={loaderData.pending.changes} previous={loaderData.pending.previous} lookups={lookups} /></div>
+        </section>
+      ) : null}
 
       <fetcher.Form method="post" className="flex flex-col gap-4">
         <Card>
@@ -331,10 +380,28 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
         <div className="flex justify-end">
           <Button type="submit" size="lg" loading={fetcher.state !== "idle"}>
             <CheckIcon aria-hidden="true" className="size-4" />
-            {t("vendorStore.save")}
+            {t(loaderData.reviewed ? "storeChange.submit" : "vendorStore.save")}
           </Button>
         </div>
       </fetcher.Form>
+
+      {loaderData.history.length ? (
+        <details className="rounded-xl border border-border bg-surface">
+          <summary className="cursor-pointer px-4 py-3 text-sm font-extrabold text-text">{t("storeChange.history")}</summary>
+          <ol className="divide-y divide-border border-t border-border">
+            {loaderData.history.map((r) => (
+              <li key={r.id} className="flex flex-col gap-2 px-4 py-3">
+                <p className="flex flex-wrap items-center gap-2 text-sm">
+                  <b className={r.status === "approved" ? "text-success-strong" : "text-danger"}>{t(`storeChange.status.${r.status}`)}</b>
+                  <span className="num text-xs text-text-muted">{new Date(r.reviewed_at ?? r.created_at).toLocaleString(isAr ? "ar-EG-u-nu-latn" : "en-GB")}</span>
+                </p>
+                {r.reason ? <p className="text-xs text-text"><b>{t("storeChange.reason")}:</b> {r.reason}</p> : null}
+                <ChangeDiff changes={r.changes} previous={r.previous} lookups={lookups} />
+              </li>
+            ))}
+          </ol>
+        </details>
+      ) : null}
     </div>
   );
 }

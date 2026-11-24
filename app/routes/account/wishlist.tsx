@@ -12,6 +12,7 @@ import { MediaImg } from "~/components/catalog/MediaImg";
 import { AddToCartButton } from "~/features/account/AddToCartButton";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { PRODUCT_CARD_COLUMNS } from "~/features/storefront/api";
 
 
 /**
@@ -32,7 +33,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const ids = ((rows ?? []) as Array<{ product_id: string }>).map((r) => r.product_id);
   // live cards through the storefront view (draft/hidden products return nothing)
   const { data: cards } = ids.length > 0
-    ? await client.from("v_storefront_products").select("*").in("id", ids)
+    ? await client.from("v_storefront_products").select(PRODUCT_CARD_COLUMNS).in("id", ids)
     : { data: [] };
   const byId = new Map(((cards ?? []) as unknown as ProductCard[]).map((c) => [c.id, c]));
   const items = ids.map((id) => ({ product_id: id, product: byId.get(id) ?? null }));

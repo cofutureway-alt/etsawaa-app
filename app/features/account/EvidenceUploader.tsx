@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { uploadCustomerImage } from "./client";
-import { getSupabaseBrowserClient } from "~/lib/supabase/browser";
 import { DocumentImage } from "~/components/account/DocumentImage";
 
 /**
@@ -19,22 +18,14 @@ export function EvidenceUploader({ onChange }: { onChange: (paths: string[]) => 
     if (!files || files.length === 0) return;
     setBusy(true);
     setError(null);
-    const next: string[] = [...paths];
     try {
-      for (const file of Array.from(files).slice(0, 5)) {
-        if (!file.type.startsWith("image/") || file.size > 5 * 1024 * 1024) {
-          setError(t("returns.evidenceInvalid"));
-          continue;
-        }
-        const c = getSupabaseBrowserClient();
-        const uid = c ? (await c.auth.getUser()).data?.user?.id : null;
-        if (!uid) {
-          setError(t("returns.evidenceInvalid"));
-          break;
-        }
-        const { path } = await uploadCustomerImage(uid, file, "documents");
-        next.push(path);
-      }
+      const picked = Array.from(files).slice(0, 5);
+      const valid = picked.filter((file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024);
+      if (valid.length < picked.length) setError(t("returns.evidenceInvalid"));
+      if (valid.length === 0) return;
+      // independent uploads run in parallel (the route resolves the user)
+      const results = await Promise.all(valid.map((file) => uploadCustomerImage(file, "documents")));
+      const next = [...paths, ...results.map((r) => r.path)];
       setPaths(next);
       onChange(next);
     } catch {
@@ -51,7 +42,7 @@ export function EvidenceUploader({ onChange }: { onChange: (paths: string[]) => 
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/jpeg,image/png,image/webp,image/avif,.avif"
           multiple
           className="sr-only"
           onChange={(e) => void pick(e.target.files)}

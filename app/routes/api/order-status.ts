@@ -2,6 +2,8 @@ import type { LoaderFunctionArgs } from "react-router";
 import { data } from "react-router";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { getViewer } from "~/lib/auth/guards";
+import { getSupabaseAdminClient } from "~/lib/supabase/admin";
+import { reconcileKashierOrder } from "~/features/checkout/kashier.server";
 
 /**
  * GET /api/order-status?number=ETS-YY-### — RLS-scoped status probe used by
@@ -21,6 +23,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
     .eq("number", number)
     .maybeSingle();
   if (!row) return data({ ok: false, reason: "not_found" }, { status: 404 });
+  if (row.payment_status === "unpaid") {
+    // the viewer owns this order (RLS read above): ask Kashier directly, so
+    // the page settles even when the webhook is late or cannot reach us
+    const admin = getSupabaseAdminClient();
+    const res = admin ? await reconcileKashierOrder(admin, "order", number) : null;
+    if (res?.ok) {
+      const { data: fresh } = await client.from("orders").select("status, payment_status").eq("number", number).maybeSingle();
+      if (fresh) return data({ ok: true, status: fresh.status, payment_status: fresh.payment_status });
+    }
+  }
   return data({ ok: true, status: row.status, payment_status: row.payment_status });
 }
 

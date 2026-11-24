@@ -1,0 +1,1470 @@
+{
+  "admin.settings.portalUrl": {
+    "ar": "رابط بوابة الموظفين",
+    "en": "Staff portal link"
+  },
+  "admin.settings.portalUrlHint": {
+    "ar": "يظهر للإدارة وخدمة العملاء فقط: في قائمة الحساب أعلى الموقع وفي قائمة التبديل بين اللوحات. يبدأ بـ https:// — اتركه فارغًا لإخفائه.",
+    "en": "Shown to admins and customer support only: in the account menu at the top of the site and in the dashboard switcher. Starts with https:// — leave empty to hide it."
+  },
+  "admin.settings.portalLabelAr": {
+    "ar": "اسم الرابط (عربي)",
+    "en": "Link label (Arabic)"
+  },
+  "admin.settings.portalLabelEn": {
+    "ar": "اسم الرابط (إنجليزي)",
+    "en": "Link label (English)"
+  },
+  "vr.title": {
+    "ar": "تقييمات متجري",
+    "en": "My store ratings"
+  },
+  "bn.bestSize": {
+    "ar": "أفضل مقاس للرفع: {{w}} × {{h}} بكسل (عرض × ارتفاع).",
+    "en": "Best upload size: {{w}} × {{h}} px (width × height)."
+  },
+  "bn.fitHint": {
+    "ar": "كل بانرات المكان ده بتظهر بنفس المقاس. الصورة بتتعرض كاملة جوه الإطار، ولو مقاسها مختلف الفراغ بيتملي بخلفية من نفس الصورة.",
+    "en": "Every banner in this spot shows at the same size. The image is shown whole inside the frame; a different size is padded with a soft background from the same image."
+  },
+  "mm.title": {
+    "ar": "صور القائمة الرئيسية",
+    "en": "Mega menu images"
+  },
+  "mm.hint": {
+    "ar": "لكل قسم رئيسي: صورة تظهر في المساحة الفاضية لما قائمته تتفتح في الصفحة الرئيسية — كصورة جانبية أو كخلفية خفيفة.",
+    "en": "For each top-level category: an image shown in the empty space when its menu opens on the home page — as a side picture or a soft background."
+  },
+  "mm.shown": {
+    "ar": "ظاهرة",
+    "en": "Shown"
+  },
+  "mm.hidden": {
+    "ar": "مخفية",
+    "en": "Hidden"
+  },
+  "mm.pick": {
+    "ar": "اختيار صورة",
+    "en": "Choose an image"
+  },
+  "mm.change": {
+    "ar": "تغيير الصورة",
+    "en": "Change image"
+  },
+  "mm.mode": {
+    "ar": "طريقة العرض",
+    "en": "Display"
+  },
+  "mm.mode_corner": {
+    "ar": "صورة جانبية",
+    "en": "Side picture"
+  },
+  "mm.modeHint_corner": {
+    "ar": "في الركن الفاضي جنب الأقسام (منتج، أيقونة، عرض).",
+    "en": "In the empty corner beside the links (a product, icon, offer)."
+  },
+  "mm.mode_background": {
+    "ar": "خلفية",
+    "en": "Background"
+  },
+  "mm.modeHint_background": {
+    "ar": "تملا القائمة كلها بشفافية خفيفة ورا الكلام.",
+    "en": "Fills the whole panel, faint behind the text."
+  },
+  "mm.sizeCorner": {
+    "ar": "أفضل مقاس: 600 × 640 بكسل، PNG أو WebP بخلفية شفافة.",
+    "en": "Best size: 600 × 640 px, PNG or WebP with a transparent background."
+  },
+  "mm.sizeBg": {
+    "ar": "أفضل مقاس: 1600 × 600 بكسل.",
+    "en": "Best size: 1600 × 600 px."
+  },
+  "mm.link": {
+    "ar": "رابط عند الضغط على الصورة",
+    "en": "Link when the image is clicked"
+  },
+  "mm.linkHint": {
+    "ar": "اختياري — رابط داخلي يبدأ بـ / أو رابط https.",
+    "en": "Optional — an internal path starting with / or an https link."
+  },
+  "mm.active": {
+    "ar": "إظهار الصورة",
+    "en": "Show the image"
+  },
+  "mm.delete": {
+    "ar": "حذف الصورة",
+    "en": "Remove image"
+  },
+  "vendorOnboarding.step4.consent": {
+    "ar": "أوافق على <policies>سياسات الموقع وشروطه وأحكامه</policies> وعلى <contract>عقد التاجر وملحقاته</contract>، وعلى أي تعديلات مستقبلية تُجرى عليها.",
+    "en": "I agree to the <policies>site policies, terms and conditions</policies> and to the <contract>vendor agreement and its annexes</contract>, including any future amendments to them."
+  },
+  "vendorOnboarding.step3.idRequiredTitle": {
+    "ar": "صورة البطاقة مطلوبة",
+    "en": "Your ID card image is required"
+  },
+  "vendorOnboarding.step3.idRequiredBody": {
+    "ar": "ارفع صورة البطاقة الشخصية (الوجهين) عشان تكمّل التسجيل. باقي المستندات تقدر تستكملها خلال فترة السماح ({{grace}}).",
+    "en": "Upload your national ID (both sides) to continue. Other documents can follow within the grace period ({{grace}})."
+  },
+  "vendorOnboarding.errors.national_id_required": {
+    "ar": "ارفع صورة البطاقة الشخصية قبل المتابعة.",
+    "en": "Upload your national ID image before continuing."
+  },
+  "agr.store": {
+    "ar": "اسم المتجر",
+    "en": "Store"
+  },
+  "agr.owner": {
+    "ar": "اسم صاحب المتجر",
+    "en": "Owner"
+  },
+  "agr.phone": {
+    "ar": "الموبايل",
+    "en": "Mobile"
+  },
+  "agr.email": {
+    "ar": "البريد الإلكتروني",
+    "en": "Email"
+  },
+  "agr.address": {
+    "ar": "العنوان",
+    "en": "Address"
+  },
+  "agr.contractNo": {
+    "ar": "رقم العقد",
+    "en": "Contract no."
+  },
+  "agr.signedOn": {
+    "ar": "تاريخ التوقيع",
+    "en": "Signed on"
+  },
+  "agr.secondParty": {
+    "ar": "بيانات الطرف الثاني (التاجر)",
+    "en": "Second party (vendor)"
+  },
+  "agr.firstPartySign": {
+    "ar": "الطرف الأول",
+    "en": "First party"
+  },
+  "agr.firstPartyName": {
+    "ar": "شركة إتسوء للتسويق الإلكتروني",
+    "en": "Etsawaa e-marketing company"
+  },
+  "agr.stampHint": {
+    "ar": "الختم والتوقيع",
+    "en": "Stamp and signature"
+  },
+  "agr.secondPartySign": {
+    "ar": "الطرف الثاني (التاجر)",
+    "en": "Second party (vendor)"
+  },
+  "agr.eSignNote": {
+    "ar": "توقيع إلكتروني مسجّل على المنصة مع تاريخ ووقت الموافقة.",
+    "en": "Electronic signature recorded on the platform with the date and time of acceptance."
+  },
+  "agr.print": {
+    "ar": "طباعة / حفظ PDF",
+    "en": "Print / save PDF"
+  },
+  "agr.futureNote": {
+    "ar": "موافقتك تشمل أي تعديلات مستقبلية، والمعروض هو آخر نسخة من العقد.",
+    "en": "Your acceptance covers future amendments; the latest version of the agreement is shown."
+  },
+  "vcat.title": {
+    "ar": "الفئات والعمولات",
+    "en": "Categories & commissions"
+  },
+  "vcat.hint": {
+    "ar": "كل الفئات الفرعية ونسبة العمولة اللي متجرك بيدفعها على أي بيعة فيها.",
+    "en": "Every subcategory and the commission your store pays on a sale in it."
+  },
+  "vcat.range": {
+    "ar": "نطاق عمولاتك",
+    "en": "Your commission range"
+  },
+  "vcat.howTitle": {
+    "ar": "العمولة بتتحسب إزاي؟",
+    "en": "How is commission charged?"
+  },
+  "vcat.how": {
+    "ar": "العمولة بتتحسب على الفئة الفرعية اللي المنتج مضاف فيها، مش على القسم الرئيسي. النسب هنا شاملة أي خصم مستواك أو اتفاق خاص مع متجرك.",
+    "en": "Commission is charged on the subcategory the product is listed in, not on the top-level category. Rates here already include your level discount or any store-specific deal."
+  },
+  "vcat.search": {
+    "ar": "ابحث عن فئة",
+    "en": "Search a category"
+  },
+  "vcat.none": {
+    "ar": "مفيش فئات بالاسم ده.",
+    "en": "No category matches."
+  },
+  "vcat.subsCount": {
+    "ar": "{{count}} فئة فرعية",
+    "en": "{{count}} subcategories"
+  },
+  "vcat.leaves": {
+    "ar": "{{count}} نوع منتج",
+    "en": "{{count}} product types"
+  },
+  "vlv.title": {
+    "ar": "المستويات والشارات",
+    "en": "Levels & badges"
+  },
+  "vlv.hint": {
+    "ar": "إيه المطلوب لكل مستوى ومميزاته، ومعنى كل شارة.",
+    "en": "What each level takes and gives, and what each badge means."
+  },
+  "vlv.yourLevel": {
+    "ar": "مستواك الحالي",
+    "en": "Your level"
+  },
+  "vlv.ordersDone": {
+    "ar": "{{count}} طلب ناجح",
+    "en": "{{count}} successful orders"
+  },
+  "vlv.toNext": {
+    "ar": "فاضلك {{count}} طلب ناجح وتوصل لمستوى «{{name}}».",
+    "en": "{{count}} more successful orders to reach “{{name}}”."
+  },
+  "vlv.top": {
+    "ar": "أنت في أعلى مستوى متاح.",
+    "en": "You are at the highest level."
+  },
+  "vlv.levels": {
+    "ar": "المستويات",
+    "en": "Levels"
+  },
+  "vlv.current": {
+    "ar": "مستواك",
+    "en": "Your level"
+  },
+  "vlv.requirement": {
+    "ar": "المطلوب",
+    "en": "Requirement"
+  },
+  "vlv.minOrders": {
+    "ar": "{{count}} طلب ناجح على الأقل",
+    "en": "At least {{count}} successful orders"
+  },
+  "vlv.noRequirement": {
+    "ar": "بداية كل متجر جديد",
+    "en": "Every new store starts here"
+  },
+  "vlv.benefits": {
+    "ar": "المميزات",
+    "en": "Benefits"
+  },
+  "vlv.commission": {
+    "ar": "عمولة أساسية {{pct}}٪ (لو الفئة مالهاش نسبة خاصة)",
+    "en": "Base commission {{pct}}% (when the category has no rate of its own)"
+  },
+  "vlv.hold": {
+    "ar": "أرباحك بتتحول لرصيد متاح بعد {{days}} يوم",
+    "en": "Earnings become available after {{days}} days"
+  },
+  "vlv.reduction": {
+    "ar": "خصم {{pct}}٪ من العمولة",
+    "en": "{{pct}}% off commission"
+  },
+  "vlv.featured": {
+    "ar": "{{count}} منتج مميز مجانًا",
+    "en": "{{count}} free featured products"
+  },
+  "vlv.adPackage": {
+    "ar": "باقة إعلانية هدية",
+    "en": "A free ad package"
+  },
+  "vlv.badges": {
+    "ar": "الشارات",
+    "en": "Badges"
+  },
+  "vlv.noBadges": {
+    "ar": "مفيش شارات متاحة حاليًا.",
+    "en": "No badges yet."
+  },
+  "vlv.earned": {
+    "ar": "معاك",
+    "en": "Earned"
+  },
+  "vlv.badgeNoDesc": {
+    "ar": "تمنحها الإدارة للمتاجر المتميزة.",
+    "en": "Awarded by the team to outstanding stores."
+  },
+  "commission.onSubs": {
+    "ar": "العمولة على الفئات الفرعية",
+    "en": "Commission on subcategories"
+  },
+  "commission.rootHint": {
+    "ar": "العمولة بتتحدد على الفئات الفرعية اللي المنتج بيتضاف فيها، مش على القسم الرئيسي.",
+    "en": "Commission is set on the subcategories products are listed in, not on the top-level category."
+  },
+  "smap.title": {
+    "ar": "خريطة الموقع",
+    "en": "Site map"
+  },
+  "smap.open": {
+    "ar": "عرض خريطة الموقع",
+    "en": "Open the site map"
+  },
+  "smap.lead": {
+    "ar": "جميع أقسام الموقع في مكان واحد — للعملاء لاكتشاف الأقسام، وللتجار لمعرفة القسم الصحيح عند رفع المنتجات.",
+    "en": "All store sections in one place — for customers to explore the sections, and for vendors to find the right section when uploading products."
+  },
+  "smap.level1": {
+    "ar": "أقسام",
+    "en": "sections"
+  },
+  "smap.level2": {
+    "ar": "قسم فرعي",
+    "en": "sub-sections"
+  },
+  "smap.level3": {
+    "ar": "تصنيف",
+    "en": "classifications"
+  },
+  "smap.level4": {
+    "ar": "نوع منتج",
+    "en": "product types"
+  },
+  "smap.tips_customers": {
+    "ar": "نصائح للعملاء",
+    "en": "Tips for customers"
+  },
+  "smap.tips_vendors": {
+    "ar": "نصائح للتجار",
+    "en": "Tips for vendors"
+  },
+  "smap.tip_c1": {
+    "ar": "اضغط على أي اسم هنا عشان تروح للقسم على طول.",
+    "en": "Tap any name here to go straight to that section."
+  },
+  "smap.tip_c2": {
+    "ar": "بعض المنتجات بتظهر في أكتر من قسم — اختار القسم الأقرب لاحتياجك.",
+    "en": "Some products appear in more than one section — pick the one closest to your need."
+  },
+  "smap.tip_c3": {
+    "ar": "استخدم اسم القسم زي ما هو مكتوب هنا لما تبحث في الموقع.",
+    "en": "Use the section name exactly as shown here when searching the site."
+  },
+  "smap.tip_s1": {
+    "ar": "لما ترفع منتج جديد، اختار القسم المطابق تمامًا لنوع المنتج عشان يوصل للعملاء الصح.",
+    "en": "When uploading a new product, pick the section that exactly matches its type so it reaches the right customers."
+  },
+  "smap.tip_s2": {
+    "ar": "لو منتجك مشترك بين قسمين، ارفعه في قسمه الأساسي وهيظهر في باقي الأقسام.",
+    "en": "If your product fits two sections, upload it in its main section and it will appear in the others."
+  },
+  "smap.tip_s3": {
+    "ar": "الصور الواضحة على خلفية بيضاء بتزوّد فرصة بيع منتجك.",
+    "en": "Clear photos on a white background increase your chances of selling."
+  },
+  "smap.search": {
+    "ar": "ابحث عن قسم أو نوع منتج",
+    "en": "Search a section or product type"
+  },
+  "smap.none": {
+    "ar": "مفيش قسم بالاسم ده.",
+    "en": "No section matches."
+  },
+  "productReview.event.edited": {
+    "ar": "تعديل في بيانات المنتج",
+    "en": "Product details edited"
+  },
+  "productReview.event.created": {
+    "ar": "إنشاء المنتج",
+    "en": "Product created"
+  },
+  "productReview.event.archived": {
+    "ar": "أرشفة المنتج",
+    "en": "Product archived"
+  },
+  "productReview.actor.vendor": {
+    "ar": "التاجر",
+    "en": "vendor"
+  },
+  "productReview.actor.team": {
+    "ar": "فريق الإدارة",
+    "en": "platform team"
+  },
+  "productReview.actor.system": {
+    "ar": "النظام",
+    "en": "System"
+  },
+  "productReview.lastReview": {
+    "ar": "آخر مراجعة",
+    "en": "Last review"
+  },
+  "productReview.lastEdit": {
+    "ar": "آخر تعديل",
+    "en": "Last edit"
+  },
+  "pkg.method_deferred": {
+    "ar": "من أرباح أول طلب",
+    "en": "From first order earnings"
+  },
+  "pkg.pay_deferred": {
+    "ar": "يُحصَّل من أرباح أول طلب",
+    "en": "Collected from first order earnings"
+  },
+  "pkg.deferredHint": {
+    "ar": "مش هتدفع حاجة دلوقتي. المبلغ كله بيتخصم من أرباحك أول ما أول طلب ليك يتسلّم. لحد ما يتدفع بالكامل، متجرك يقدر يستقبل {{count}} طلب بس.",
+    "en": "Nothing to pay now. The full amount is deducted from your earnings once your first order is delivered. Until it is paid in full, your store can take up to {{count}} orders."
+  },
+  "pkg.deferredBlocked": {
+    "ar": "الدفع من أرباح أول طلب مش متاح لأن عندك مبلغ تغليف لسه ما اتحصّلش.",
+    "en": "Paying from first-order earnings isn't available while you have an unpaid packaging balance."
+  },
+  "pkg.fromFirstOrder": {
+    "ar": "يُخصم من أرباح أول طلب",
+    "en": "Deducted from first order earnings"
+  },
+  "pkg.placeDeferred": {
+    "ar": "تأكيد الطلب — الدفع من الأرباح",
+    "en": "Place order — pay from earnings"
+  },
+  "pkg.deferredOpen": {
+    "ar": "طلب التغليف {{number}} بمبلغ {{amount}} هيتخصم من أرباح أول طلب يتسلّم. استقبلت {{taken}} من {{max}} طلب مسموح بيهم لحد الدفع.",
+    "en": "Packaging order {{number}} ({{amount}}) will be deducted from your first delivered order. You have taken {{taken}} of the {{max}} orders allowed until it is paid."
+  },
+  "pkg.deferredCapReached": {
+    "ar": "وصلت للحد الأقصى ({{max}} طلب) قبل سداد طلب التغليف {{number}} بمبلغ {{amount}}. متجرك مش هيستقبل طلبات جديدة لحد ما المبلغ يتحصّل من أول طلب يتسلّم.",
+    "en": "You reached the limit ({{max}} orders) before packaging order {{number}} ({{amount}}) was paid. Your store won't take new orders until it is collected from a delivered order."
+  },
+  "st.pkgDeferred": {
+    "ar": "السماح بالدفع من أرباح أول طلب",
+    "en": "Allow paying from first-order earnings"
+  },
+  "st.pkgDeferredHint": {
+    "ar": "التاجر ياخد التغليف من غير دفع، والمبلغ يتخصم من أرباح أول طلب يتسلّم.",
+    "en": "The vendor gets packaging with nothing paid; the amount is deducted from their first delivered order."
+  },
+  "st.pkgDeferredMax": {
+    "ar": "أقصى عدد طلبات لحد السداد الكامل",
+    "en": "Max orders until paid in full"
+  },
+  "agr.signed": {
+    "ar": "تم التوقيع",
+    "en": "Signed"
+  },
+  "svc.navTitle": {
+    "ar": "خدمات التصوير والتسويق",
+    "en": "Photo & marketing services"
+  },
+  "svc.title": {
+    "ar": "خدمات التصوير والتسويق",
+    "en": "Photo & marketing services"
+  },
+  "svc.subtitle": {
+    "ar": "صور وفيديو احترافي لمنتجاتك، وتعديل الصور، وإدارة حملاتك — من فريق المنصة.",
+    "en": "Professional photos and video of your products, photo editing and campaign management — by the platform team."
+  },
+  "svc.heroTitle": {
+    "ar": "منتجاتك تستاهل تتشاف أحلى",
+    "en": "Your products deserve to look their best"
+  },
+  "svc.heroBody": {
+    "ar": "الصورة الحلوة بتفرق في البيع. اختار الخدمة، حدد منتجاتك والكمية، وفريقنا يتابع معاك لحد ما تستلم الشغل.",
+    "en": "A great photo sells. Pick a service, choose your products and the quantity, and our team follows up until you receive the work."
+  },
+  "svc.promise1": {
+    "ar": "مصورين محترفين",
+    "en": "Professional photographers"
+  },
+  "svc.promise2": {
+    "ar": "خلفية بيضاء بدون علامة مائية",
+    "en": "White background, no watermark"
+  },
+  "svc.promise3": {
+    "ar": "متابعة الطلب خطوة بخطوة",
+    "en": "Track every step"
+  },
+  "svc.tab.catalog": {
+    "ar": "الخدمات",
+    "en": "Services"
+  },
+  "svc.tab.orders": {
+    "ar": "طلباتي",
+    "en": "My orders"
+  },
+  "svc.sections": {
+    "ar": "أقسام الخدمات",
+    "en": "Service sections"
+  },
+  "svc.all": {
+    "ar": "الكل",
+    "en": "All"
+  },
+  "svc.noServices": {
+    "ar": "لا توجد خدمات متاحة حالياً",
+    "en": "No services available right now"
+  },
+  "svc.noServicesHint": {
+    "ar": "الخدمات هتظهر هنا أول ما الإدارة تضيفها.",
+    "en": "Services will appear here as soon as the team adds them."
+  },
+  "svc.onQuote": {
+    "ar": "السعر حسب المطلوب",
+    "en": "Priced on request"
+  },
+  "svc.order": {
+    "ar": "اطلب الخدمة",
+    "en": "Order this service"
+  },
+  "svc.requestQuote": {
+    "ar": "اطلب عرض سعر",
+    "en": "Request a quote"
+  },
+  "svc.deliveryDays": {
+    "ar": "التسليم خلال {{count}} يوم",
+    "en": "Delivered within {{count}} days"
+  },
+  "svc.qtyRange": {
+    "ar": "من {{min}} لـ {{max}}",
+    "en": "{{min}} to {{max}}"
+  },
+  "svc.quantity": {
+    "ar": "العدد ({{unit}})",
+    "en": "Quantity ({{unit}})"
+  },
+  "svc.unitDefault": {
+    "ar": "وحدة",
+    "en": "unit"
+  },
+  "svc.less": {
+    "ar": "أقل",
+    "en": "Less"
+  },
+  "svc.more": {
+    "ar": "أكتر",
+    "en": "More"
+  },
+  "svc.products": {
+    "ar": "المنتجات المطلوب العمل عليها",
+    "en": "Products to work on"
+  },
+  "svc.productsHint": {
+    "ar": "اختياري — اختار منتجاتك عشان الفريق يعرف هيشتغل على إيه.",
+    "en": "Optional — pick your products so the team knows what to work on."
+  },
+  "svc.productsPh": {
+    "ar": "اختار منتج أو أكتر",
+    "en": "Pick one or more products"
+  },
+  "svc.references": {
+    "ar": "صور مرجعية",
+    "en": "Reference images"
+  },
+  "svc.referencesHint": {
+    "ar": "ارفع صور منتجاتك الحالية (لإزالة الخلفية مثلاً) أو أمثلة للستايل اللي عاجبك — لحد 20 صورة.",
+    "en": "Upload your current product photos (for background removal, say) or examples of the style you like — up to 20 images."
+  },
+  "svc.addImages": {
+    "ar": "أضف صور",
+    "en": "Add images"
+  },
+  "svc.preferredDate": {
+    "ar": "الموعد المفضل",
+    "en": "Preferred date"
+  },
+  "svc.preferredDateHint": {
+    "ar": "الفريق هيتواصل معاك ويأكد الموعد النهائي.",
+    "en": "The team will contact you to confirm the final date."
+  },
+  "svc.brief": {
+    "ar": "ملاحظات للفريق (اختياري)",
+    "en": "Notes for the team (optional)"
+  },
+  "svc.briefQuote": {
+    "ar": "اكتب تفاصيل المطلوب",
+    "en": "Describe what you need"
+  },
+  "svc.briefPh": {
+    "ar": "مثلاً: عايز صور من 3 زوايا لكل منتج، وصورة للعبوة مفتوحة…",
+    "en": "E.g. photos from 3 angles for each product, plus one of the open pack…"
+  },
+  "svc.quoteNote": {
+    "ar": "هتوصلك تكلفة الخدمة في إشعار، وتقدر تدفع بعدها بالبطاقة أو من المحفظة. مفيش أي مبلغ بيتخصم دلوقتي.",
+    "en": "You will be notified of the price and can then pay by card or from your wallet. Nothing is charged now."
+  },
+  "svc.total": {
+    "ar": "الإجمالي",
+    "en": "Total"
+  },
+  "svc.payMethod": {
+    "ar": "طريقة الدفع",
+    "en": "Payment method"
+  },
+  "svc.payCardNow": {
+    "ar": "ادفع {{amount}} بالبطاقة",
+    "en": "Pay {{amount}} by card"
+  },
+  "svc.payWalletNow": {
+    "ar": "ادفع {{amount}} من المحفظة",
+    "en": "Pay {{amount}} from wallet"
+  },
+  "svc.sendQuote": {
+    "ar": "إرسال الطلب",
+    "en": "Send request"
+  },
+  "svc.noOrders": {
+    "ar": "لسه مطلبتش أي خدمة",
+    "en": "No service orders yet"
+  },
+  "svc.noOrdersHint": {
+    "ar": "اختار خدمة من تبويب الخدمات وطلبك هيظهر هنا مع كل خطوة فيه.",
+    "en": "Pick a service from the Services tab and your order will show here with every step."
+  },
+  "svc.browse": {
+    "ar": "تصفح الخدمات",
+    "en": "Browse services"
+  },
+  "svc.filter.open": {
+    "ar": "الجارية",
+    "en": "In progress"
+  },
+  "svc.filter.done": {
+    "ar": "المنتهية",
+    "en": "Finished"
+  },
+  "svc.filter.all": {
+    "ar": "الكل",
+    "en": "All"
+  },
+  "svc.nothingHere": {
+    "ar": "مفيش طلبات هنا.",
+    "en": "No orders here."
+  },
+  "svc.progress": {
+    "ar": "مراحل الطلب",
+    "en": "Order progress"
+  },
+  "svc.needPay": {
+    "ar": "مطلوب منك: الدفع عشان نبدأ",
+    "en": "Your move: pay so we can start"
+  },
+  "svc.needReview": {
+    "ar": "مطلوب منك: راجع الشغل المسلّم",
+    "en": "Your move: review the delivered work"
+  },
+  "svc.scheduledFor": {
+    "ar": "الموعد: {{date}}",
+    "en": "Scheduled: {{date}}"
+  },
+  "svc.amount": {
+    "ar": "المبلغ",
+    "en": "Amount"
+  },
+  "svc.qty": {
+    "ar": "الكمية",
+    "en": "Quantity"
+  },
+  "svc.scheduled": {
+    "ar": "الموعد المحدد",
+    "en": "Scheduled for"
+  },
+  "svc.payToStart": {
+    "ar": "ادفع {{amount}} عشان نبدأ التنفيذ",
+    "en": "Pay {{amount}} to start the work"
+  },
+  "svc.cancelOrder": {
+    "ar": "إلغاء الطلب",
+    "en": "Cancel order"
+  },
+  "svc.waitingQuote": {
+    "ar": "الفريق بيراجع طلبك وهيبعتلك التكلفة قريب.",
+    "en": "The team is reviewing your request and will send you the price soon."
+  },
+  "svc.rejectedBecause": {
+    "ar": "سبب الإلغاء:",
+    "en": "Reason:"
+  },
+  "svc.deliverables": {
+    "ar": "الشغل المسلّم",
+    "en": "Delivered work"
+  },
+  "svc.download": {
+    "ar": "تحميل",
+    "en": "Download"
+  },
+  "svc.reviewDelivery": {
+    "ar": "الشغل وصلك؟ أكد الاستلام أو اطلب تعديل.",
+    "en": "Got the work? Confirm it or ask for changes."
+  },
+  "svc.accept": {
+    "ar": "تمام، تم الاستلام",
+    "en": "Looks good, accept"
+  },
+  "svc.askRevision": {
+    "ar": "اطلب تعديل",
+    "en": "Ask for changes"
+  },
+  "svc.revisionPh": {
+    "ar": "اكتب التعديلات المطلوبة بالتفصيل",
+    "en": "Describe the changes you need"
+  },
+  "svc.sendRevision": {
+    "ar": "إرسال طلب التعديل",
+    "en": "Send change request"
+  },
+  "svc.yourRequest": {
+    "ar": "طلبك",
+    "en": "Your request"
+  },
+  "svc.timeline": {
+    "ar": "سجل الطلب",
+    "en": "Order history"
+  },
+  "svc.status.awaiting_quote": {
+    "ar": "بانتظار عرض السعر",
+    "en": "Awaiting quote"
+  },
+  "svc.status.pending_payment": {
+    "ar": "بانتظار الدفع",
+    "en": "Awaiting payment"
+  },
+  "svc.status.new": {
+    "ar": "تم الدفع — بانتظار الفريق",
+    "en": "Paid — with the team"
+  },
+  "svc.status.scheduled": {
+    "ar": "تم تحديد الموعد",
+    "en": "Scheduled"
+  },
+  "svc.status.in_progress": {
+    "ar": "جاري التنفيذ",
+    "en": "In progress"
+  },
+  "svc.status.delivered": {
+    "ar": "تم التسليم",
+    "en": "Delivered"
+  },
+  "svc.status.completed": {
+    "ar": "مكتمل",
+    "en": "Completed"
+  },
+  "svc.status.cancelled": {
+    "ar": "ملغي",
+    "en": "Cancelled"
+  },
+  "svc.status.rejected": {
+    "ar": "ملغي من الإدارة",
+    "en": "Cancelled by the team"
+  },
+  "svc.step.placed": {
+    "ar": "تم الطلب",
+    "en": "Ordered"
+  },
+  "svc.step.paid": {
+    "ar": "تم الدفع",
+    "en": "Paid"
+  },
+  "svc.step.scheduled": {
+    "ar": "الموعد",
+    "en": "Scheduled"
+  },
+  "svc.step.in_progress": {
+    "ar": "التنفيذ",
+    "en": "In progress"
+  },
+  "svc.step.delivered": {
+    "ar": "التسليم",
+    "en": "Delivered"
+  },
+  "svc.step.completed": {
+    "ar": "مكتمل",
+    "en": "Completed"
+  },
+  "svc.ev.placed": {
+    "ar": "تم إرسال الطلب",
+    "en": "Order placed"
+  },
+  "svc.ev.paid": {
+    "ar": "تم الدفع",
+    "en": "Paid"
+  },
+  "svc.ev.quoted": {
+    "ar": "تم إرسال عرض السعر",
+    "en": "Quote sent"
+  },
+  "svc.ev.scheduled": {
+    "ar": "تم تحديد الموعد",
+    "en": "Scheduled"
+  },
+  "svc.ev.started": {
+    "ar": "بدأ التنفيذ",
+    "en": "Work started"
+  },
+  "svc.ev.delivered": {
+    "ar": "تم التسليم",
+    "en": "Delivered"
+  },
+  "svc.ev.completed": {
+    "ar": "تم الاستلام والإغلاق",
+    "en": "Accepted and closed"
+  },
+  "svc.ev.revision": {
+    "ar": "طلب تعديل",
+    "en": "Changes requested"
+  },
+  "svc.ev.rejected": {
+    "ar": "تم الإلغاء من الإدارة",
+    "en": "Cancelled by the team"
+  },
+  "svc.ev.cancelled": {
+    "ar": "تم إلغاء الطلب",
+    "en": "Order cancelled"
+  },
+  "svc.ev.note": {
+    "ar": "رسالة من الفريق",
+    "en": "Message from the team"
+  },
+  "svc.err.failed": {
+    "ar": "حصلت مشكلة، حاول تاني.",
+    "en": "Something went wrong, please try again."
+  },
+  "svc.err.insufficient_balance": {
+    "ar": "رصيد المحفظة مش كفاية.",
+    "en": "Your wallet balance is not enough."
+  },
+  "svc.err.store_not_active": {
+    "ar": "متجرك مش متاح حالياً لطلب الخدمات.",
+    "en": "Your store cannot order services right now."
+  },
+  "svc.err.store_suspended": {
+    "ar": "متجرك موقوف — تواصل مع الإدارة.",
+    "en": "Your store is suspended — contact the team."
+  },
+  "svc.err.service_unavailable": {
+    "ar": "الخدمة دي مش متاحة دلوقتي.",
+    "en": "This service is not available right now."
+  },
+  "svc.err.bad_quantity": {
+    "ar": "الكمية خارج الحدود المسموحة.",
+    "en": "The quantity is outside the allowed range."
+  },
+  "svc.err.bad_method": {
+    "ar": "اختار طريقة دفع.",
+    "en": "Choose a payment method."
+  },
+  "svc.err.card_unavailable": {
+    "ar": "الدفع بالبطاقة مش متاح حالياً، جرب المحفظة.",
+    "en": "Card payment is unavailable right now; try the wallet."
+  },
+  "svc.err.not_awaiting_payment": {
+    "ar": "الطلب ده مش بانتظار الدفع.",
+    "en": "This order is not awaiting payment."
+  },
+  "svc.err.not_cancellable": {
+    "ar": "مينفعش تلغي الطلب في المرحلة دي.",
+    "en": "This order can no longer be cancelled."
+  },
+  "svc.err.note_required": {
+    "ar": "اكتب ملاحظة الأول.",
+    "en": "Write a note first."
+  },
+  "svc.err.too_many_files": {
+    "ar": "الحد الأقصى 20 صورة.",
+    "en": "At most 20 images."
+  },
+  "svc.err.files_required": {
+    "ar": "ارفع الصور المطلوب العمل عليها.",
+    "en": "Upload the files to work on."
+  },
+  "svc.err.bad_amount": {
+    "ar": "اكتب مبلغ صحيح.",
+    "en": "Enter a valid amount."
+  },
+  "svc.err.date_required": {
+    "ar": "اختار الموعد.",
+    "en": "Pick a date."
+  },
+  "svc.err.reason_required": {
+    "ar": "اكتب السبب.",
+    "en": "Write the reason."
+  },
+  "svc.err.bad_state": {
+    "ar": "الإجراء ده مش متاح في المرحلة الحالية.",
+    "en": "This action is not available at this stage."
+  },
+  "svc.err.forbidden": {
+    "ar": "مش مسموح لك بالإجراء ده.",
+    "en": "You are not allowed to do this."
+  },
+  "asv.title": {
+    "ar": "خدمات التجار",
+    "en": "Vendor services"
+  },
+  "asv.subtitle": {
+    "ar": "طلبات التصوير والفيديو والتعديل وإدارة الحملات، وكتالوج الخدمات وأسعارها.",
+    "en": "Photography, video, editing and campaign management orders, plus the services catalogue and prices."
+  },
+  "asv.newService": {
+    "ar": "خدمة جديدة",
+    "en": "New service"
+  },
+  "asv.editService": {
+    "ar": "تعديل الخدمة",
+    "en": "Edit service"
+  },
+  "asv.newGroup": {
+    "ar": "قسم جديد",
+    "en": "New section"
+  },
+  "asv.editGroup": {
+    "ar": "تعديل القسم",
+    "en": "Edit section"
+  },
+  "asv.kNew": {
+    "ar": "طلبات جديدة",
+    "en": "New orders"
+  },
+  "asv.kQuote": {
+    "ar": "بانتظار التسعير",
+    "en": "Awaiting quote"
+  },
+  "asv.kWorking": {
+    "ar": "قيد التنفيذ",
+    "en": "In progress"
+  },
+  "asv.kDelivered": {
+    "ar": "بانتظار تأكيد التاجر",
+    "en": "Awaiting vendor"
+  },
+  "asv.kRevenue": {
+    "ar": "إيراد الخدمات",
+    "en": "Services revenue"
+  },
+  "asv.tab.orders": {
+    "ar": "الطلبات",
+    "en": "Orders"
+  },
+  "asv.tab.catalog": {
+    "ar": "الخدمات والأسعار",
+    "en": "Services & prices"
+  },
+  "asv.tab.groups": {
+    "ar": "الأقسام",
+    "en": "Sections"
+  },
+  "asv.noOrders": {
+    "ar": "لا توجد طلبات خدمات بعد",
+    "en": "No service orders yet"
+  },
+  "asv.noOrdersHint": {
+    "ar": "طلبات التجار بتظهر هنا بمجرد إرسالها.",
+    "en": "Vendor orders appear here as soon as they are placed."
+  },
+  "asv.search": {
+    "ar": "بحث برقم الطلب أو المتجر أو الخدمة",
+    "en": "Search by order, store or service"
+  },
+  "asv.wants": {
+    "ar": "يفضّل {{date}}",
+    "en": "prefers {{date}}"
+  },
+  "asv.store": {
+    "ar": "المتجر",
+    "en": "Store"
+  },
+  "asv.phone": {
+    "ar": "الموبايل",
+    "en": "Phone"
+  },
+  "asv.payment": {
+    "ar": "الدفع",
+    "en": "Payment"
+  },
+  "asv.pay.unpaid": {
+    "ar": "لم يُدفع",
+    "en": "Unpaid"
+  },
+  "asv.pay.refunded": {
+    "ar": "تم الاسترداد",
+    "en": "Refunded"
+  },
+  "asv.pay.paid": {
+    "ar": "مدفوع",
+    "en": "Paid"
+  },
+  "asv.request": {
+    "ar": "طلب التاجر",
+    "en": "Vendor request"
+  },
+  "asv.setQuote": {
+    "ar": "تسعير الطلب",
+    "en": "Price this order"
+  },
+  "asv.quoteAmount": {
+    "ar": "المبلغ (ج.م)",
+    "en": "Amount (EGP)"
+  },
+  "asv.quoteNote": {
+    "ar": "ملاحظة للتاجر",
+    "en": "Note to the vendor"
+  },
+  "asv.quoteNotePh": {
+    "ar": "مثلاً: 3 فيديوهات مونتاج + ترجمة",
+    "en": "E.g. 3 edited videos + subtitles"
+  },
+  "asv.sendQuote": {
+    "ar": "إرسال السعر للتاجر",
+    "en": "Send price to vendor"
+  },
+  "asv.schedule": {
+    "ar": "الموعد والتنفيذ",
+    "en": "Schedule & start"
+  },
+  "asv.when": {
+    "ar": "الموعد",
+    "en": "Date & time"
+  },
+  "asv.saveSchedule": {
+    "ar": "حفظ الموعد",
+    "en": "Save date"
+  },
+  "asv.start": {
+    "ar": "بدء التنفيذ",
+    "en": "Start work"
+  },
+  "asv.deliver": {
+    "ar": "تسليم الشغل",
+    "en": "Deliver the work"
+  },
+  "asv.files": {
+    "ar": "ملفات",
+    "en": "Files"
+  },
+  "asv.links": {
+    "ar": "روابط (Google Drive وغيره) — رابط في كل سطر",
+    "en": "Links (Google Drive etc.) — one per line"
+  },
+  "asv.deliveryNote": {
+    "ar": "ملاحظة التسليم",
+    "en": "Delivery note"
+  },
+  "asv.markDelivered": {
+    "ar": "تم التسليم",
+    "en": "Mark delivered"
+  },
+  "asv.redeliver": {
+    "ar": "تحديث التسليم",
+    "en": "Update delivery"
+  },
+  "asv.complete": {
+    "ar": "إغلاق الطلب",
+    "en": "Close order"
+  },
+  "asv.message": {
+    "ar": "رسالة / ملاحظة على الطلب",
+    "en": "Message / note on the order"
+  },
+  "asv.messagePh": {
+    "ar": "تظهر في سجل الطلب عند التاجر",
+    "en": "Shows in the vendor order history"
+  },
+  "asv.notifyVendor": {
+    "ar": "ابعت إشعار للتاجر",
+    "en": "Notify the vendor"
+  },
+  "asv.addNote": {
+    "ar": "إضافة",
+    "en": "Add"
+  },
+  "asv.reject": {
+    "ar": "إلغاء الطلب",
+    "en": "Cancel order"
+  },
+  "asv.rejectReason": {
+    "ar": "سبب الإلغاء (يظهر للتاجر)",
+    "en": "Reason (shown to the vendor)"
+  },
+  "asv.refundNote": {
+    "ar": "هيتم رد {{amount}} لمحفظة التاجر تلقائياً.",
+    "en": "{{amount}} will be refunded to the vendor wallet automatically."
+  },
+  "asv.confirmReject": {
+    "ar": "تأكيد الإلغاء",
+    "en": "Confirm cancellation"
+  },
+  "asv.noServices": {
+    "ar": "لا توجد خدمات",
+    "en": "No services"
+  },
+  "asv.noServicesHint": {
+    "ar": "أضف أول خدمة من زر «خدمة جديدة».",
+    "en": "Add the first service with the New service button."
+  },
+  "asv.noGroup": {
+    "ar": "بدون قسم",
+    "en": "No section"
+  },
+  "asv.hidden": {
+    "ar": "مخفية",
+    "en": "Hidden"
+  },
+  "asv.featured": {
+    "ar": "مميزة",
+    "en": "Featured"
+  },
+  "asv.hide": {
+    "ar": "إخفاء",
+    "en": "Hide"
+  },
+  "asv.show": {
+    "ar": "إظهار",
+    "en": "Show"
+  },
+  "asv.pricing.fixed": {
+    "ar": "سعر ثابت",
+    "en": "Fixed price"
+  },
+  "asv.pricing.per_unit": {
+    "ar": "سعر للوحدة",
+    "en": "Per unit"
+  },
+  "asv.pricing.quote": {
+    "ar": "حسب الطلب",
+    "en": "On quote"
+  },
+  "asv.pricingHint.fixed": {
+    "ar": "باقة بمبلغ واحد (مثلاً 100 صورة بـ 1000 جنيه).",
+    "en": "One price for a bundle (e.g. 100 photos for EGP 1,000)."
+  },
+  "asv.pricingHint.per_unit": {
+    "ar": "التاجر يختار العدد (مثلاً 5 جنيه للصورة).",
+    "en": "The vendor picks the quantity (e.g. EGP 5 per photo)."
+  },
+  "asv.pricingHint.quote": {
+    "ar": "التاجر يبعت التفاصيل وانت تسعّر الطلب.",
+    "en": "The vendor sends details and you price the order."
+  },
+  "asv.pricingTitle": {
+    "ar": "طريقة التسعير",
+    "en": "Pricing"
+  },
+  "asv.price": {
+    "ar": "السعر (ج.م)",
+    "en": "Price (EGP)"
+  },
+  "asv.unitPrice": {
+    "ar": "سعر الوحدة (ج.م)",
+    "en": "Unit price (EGP)"
+  },
+  "asv.unitAr": {
+    "ar": "الوحدة (عربي)",
+    "en": "Unit (Arabic)"
+  },
+  "asv.unitEn": {
+    "ar": "الوحدة (إنجليزي)",
+    "en": "Unit (English)"
+  },
+  "asv.minQty": {
+    "ar": "أقل عدد",
+    "en": "Min"
+  },
+  "asv.maxQty": {
+    "ar": "أكبر عدد",
+    "en": "Max"
+  },
+  "asv.quoteExplain": {
+    "ar": "التاجر هيكتب تفاصيل المطلوب، وانت تحدد السعر من صفحة الطلب، وبعدها التاجر يدفع.",
+    "en": "The vendor describes the job, you set the price on the order, then the vendor pays."
+  },
+  "asv.includes": {
+    "ar": "المميزات / المحتوى (يظهر كقائمة على كارت الخدمة)",
+    "en": "What is included (shown as a list on the service card)"
+  },
+  "asv.lineAr": {
+    "ar": "بالعربي",
+    "en": "Arabic"
+  },
+  "asv.lineEn": {
+    "ar": "بالإنجليزي",
+    "en": "English"
+  },
+  "asv.addLine": {
+    "ar": "إضافة سطر",
+    "en": "Add a line"
+  },
+  "asv.badgeAr": {
+    "ar": "شارة (عربي)",
+    "en": "Badge (Arabic)"
+  },
+  "asv.badgeEn": {
+    "ar": "شارة (إنجليزي)",
+    "en": "Badge (English)"
+  },
+  "asv.badgePh": {
+    "ar": "مثلاً: للبائع الجديد",
+    "en": "E.g. For new vendors"
+  },
+  "asv.deliveryDays": {
+    "ar": "مدة التسليم (أيام)",
+    "en": "Delivery (days)"
+  },
+  "asv.deliveryDaysHint": {
+    "ar": "اتركها فاضية لو مش ثابتة",
+    "en": "Leave empty if it varies"
+  },
+  "asv.sort": {
+    "ar": "الترتيب",
+    "en": "Order"
+  },
+  "asv.cover": {
+    "ar": "صورة الغلاف",
+    "en": "Cover image"
+  },
+  "asv.noCover": {
+    "ar": "بدون صورة",
+    "en": "No image"
+  },
+  "asv.pickCover": {
+    "ar": "اختار صورة",
+    "en": "Pick an image"
+  },
+  "asv.changeCover": {
+    "ar": "تغيير الصورة",
+    "en": "Change image"
+  },
+  "asv.coverHint": {
+    "ar": "اختياري — مقاس 16:9 (مثلاً 1280×720). بدونها بتظهر أيقونة القسم.",
+    "en": "Optional — 16:9 (e.g. 1280×720). Without it the section icon is shown."
+  },
+  "asv.active": {
+    "ar": "ظاهرة للتجار",
+    "en": "Visible to vendors"
+  },
+  "asv.needsProducts": {
+    "ar": "التاجر يختار منتجاته",
+    "en": "Vendor picks products"
+  },
+  "asv.deleteConfirm": {
+    "ar": "حذف الخدمة؟ الطلبات القديمة مش هتتأثر.",
+    "en": "Delete this service? Past orders are kept."
+  },
+  "asv.icon": {
+    "ar": "الأيقونة",
+    "en": "Icon"
+  },
+  "asv.noGroups": {
+    "ar": "لا توجد أقسام",
+    "en": "No sections"
+  },
+  "asv.noGroupsHint": {
+    "ar": "الأقسام بتنظم الخدمات عند التاجر (تصوير، فيديو، تعديل…).",
+    "en": "Sections organise services for vendors (photography, video, editing…)."
+  },
+  "asv.servicesCount": {
+    "ar": "{{count}} خدمة",
+    "en": "{{count}} services"
+  },
+  "asv.err.name_required": {
+    "ar": "اكتب الاسم بالعربي والإنجليزي.",
+    "en": "Enter the name in Arabic and English."
+  },
+  "asv.err.price_required": {
+    "ar": "اكتب السعر.",
+    "en": "Enter the price."
+  },
+  "asv.err.save_failed": {
+    "ar": "لم يتم الحفظ، حاول تاني.",
+    "en": "Not saved, please try again."
+  },
+  "asv.err.group_not_empty": {
+    "ar": "انقل أو احذف خدمات القسم الأول.",
+    "en": "Move or delete the section services first."
+  },
+  "perm.services_manage": {
+    "ar": "خدمات التجار",
+    "en": "Vendor services"
+  },
+  "permHint.services_manage": {
+    "ar": "طلبات التصوير والفيديو والتعديل، وكتالوج الخدمات وأسعارها.",
+    "en": "Photography, video and editing orders, and the services catalogue and prices."
+  },
+  "tx.type_service_purchase": {
+    "ar": "شراء خدمة",
+    "en": "Service purchase"
+  },
+  "tx.type_service_refund": {
+    "ar": "استرداد خدمة",
+    "en": "Service refund"
+  },
+  "asv.group": {
+    "ar": "القسم",
+    "en": "Section"
+  },
+  "asv.nameAr": {
+    "ar": "الاسم (عربي)",
+    "en": "Name (Arabic)"
+  },
+  "asv.nameEn": {
+    "ar": "الاسم (إنجليزي)",
+    "en": "Name (English)"
+  },
+  "asv.descAr": {
+    "ar": "الوصف (عربي)",
+    "en": "Description (Arabic)"
+  },
+  "asv.descEn": {
+    "ar": "الوصف (إنجليزي)",
+    "en": "Description (English)"
+  },
+  "svc.workFiles": {
+    "ar": "ارفع الصور المطلوب العمل عليها ({{unit}})",
+    "en": "Upload the files to work on ({{unit}})"
+  },
+  "svc.uploadWork": {
+    "ar": "ارفع صور",
+    "en": "Upload"
+  },
+  "svc.filesCount": {
+    "ar": "{{count}} من {{max}}",
+    "en": "{{count}} of {{max}}"
+  },
+  "svc.clearFiles": {
+    "ar": "مسح الكل",
+    "en": "Clear all"
+  },
+  "svc.workHintUnits": {
+    "ar": "كل ملف بيتحسب {{unit}} — العدد والإجمالي بيتحسبوا تلقائياً من الصور اللي رفعتها (لحد {{max}}).",
+    "en": "Each file counts as one {{unit}} — the quantity and total follow the files you upload (up to {{max}})."
+  },
+  "svc.workHint": {
+    "ar": "ارفع الملفات اللي الفريق هيشتغل عليها (لحد {{max}}).",
+    "en": "Upload the files the team will work on (up to {{max}})."
+  },
+  "svc.referencesHintN": {
+    "ar": "اختياري — أمثلة للستايل اللي عاجبك أو صور منتجاتك الحالية، لحد {{max}} على قد حجم طلبك.",
+    "en": "Optional — examples of the style you like or your current product photos, up to {{max}} for your order size."
+  },
+  "svc.overLimit": {
+    "ar": "الحد الأقصى {{max}} ملف لحجم الطلب ده — امسح الزيادة أو زوّد الكمية.",
+    "en": "This order allows {{max}} files — remove some or raise the quantity."
+  },
+  "svc.uploadedWork": {
+    "ar": "الملفات المطلوب العمل عليها ({{count}})",
+    "en": "Files to work on ({{count}})"
+  },
+  "svc.uploadedRefs": {
+    "ar": "صور مرجعية ({{count}})",
+    "en": "Reference images ({{count}})"
+  },
+  "asv.openToDownload": {
+    "ar": "اضغط على الصورة لتحميلها",
+    "en": "Click a file to download it"
+  },
+  "asv.unitsIncluded": {
+    "ar": "عدد الوحدات في الباقة",
+    "en": "Units in the bundle"
+  },
+  "asv.unitsIncludedHint": {
+    "ar": "مثلاً 100 صورة — بيحدد حد رفع الصور",
+    "en": "E.g. 100 photos — sets the upload limit"
+  },
+  "asv.uploadTitle": {
+    "ar": "رفع ملفات من التاجر",
+    "en": "Vendor uploads"
+  },
+  "asv.upload.work": {
+    "ar": "ملفات الشغل (إلزامي)",
+    "en": "Work files (required)"
+  },
+  "asv.upload.references": {
+    "ar": "صور مرجعية (اختياري)",
+    "en": "Reference images (optional)"
+  },
+  "asv.upload.none": {
+    "ar": "بدون رفع",
+    "en": "No uploads"
+  },
+  "asv.uploadHint.work": {
+    "ar": "التاجر يرفع الملفات اللي هيتشغل عليها (زي إزالة الخلفية) — وفي السعر للوحدة، عدد الملفات هو الكمية.",
+    "en": "The vendor uploads the files to work on (e.g. background removal) — with per-unit pricing, the file count is the quantity."
+  },
+  "asv.uploadHint.references": {
+    "ar": "أمثلة أو صور حالية، والحد على قد حجم الطلب.",
+    "en": "Examples or current photos, limited to the order size."
+  },
+  "asv.uploadHint.none": {
+    "ar": "الخدمة مش محتاجة ملفات من التاجر.",
+    "en": "The service needs no files from the vendor."
+  },
+  "ads.featuredStores": {
+    "ar": "متاجر مميزة",
+    "en": "Featured stores"
+  },
+  "va.err.not_discounted": {
+    "ar": "منتج حملة العروض لازم يكون عليه خصم — حط خصم على المنتج الأول.",
+    "en": "An offer-campaign product must be discounted — add a discount to it first."
+  },
+  "va.bannerByTeam": {
+    "ar": "فريق المنصة هيجهّز البانر ويختار مكانه المناسب بعد الدفع ومراجعة الطلب — ممكن تكتب أفكارك في الملاحظات.",
+    "en": "The platform team prepares the banner and places it after payment and review — you can add your ideas in the notes."
+  },
+  "va.bannerLinkOptional": {
+    "ar": "البانر يفتح على (اختياري)",
+    "en": "Banner opens (optional)"
+  },
+  "aa.bannerSlot": {
+    "ar": "بانر {{n}}",
+    "en": "Banner {{n}}"
+  },
+  "aa.bannerMode.new": {
+    "ar": "رفع بانر",
+    "en": "Upload"
+  },
+  "aa.bannerMode.existing": {
+    "ar": "من البانرات",
+    "en": "From banners"
+  },
+  "aa.uploadBanner": {
+    "ar": "ارفع صورة البانر",
+    "en": "Upload the banner image"
+  },
+  "aa.pickBanner": {
+    "ar": "اختار بانر من نظام البانرات",
+    "en": "Pick a banner from the banners system"
+  },
+  "aa.bannersActive": {
+    "ar": "بانرات ظاهرة",
+    "en": "Live banners"
+  },
+  "aa.bannersInactive": {
+    "ar": "بانرات غير ظاهرة",
+    "en": "Hidden banners"
+  },
+  "aa.untitledBanner": {
+    "ar": "بانر بدون عنوان",
+    "en": "Untitled banner"
+  },
+  "aa.bannerPlace": {
+    "ar": "مكان البانر (السكشن)",
+    "en": "Banner placement (section)"
+  },
+  "aa.placeCategory": {
+    "ar": "صفحة قسم",
+    "en": "A category page"
+  },
+  "aa.bannerLink": {
+    "ar": "رابط البانر",
+    "en": "Banner link"
+  },
+  "aa.err.banner_image_required": {
+    "ar": "ارفع صورة لكل بانر أو اختار بانر موجود.",
+    "en": "Upload an image for every banner or pick an existing one."
+  },
+  "aa.err.banner_placement_required": {
+    "ar": "اختار مكان كل بانر.",
+    "en": "Choose a placement for every banner."
+  },
+  "aa.err.banner_category_required": {
+    "ar": "اختار القسم لبانر صفحة القسم.",
+    "en": "Choose the category for the category-page banner."
+  },
+  "aa.err.banner_not_found": {
+    "ar": "البانر المختار مش موجود.",
+    "en": "The selected banner no longer exists."
+  }
+}

@@ -1,0 +1,35 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import nodemailer from "nodemailer";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { sendEmail } from "../app/lib/email/server";
+import { EMAIL_DEFINITIONS, emailSampleVariables } from "../app/lib/email/catalog";
+
+test("delivery uses published content; explicit tests use the unsaved draft; inactive templates never deliver", async (t) => {
+  const before = { ...process.env };
+  Object.assign(process.env, { SUPABASE_URL: "https://example.invalid", SMTP_NOTIFY_USER: "qa-notify@example.invalid", SMTP_NOTIFY_PASS: "test-only", SITE_URL: "https://etsawaa.com" });
+  t.after(() => { for (const k of Object.keys(process.env)) if (!(k in before)) delete process.env[k]; Object.assign(process.env, before); });
+  const delivered: Array<{ html: string; text: string; subject: string }> = [];
+  t.mock.method(nodemailer, "createTransport", () => ({ sendMail: async (mail: { html: string; text: string; subject: string }) => { delivered.push(mail); return { messageId: "captured-locally", rejected: [] }; } }));
+  const welcome = EMAIL_DEFINITIONS.get("welcome")!;
+  const row = { key: welcome.key, subject_ar: "old", subject_en: "old", html_ar: "old", html_en: "old", content_ar: welcome.content.ar, content_en: welcome.content.en, is_active: true };
+  const logs: unknown[] = [];
+  const admin = { from: (table: string) => table === "email_logs" ? { insert: async (value: unknown) => { logs.push(value); return { error: null }; } } : { select: () => ({ eq: () => ({ single: async () => ({ data: row, error: null }) }) }) } } as unknown as SupabaseClient;
+  const english = await sendEmail(admin, { to: "qa@example.invalid", templateKey: "welcome", locale: "en", variables: emailSampleVariables("en", "welcome") });
+  assert.equal(english.status, "sent");
+  assert.ok(delivered[0]!.html.includes('lang="en" dir="ltr"'));
+  assert.ok(delivered[0]!.html.includes('href="https://etsawaa.com/en"'));
+  assert.ok(delivered[0]!.subject.includes("Welcome"));
+  assert.ok(!delivered[0]!.text.includes("Your account is ready. Discover"));
+  const draft = { ...welcome.content.ar, heading: "مسودة محلية غير منشورة" };
+  await sendEmail(admin, { to: "qa@example.invalid", templateKey: "welcome", locale: "ar", variables: emailSampleVariables("ar", "welcome"), content: draft });
+  assert.ok(delivered[1]!.html.includes(draft.heading));
+  assert.ok(!JSON.stringify(row).includes(draft.heading), "test does not publish the draft");
+  row.is_active = false;
+  assert.equal((await sendEmail(admin, { to: "qa@example.invalid", templateKey: "welcome", locale: "en", variables: emailSampleVariables("en", "welcome") })).status, "skipped");
+  assert.equal(delivered.length, 2);
+  row.is_active = true;
+  const invalid = await sendEmail(admin, { to: "qa@example.invalid", templateKey: "welcome", locale: "en", variables: {} });
+  assert.equal(invalid.status, "failed"); assert.equal(delivered.length, 2);
+  assert.equal(logs.length, 3);
+});

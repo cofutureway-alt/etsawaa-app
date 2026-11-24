@@ -1,0 +1,6 @@
+{
+  "nav.goHome": { "ar": "الذهاب للصفحة الرئيسية", "en": "Go to the home page" },
+  "nav.switchDashboard": { "ar": "التنقل بين لوحات التحكم", "en": "Switch dashboard" },
+  "adminDash.ordersAction": { "ar": "طلبات تحتاج إجراء", "en": "Orders needing action" },
+  "adminDash.openMessages": { "ar": "رسائل تواصل مفتوحة", "en": "Open contact messages" }
+}

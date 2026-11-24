@@ -77,3 +77,20 @@ test("passwordStrengthScore climbs with length, classes and symbols", () => {
   assert.equal(passwordStrengthScore("abcdefg12345"), 3); // 12+ chars
   assert.equal(passwordStrengthScore("Abcdefg1!@#$"), 4); // symbol + 12
 });
+
+test("complete profile: two different phones, name, terms only when needed", async () => {
+  const { completeProfileSchema } = await import("../app/features/auth/schemas");
+  const { profileIsComplete } = await import("../app/lib/profile-complete");
+  const base = { fullName: "Mona Ali", phone: "01012345678", phoneAlternate: "01112345678", terms: false };
+  const ok = completeProfileSchema(false).safeParse(base);
+  assert.equal(ok.success, true);
+  assert.equal(ok.success && ok.data.phoneAlternate, "+201112345678");
+  assert.equal(completeProfileSchema(true).safeParse(base).success, false);
+  assert.equal(completeProfileSchema(true).safeParse({ ...base, terms: true }).success, true);
+  const same = completeProfileSchema(false).safeParse({ ...base, phoneAlternate: "+201012345678" });
+  assert.equal(same.success, false);
+  assert.equal(!same.success && same.error.issues[0]?.message, "phone:equal");
+  assert.equal(completeProfileSchema(false).safeParse({ ...base, phoneAlternate: "" }).success, false);
+  assert.equal(profileIsComplete({ full_name: "A", phone: "+201012345678", phone_alternate: null }), false);
+  assert.equal(profileIsComplete({ full_name: "A", phone: "+201012345678", phone_alternate: "+201112345678" }), true);
+});

@@ -3,6 +3,9 @@ import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useToast } from "~/components/ui/Toast";
 import { HeartIcon } from "~/components/ui/icons";
+// Layering exception: wishlist toggle / pending-stash are feature-owned
+// logic; the heart calls them in place rather than duplicating them in
+// components.
 import { stashPendingWishlist, toggleWishlist } from "~/features/discovery/wishlist";
 
 /**
@@ -26,11 +29,16 @@ export function WishlistHeart({
   const [saved, setSaved] = useState(initial);
   const [busy, setBusy] = useState(false);
 
+  // optimistic: the heart flips on the click; the server answer confirms it
+  // (or puts it back with an error / sends a guest to sign in)
   const toggle = async () => {
     if (busy) return;
     setBusy(true);
-    const res = await toggleWishlist(productId);
+    const before = saved;
+    setSaved(!before);
+    const res = await toggleWishlist(productId).catch(() => ({ ok: false as const, added: undefined, auth: undefined }));
     if (res.auth) {
+      setSaved(before);
       stashPendingWishlist(productId);
       toast.showToast("info", t("store.wish.signInFirst"));
       navigate(`/${lang}/auth/login?next=` + encodeURIComponent(location.pathname + location.search));
@@ -41,6 +49,7 @@ export function WishlistHeart({
       setSaved(Boolean(res.added));
       toast.showToast("success", t(res.added ? "store.wish.added" : "store.wish.removed"));
     } else {
+      setSaved(before);
       toast.showToast("error", t("errors.generic"));
     }
     setBusy(false);

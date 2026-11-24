@@ -1,0 +1,262 @@
+{
+  "dash.period": {
+    "ar": "الفترة",
+    "en": "Period"
+  },
+  "dash.p1": {
+    "ar": "اليوم",
+    "en": "Today"
+  },
+  "dash.p7": {
+    "ar": "7 أيام",
+    "en": "7 days"
+  },
+  "dash.p30": {
+    "ar": "30 يومًا",
+    "en": "30 days"
+  },
+  "dash.p90": {
+    "ar": "90 يومًا",
+    "en": "90 days"
+  },
+  "dash.waitingSummary": {
+    "ar": "لديك {{count}} عنصر بانتظار إجراء منك",
+    "en": "{{count}} items are waiting for your action"
+  },
+  "dash.allClear": {
+    "ar": "لا يوجد شيء بانتظارك الآن",
+    "en": "Nothing is waiting for you right now"
+  },
+  "dash.queue": {
+    "ar": "يحتاج إجراء",
+    "en": "Needs action"
+  },
+  "dash.q.products": {
+    "ar": "منتجات للمراجعة",
+    "en": "Products to review"
+  },
+  "dash.q.orders": {
+    "ar": "طلبات تحتاج إجراء",
+    "en": "Orders needing action"
+  },
+  "dash.q.vendors": {
+    "ar": "متاجر جديدة",
+    "en": "New stores"
+  },
+  "dash.q.storeChanges": {
+    "ar": "تعديلات بيانات المتاجر",
+    "en": "Store data changes"
+  },
+  "dash.q.verifications": {
+    "ar": "مستندات التوثيق",
+    "en": "Verification documents"
+  },
+  "dash.q.refunds": {
+    "ar": "مرتجعات معلقة",
+    "en": "Pending returns"
+  },
+  "dash.q.messages": {
+    "ar": "رسائل تواصل جديدة",
+    "en": "New contact messages"
+  },
+  "dash.q.withdrawals": {
+    "ar": "طلبات سحب معلقة",
+    "en": "Pending withdrawals"
+  },
+  "dash.nextProducts": {
+    "ar": "الأقدم في قائمة المراجعة",
+    "en": "Oldest in the review queue"
+  },
+  "dash.reviewAll": {
+    "ar": "مراجعة الكل",
+    "en": "Review all"
+  },
+  "dash.performance": {
+    "ar": "الأداء — {{period}}",
+    "en": "Performance — {{period}}"
+  },
+  "dash.k.gmv": {
+    "ar": "المبيعات",
+    "en": "Sales"
+  },
+  "dash.k.gmvHint": {
+    "ar": "الطلبات المؤكدة، بدون الملغاة وغير المدفوعة",
+    "en": "Confirmed orders, excluding cancelled and unpaid"
+  },
+  "dash.k.commission": {
+    "ar": "عمولة المنصة",
+    "en": "Platform commission"
+  },
+  "dash.k.commissionHint": {
+    "ar": "صافي دخل المنصة من المبيعات",
+    "en": "The platform's earnings from sales"
+  },
+  "dash.k.orders": {
+    "ar": "الطلبات",
+    "en": "Orders"
+  },
+  "dash.k.ordersHint": {
+    "ar": "{{paid}} مؤكد · {{cancelled}} ملغي",
+    "en": "{{paid}} confirmed · {{cancelled}} cancelled"
+  },
+  "dash.k.aov": {
+    "ar": "متوسط قيمة الطلب",
+    "en": "Average order value"
+  },
+  "dash.k.aovHint": {
+    "ar": "المبيعات ÷ الطلبات المؤكدة",
+    "en": "Sales ÷ confirmed orders"
+  },
+  "dash.new": {
+    "ar": "جديد",
+    "en": "New"
+  },
+  "dash.dailySales": {
+    "ar": "المبيعات اليومية",
+    "en": "Daily sales"
+  },
+  "dash.ordersByStatus": {
+    "ar": "حالة الطلبات",
+    "en": "Orders by status"
+  },
+  "dash.payments": {
+    "ar": "طرق الدفع",
+    "en": "Payment methods"
+  },
+  "dash.ordersCount": {
+    "ar": "{{count}} طلب",
+    "en": "{{count}} orders"
+  },
+  "dash.topCategories": {
+    "ar": "أعلى الأقسام مبيعًا",
+    "en": "Top categories"
+  },
+  "dash.topVendors": {
+    "ar": "أعلى المتاجر مبيعًا",
+    "en": "Top stores"
+  },
+  "dash.topProducts": {
+    "ar": "الأكثر مبيعًا",
+    "en": "Best vendors"
+  },
+  "dash.units": {
+    "ar": "{{count}} قطعة",
+    "en": "{{count}} units"
+  },
+  "dash.viewAll": {
+    "ar": "عرض الكل",
+    "en": "View all"
+  },
+  "dash.commissionShort": {
+    "ar": "عمولة",
+    "en": "Commission"
+  },
+  "dash.recentOrders": {
+    "ar": "أحدث الطلبات",
+    "en": "Recent orders"
+  },
+  "dash.col.order": {
+    "ar": "الطلب",
+    "en": "Order"
+  },
+  "dash.col.customer": {
+    "ar": "العميل",
+    "en": "Customer"
+  },
+  "dash.col.status": {
+    "ar": "الحالة",
+    "en": "Status"
+  },
+  "dash.col.payment": {
+    "ar": "الدفع",
+    "en": "Payment"
+  },
+  "dash.col.total": {
+    "ar": "الإجمالي",
+    "en": "Total"
+  },
+  "dash.growth": {
+    "ar": "النمو — {{period}}",
+    "en": "Growth — {{period}}"
+  },
+  "dash.g.customers": {
+    "ar": "عملاء جدد",
+    "en": "New customers"
+  },
+  "dash.g.vendors": {
+    "ar": "متاجر جديدة",
+    "en": "New stores"
+  },
+  "dash.g.products": {
+    "ar": "منتجات نُشرت",
+    "en": "Products published"
+  },
+  "dash.g.buyers": {
+    "ar": "عملاء اشتروا",
+    "en": "Customers who bought"
+  },
+  "dash.g.refunds": {
+    "ar": "طلبات الاسترجاع",
+    "en": "Return requests"
+  },
+  "dash.catalog": {
+    "ar": "حالة المنتجات",
+    "en": "Catalogue health"
+  },
+  "dash.c.approved": {
+    "ar": "منشورة",
+    "en": "Live"
+  },
+  "dash.c.pending": {
+    "ar": "قيد المراجعة",
+    "en": "In review"
+  },
+  "dash.c.draft": {
+    "ar": "مسودات",
+    "en": "Drafts"
+  },
+  "dash.c.rejected": {
+    "ar": "مرفوضة",
+    "en": "Rejected"
+  },
+  "dash.c.listed": {
+    "ar": "معروضة للبيع",
+    "en": "Listed for sale"
+  },
+  "dash.c.outOfStock": {
+    "ar": "نفد المخزون",
+    "en": "Out of stock"
+  },
+  "dash.c.lowStock": {
+    "ar": "مخزون منخفض (3 أو أقل)",
+    "en": "Low stock (3 or less)"
+  },
+  "dash.allTime": {
+    "ar": "منذ البداية",
+    "en": "All time"
+  },
+  "dash.t.gmv": {
+    "ar": "إجمالي المبيعات",
+    "en": "Total sales"
+  },
+  "dash.t.commission": {
+    "ar": "إجمالي العمولة",
+    "en": "Total commission"
+  },
+  "dash.t.customers": {
+    "ar": "العملاء",
+    "en": "Customers"
+  },
+  "dash.t.vendors": {
+    "ar": "المتاجر النشطة",
+    "en": "Active stores"
+  },
+  "dash.t.repeat": {
+    "ar": "نسبة العملاء العائدين",
+    "en": "Returning customers"
+  },
+  "dash.t.withdrawals": {
+    "ar": "طلبات سحب معلقة",
+    "en": "Pending withdrawals"
+  }
+}

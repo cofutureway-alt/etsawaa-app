@@ -8,6 +8,7 @@ import { Badge } from "~/components/ui/Badge";
 import { Input } from "~/components/ui/Input";
 import { Dialog } from "~/components/ui/Overlay";
 import { useToast } from "~/components/ui/Toast";
+import { fetchAll } from "~/lib/supabase/fetch-all";
 import { ChevronRightIcon, PencilIcon, TrashIcon, PlusIcon, GridIcon } from "~/components/ui/icons";
 import { MediaPickerDialog } from "~/features/media/components/media-ui";
 import { parseMediaSettings } from "~/lib/media.shared";
@@ -16,6 +17,7 @@ import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
+import { CategoryIconPicker } from "~/components/catalog/CategoryIcon";
 
 
 export interface CategoryRow {
@@ -30,6 +32,8 @@ export interface CategoryRow {
   description_ar: string;
   description_en: string;
   thumb_path: string | null;
+  /** icon-library key (hero panel / mega menu) */
+  icon: string | null;
   sort: number;
   is_active: boolean;
   show_in_header: boolean;
@@ -42,12 +46,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     throw Response.redirect(new URL(`/${lang}/auth/login?error=db`, request.url).toString(), 302);
   }
   const viewer = await requirePanelAccess(client, lang, "admin", request);
-  const { data: rows, error } = await client
-    .from("categories")
-    .select("id,parent_id,depth,path,slug_ar,slug_en,name_ar,name_en,description_ar,description_en,thumb_path,sort,is_active,show_in_header")
-    .is("deleted_at", null)
-    .order("sort");
-  if (error) throw new Response(error.message, { status: 500 });
+  // paged: the tree (L1-L3 + level-4 product types) exceeds PostgREST's 1000-row cap
+  const rows = await fetchAll((from, to) =>
+    client
+      .from("categories")
+      .select("id,parent_id,depth,path,slug_ar,slug_en,name_ar,name_en,description_ar,description_en,thumb_path,icon,sort,is_active,show_in_header")
+      .is("deleted_at", null)
+      .order("sort")
+      .order("id")
+      .range(from, to),
+  ).catch((error: Error) => {
+    throw new Response(error.message, { status: 500 });
+  });
   const { data: mediaRow } = await client.from("settings").select("value").eq("key", "media").single();
   // H-08: commission overrides (per category, children inherit the nearest ancestor)
   const { data: commissions } = await client.from("category_commissions").select("category_id, percent");
@@ -56,6 +66,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     lang,
     categories: (rows ?? []) as CategoryRow[],
     commissions: commissionMap as Record<string, number>,
+    // commission rates stay with admins (staff manage the tree only)
+    canCommission: viewer.profile.role === "admin",
     media: parseMediaSettings(mediaRow?.value),
     uid: viewer.user.id,
     supabaseUrl: process.env.SUPABASE_URL ?? "",
@@ -88,6 +100,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       description_ar: String(form.get("description_ar") ?? "").trim(),
       description_en: String(form.get("description_en") ?? "").trim(),
       thumb_path: asOptional("thumb_path"),
+      icon: asOptional("icon"),
       is_active: form.get("is_active") === "on" || form.get("is_active") === "true",
       show_in_header: form.get("show_in_header") === "on" || form.get("show_in_header") === "true",
       parent_id: asOptional("parent_id"),
@@ -143,7 +156,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       return { ok: false as const, reason: "percent_range" };
     }
     const { error } = await client.rpc("fn_admin_set_commission", { p_category: id, p_percent: pct });
-    if (error) return { ok: false as const, reason: error.message.includes("percent_out_of_range") ? "percent_range" : error.message.includes("category_not_found") ? "invalid" : "db" };
+    if (error) return { ok: false as const, reason: error.message.includes("percent_out_of_range") ? "percent_range" : error.message.includes("category_not_found") ? "invalid" : error.message.includes("root_category") ? "root_category" : "db" };
     return { ok: true as const };
   }
   if (intent === "clear_commission" && id) {
@@ -197,13 +210,16 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
   const toast = useToast();
   const fetcher = useFetcher<typeof action>();
-  const { categories, commissions, media, uid, supabaseUrl } = loaderData;
+  const { categories, commissions, media, uid, supabaseUrl, canCommission } = loaderData;
   const tree = useMemo(() => buildTree(categories), [categories]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [editing, setEditing] = useState<{ row: CategoryRow | null; parent: CategoryRow | null } | null>(null);
   const [deleting, setDeleting] = useState<CategoryRow | null>(null);
   const [pickerFor, setPickerFor] = useState<"form" | null>(null);
   const [formThumb, setFormThumb] = useState<string | null>(null);
+  const [formIcon, setFormIcon] = useState("");
+  // every way of opening the editor resets the icon from the row being edited
+  useEffect(() => { setFormIcon(editing?.row?.icon ?? ""); }, [editing]);
   const [commissionFor, setCommissionFor] = useState<CategoryRow | null>(null);
   const [commissionVal, setCommissionVal] = useState("");
   const busy = fetcher.state !== "idle";
@@ -332,7 +348,13 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    {(() => {
+                    {canCommission && node.row.depth === 1 ? (
+                      // commission is charged on the subcategory a product is listed in, never a top-level one
+                      <span className="shrink-0 rounded-md border border-dashed border-border px-2.5 py-1 text-2xs font-bold text-text-faint" title={t("commission.rootHint")}>
+                        {t("commission.onSubs")}
+                      </span>
+                    ) : null}
+                    {canCommission && node.row.depth > 1 && (() => {
                       // H-08: commission badge — overridden (explicit row) vs inherited vs level-default
                       const own = commissions[node.row.id] != null;
                       const eff = effectiveCommission(node.row);
@@ -460,7 +482,7 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* create/edit dialog */}
-      <Dialog open={editing !== null} onClose={() => setEditing(null)} title={editing?.row ? t("catalog.editCategory") : t("catalog.addCategory")}>
+      <Dialog size="lg" open={editing !== null} onClose={() => setEditing(null)} title={editing?.row ? t("catalog.editCategory") : t("catalog.addCategory")}>
         {editing ? (
           <fetcher.Form method="post" className="flex max-h-[70vh] flex-col gap-3 overflow-y-auto pe-1">
             <input type="hidden" name="intent" value={editing.row ? "update" : "create"} />
@@ -497,7 +519,8 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
               <select name="parent_id" defaultValue={editing.row?.parent_id ?? ""} className="rounded-md border border-border bg-surface px-2.5 py-2 text-sm text-text focus:border-action focus:outline-none">
                 <option value="">{t("catalog.rootLevel")}</option>
                 {categories
-                  .filter((c) => c.depth < 3)
+                  // level 4 = product type: types cannot have children
+                  .filter((c) => c.depth < 4)
                   .filter((c) => !editing.row || (c.id !== editing.row.id && !editing.row.path.includes(c.id)))
                   .map((c) => (
                     <option key={c.id} value={c.id}>{c.name_ar} — {c.name_en}</option>
@@ -511,11 +534,14 @@ export default function AdminCategories({ loaderData }: Route.ComponentProps) {
                 <span className="flex size-12 items-center justify-center rounded-md border border-dashed border-border text-2xs text-text-faint">{t("catalog.thumb")}</span>
               )}
               <input type="hidden" name="thumb_path" value={formThumb ?? ""} />
+              <input type="hidden" name="icon" value={formIcon} />
               <Button type="button" size="sm" variant="outline" onClick={() => setPickerFor("form")}>{t("media.choose")}</Button>
               {formThumb ? (
                 <Button type="button" size="sm" variant="ghost" onClick={() => setFormThumb(null)}>{t("common.delete")}</Button>
               ) : null}
             </div>
+            <p className="-mt-2 text-xs text-text-muted">{t("catalog.thumbHint")}</p>
+            <CategoryIconPicker value={formIcon} onChange={setFormIcon} label={t("catalog.icon")} noneLabel={t("catalog.noIcon")} />
             <label className="flex items-center gap-2 text-sm font-bold text-text">
               <input type="checkbox" name="is_active" defaultChecked={editing.row?.is_active ?? true} className="size-4 accent-[var(--color-action)]" />
               {t("catalog.active")}

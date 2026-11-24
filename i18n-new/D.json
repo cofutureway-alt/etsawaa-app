@@ -1,0 +1,166 @@
+{
+  "productWizard.brandPropose.cta": {
+    "ar": "مش لاقي الماركة؟ أضف ماركة جديدة",
+    "en": "Can't find the brand? Add a new one"
+  },
+  "productWizard.brandPropose.title": {
+    "ar": "إضافة ماركة جديدة",
+    "en": "Add a new brand"
+  },
+  "productWizard.brandPropose.note": {
+    "ar": "سيتم مراجعة الماركة من الإدارة مع المنتج قبل نشرها.",
+    "en": "The brand will be reviewed by the administration with the product before it goes live."
+  },
+  "productWizard.brandPropose.nameAr": {
+    "ar": "اسم الماركة بالعربية",
+    "en": "Brand name in Arabic"
+  },
+  "productWizard.brandPropose.nameEn": {
+    "ar": "اسم الماركة بالإنجليزية",
+    "en": "Brand name in English"
+  },
+  "productWizard.brandPropose.submit": {
+    "ar": "إرسال للمراجعة",
+    "en": "Send for review"
+  },
+  "productWizard.brandPropose.pending": {
+    "ar": "بانتظار الموافقة",
+    "en": "Pending approval"
+  },
+  "productWizard.brandPropose.added": {
+    "ar": "أُرسلت الماركة للمراجعة مع المنتج.",
+    "en": "The brand was sent for review with the product."
+  },
+  "productWizard.brandPropose.exists": {
+    "ar": "الماركة موجودة بالفعل وتم اختيارها",
+    "en": "The brand already exists and was selected"
+  },
+  "productWizard.brandPropose.badName": {
+    "ar": "اكتب اسم الماركة من حرفين إلى 60 حرفًا في اللغتين.",
+    "en": "Enter the brand name in both languages, 2 to 60 characters each."
+  },
+  "productWizard.brandPropose.tooMany": {
+    "ar": "وصلت للحد الأقصى من الماركات المنتظرة للمراجعة.",
+    "en": "You have reached the maximum number of pending brand proposals."
+  },
+  "productWizard.brandPropose.badCategory": {
+    "ar": "اختر تصنيف المنتج أولًا.",
+    "en": "Choose the product category first."
+  },
+  "productWizard.brandPropose.err": {
+    "ar": "تعذّر إضافة الماركة، حاول مرة أخرى.",
+    "en": "Could not add the brand, please try again."
+  },
+  "productWizard.categorySearch.label": {
+    "ar": "ابحث عن نوع المنتج",
+    "en": "Search for the product type"
+  },
+  "productWizard.categorySearch.placeholder": {
+    "ar": "مثال: راوتر، بطاريات، شاحن، عروسة",
+    "en": "e.g. router, batteries, charger, doll"
+  },
+  "productWizard.categorySearch.empty": {
+    "ar": "لا يوجد نوع بهذا الاسم — جرّب كلمة أخرى أو اختر من القوائم",
+    "en": "No type with that name — try another word or pick from the lists"
+  },
+  "productReview.brand.pendingTitle": {
+    "ar": "ماركة جديدة أضافها التاجر: {{ar}} / {{en}}",
+    "en": "New brand proposed by the vendor: {{ar}} / {{en}}"
+  },
+  "productReview.brand.accept": {
+    "ar": "قبول الماركة",
+    "en": "Accept brand"
+  },
+  "productReview.brand.reject": {
+    "ar": "رفض واختيار بديل",
+    "en": "Reject and choose another"
+  },
+  "productReview.brand.acceptTitle": {
+    "ar": "قبول الماركة وإكمال بياناتها",
+    "en": "Accept the brand and complete its data"
+  },
+  "productReview.brand.rejectTitle": {
+    "ar": "رفض الماركة واختيار بديل",
+    "en": "Reject the brand and choose a replacement"
+  },
+  "productReview.brand.rejectHint": {
+    "ar": "سيتم استبدال ماركة «{{ar}} / {{en}}» في كل المنتجات التي تستخدمها.",
+    "en": "\"{{ar}} / {{en}}\" will be replaced on every product using it."
+  },
+  "productReview.brand.noBrand": {
+    "ar": "بدون ماركة",
+    "en": "No brand"
+  },
+  "productReview.brand.replacement": {
+    "ar": "الماركة البديلة",
+    "en": "Replacement brand"
+  },
+  "productReview.brand.note": {
+    "ar": "ملاحظة للتاجر (اختياري)",
+    "en": "Note to the vendor (optional)"
+  },
+  "productReview.brand.notePlaceholder": {
+    "ar": "سبب الرفض أو أي توضيح…",
+    "en": "Why it was rejected, or any clarification…"
+  },
+  "productReview.brand.confirmAccept": {
+    "ar": "قبول الماركة",
+    "en": "Accept brand"
+  },
+  "productReview.brand.confirmReject": {
+    "ar": "رفض الماركة",
+    "en": "Reject brand"
+  },
+  "productReview.brand.accepted": {
+    "ar": "تم قبول الماركة ونشرها.",
+    "en": "The brand was accepted and published."
+  },
+  "productReview.brand.rejected": {
+    "ar": "تم رفض الماركة واستبدالها.",
+    "en": "The brand was rejected and replaced."
+  },
+  "productReview.brand.duplicate": {
+    "ar": "توجد ماركة أخرى بنفس الاسم بالفعل.",
+    "en": "Another brand already uses this name."
+  },
+  "productReview.brand.notPending": {
+    "ar": "هذه الماركة لم تعد بانتظار المراجعة.",
+    "en": "This brand is no longer pending review."
+  },
+  "productReview.brand.failed": {
+    "ar": "تعذّر تنفيذ الطلب، حاول مرة أخرى.",
+    "en": "The request could not be completed, please try again."
+  },
+  "productReview.brand.pendingApprove": {
+    "ar": "اقبل الماركة الجديدة أو اختر بديلًا أولًا.",
+    "en": "Accept the new brand or choose a replacement first."
+  },
+  "notif.brand.approved.title": {
+    "ar": "تم قبول الماركة {{name}}",
+    "en": "Brand approved: {{name}}"
+  },
+  "notif.brand.approved.body": {
+    "ar": "أصبحت الماركة متاحة الآن في منتجاتك.",
+    "en": "The brand is now available on your products."
+  },
+  "notif.brand.rejected.title": {
+    "ar": "لم تُقبل الماركة {{name}}",
+    "en": "Brand not approved: {{name}}"
+  },
+  "notif.brand.rejected.body": {
+    "ar": "الماركة البديلة: {{replacement}}",
+    "en": "Replacement brand: {{replacement}}"
+  },
+  "notif.brand.noBrand": {
+    "ar": "بدون ماركة",
+    "en": "No brand"
+  },
+  "notif.brand.proposed.title": {
+    "ar": "ماركة جديدة بانتظار المراجعة",
+    "en": "New brand awaiting review"
+  },
+  "notif.brand.proposed.body": {
+    "ar": "{{name}} — أضافها تاجر مع منتج.",
+    "en": "{{name}} — proposed by a vendor with a product."
+  }
+}

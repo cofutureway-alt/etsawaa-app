@@ -6,6 +6,7 @@ import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { formatPiastres } from "~/lib/money";
 import { Badge } from "~/components/ui/Badge";
+import { Rating } from "~/components/ui/Rating";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { MediaImage } from "~/features/media/components/media-ui";
 import { SkeletonTable } from "~/components/ui/Skeleton";
@@ -28,49 +29,26 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "admin", request);
   const vendorId = String(params.id ?? "");
   const SUPABASE_URL = process.env.SUPABASE_URL ?? "";
 
-  const vendorRes = await client
-    .from("vendors")
-    .select(`id, slug, store_name_ar, store_name_en, short_desc_ar, short_desc_en,
-             logo_path, banner_path, phone, status, verification_status, verification_note,
-             level_id, hidden_from_listings, is_featured,
-             socials, created_at, submitted_at, reviewed_at,
-             vendor_levels(name_ar, name_en),
-             areas(name_ar, name_en)`)
-    .eq("id", vendorId)
-    .maybeSingle();
-  if (!vendorRes.data) throw new Response("vendor not found", { status: 404 });
-  const v = vendorRes.data as {
-    id: string; slug: string; store_name_ar: string; store_name_en: string;
-    short_desc_ar: string; short_desc_en: string; logo_path: string | null; banner_path: string | null;
-    phone: string | null; status: string; verification_status: string; verification_note: string | null;
-    hidden_from_listings: boolean; is_featured: boolean;
-    socials: Record<string, string> | null; created_at: string; submitted_at: string | null; reviewed_at: string | null;
-    vendor_levels: { name_ar: string; name_en: string } | null;
-    areas: { name_ar: string; name_en: string } | null;
-  };
-
-  const [
-    { count: productsCount },
-    { data: groupAgg, error: aggErr },
-    { data: ratingAgg },
-    { data: wallet },
-    { data: penalties },
-    { data: ads },
-    { data: recentGroups },
-    owner,
-  ] = await Promise.all([
-    client.from("products").select("id", { count: "exact", head: true })
-      .eq("vendor_id", vendorId).eq("status", "approved").is("deleted_at", null),
-    client.from("order_vendor_groups")
-      .select("items_subtotal_piastres, commission_piastres")
-      .eq("vendor_id", vendorId),
-    client.from("reviews")
-      .select("rating").eq("vendor_id", vendorId).eq("status", "published"),
-    client.from("wallets").select("available_piastres, pending_piastres").eq("vendor_id", vendorId).maybeSingle(),
+  // ONE parallel round: the guard, the store row, the totals (computed in SQL
+  // by fn_admin_vendor_summary instead of pulling every order group and review
+  // row into Node) and the three recent lists. Nothing here needs the store
+  // row first; if the guard throws, Promise.all rejects with its redirect/403.
+  const [, vendorRes, summaryRes, { data: penalties }, { data: ads }, { data: recentGroups }] = await Promise.all([
+    requirePanelAccess(client, lang, "admin", request),
+    client
+      .from("vendors")
+      .select(`id, slug, store_name_ar, store_name_en, short_desc_ar, short_desc_en,
+               logo_path, banner_path, phone, status, verification_status, verification_note,
+               level_id, hidden_from_listings, is_featured,
+               socials, created_at, submitted_at, reviewed_at,
+               vendor_levels(name_ar, name_en),
+               areas(name_ar, name_en)`)
+      .eq("id", vendorId)
+      .maybeSingle(),
+    client.rpc("fn_admin_vendor_summary", { p_vendor: vendorId }),
     client.from("vendor_penalties").select("id, amount_piastres, reason, status, created_at")
       .eq("vendor_id", vendorId).order("created_at", { ascending: false }).limit(10),
     client.from("ad_campaigns").select("id, source, status, started_at, ends_at, ad_packages(name_ar, name_en)")
@@ -82,22 +60,32 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       .eq("vendor_id", vendorId)
       .order("created_at", { ascending: false })
       .limit(10),
-    (async () => {
-      const { data: m } = await client.from("store_members").select("user_id").eq("vendor_id", vendorId).eq("role", "owner").maybeSingle();
-      if (!m) return null;
-      const { data: p } = await client.from("profiles").select("email, phone, full_name").eq("id", (m as { user_id: string }).user_id).maybeSingle();
-      return p as { email: string | null; phone: string | null; full_name: string | null } | null;
-    })(),
   ]);
-  if (aggErr) throw new Error(aggErr.message);
-
-  const ordersCount = (groupAgg ?? []).length;
-  const salesSum = (groupAgg ?? []).reduce((s: number, g: { items_subtotal_piastres: number }) => s + (g.items_subtotal_piastres ?? 0), 0);
-  const commissionSum = (groupAgg ?? []).reduce((s: number, g: { commission_piastres: number }) => s + (g.commission_piastres ?? 0), 0);
-  const ratings = (ratingAgg ?? []) as Array<{ rating: number }>;
-  const ratingAvg = ratings.length
-    ? Math.round((ratings.reduce((s, r) => s + Number(r.rating), 0) / ratings.length) * 10) / 10
-    : null;
+  if (!vendorRes.data) throw new Response("vendor not found", { status: 404 });
+  if (summaryRes.error) throw new Error(summaryRes.error.message);
+  const v = vendorRes.data as {
+    id: string; slug: string; store_name_ar: string; store_name_en: string;
+    short_desc_ar: string; short_desc_en: string; logo_path: string | null; banner_path: string | null;
+    phone: string | null; status: string; verification_status: string; verification_note: string | null;
+    hidden_from_listings: boolean; is_featured: boolean;
+    socials: Record<string, string> | null; created_at: string; submitted_at: string | null; reviewed_at: string | null;
+    vendor_levels: { name_ar: string; name_en: string } | null;
+    areas: { name_ar: string; name_en: string } | null;
+  };
+  const summary = (summaryRes.data ?? {}) as {
+    products?: number; orders?: number; sales?: number; commission?: number;
+    rating_avg?: number | null; rating_count?: number;
+    wallet?: { available_piastres: number; pending_piastres: number } | null;
+    owner?: { email: string | null; phone: string | null; full_name: string | null } | null;
+  };
+  const productsCount = summary.products ?? 0;
+  const ordersCount = summary.orders ?? 0;
+  const salesSum = Number(summary.sales ?? 0);
+  const commissionSum = Number(summary.commission ?? 0);
+  const ratingAvg = summary.rating_avg == null ? null : Number(summary.rating_avg);
+  const ratingCount = summary.rating_count ?? 0;
+  const wallet = summary.wallet ?? null;
+  const owner = summary.owner ?? null;
 
   const adsForVendor = ((ads ?? []) as unknown as Array<Record<string, unknown>>);
 
@@ -111,7 +99,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       sales: salesSum,
       commission: commissionSum,
       ratingAvg,
-      ratingCount: ratings.length,
+      ratingCount,
     },
     wallet: JSON.parse(JSON.stringify(wallet ?? { available_piastres: 0, pending_piastres: 0 })),
     penalties: JSON.parse(JSON.stringify(penalties ?? [])),
@@ -184,7 +172,10 @@ export default function AdminVendorDetail({ loaderData }: Route.ComponentProps) 
             <dt className="text-xs font-bold text-text-muted">{tile.label}</dt>
             <dd className="num mt-1 text-lg font-extrabold text-text">{tile.value ?? money(tile.money)}</dd>
             {tile.label === t("vd.statRating") && s.ratingCount > 0 ? (
-              <dd className="mt-0.5 text-2xs text-text-faint">{t("vd.ratingCount", { count: s.ratingCount })}</dd>
+              <>
+                <dd className="mt-1"><Rating value={s.ratingAvg ?? 0} size="sm" /></dd>
+                <dd className="mt-0.5 text-2xs text-text-faint">{t("vd.ratingCount", { count: s.ratingCount })}</dd>
+              </>
             ) : null}
           </div>
         ))}

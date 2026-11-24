@@ -3,9 +3,10 @@ import type { Route } from "./+types/coupons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
-import { requirePanelAccess } from "~/lib/auth/guards";
+import { asRows } from "~/lib/supabase/typed";
+import { getViewer, requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
-import { formatPiastres } from "~/lib/money";
+import { egpToPiastres, formatPiastres, piastresToEgp } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Overlay";
 import { Badge } from "~/components/ui/Badge";
@@ -36,6 +37,18 @@ interface CouponRow {
   scopes: CouponScope[];
 }
 
+/** Shape of the loader select: coupon columns + the scopes/redemptions joins
+ * (postgrest-js cannot type embedded joins — narrowed through asRows). */
+interface CouponApiRow {
+  id: string; code: string; type: string; value: number;
+  free_shipping: boolean; stackable: boolean; exclude_sale_items: boolean;
+  min_subtotal_piastres: number; max_discount_piastres: number | null;
+  max_uses_per_user: number | null; pairs_with: string | null;
+  status: string; max_uses_total: number | null; starts_at: string | null; ends_at: string | null;
+  coupon_scopes: Array<{ mode: string; scope: string; ref_id: string }> | null;
+  coupon_redemptions: Array<{ count: number }> | null;
+}
+
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
@@ -48,21 +61,21 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     .order("created_at", { ascending: false })
     .limit(200);
   if (error) throw new Error(error.message);
-  const coupons: CouponRow[] = ((rows ?? []) as unknown as Array<Record<string, unknown>>).map((r) => ({
-    id: r.id as string, code: r.code as string, type: r.type as string, value: r.value as number,
-    free_shipping: (r.free_shipping as boolean) ?? false,
-    stackable: (r.stackable as boolean) ?? false,
-    status: r.status as string,
-    max_uses_total: (r.max_uses_total as number | null) ?? null,
-    used: ((r.coupon_redemptions as Array<{ count: number }> | null) ?? []).reduce((s, x) => s + (x.count ?? 0), 0),
-    starts_at: (r.starts_at as string | null) ?? null,
-    ends_at: (r.ends_at as string | null) ?? null,
-    exclude_sale_items: (r.exclude_sale_items as boolean) ?? false,
-    min_subtotal_piastres: (r.min_subtotal_piastres as number) ?? 0,
-    max_discount_piastres: (r.max_discount_piastres as number | null) ?? null,
-    max_uses_per_user: (r.max_uses_per_user as number | null) ?? null,
-    pairs_with: (r.pairs_with as string | null) ?? null,
-    scopes: ((r.coupon_scopes as Array<{ mode: string; scope: string; ref_id: string }> | null) ?? [])
+  const coupons: CouponRow[] = asRows<CouponApiRow>(rows).map((r) => ({
+    id: r.id, code: r.code, type: r.type, value: r.value,
+    free_shipping: r.free_shipping ?? false,
+    stackable: r.stackable ?? false,
+    status: r.status,
+    max_uses_total: r.max_uses_total ?? null,
+    used: (r.coupon_redemptions ?? []).reduce((s, x) => s + (x.count ?? 0), 0),
+    starts_at: r.starts_at ?? null,
+    ends_at: r.ends_at ?? null,
+    exclude_sale_items: r.exclude_sale_items ?? false,
+    min_subtotal_piastres: r.min_subtotal_piastres ?? 0,
+    max_discount_piastres: r.max_discount_piastres ?? null,
+    max_uses_per_user: r.max_uses_per_user ?? null,
+    pairs_with: r.pairs_with ?? null,
+    scopes: (r.coupon_scopes ?? [])
       .map((x) => ({ mode: x.mode as CouponScope["mode"], scope: x.scope as CouponScope["scope"], ref_id: x.ref_id })),
   }));
   return { lang, coupons: JSON.parse(JSON.stringify(coupons)) };
@@ -83,11 +96,14 @@ export async function action({ request, params }: Route.ActionArgs) {
   // Shared field reader for create + update.
   const readFields = () => {
     const type = String(form.get("type") ?? "percent");
-    const value = Math.trunc(Number(form.get("value") ?? 0)) || 0;
+    // fixed coupons are typed in pounds; percent types stay whole percents
+    const value = type === "fixed"
+      ? egpToPiastres(form.get("value")) ?? 0
+      : Math.trunc(Number(form.get("value") ?? 0)) || 0;
     const code = String(form.get("code") ?? "").trim().toUpperCase();
     const pairsWith = String(form.get("pairs_with") ?? "").trim().toUpperCase();
-    const maxDiscount = Math.trunc(Number(form.get("max_discount_piastres") ?? 0)) || null;
-    const minSubtotal = Math.trunc(Number(form.get("min_subtotal_piastres") ?? 0)) || 0;
+    const maxDiscount = egpToPiastres(form.get("max_discount_egp")) || null;
+    const minSubtotal = egpToPiastres(form.get("min_subtotal_egp")) ?? 0;
     const maxTotal = Math.trunc(Number(form.get("max_uses_total") ?? 0)) || null;
     const maxUser = Math.trunc(Number(form.get("max_uses_per_user") ?? 0)) || null;
     const endsAt = String(form.get("ends_at") ?? "").trim();
@@ -141,7 +157,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       status: "active",
       starts_at: new Date().toISOString(),
       ends_at: f.endsAt ? new Date(f.endsAt).toISOString() : null,
-      created_by: (await client.auth.getUser()).data.user?.id ?? null,
+      created_by: (await getViewer(client))?.viewer?.user.id ?? null,
     }).select("id").single();
     if (error) {
       return data({ ok: false, reason: error.code === "23505" ? "dup_code" : error.message }, { status: 400 });
@@ -329,8 +345,8 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
           <label htmlFor="cp-value" className="mt-3 block text-sm font-bold text-text">
             {type === "fixed" ? t("cp.valueFixed") : t("cp.valuePercent")}
           </label>
-          <input id="cp-value" name="value" type="number" min={1} max={type === "fixed" ? 100000000 : 100} required dir="ltr"
-            defaultValue={editing?.value}
+          <input id="cp-value" name="value" type="number" min={type === "fixed" ? 0.01 : 1} max={type === "fixed" ? 1000000 : 100} step={type === "fixed" ? "0.01" : 1} required dir="ltr"
+            key={type} defaultValue={editing ? (editing.type === "fixed" ? piastresToEgp(editing.value) : editing.value) : undefined}
             className="mt-1 w-32 rounded-md border border-border bg-surface p-2.5 text-sm text-text" />
 
           {type === "commission_percent" ? (
@@ -358,11 +374,11 @@ export default function AdminCoupons({ loaderData }: Route.ComponentProps) {
 
           <div className="mt-3 grid grid-cols-2 gap-2">
             <label htmlFor="cp-min" className="text-sm font-bold text-text">{t("cp.minSubtotal")}
-              <input id="cp-min" name="min_subtotal_piastres" type="number" min={0} dir="ltr" defaultValue={editing?.min_subtotal_piastres}
+              <input id="cp-min" name="min_subtotal_egp" type="number" min={0} step="0.01" inputMode="decimal" dir="ltr" defaultValue={editing ? piastresToEgp(editing.min_subtotal_piastres) : undefined}
                 className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm" />
             </label>
             <label htmlFor="cp-maxd" className="text-sm font-bold text-text">{t("cp.maxDiscount")}
-              <input id="cp-maxd" name="max_discount_piastres" type="number" min={1} dir="ltr" defaultValue={editing?.max_discount_piastres ?? undefined}
+              <input id="cp-maxd" name="max_discount_egp" type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr" defaultValue={editing?.max_discount_piastres != null ? piastresToEgp(editing.max_discount_piastres) : undefined}
                 className="mt-1 w-full rounded-md border border-border bg-surface p-2.5 text-sm" />
             </label>
             <label htmlFor="cp-maxt" className="text-sm font-bold text-text">{t("cp.maxTotal")}

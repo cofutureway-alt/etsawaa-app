@@ -1,220 +1,111 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useFetcher, useNavigate } from "react-router";
+import { useBlocker, useFetcher, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import {
-  Badge,
   Button,
   Card,
   CardBody,
-  Dialog,
-  Input,
-  Select,
   Stepper,
   useToast,
 } from "~/components/ui";
-import { MediaImage, MediaPickerDialog } from "~/features/media/components/media-ui";
-import { combinationCount, optionKeyOf, type AxisSelection } from "../variant";
-import { VariantMatrixEditor, type VariantMatrixRow } from "./variant-matrix";
-import type { MediaSettings } from "~/lib/media.shared";
+import { choiceIds, formFromProduct } from "./wizard/helpers";
+import { AttributesStep } from "./wizard/attributes-step";
+import { BasicInfoStep } from "./wizard/basic-info-step";
+import { ChildrenStep } from "./wizard/children-step";
+import { childrenFromLoader, childrenPayload, packSizesForForm, sizeAxisKind, type ChildDraft, type SizeOption } from "./wizard/children";
+import { ClassificationStep } from "./wizard/classification-step";
+import { ErrorSummary } from "./wizard/error-summary";
+import { ShippingStep } from "./wizard/shipping-step";
+import { WizardBanners } from "./wizard/status-banners";
+import { validateStep } from "./wizard/validate-step";
+import { WizardHeader } from "./wizard/wizard-header";
+import { SizeChartEditor } from "./wizard/size-chart-step";
+import { defaultChart, garmentFor } from "~/features/products/size-chart";
+import { Dialog } from "~/components/ui/Overlay";
+import { LiveCommissionBox } from "~/components/admin/CommissionBox";
+import { egpToPiastres as toPiastres } from "./wizard/helpers";
+import type { ProductWizardProps, SaveActionData, TemplateAttr, WizardBrand, WizardForm } from "./wizard/types";
 
 /**
  * Product wizard (V-11..V-17): 5 steps — basics · classification/media ·
- * pricing · attributes+variants (template-generated) · shipping/review.
- * Autosave drafts via `fn_save_product`; variants via `fn_generate_variants`
- * / `fn_save_variants`. The form is generated from the leaf template —
- * vendors pick admin options only (AGENT §6.8).
+ * specifications · child products · shipping/review. Autosave drafts via
+ * `fn_save_product`; child products (colour + sizes + stock per size + price
+ * + discount + images) via `fn_save_children`. The form is generated from the
+ * leaf template — vendors pick admin options only (AGENT §6.8).
+ *
+ * This module is the orchestrator: it owns wizard state, the autosave
+ * debounce, the save-result handling and the submit handlers, and composes
+ * the step UI from `./wizard/*` (types, helpers, validation, header/banners,
+ * dialogs and one file per step).
  */
 
-export interface TemplateOption {
-  id: string;
-  label_ar: string;
-  label_en: string;
-  color_hex: string | null;
-}
-/** Label for display: Arabic/English name, falling back to the machine code. */
-export function attrLabel(attr: TemplateAttr, isAr: boolean): string {
-  const l = isAr ? attr.label_ar : attr.label_en;
-  return l || attr.code;
-}
-
-export interface TemplateAttr {
-  id: string;
-  code: string;
-  /** Human labels — the vendor form shows these, never the machine code. */
-  label_ar: string;
-  label_en: string;
-  type: "text" | "number" | "bool" | "enum" | "color";
-  unit: string;
-  is_required: boolean;
-  is_filterable: boolean;
-  is_variant_axis: boolean;
-  sort: number;
-  options: TemplateOption[];
-}
-export interface PickerCategory {
-  id: string;
-  parent_id: string | null;
-  depth: number;
-  name_ar: string;
-  name_en: string;
-}
-export interface LoaderVariant {
-  id: string;
-  option_key: string;
-  option_ids: string[];
-  sku: string | null;
-  price_piastres: number | null;
-  sale_price_piastres: number | null;
-  stock: number;
-  image_path: string | null;
-}
-
-export interface WizardProduct {
-  id: string | null;
-  status: string;
-  rejection_reason: string | null;
-  name_ar: string;
-  name_en: string;
-  desc_ar: string;
-  desc_en: string;
-  short_ar: string;
-  short_en: string;
-  leaf_category_id: string | null;
-  brand_id: string | null;
-  is_fragile: boolean;
-  sale_starts_at: string | null;
-  sale_ends_at: string | null;
-  weight_g: number | null;
-  dims: { l_cm: number | null; w_cm: number | null; h_cm: number | null };
-  shipping_class: string;
-  shipping_mode: "platform" | "vendor";
-  updated_at: string;
-  media: Array<{ kind: "image" | "video"; path: string }>;
-  tag_ids: string[];
-  attribute_values: Array<{ attribute_id: string; option_id: string | null; value_text: string | null; value_number: number | null; value_bool: boolean | null }>;
-}
-
-export interface WizardForm {
-  name_ar: string;
-  name_en: string;
-  desc_ar: string;
-  desc_en: string;
-  short_ar: string;
-  short_en: string;
-  leaf_category_id: string;
-  brand_id: string;
-  tag_ids: string[];
-  media: Array<{ kind: "image" | "video"; path: string }>;
-  is_fragile: boolean;
-  price: string;
-  sale_price: string;
-  sale_starts_at: string;
-  sale_ends_at: string;
-  attributes: Record<string, { option_id: string; value_text: string; value_number: string; value_bool: boolean | null }>;
-  axes: Record<string, string[]>;
-  weight_g: string;
-  dims_l: string;
-  dims_w: string;
-  dims_h: string;
-  shipping_class: string;
-  shipping_mode: "platform" | "vendor";
-}
+// Public API kept on this module: the route imports these from here.
+export type {
+  LoaderVariant,
+  PickerCategory,
+  ProductWizardProps,
+  SaveActionData,
+  TemplateAttr,
+  TemplateOption,
+  WizardForm,
+  WizardProduct,
+} from "./wizard/types";
+export { attrLabel, egpToPiastres, piastresToEgp } from "./wizard/helpers";
 
 const STEP_KEYS = [
   "productWizard.steps.basics",
   "productWizard.steps.classification",
-  "productWizard.steps.pricing",
   "productWizard.steps.attributes",
+  "productWizard.steps.children",
   "productWizard.steps.shipping",
 ] as const;
 
-export function piastresToEgp(value: number | null | undefined): string {
-  if (value === null || value === undefined) return "";
-  return (value / 100).toFixed(2);
-}
-export function egpToPiastres(value: string): number | null {
-  const n = Number(String(value).replace(/[^\d.]/g, ""));
-  if (!Number.isFinite(n) || n <= 0) return null;
-  return Math.round(n * 100);
-}
+/**
+ * Size types that carry a body-measurement chart (clothing / shoes). Pack
+ * sizes (weight / volume), storage and bedding never get a chart.
+ */
+const CHART_SIZE_TYPE_IDS = [
+  "ba51e8c5-ce6b-4154-acdf-4f56d245dbb5", // clothing
+  "6f8b51fd-c98a-4779-9027-2c1b06558c82", // shoes
+] as const;
 
-function formFromProduct(product: WizardProduct | null): WizardForm {
-  const attributes: WizardForm["attributes"] = {};
-  for (const value of product?.attribute_values ?? []) {
-    attributes[value.attribute_id] = {
-      option_id: value.option_id ?? "",
-      value_text: value.value_text ?? "",
-      value_number: value.value_number === null ? "" : String(value.value_number),
-      value_bool: value.value_bool,
-    };
+/**
+ * Session snapshot of the wizard (owner report: switching the site language
+ * mid-way lost everything typed). The switch reloads the page in the other
+ * language; the wizard restores its last form, step and child products from
+ * this snapshot when it belongs to the same product and is newer than the
+ * saved copy. Kept per tab (sessionStorage), dropped after submitting.
+ */
+interface WizardSnapshot { productId: string | null; ts: number; step: number; form: WizardForm; children: ChildDraft[] }
+const SNAP_KEY = "etsawaa:product-wizard";
+function readSnapshot(productId: string | null, productUpdatedAt: string | null): WizardSnapshot | null {
+  if (typeof window === "undefined") return null;
+  // never on the first (hydrating) render of a full page load — the server had
+  // no snapshot, so restoring then would not match its HTML; a language switch
+  // is a client navigation, after hydration
+  if (!(window as unknown as { __etsawaaHydrated?: boolean }).__etsawaaHydrated) return null;
+  try {
+    const raw = window.sessionStorage.getItem(SNAP_KEY);
+    if (!raw) return null;
+    const snap = JSON.parse(raw) as WizardSnapshot;
+    if ((snap.productId ?? null) !== productId) return null;
+    if (Date.now() - snap.ts > 30 * 60_000) return null;
+    // the database copy is newer (edited elsewhere) — never overwrite it
+    if (productUpdatedAt && new Date(productUpdatedAt).getTime() > snap.ts + 5_000) return null;
+    return snap;
+  } catch {
+    return null;
   }
-  return {
-    name_ar: product?.name_ar ?? "",
-    name_en: product?.name_en ?? "",
-    desc_ar: product?.desc_ar ?? "",
-    desc_en: product?.desc_en ?? "",
-    short_ar: product?.short_ar ?? "",
-    short_en: product?.short_en ?? "",
-    leaf_category_id: product?.leaf_category_id ?? "",
-    brand_id: product?.brand_id ?? "",
-    tag_ids: product?.tag_ids ?? [],
-    media: product?.media ?? [],
-    is_fragile: product?.is_fragile ?? false,
-    price: "",
-    sale_price: "",
-    sale_starts_at: product?.sale_starts_at ? product.sale_starts_at.slice(0, 16) : "",
-    sale_ends_at: product?.sale_ends_at ? product.sale_ends_at.slice(0, 16) : "",
-    attributes,
-    axes: {},
-    weight_g: product?.weight_g !== null && product?.weight_g !== undefined ? String(product.weight_g) : "",
-    dims_l: product?.dims?.l_cm ? String(product.dims.l_cm) : "",
-    dims_w: product?.dims?.w_cm ? String(product.dims.w_cm) : "",
-    dims_h: product?.dims?.h_cm ? String(product.dims.h_cm) : "",
-    shipping_class: product?.shipping_class ?? "standard",
-    shipping_mode: product?.shipping_mode ?? "platform",
-  };
+}
+function writeSnapshot(snap: WizardSnapshot) {
+  try { window.sessionStorage.setItem(SNAP_KEY, JSON.stringify(snap)); } catch { /* storage full / blocked */ }
+}
+export function clearWizardSnapshot() {
+  try { window.sessionStorage.removeItem(SNAP_KEY); } catch { /* blocked */ }
 }
 
-function rowsFromLoader(variants: LoaderVariant[], template: TemplateAttr[]): VariantMatrixRow[] {
-  const optionById = new Map<string, TemplateOption>();
-  for (const attr of template) for (const opt of attr.options) optionById.set(opt.id, opt);
-  return variants.map((variant) => {
-    const labels: string[] = [];
-    let color: string | null = null;
-    for (const optionId of variant.option_ids) {
-      const option = optionById.get(optionId);
-      if (option) {
-        labels.push(option.label_ar);
-        if (option.color_hex) color = option.color_hex;
-      }
-    }
-    return {
-      id: variant.id,
-      option_key: variant.option_key,
-      option_ids: variant.option_ids,
-      labels: labels.length > 0 ? labels : ["—"],
-      color,
-      sku: variant.sku ?? "",
-      price: piastresToEgp(variant.price_piastres),
-      sale_price: piastresToEgp(variant.sale_price_piastres),
-      stock: String(variant.stock),
-      image_path: variant.image_path ?? "",
-      is_active: true,
-    };
-  });
-}
-
-export interface ProductWizardProps {
-  uid: string;
-  supabaseUrl: string;
-  media: MediaSettings;
-  product: WizardProduct | null;
-  template: TemplateAttr[];
-  categories: PickerCategory[];
-  brands: Array<{ id: string; name_ar: string; name_en: string }>;
-  tags: Array<{ id: string; name_ar: string; name_en: string }>;
-  variants: LoaderVariant[];
-  isAr: boolean;
+function axisOf(tpl: TemplateAttr[], code: string): TemplateAttr | undefined {
+  return tpl.find((attr) => attr.is_variant_axis && attr.code === code);
 }
 
 export function ProductWizard({
@@ -224,60 +115,136 @@ export function ProductWizard({
   product,
   template: loadedTemplate,
   categories,
-  brands,
+  brands: loadedBrands,
   tags,
-  variants,
+  childrenData,
+  sizeOptions: loadedSizes,
+  shippingBlocked: loadedShippingBlocked,
   isAr,
+  mode = "seller",
+  storeName,
+  commissionVendorId,
 }: ProductWizardProps) {
   const { t } = useTranslation();
   const toast = useToast();
   const navigate = useNavigate();
+  const admin = mode === "admin";
+  // One fetcher per job: a fetcher cancels its own in-flight request when it
+  // submits again, so a shared one let autosave abort a child-products save
+  // (ids/SKUs never adopted) or a submit.
   const save = useFetcher<SaveActionData>();
+  const childSave = useFetcher<SaveActionData>();
+  const submitter = useFetcher<SaveActionData>();
+  // admin mode: no autosave — one save (fields + children + audit reason)
+  const adminSave = useFetcher<SaveActionData>();
+  const [reason, setReason] = useState("");
   // Template arrives from the loader only when editing an existing product; for
   // a new product we fetch it the moment a category is picked, so the
   // attributes step is never a blank page.
   const tplFetch = useFetcher<SaveActionData>();
   const [template, setTemplate] = useState<TemplateAttr[]>(loadedTemplate);
+  const [sizeOptions, setSizeOptions] = useState<SizeOption[]>(loadedSizes);
+  const [shippingBlocked, setShippingBlocked] = useState(loadedShippingBlocked);
+  // brands of the chosen category (fetched with its template)
+  const [brands, setBrands] = useState<WizardBrand[]>(loadedBrands);
+  const colorAttr = axisOf(template, "color");
+  const hasColor = Boolean(colorAttr);
+  const hasSize = Boolean(axisOf(template, "size"));
+  // a snapshot left by a language switch (same product, newer than the DB copy)
+  const [restored] = useState<WizardSnapshot | null>(() => (mode === "admin" ? null : readSnapshot(product?.id ?? null, product?.updated_at ?? null)));
+  const [childList, setChildListRaw] = useState<ChildDraft[]>(() => {
+    if (restored?.children?.length) return restored.children;
+    const sized = Boolean(axisOf(loadedTemplate, "size"));
+    const loaded = childrenFromLoader(childrenData, sized);
+    // no automatic variant: the Variants tab starts with price + stock only
+    return loaded;
+  });
+  const [childrenDirty, setChildrenDirty] = useState(Boolean(restored?.children?.length));
+  // a template re-fetched only to restore a snapshot must not reset the children
+  const keepChildrenRef = useRef(false);
+  const setChildList = (next: ChildDraft[]) => { setChildListRaw(next); setChildrenDirty(true); };
   useEffect(() => {
     if (tplFetch.state === "idle" && tplFetch.data?.intent === "template" && tplFetch.data.template) {
-      setTemplate(tplFetch.data.template);
+      const next = tplFetch.data.template;
+      setTemplate(next);
+      setSizeOptions(tplFetch.data.sizeOptions ?? []);
+      setShippingBlocked(Boolean(tplFetch.data.shippingBlocked));
+      const nextBrands = tplFetch.data.brands ?? [];
+      setBrands(nextBrands);
+      // a brand from another category no longer fits
+      setForm((f) => (f.brand_id && !nextBrands.some((b) => b.id === f.brand_id) ? { ...f, brand_id: "" } : f));
+      // a new product type has other colours/sizes — the children start over
+      if (keepChildrenRef.current) {
+        keepChildrenRef.current = false;
+      } else {
+        setChildListRaw([]);
+        setChildrenDirty(true);
+      }
     }
   }, [tplFetch.state, tplFetch.data]);
-  const [step, setStep] = useState(1);
-  const [form, setForm] = useState<WizardForm>(() => formFromProduct(product));
-  const [dirty, setDirty] = useState(false);
+  const [step, setStep] = useState(restored?.step ?? 1);
+  const [form, setForm] = useState<WizardForm>(() => restored?.form ?? formFromProduct(product));
+  // phones / computers: RAM is its own option and each storage + RAM row has its own price
+  const ramAttr = axisOf(template, "memory");
+  const formSizes = packSizesForForm(sizeOptions, template, form.attributes);
+  // chart only when the leaf offers a clothing or shoe size type — a pack
+  // volume (baby lotion) must never borrow the children's body chart
+  const hasSizeChart = sizeOptions.some((o) => (CHART_SIZE_TYPE_IDS as readonly string[]).includes(o.size_type_id));
+  const variantMode = { config: Boolean(ramAttr) || sizeAxisKind(formSizes) === "storage", hasRam: Boolean(ramAttr) };
+  // restored edits may be newer than the saved draft: save them again
+  const [dirty, setDirty] = useState(Boolean(restored));
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [stale, setStale] = useState(false);
   const [stepErrors, setStepErrors] = useState<string[]>([]);
-  const [rows, setRows] = useState<VariantMatrixRow[]>(() => rowsFromLoader(variants, template));
-  const [skippedKeys, setSkippedKeys] = useState<string[]>([]);
-  const [confirmGenerate, setConfirmGenerate] = useState<null | { removed: number }>(null);
   const [galleryPicker, setGalleryPicker] = useState(false);
   const submitRef = useRef<HTMLDivElement>(null);
 
-  const productId = product?.id ?? null;
-  const isRejected = product?.status === "rejected";
-  // V-17: only drafts and rejected products are editable — pending/approved
-  // open as read-only review (autosave off, submit hidden).
-  const editable = !product || product.status === "draft" || product.status === "rejected";
+  // the wizard needs the full width: fold the panel sidebar to its rail while open
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("etsawaa:sidebar", { detail: { collapsed: true } }));
+    return () => { window.dispatchEvent(new CustomEvent("etsawaa:sidebar", { detail: { collapsed: false } })); };
+  }, []);
 
-  const axesSelections: AxisSelection[] = useMemo(
-    () =>
-      template
-        .filter((attr) => attr.is_variant_axis)
-        .filter((attr) => (form.axes[attr.id] ?? []).length > 0)
-        .map((attr) => ({ attribute_id: attr.id, option_ids: form.axes[attr.id] ?? [] })),
-    [template, form.axes],
-  );
-  const comboCount = combinationCount(axesSelections);
-  const anyAxisSelected = template.some((attr) => attr.is_variant_axis && (form.axes[attr.id] ?? []).length > 0);
+  // A new draft gets its id from the first autosave. It used to navigate to
+  // /products/:id/edit — a different route, so the wizard remounted: the seller
+  // was thrown back to step 1 and whatever they typed meanwhile was lost. Now
+  // the id is kept in state and only the address bar is updated.
+  const [productId, setProductId] = useState<string | null>(product?.id ?? null);
 
-  const applyDefaultsPending = useRef(false);
+  // keep the session snapshot current (restored after a language switch)
+  useEffect(() => {
+    if (admin) return;
+    const id = window.setTimeout(() => writeSnapshot({ productId, ts: Date.now(), step, form, children: childList }), 250);
+    return () => window.clearTimeout(id);
+  }, [admin, productId, step, form, childList]);
+  // a brand-new product restored before its first save: load its category template
+  useEffect(() => {
+    if (restored && !product && restored.form.leaf_category_id && template.length === 0) {
+      keepChildrenRef.current = true;
+      tplFetch.submit({ intent: "template", leaf_category_id: restored.form.leaf_category_id }, { method: "post" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const productIdRef = useRef<string | null>(product?.id ?? null);
+  // a save of a pending/approved product reopens it as a draft: keep the local
+  // status so the banners and the submit action reflect the new state at once
+  const [status, setStatus] = useState(product?.status ?? null);
+  // the reopen action reloads the loader (draft) — follow it without a remount
+  useEffect(() => {
+    if (product?.status) setStatus(product.status);
+  }, [product?.status]);
+  const currentProduct = product
+    ? status && status !== product.status ? { ...product, status } : product
+    : null;
+  // V-17 (updated): sellers edit drafts, returned products and products under
+  // review; a live product still needs the explicit reopen confirmation.
+  const editable = admin || !product || product.status === "draft" || product.status === "pending"
+    || (product.status === "rejected" && !product.rejected_final);
+
   // staleness base: advanced after every successful save so consecutive
   // autosaves in THIS session never flag themselves as two-tab conflicts
   const baseUpdatedRef = useRef(product?.updated_at ?? "");
   const patch = (partial: Partial<WizardForm>) => {
-    if ("price" in partial || "sale_price" in partial) applyDefaultsPending.current = true;
     setForm((current) => ({ ...current, ...partial }));
     setDirty(true);
   };
@@ -285,11 +252,14 @@ export function ProductWizard({
   /* autosave (debounced) — the draft survives refresh and re-login (V-17) */
   const timer = useRef<number | null>(null);
   useEffect(() => {
-    if (!dirty || !editable) return;
+    if (admin || !dirty || !editable || submitter.state !== "idle") return;
+    // while the FIRST save (which creates the draft) is in flight, hold further
+    // saves — another one without the id would create a second, duplicate draft
+    if (!productIdRef.current && save.state !== "idle") return;
     if (timer.current) window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => {
       save.submit(
-        { intent: "save", productId: productId ?? "", payload: JSON.stringify(payloadOf(form)), baseUpdatedAt: baseUpdatedRef.current },
+        { intent: "save", productId: productIdRef.current ?? "", payload: JSON.stringify(payloadOf(form)), baseUpdatedAt: baseUpdatedRef.current },
         { method: "post" },
       );
       setDirty(false);
@@ -297,63 +267,199 @@ export function ProductWizard({
     return () => {
       if (timer.current) window.clearTimeout(timer.current);
     };
+    // Deps stay narrow on purpose: the debounce must reset only when the
+    // form actually changes — payloadOf/productId are re-created every
+    // render and would postpone autosave indefinitely.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form, dirty, editable]);
+  }, [form, dirty, editable, save.state === "idle", submitter.state === "idle"]);
+
+  /* child products autosave too (debounced) once the draft exists */
+  const autoChildSave = useRef(false);
+  const childTimer = useRef<number | null>(null);
+  useEffect(() => {
+    if (admin || !childrenDirty || !editable || !productId || childSave.state !== "idle" || submitter.state !== "idle") return;
+    if (childTimer.current) window.clearTimeout(childTimer.current);
+    childTimer.current = window.setTimeout(() => {
+      autoChildSave.current = true;
+      childSave.submit(
+        { intent: "save_children", productId, children: JSON.stringify(childrenPayload(childList)) },
+        { method: "post" },
+      );
+    }, 2500);
+    return () => { if (childTimer.current) window.clearTimeout(childTimer.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [childList, childrenDirty, editable, productId, childSave.state === "idle", submitter.state === "idle"]);
 
   useEffect(() => {
-    if (save.state !== "idle" || !save.data) return;
-    if (save.data.intent === "generate_variants") {
-      setSkippedKeys(save.data.skipped ?? []);
-      if (save.data.ok) toast.showToast("success", t("productWizard.variants.generated"));
-      else toast.showToast("error", t("errors.generic"));
-      return;
-    }
-    if (save.data.intent === "save_variants") {
-      if (save.data.ok) toast.showToast("success", t("productWizard.variants.rowsSaved"));
-      else toast.showToast("error", t("productWizard.errors.saveVariants"));
-      return;
-    }
-    if (save.data.intent === "save") {
-      if (save.data.ok) {
-        applyDefaultsPending.current = false;
-        if (save.data.updatedAt) baseUpdatedRef.current = save.data.updatedAt;
-        setSavedAt(new Date().toISOString());
-        if (save.data.stale) setStale(true);
-        if (save.data.redirectTo) navigate(save.data.redirectTo, { replace: true });
-      } else {
-        toast.showToast("error", t("errors.generic"));
+    if (childSave.state !== "idle" || !childSave.data) return;
+    const silent = autoChildSave.current;
+    autoChildSave.current = false;
+    if (childSave.data.intent === "save_children") {
+      if (childSave.data.ok) {
+        if (childSave.data.updatedAt) baseUpdatedRef.current = childSave.data.updatedAt;
+        // adopt the ids and generated SKUs (lists come back in the same order)
+        const saved = childSave.data.children ?? [];
+        setChildListRaw((current) => current.map((child, i) => {
+          const row = saved[i];
+          if (!row) return child;
+          return {
+            ...child,
+            id: row.id,
+            sizes: child.sizes.map((size) => ({
+              ...size,
+              sku: row.sizes.find((r) => (r.size_option_id ?? "") === size.size_option_id
+                && (r.ram_option_id ?? "") === (size.ram_option_id ?? ""))?.sku ?? size.sku,
+            })),
+          };
+        }));
+        setChildrenDirty(false);
+        if (!silent) toast.showToast("success", t("children.saved"));
+      } else if (!silent) {
+        toast.showToast("error", explainError(childSave.data.error, t("children.err.server")));
       }
-      return;
     }
-    if (save.data.intent === "submit") {
-      if (save.data.ok && save.data.redirectTo) navigate(save.data.redirectTo, { replace: true });
-      else if (!save.data.ok) toast.showToast("error", t("productWizard.errors.submitBlocked"));
+  }, [childSave.state, childSave.data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (save.state !== "idle" || !save.data || save.data.intent !== "save") return;
+    if (save.data.ok) {
+      if (save.data.updatedAt) baseUpdatedRef.current = save.data.updatedAt;
+      setSavedAt(new Date().toISOString());
+      if (save.data.stale) setStale(true);
+      // a pending/approved product was pulled back to draft by this save
+      if (save.data.status) setStatus(save.data.status);
+      if (save.data.productId && !productIdRef.current) {
+        productIdRef.current = save.data.productId;
+        setProductId(save.data.productId);
+        // address bar only (a refresh reopens the draft); no remount
+        if (save.data.redirectTo) window.history.replaceState(window.history.state, "", save.data.redirectTo);
+      }
+    } else {
+      toast.showToast("error", explainError(save.data.error, t("errors.generic")));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [save.state]);
+  }, [save.state, save.data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (submitter.state !== "idle" || !submitter.data || submitter.data.intent !== "submit") return;
+    if (submitter.data.ok && submitter.data.redirectTo) {
+      clearWizardSnapshot();
+      setDirty(false);
+      setChildrenDirty(false);
+      navigate(submitter.data.redirectTo, { replace: true });
+    } else if (!submitter.data.ok) {
+      toast.showToast("error", explainError(submitter.data.error, t("productWizard.errors.submitBlocked")));
+    }
+  }, [submitter.state, submitter.data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* admin mode: one save (fields → children → audit reason) then the review page */
+  useEffect(() => {
+    if (adminSave.state !== "idle" || !adminSave.data || adminSave.data.intent !== "admin_save") return;
+    if (adminSave.data.ok && adminSave.data.redirectTo) {
+      setDirty(false);
+      setChildrenDirty(false);
+      navigate(adminSave.data.redirectTo, { replace: true });
+    } else if (!adminSave.data.ok) {
+      toast.showToast("error", explainError(adminSave.data.error, t("errors.generic")));
+    }
+  }, [adminSave.state, adminSave.data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /** Server error text → a sentence the seller can act on. */
+  function explainError(raw: string | undefined, fallback: string): string {
+    const msg = String(raw ?? "");
+    if (/brand_not_in_category/.test(msg)) return t("productWizard.errors.brandCategory");
+    if (/duplicate colour\/size/.test(msg)) return t("children.err.duplicate");
+    if (/sale price must be lower/.test(msg)) return t("children.err.sale");
+    if (/price must be positive/.test(msg)) return t("children.err.price");
+    if (/sale schedule end/.test(msg)) return t("children.err.window");
+    if (/selling is blocked/.test(msg)) return t("productWizard.errors.storeBlocked");
+    if (/vendor_under_review/.test(msg)) return t("vendor.products.underReviewNote");
+    if (/locked in status|not submittable/.test(msg)) return t("productWizard.errors.locked");
+    if (msg === "not_saved") return t("productWizard.errors.saveFirst");
+    const missing = msg.match(/product is incomplete: (.+)$/)?.[1];
+    if (missing) {
+      const parts = missing.split(",").map((s) => s.trim()).map((code) => {
+        if (code.startsWith("attribute:")) {
+          const attrCode = code.slice("attribute:".length);
+          const attr = template.find((a) => a.code === attrCode);
+          return t("productWizard.errors.attributeRequired", { code: attr ? (isAr ? attr.label_ar || attr.code : attr.label_en || attr.code) : attrCode });
+        }
+        return t(`productWizard.missing.${code}`, { defaultValue: code });
+      });
+      return `${t("productWizard.errors.incomplete")} ${parts.join(" · ")}`;
+    }
+    return fallback;
+  }
 
   useEffect(() => {
     const handler = (event: BeforeUnloadEvent) => {
-      if (dirty || save.state !== "idle") event.preventDefault();
+      if (admin) return;
+      if (dirty || childrenDirty || save.state !== "idle" || childSave.state !== "idle") event.preventDefault();
     };
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
-  }, [dirty, save.state]);
+  }, [dirty, childrenDirty, save.state, childSave.state, admin]);
 
-  /* variants refresh after generate/restore (loader revalidation) */
-  const loaderStamp = useRef("");
-  useEffect(() => {
-    const stamp = `${variants.length}:${variants.map((v) => v.id).join(",")}`;
-    if (loaderStamp.current === "") {
-      loaderStamp.current = stamp;
+  const blocker = useBlocker(({ currentLocation, nextLocation }) =>
+    !admin && editable && submitter.state === "idle" && !submitter.data?.ok &&
+    currentLocation.pathname !== nextLocation.pathname &&
+    // a language switch stays on the wizard (restored from the session snapshot)
+    currentLocation.pathname.slice(0, 4) === nextLocation.pathname.slice(0, 4) &&
+    Boolean(productIdRef.current || dirty || form.name_ar || form.name_en));
+  const [leaving, setLeaving] = useState(false);
+  const flushSeen = useRef(false);
+  const flushSent = useRef({ save: false, children: false });
+  function leaveNow() {
+    if (timer.current) window.clearTimeout(timer.current);
+    if (childTimer.current) window.clearTimeout(childTimer.current);
+    const needsSave = dirty || (!productIdRef.current && Boolean(form.name_ar || form.name_en));
+    const needsChildren = childrenDirty && Boolean(productIdRef.current);
+    if (!needsSave && !needsChildren && save.state === "idle" && childSave.state === "idle") {
+      blocker.proceed?.();
       return;
     }
-    if (loaderStamp.current !== stamp) {
-      loaderStamp.current = stamp;
-      setRows(rowsFromLoader(variants, template));
+    flushSeen.current = false;
+    flushSent.current = { save: needsSave, children: needsChildren };
+    setLeaving(true);
+    if (needsSave) {
+      save.submit(
+        { intent: "save", productId: productIdRef.current ?? "", payload: JSON.stringify(payloadOf(form)), baseUpdatedAt: baseUpdatedRef.current },
+        { method: "post" },
+      );
+      setDirty(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [variants]);
+    if (needsChildren && productIdRef.current) {
+      autoChildSave.current = true;
+      childSave.submit({ intent: "save_children", productId: productIdRef.current, children: JSON.stringify(childrenPayload(childList)) }, { method: "post" });
+    }
+  }
+  // leave only after the flush was actually sent and came back
+  useEffect(() => {
+    if (!leaving || blocker.state !== "blocked") return;
+    if (save.state !== "idle" || childSave.state !== "idle") { flushSeen.current = true; return; }
+    if (!flushSeen.current) return;
+    // a failed flush keeps the user here (the error toast is already shown) instead of dropping their edits
+    const saveFailed = flushSent.current.save && save.data?.ok === false;
+    const childFailed = flushSent.current.children && childSave.data?.ok === false;
+    if (saveFailed || childFailed) {
+      setLeaving(false);
+      if (saveFailed) setDirty(true);
+      blocker.reset?.();
+      return;
+    }
+    blocker.proceed();
+  }, [leaving, blocker, save.state, childSave.state, save.data, childSave.data]);
+
+  // size chart: apparel/shoe branches start with the standard table
+  const suggestedGarment = useMemo(() => {
+    const chain: string[] = [];
+    let cur = categories.find((c) => c.id === form.leaf_category_id);
+    while (cur) { chain.push(cur.slug_en ?? ""); cur = categories.find((c) => c.id === cur!.parent_id); }
+    return chain.length ? garmentFor(chain) : null;
+  }, [categories, form.leaf_category_id]);
+  const sizeLabels = useMemo(() => {
+    const ids = [...new Set(childList.flatMap((c) => c.sizes.map((sz) => sz.size_option_id)).filter(Boolean))];
+    return sizeOptions.filter((o) => ids.includes(o.option_id)).map((o) => o.label_en || o.label_ar);
+  }, [childList, sizeOptions]);
 
   function payloadOf(current: WizardForm): Record<string, unknown> {
     const attributes = template
@@ -361,7 +467,8 @@ export function ProductWizard({
         const value = current.attributes[attr.id];
         if (!value) return null;
         if (attr.type === "enum" || attr.type === "color") {
-          return value.option_id ? { attribute_id: attr.id, option_id: value.option_id } : null;
+          const ids = choiceIds(attr, value);
+          return ids.length ? { attribute_id: attr.id, option_id: ids[0], option_ids: ids } : null;
         }
         if (attr.type === "number") {
           return value.value_number !== "" ? { attribute_id: attr.id, value_number: value.value_number } : null;
@@ -369,93 +476,51 @@ export function ProductWizard({
         if (attr.type === "bool") {
           return value.value_bool !== null ? { attribute_id: attr.id, value_bool: value.value_bool } : null;
         }
-        return value.value_text !== "" ? { attribute_id: attr.id, value_text: value.value_text } : null;
+        return value.value_text !== "" || value.value_text_en !== "" ? { attribute_id: attr.id, value_text: value.value_text, value_text_en: value.value_text_en } : null;
       })
       .filter(Boolean);
-    const price = egpToPiastres(current.price);
-    const sale = egpToPiastres(current.sale_price);
     return {
       name_ar: current.name_ar,
       name_en: current.name_en,
       desc_ar: current.desc_ar,
       desc_en: current.desc_en,
-      short_ar: current.short_ar,
-      short_en: current.short_en,
       leaf_category_id: current.leaf_category_id || undefined,
-      brand_id: current.brand_id || undefined,
+      // always sent: "" means "no brand" (fn_save_product clears it)
+      brand_id: current.brand_id ?? "",
       tag_ids: current.tag_ids,
       is_fragile: current.is_fragile,
       media: current.media,
-      sale_starts_at: current.sale_starts_at ? new Date(current.sale_starts_at).toISOString() : "",
-      sale_ends_at: current.sale_ends_at ? new Date(current.sale_ends_at).toISOString() : "",
       attributes,
       weight_g: current.weight_g === "" ? null : Number(current.weight_g),
-      dims: {
-        l_cm: current.dims_l === "" ? null : Number(current.dims_l),
-        w_cm: current.dims_w === "" ? null : Number(current.dims_w),
-        h_cm: current.dims_h === "" ? null : Number(current.dims_h),
-      },
       shipping_class: current.shipping_class,
-      shipping_mode: current.shipping_mode,
-      ...(price ? { default_price_piastres: price } : {}),
-      ...(sale ? { default_sale_piastres: sale } : {}),
-      apply_defaults: applyDefaultsPending.current,
+      shipping_mode: shippingBlocked ? "platform" : current.shipping_mode,
+      size_chart: hasSizeChart ? current.size_chart : null,
     };
   }
 
-  function validateStep(target: number): string[] {
-    const errors: string[] = [];
-    if (target >= 1) {
-      if (form.name_ar.trim().length < 2 || form.name_en.trim().length < 2) errors.push(t("productWizard.errors.name"));
+  useEffect(() => {
+    if (step === 4 && hasSizeChart && editable && !form.size_chart && suggestedGarment && !product?.id) {
+      patch({ size_chart: defaultChart(suggestedGarment, sizeLabels) });
     }
-    if (target >= 2) {
-      if (!form.leaf_category_id) errors.push(t("productWizard.errors.category"));
-      if (form.media.length === 0) errors.push(t("productWizard.errors.media"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, hasSizeChart, suggestedGarment]);
+
+  const validate = (target: number) =>
+    validateStep({ target, form, childList, template, hasColor, hasSize, mode: variantMode, isAr, t });
+
+  function saveChildren() {
+    if (!productId) {
+      toast.showToast("error", t("productWizard.errors.saveFirst"));
+      return;
     }
-    if (target >= 3) {
-      if (rows.length <= 1) {
-        const priceNow = egpToPiastres(form.price) ?? (rows[0] ? egpToPiastres(rows[0].price) : null);
-        const saleNow = egpToPiastres(form.sale_price) ?? (rows[0] ? egpToPiastres(rows[0].sale_price) : null);
-        if (!priceNow) errors.push(t("productWizard.errors.price"));
-        if (saleNow !== null && priceNow !== null && saleNow >= priceNow) {
-          errors.push(t("productWizard.errors.saleLower"));
-        }
-      }
-      if (form.sale_starts_at && form.sale_ends_at && new Date(form.sale_ends_at) <= new Date(form.sale_starts_at)) {
-        errors.push(t("productWizard.errors.schedule"));
-      }
-    }
-    if (target >= 4) {
-      for (const attr of template) {
-        if (!attr.is_variant_axis && attr.is_required) {
-          const value = form.attributes[attr.id];
-          const filled =
-            value &&
-            (attr.type === "enum" || attr.type === "color"
-              ? value.option_id !== ""
-              : attr.type === "number"
-                ? value.value_number !== ""
-                : attr.type === "bool"
-                  ? value.value_bool !== null
-                  : value.value_text !== "");
-          if (!filled) errors.push(t("productWizard.errors.attributeRequired", { code: attrLabel(attr, isAr) }));
-        }
-      }
-      if (anyAxisSelected) {
-        for (const attr of template.filter((a) => a.is_variant_axis)) {
-          if ((form.axes[attr.id] ?? []).length === 0) errors.push(t("productWizard.errors.axisEmpty", { code: attrLabel(attr, isAr) }));
-        }
-      }
-      if (rows.some((row) => row.sku.trim() === "")) errors.push(t("productWizard.errors.sku"));
-      if (rows.some((row) => !egpToPiastres(row.price))) errors.push(t("productWizard.errors.rowPrice"));
-      const skuSet = new Set(rows.map((row) => row.sku.trim()).filter(Boolean));
-      if (skuSet.size !== rows.filter((row) => row.sku.trim() !== "").length) errors.push(t("productWizard.errors.skuDup"));
-    }
-    return errors;
+    childSave.submit(
+      { intent: "save_children", productId, children: JSON.stringify(childrenPayload(childList)) },
+      { method: "post" },
+    );
   }
 
   function goNext() {
-    const errors = validateStep(step);
+    const errors = validate(step);
     if (errors.length > 0) {
       setStepErrors(errors);
       submitRef.current?.scrollIntoView({ block: "center" });
@@ -463,437 +528,166 @@ export function ProductWizard({
     }
     setStepErrors([]);
     setDirty(true);
+    // leaving the children step persists them
+    if (step === 4 && childrenDirty && productId && editable) saveChildren();
     setStep((s) => Math.min(s + 1, 5));
   }
 
-  function requestGenerate() {
-    if (!productId) {
+  function submitProduct() {
+    const errors = validate(4);
+    if (errors.length > 0) {
+      setStepErrors(errors);
+      submitRef.current?.scrollIntoView({ block: "center" });
+      return;
+    }
+    if (!productIdRef.current) {
       toast.showToast("error", t("productWizard.errors.saveFirst"));
       return;
     }
-    // how many live rows fall outside the desired set? (they get tombstoned)
-    const desired = new Set(
-      (axesSelections.length === 0 ? [[""]] : combinationKeys(axesSelections)).map((combo) => optionKeyOf(combo)),
-    );
-    const removed = rows.filter((row) => !desired.has(row.option_key)).length;
-    if (removed > 0) {
-      setConfirmGenerate({ removed });
-    } else {
-      void generate();
-    }
-  }
-
-  function combinationKeys(axes: AxisSelection[]): string[][] {
-    let combos: string[][] = [[]];
-    for (const axis of axes) {
-      const next: string[][] = [];
-      for (const combo of combos) {
-        for (const optionId of axis.option_ids) next.push([...combo, optionId].sort());
-      }
-      combos = next;
-    }
-    return combos;
-  }
-
-  async function generate() {
-    setConfirmGenerate(null);
-    save.submit(
+    // a pending autosave would otherwise race the submit (and then fail on the
+    // now-locked product): cancel it and send the latest fields with the submit
+    if (timer.current) window.clearTimeout(timer.current);
+    setDirty(false);
+    // the action saves the product + children first, then submits for review
+    submitter.submit(
       {
-        intent: "generate_variants",
-        productId: productId ?? "",
-        axes: JSON.stringify(axesSelections),
-        defaults: JSON.stringify({
-          price_piastres: egpToPiastres(form.price),
-          sale_price_piastres: egpToPiastres(form.sale_price),
-        }),
+        intent: "submit",
+        productId: productIdRef.current,
+        payload: JSON.stringify(payloadOf(form)),
+        children: JSON.stringify(childrenPayload(childList)),
       },
       { method: "post" },
     );
   }
 
-  async function restoreVariant(optionKey: string) {
-    save.submit({ intent: "restore_variant", productId: productId ?? "", optionKey }, { method: "post" });
-  }
-
-  async function submitProduct() {
-    const errors = validateStep(4);
-    if (errors.length > 0) {
-      setStepErrors(errors);
+  /** admin mode: the sticky bar saves everything and records the reason */
+  function saveAdmin() {
+    const trimmed = reason.trim();
+    if (trimmed.length < 5) {
+      setStepErrors([t("adminProductEdit.reasonRequired")]);
+      submitRef.current?.scrollIntoView({ block: "center" });
       return;
     }
-    save.submit({ intent: "submit", productId: productId ?? "" }, { method: "post" });
+    const errors = validate(4);
+    if (errors.length > 0) {
+      setStepErrors(errors);
+      submitRef.current?.scrollIntoView({ block: "center" });
+      return;
+    }
+    if (!productIdRef.current) return;
+    setStepErrors([]);
+    adminSave.submit(
+      {
+        intent: "admin_save",
+        productId: productIdRef.current,
+        payload: JSON.stringify(payloadOf(form)),
+        children: JSON.stringify(childrenPayload(childList)),
+        reason: trimmed,
+      },
+      { method: "post" },
+    );
   }
-
-  const errorSummary = stepErrors.length > 0 ? (
-    <div ref={submitRef} tabIndex={-1} role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3">
-      <p className="text-sm font-extrabold text-danger">{t("common.errorSummary", { count: stepErrors.length })}</p>
-      <ul className="mt-1.5 list-inside list-disc">
-        {stepErrors.map((error) => (
-          <li key={error} className="text-sm font-bold text-danger">{error}</li>
-        ))}
-      </ul>
-    </div>
-  ) : null;
 
   return (
     <div className="flex flex-col gap-5">
       <meta name="robots" content="noindex, nofollow" />
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-extrabold text-text">
-          {productId ? t("productWizard.editTitle") : t("productWizard.newTitle")}
-        </h1>
-        <div className="flex items-center gap-2 text-xs text-text-faint" aria-live="polite">
-          {product?.status ? <Badge tone={product.status === "rejected" ? "danger" : product.status === "approved" ? "success" : "warning"}>{t(`vendorStates.status.${product.status}`)}</Badge> : null}
-          <span>
-            {save.state !== "idle" || dirty
-              ? t("vendorOnboarding.saving")
-              : savedAt
-                ? t("vendorOnboarding.savedAt", { time: new Date(savedAt).toLocaleTimeString(isAr ? "ar-EG" : "en-GB") })
-                : ""}
-          </span>
-        </div>
-      </div>
+      <WizardHeader
+        productId={productId}
+        product={currentProduct}
+        isAr={isAr}
+        saving={admin ? adminSave.state !== "idle" : save.state !== "idle" || childSave.state !== "idle" || dirty}
+        savedAt={savedAt}
+        mode={mode}
+        storeName={storeName}
+      />
 
-      {!editable ? (
-        <div role="status" className="rounded-md border border-info/40 bg-info-soft p-3 text-sm font-bold text-text">
-          {t("productWizard.readOnly")}
-        </div>
-      ) : null}
-      {isRejected && product?.rejection_reason ? (
-        <div role="alert" className="rounded-md border border-danger/40 bg-danger-soft p-3 text-sm font-bold text-danger">
-          {t("productWizard.rejectionReason")}: {product.rejection_reason}
-        </div>
-      ) : null}
-      {stale ? (
-        <div role="alert" className="rounded-md border border-warning/40 bg-warning-soft p-3 text-sm font-bold text-warning-strong">
-          {t("productWizard.staleWarning")}
-        </div>
-      ) : null}
+      {admin ? null : <WizardBanners product={currentProduct} editable={editable} stale={stale} />}
 
       <Stepper steps={STEP_KEYS.map((key) => t(key))} current={step - 1} label={t("productWizard.progressLabel")} />
-      {errorSummary}
+      {/* platform commission — admin and staff only (the route passes the store id only to them) */}
+      {commissionVendorId ? (
+        <LiveCommissionBox vendorId={commissionVendorId} leafId={form.leaf_category_id || null} lang={isAr ? "ar" : "en"}
+          groups={childList.map((c) => ({ price: toPiastres(c.price), sale: toPiastres(c.sale_price), sale_starts_at: c.sale_starts_at || null, sale_ends_at: c.sale_ends_at || null }))} />
+      ) : null}
+      <ErrorSummary errors={stepErrors} summaryRef={submitRef} />
 
       <Card>
         <CardBody className="flex flex-col gap-4 p-5">
-          {step === 1 ? (
-            <>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Input id="p_name_ar" label={t("productWizard.basics.nameAr")} value={form.name_ar} onChange={(e) => patch({ name_ar: e.target.value })} />
-                <Input id="p_name_en" label={t("productWizard.basics.nameEn")} value={form.name_en} dir="ltr" onChange={(e) => patch({ name_en: e.target.value })} />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
-                  {t("productWizard.basics.descAr")}
-                  <textarea className="min-h-24 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" value={form.desc_ar} onChange={(e) => patch({ desc_ar: e.target.value })} />
-                </label>
-                <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
-                  {t("productWizard.basics.descEn")}
-                  <textarea className="min-h-24 rounded-md border border-border bg-surface p-2.5 text-sm text-text outline-none focus:shadow-focus" dir="ltr" value={form.desc_en} onChange={(e) => patch({ desc_en: e.target.value })} />
-                </label>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Input id="p_short_ar" label={t("productWizard.basics.shortAr")} value={form.short_ar} onChange={(e) => patch({ short_ar: e.target.value })} />
-                <Input id="p_short_en" label={t("productWizard.basics.shortEn")} value={form.short_en} dir="ltr" onChange={(e) => patch({ short_en: e.target.value })} />
-              </div>
-            </>
-          ) : null}
+          {step === 1 ? <BasicInfoStep form={form} patch={patch} /> : null}
 
           {step === 2 ? (
-            <>
-              <CategoryPicker
-                categories={categories}
-                value={form.leaf_category_id}
-                isAr={isAr}
-                onChange={(id) => {
-                  patch({ leaf_category_id: id, attributes: {}, axes: {} });
-                  tplFetch.submit({ intent: "template", leaf_category_id: id }, { method: "post" });
-                }}
-              />
-              <Select
-                id="p_brand"
-                label={t("productWizard.classification.brand")}
-                value={form.brand_id}
-                onChange={(e) => patch({ brand_id: e.target.value })}
-                options={[{ value: "", label: t("common.none") }, ...brands.map((brand) => ({ value: brand.id, label: isAr ? brand.name_ar : brand.name_en }))]}
-              />
-              <fieldset className="flex flex-col gap-2">
-                <legend className="text-sm font-bold text-text">{t("productWizard.classification.tags")}</legend>
-                <div className="flex flex-wrap gap-1.5">
-                  {tags.map((tag) => {
-                    const active = form.tag_ids.includes(tag.id);
-                    return (
-                      <button
-                        key={tag.id}
-                        type="button"
-                        aria-pressed={active}
-                        onClick={() =>
-                          patch({
-                            tag_ids: active ? form.tag_ids.filter((id) => id !== tag.id) : [...form.tag_ids, tag.id],
-                          })
-                        }
-                        className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-bold transition-colors duration-150 ${
-                          active ? "border-action bg-action text-on-action" : "border-border bg-surface text-text hover:bg-surface-tint"
-                        }`}
-                      >
-                        {isAr ? tag.name_ar : tag.name_en}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
-              <div className="flex flex-col gap-2">
-                <p className="text-sm font-bold text-text">{t("productWizard.classification.media")}</p>
-                <div className="flex flex-wrap gap-2">
-                  {form.media.map((item, index) => (
-                    <div key={`${item.path}-${index}`} className="relative size-20 overflow-hidden rounded-md border border-border bg-surface-tint">
-                      {item.kind === "image" ? (
-                        <MediaImage path={item.path} alt="" width={80} height={80} supabaseUrl={supabaseUrl} className="size-full object-cover" />
-                      ) : (
-                        <span className="flex size-full items-center justify-center text-2xs text-text-faint">video</span>
-                      )}
-                      <button
-                        type="button"
-                        aria-label={t("common.remove")}
-                        onClick={() => patch({ media: form.media.filter((_, i) => i !== index) })}
-                        className="absolute end-1 top-1 flex size-5 cursor-pointer items-center justify-center rounded-full bg-danger text-2xs font-black text-white"
-                      >
-                        ×
-                      </button>
-                      {index === 0 ? (
-                        <span className="absolute bottom-0 start-0 end-0 bg-ink/70 py-0.5 text-center text-2xs font-bold text-white">
-                          {t("productWizard.classification.main")}
-                        </span>
-                      ) : null}
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => setGalleryPicker(true)}
-                    className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-border-strong bg-surface text-text-muted transition-colors duration-150 hover:bg-surface-tint"
-                  >
-                    <span aria-hidden="true" className="text-xl">+</span>
-                    <span className="text-2xs font-bold">{t("media.picker.choose")}</span>
-                  </button>
-                </div>
-                <p className="text-2xs text-text-faint">{t("productWizard.classification.mainFirst")}</p>
-              </div>
-              <label className="flex items-center gap-2 text-sm text-text">
-                <input type="checkbox" className="size-4 accent-[var(--color-action)]" checked={form.is_fragile} onChange={(e) => patch({ is_fragile: e.target.checked })} />
-                {t("productWizard.classification.fragile")}
-              </label>
-              <MediaPickerDialog
-                open={galleryPicker}
-                onClose={() => setGalleryPicker(false)}
-                title={t("productWizard.classification.media")}
-                settings={media}
-                uid={uid}
-                supabaseUrl={supabaseUrl}
-                mode="multi"
-                kinds={["image"]}
-                onConfirm={(files) => {
-                  patch({
-                    media: [
-                      ...form.media,
-                      ...files.map((file) => ({ kind: "image" as const, path: file.path })),
-                    ].slice(0, 12),
-                  });
-                }}
-              />
-            </>
+            <ClassificationStep
+              form={form}
+              patch={patch}
+              categories={categories}
+              brands={brands}
+              tags={tags}
+              isAr={isAr}
+              uid={uid}
+              supabaseUrl={supabaseUrl}
+              media={media}
+              galleryOpen={galleryPicker}
+              onGalleryOpenChange={setGalleryPicker}
+              onCategoryChange={(id) => {
+                patch({ leaf_category_id: id, attributes: {} });
+                tplFetch.submit({ intent: "template", leaf_category_id: id }, { method: "post" });
+              }}
+              canPropose={!admin}
+              onBrandAdded={(brand) => {
+                setBrands((current) => (current.some((b) => b.id === brand.id) ? current : [...current, brand]));
+                patch({ brand_id: brand.id });
+              }}
+            />
           ) : null}
 
-          {step === 3 ? (
-            <>
-              <p className="text-sm text-text-muted">{t("productWizard.pricing.hint")}</p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Input id="p_price" label={t("productWizard.pricing.price")} type="number" inputMode="decimal" min="0" step="0.01" dir="ltr" value={form.price} onChange={(e) => patch({ price: e.target.value })} hint={t("productWizard.pricing.egp")} />
-                <Input id="p_sale" label={t("productWizard.pricing.sale")} type="number" inputMode="decimal" min="0" step="0.01" dir="ltr" value={form.sale_price} onChange={(e) => patch({ sale_price: e.target.value })} />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Input id="p_sale_start" label={t("productWizard.pricing.saleStart")} type="datetime-local" dir="ltr" value={form.sale_starts_at} onChange={(e) => patch({ sale_starts_at: e.target.value })} />
-                <Input id="p_sale_end" label={t("productWizard.pricing.saleEnd")} type="datetime-local" dir="ltr" value={form.sale_ends_at} onChange={(e) => patch({ sale_ends_at: e.target.value })} />
-              </div>
-              {rows.length > 1 ? (
-                <p className="rounded-md bg-surface-tint p-3 text-xs text-text-muted">
-                  {t("productWizard.pricing.variantsNote")}
-                </p>
-              ) : null}
-            </>
-          ) : null}
+          {step === 3 ? <AttributesStep template={template} form={form} patch={patch} isAr={isAr} /> : null}
 
           {step === 4 ? (
-            <div className="flex flex-col gap-5">
-              {template.length === 0 ? (
-                <p className="text-sm text-text-muted">{t("productWizard.attributes.noTemplate")}</p>
-              ) : null}
-              {template
-                .filter((attr) => !attr.is_variant_axis)
-                .map((attr) => (
-                  <AttributeField
-                    key={attr.id}
-                    attr={attr}
-                    isAr={isAr}
-                    value={form.attributes[attr.id] ?? { option_id: "", value_text: "", value_number: "", value_bool: null }}
-                    onChange={(value) => patch({ attributes: { ...form.attributes, [attr.id]: value } })}
-                  />
-                ))}
-
-              {template.some((attr) => attr.is_variant_axis) ? (
-                <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface-tint p-4">
-                  <p className="text-sm font-extrabold text-text">{t("productWizard.variants.title")}</p>
-                  {template
-                    .filter((attr) => attr.is_variant_axis)
-                    .map((attr) => (
-                      <fieldset key={attr.id} className="flex flex-col gap-1.5">
-                        <legend className="text-sm font-bold text-text">{attrLabel(attr, isAr)}</legend>
-                        <div className="flex flex-wrap gap-1.5">
-                          {attr.options.map((option) => {
-                            const selected = (form.axes[attr.id] ?? []).includes(option.id);
-                            return (
-                              <button
-                                key={option.id}
-                                type="button"
-                                aria-pressed={selected}
-                                onClick={() => {
-                                  const current = form.axes[attr.id] ?? [];
-                                  patch({
-                                    axes: {
-                                      ...form.axes,
-                                      [attr.id]: selected ? current.filter((id) => id !== option.id) : [...current, option.id],
-                                    },
-                                  });
-                                }}
-                                className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-colors duration-150 ${
-                                  selected ? "border-action bg-action text-on-action" : "border-border bg-surface text-text hover:bg-surface-tint"
-                                }`}
-                              >
-                                {option.color_hex ? (
-                                  <span aria-hidden="true" className="size-3.5 rounded-full border border-border" style={{ backgroundColor: option.color_hex }} />
-                                ) : null}
-                                {isAr ? option.label_ar : option.label_en}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </fieldset>
-                    ))}
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-text-muted">
-                      {t("productWizard.variants.count", { count: comboCount })}
-                    </span>
-                    <Button type="button" variant="outline" size="sm" onClick={requestGenerate}>
-                      {rows.length > 0 ? t("productWizard.variants.regenerate") : t("productWizard.variants.generate")}
-                    </Button>
-                  </div>
-                  <VariantMatrixEditor
-                    rows={rows}
-                    settings={media}
-                    uid={uid}
-                    supabaseUrl={supabaseUrl}
-                    onChange={(index, rowPatch) =>
-                      setRows((current) => current.map((row, i) => (i === index ? { ...row, ...rowPatch } : row)))
-                    }
-                    onRestore={(key) => void restoreVariant(key)}
-                    skippedKeys={skippedKeys}
-                  />
-                  {rows.length > 0 ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        save.submit(
-                          {
-                            intent: "save_variants",
-                            productId: productId ?? "",
-                            rows: JSON.stringify(
-                              rows.map((row) => ({
-                                option_key: row.option_key,
-                                sku: row.sku.trim(),
-                                price_piastres: egpToPiastres(row.price),
-                                sale_price_piastres: egpToPiastres(row.sale_price),
-                                stock: row.stock === "" ? 0 : Number(row.stock),
-                                image_path: row.image_path,
-                                is_active: row.is_active,
-                              })),
-                            ),
-                          },
-                          { method: "post" },
-                        )
-                      }
-                    >
-                      {t("productWizard.variants.saveRows")}
-                    </Button>
-                  ) : null}
-                </div>
-              ) : (
-                <p className="rounded-md bg-surface-tint p-3 text-xs text-text-muted">{t("productWizard.variants.noAxes")}</p>
-              )}
-            </div>
+            <ChildrenStep
+              childList={childList}
+              setChildList={setChildList}
+              colors={colorAttr?.options ?? []}
+              sizes={formSizes}
+              ramOptions={ramAttr?.options ?? []}
+              mode={variantMode}
+              hasColor={hasColor}
+              hasSize={hasSize}
+              isAr={isAr}
+              media={media}
+              uid={uid}
+              supabaseUrl={supabaseUrl}
+              canSave={Boolean(productId)}
+              saving={childSave.state !== "idle"}
+              onSave={saveChildren}
+              editable={editable}
+              adminMode={admin}
+            />
+          ) : null}
+          {step === 4 && hasSizeChart ? (
+            <SizeChartEditor
+              chart={form.size_chart}
+              onChange={(next) => patch({ size_chart: next })}
+              suggested={suggestedGarment}
+              sizes={sizeLabels}
+              isAr={isAr}
+              editable={editable}
+            />
           ) : null}
 
           {step === 5 ? (
-            <div className="flex flex-col gap-4 text-sm">
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Input id="p_weight" label={t("productWizard.shipping.weight")} type="number" inputMode="numeric" min="0" dir="ltr" value={form.weight_g} onChange={(e) => patch({ weight_g: e.target.value })} hint={t("productWizard.shipping.grams")} />
-                <Select
-                  id="p_ship_class"
-                  label={t("productWizard.shipping.class")}
-                  value={form.shipping_class}
-                  onChange={(e) => patch({ shipping_class: e.target.value })}
-                  options={[
-                    { value: "standard", label: t("productWizard.shipping.classStandard") },
-                    { value: "heavy", label: t("productWizard.shipping.classHeavy") },
-                    { value: "fragile", label: t("productWizard.shipping.classFragile") },
-                  ]}
-                />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-3">
-                <Input id="p_dim_l" label={t("productWizard.shipping.length")} type="number" min="0" dir="ltr" value={form.dims_l} onChange={(e) => patch({ dims_l: e.target.value })} />
-                <Input id="p_dim_w" label={t("productWizard.shipping.width")} type="number" min="0" dir="ltr" value={form.dims_w} onChange={(e) => patch({ dims_w: e.target.value })} />
-                <Input id="p_dim_h" label={t("productWizard.shipping.height")} type="number" min="0" dir="ltr" value={form.dims_h} onChange={(e) => patch({ dims_h: e.target.value })} />
-              </div>
-              <Select
-                id="p_ship_mode"
-                label={t("productWizard.shipping.mode")}
-                value={form.shipping_mode}
-                onChange={(e) => patch({ shipping_mode: e.target.value as "platform" | "vendor" })}
-                options={[
-                  { value: "platform", label: t("productWizard.shipping.modePlatform") },
-                  { value: "vendor", label: t("productWizard.shipping.modeVendor") },
-                ]}
-              />
-
-              <div className="rounded-md border border-border bg-surface-tint p-3.5">
-                <p className="text-sm font-extrabold text-text">{t("productWizard.review.title")}</p>
-                <dl className="mt-2 grid gap-1.5 sm:grid-cols-2">
-                  <ReviewRow label={t("productWizard.basics.nameAr")} value={form.name_ar} />
-                  <ReviewRow label={t("productWizard.basics.nameEn")} value={form.name_en} />
-                  <ReviewRow label={t("productWizard.classification.category")} value={categoryLabel(categories, form.leaf_category_id, isAr)} />
-                  <ReviewRow label={t("productWizard.variants.matrixTitle", { count: rows.length })} value="" />
-                  <ReviewRow label={t("productWizard.pricing.price")} value={form.price ? `${form.price} EGP` : rows[0]?.price ? `${rows[0].price} EGP` : "—"} />
-                  <ReviewRow label={t("productWizard.classification.media")} value={String(form.media.length)} />
-                </dl>
-              </div>
-
-              <div className="flex flex-wrap justify-end gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setDirty(true);
-                  }}
-                >
-                  {t("productWizard.review.saveDraft")}
-                </Button>
-                {editable ? (
-                  <Button type="button" size="lg" loading={save.state !== "idle"} onClick={submitProduct}>
-                    {t("productWizard.review.submit")}
-                  </Button>
-                ) : null}
-              </div>
-              <p className="text-xs text-text-faint">{t("productWizard.review.note")}</p>
-            </div>
+            <ShippingStep
+              form={form}
+              patch={patch}
+              categories={categories}
+              isAr={isAr}
+              childList={childList}
+              editable={editable}
+              saving={submitter.state !== "idle"}
+              onMarkDirty={() => setDirty(true)}
+              onSubmit={submitProduct}
+              shippingBlocked={shippingBlocked}
+              showActions={!admin}
+            />
           ) : null}
         </CardBody>
       </Card>
@@ -909,197 +703,37 @@ export function ProductWizard({
         ) : null}
       </div>
 
-      <Dialog open={confirmGenerate !== null} onClose={() => setConfirmGenerate(null)} title={t("productWizard.variants.confirmTitle")}>
-        <div className="flex flex-col gap-4">
-          <p className="text-sm text-text-muted">
-            {t("productWizard.variants.confirmBody", { count: confirmGenerate?.removed ?? 0 })}
-          </p>
-          <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={() => setConfirmGenerate(null)}>
-              {t("common.cancel")}
+      {/* admin mode: one sticky action — the reason is shown to the seller */}
+      {admin ? (
+        <div className="sticky bottom-0 z-20 flex flex-col gap-2 rounded-lg border-2 border-action/40 bg-surface p-3 shadow-2">
+          <label className="flex flex-col gap-1.5 text-sm font-bold text-text">
+            {t("adminProductEdit.reasonLabel")}
+            <textarea
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              rows={2}
+              maxLength={500}
+              className="rounded-md border border-border bg-surface px-3 py-2 text-sm font-normal text-text focus:border-action focus:outline-none"
+            />
+            <span className="text-xs font-normal text-text-muted">{t("adminProductEdit.reasonHint")}</span>
+          </label>
+          <div className="flex justify-end">
+            <Button type="button" loading={adminSave.state !== "idle"} disabled={reason.trim().length < 5} onClick={saveAdmin}>
+              {t("adminProductEdit.save")}
             </Button>
-            <Button onClick={() => void generate()}>{t("common.confirm")}</Button>
+          </div>
+        </div>
+      ) : null}
+
+      <Dialog open={blocker.state === "blocked"} onClose={() => { setLeaving(false); blocker.reset?.(); }} title={t("productWizard.leave.title")}>
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-text-muted">{t("productWizard.leave.body")}</p>
+          <div className="flex flex-wrap justify-end gap-2">
+            <Button type="button" variant="outline" disabled={leaving} onClick={() => { setLeaving(false); blocker.reset?.(); }}>{t("productWizard.leave.stay")}</Button>
+            <Button type="button" loading={leaving} onClick={leaveNow}>{t("productWizard.leave.go")}</Button>
           </div>
         </div>
       </Dialog>
     </div>
   );
-}
-
-function ReviewRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col">
-      <dt className="text-2xs font-bold text-text-faint">{label}</dt>
-      <dd className="text-sm text-text">{value || "—"}</dd>
-    </div>
-  );
-}
-
-function categoryLabel(categories: PickerCategory[], id: string, isAr: boolean): string {
-  const category = categories.find((c) => c.id === id);
-  if (!category) return "—";
-  return isAr ? category.name_ar : category.name_en;
-}
-
-/** Attribute form field generated from the template (V-14: admin options only). */
-function AttributeField({
-  attr,
-  isAr,
-  value,
-  onChange,
-}: {
-  attr: TemplateAttr;
-  isAr: boolean;
-  value: { option_id: string; value_text: string; value_number: string; value_bool: boolean | null };
-  onChange: (value: { option_id: string; value_text: string; value_number: string; value_bool: boolean | null }) => void;
-}) {
-  const { t } = useTranslation();
-  const label = (
-    <>
-      {attrLabel(attr, isAr)}
-      {attr.unit ? <span className="font-normal text-text-faint"> ({attr.unit})</span> : null}
-      {attr.is_required ? <span className="text-danger"> *</span> : null}
-    </>
-  );
-
-  if (attr.type === "enum" || attr.type === "color") {
-    return (
-      <Select
-        id={`attr_${attr.id}`}
-        label={label}
-        value={value.option_id}
-        onChange={(e) => onChange({ ...value, option_id: e.target.value })}
-        options={[
-          { value: "", label: t("common.choose") },
-          ...attr.options.map((option) => ({
-            value: option.id,
-            label: isAr ? option.label_ar : option.label_en,
-          })),
-        ]}
-      />
-    );
-  }
-  if (attr.type === "number") {
-    return (
-      <Input
-        id={`attr_${attr.id}`}
-        label={label}
-        type="number"
-        inputMode="decimal"
-        dir="ltr"
-        value={value.value_number}
-        onChange={(e) => onChange({ ...value, value_number: e.target.value })}
-      />
-    );
-  }
-  if (attr.type === "bool") {
-    return (
-      <label className="flex items-center gap-2 text-sm text-text">
-        <input
-          id={`attr_${attr.id}`}
-          type="checkbox"
-          className="size-4 accent-[var(--color-action)]"
-          checked={value.value_bool === true}
-          onChange={(e) => onChange({ ...value, value_bool: e.target.checked })}
-        />
-        {attrLabel(attr, isAr)}
-      </label>
-    );
-  }
-  return (
-    <Input
-      id={`attr_${attr.id}`}
-      label={label}
-      value={value.value_text}
-      onChange={(e) => onChange({ ...value, value_text: e.target.value })}
-    />
-  );
-}
-
-/** 3-level category picker (V-11): root → sub → leaf. A depth-2 category
- * IS a valid leaf: picking it in level 2 completes the selection. */
-function CategoryPicker({
-  categories,
-  value,
-  isAr,
-  onChange,
-}: {
-  categories: PickerCategory[];
-  value: string;
-  isAr: boolean;
-  onChange: (leafId: string) => void;
-}) {
-  const { t } = useTranslation();
-  const [rootId, setRootId] = useState("");
-  const [subId, setSubId] = useState("");
-
-  const roots = categories.filter((c) => c.parent_id === null);
-  const subs = categories.filter((c) => c.parent_id === rootId);
-  const leaves = categories.filter((c) => c.parent_id === subId);
-  const subHasChildren = leaves.length > 0;
-
-  // keep the pickers in sync with an existing value (ancestor walk)
-  useEffect(() => {
-    if (!value) return;
-    const leaf = categories.find((c) => c.id === value);
-    if (!leaf) return;
-    const parent = leaf.parent_id ? categories.find((c) => c.id === leaf.parent_id) : null;
-    const grand = parent?.parent_id ? categories.find((c) => c.id === parent.parent_id) : null;
-    setRootId(grand?.id ?? parent?.id ?? leaf.id);
-    setSubId(leaf.depth >= 2 ? (parent?.id ?? leaf.id) : "");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
-  return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm font-bold text-text">{t("productWizard.classification.category")}</p>
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Select
-          id="cat_root"
-          label={t("productWizard.classification.level1")}
-          value={rootId}
-          onChange={(e) => {
-            setRootId(e.target.value);
-            setSubId("");
-            onChange("");
-          }}
-          options={[{ value: "", label: t("common.choose") }, ...roots.map((c) => ({ value: c.id, label: isAr ? c.name_ar : c.name_en }))]}
-        />
-        <Select
-          id="cat_sub"
-          label={t("productWizard.classification.level2")}
-          value={subId}
-          disabled={!rootId}
-          onChange={(e) => {
-            const next = e.target.value;
-            setSubId(next);
-            // a childless level-2 category is itself a valid leaf
-            const hasKids = categories.some((c) => c.parent_id === next);
-            onChange(hasKids ? "" : next);
-          }}
-          options={[{ value: "", label: t("common.choose") }, ...subs.map((c) => ({ value: c.id, label: isAr ? c.name_ar : c.name_en }))]}
-        />
-        <Select
-          id="cat_leaf"
-          label={t("productWizard.classification.level3")}
-          value={subHasChildren ? value : ""}
-          disabled={!subId || !subHasChildren}
-          onChange={(e) => onChange(e.target.value)}
-          options={[{ value: "", label: t("common.choose") }, ...leaves.map((c) => ({ value: c.id, label: isAr ? c.name_ar : c.name_en }))]}
-        />
-      </div>
-    </div>
-  );
-}
-
-export interface SaveActionData {
-  intent: "save" | "generate_variants" | "restore_variant" | "save_variants" | "submit" | "template";
-  ok: boolean;
-  error?: string;
-  stale?: boolean;
-  updatedAt?: string;
-  redirectTo?: string;
-  skipped?: string[];
-  /** only for intent === "template" */
-  template?: TemplateAttr[];
 }

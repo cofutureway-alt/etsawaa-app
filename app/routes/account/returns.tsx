@@ -46,7 +46,7 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
                 <div>
                   <p className="text-sm font-bold text-text" dir="ltr">{r.order?.number ?? "—"}</p>
                   <p className="text-xs text-text-muted" dir="ltr">
-                    {new Date(r.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
+                    {new Date(r.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">

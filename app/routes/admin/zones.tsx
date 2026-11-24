@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
-import { formatPiastres } from "~/lib/money";
+import { egpToPiastres, formatPiastres, piastresToEgp } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { Dialog } from "~/components/ui/Overlay";
@@ -13,6 +13,7 @@ import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
 import { PageHeader } from "~/components/layout/PageHeader";
+import { ListSkeleton, useListLoading } from "~/components/ui/ListLoading";
 
 
 /**
@@ -77,8 +78,8 @@ export async function action({ request, params }: Route.ActionArgs) {
 
   if (intent === "gov_save") {
     const id = Number(form.get("id") ?? 0) || null;
-    const fee = Math.max(0, Math.trunc(Number(form.get("fee_piastres") ?? 0)));
-    if (fee < 0) return data({ ok: false, reason: "bad_fee" }, { status: 400 });
+    const fee = egpToPiastres(form.get("fee_egp") || "0");
+    if (fee == null) return data({ ok: false, reason: "bad_amount" }, { status: 400 });
     const payload = {
       shipping_fee_piastres: fee,
       is_active: form.get("is_active") === "on",
@@ -100,15 +101,15 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (intent === "area_save") {
     const govId = Number(form.get("governorate_id") ?? 0);
     const id = Number(form.get("id") ?? 0) || null;
-    const feeRaw = String(form.get("pickup_fee_piastres") ?? "");
+    const feeRaw = String(form.get("pickup_fee_egp") ?? "").trim();
     const payload: Record<string, unknown> = {
       name_ar: String(form.get("name_ar") ?? "").trim(),
       name_en: String(form.get("name_en") ?? "").trim(),
       is_active: form.get("is_active") === "on",
     };
     if (feeRaw !== "") {
-      const fee = Math.trunc(Number(feeRaw));
-      if (Number.isNaN(fee) || fee < 0) return data({ ok: false, reason: "bad_fee" }, { status: 400 });
+      const fee = egpToPiastres(feeRaw);
+      if (fee == null) return data({ ok: false, reason: "bad_amount" }, { status: 400 });
       payload.pickup_fee_piastres = fee;
     }
     if (id) {
@@ -138,7 +139,8 @@ export async function action({ request, params }: Route.ActionArgs) {
   }
 
   if (intent === "import") {
-    // CSV rows: governorate_id,name_ar,name_en,pickup_fee_piastres
+    // CSV rows: governorate_id,name_ar,name_en,pickup_fee_egp (pounds → piastres
+    // here; an unparsable fee is passed through so the RPC reports that row)
     const csv = String(form.get("csv") ?? "").trim();
     if (!csv) return data({ ok: false, reason: "empty" }, { status: 400 });
     const rows: Array<Record<string, string>> = [];
@@ -148,7 +150,7 @@ export async function action({ request, params }: Route.ActionArgs) {
         governorate_id: parts[0] ?? "",
         name_ar: parts[1] ?? "",
         name_en: parts[2] ?? "",
-        pickup_fee_piastres: parts[3] ?? "",
+        pickup_fee_piastres: parts[3] ? String(egpToPiastres(parts[3]) ?? parts[3]) : "",
       });
     }
     const res = await client.rpc("fn_admin_import_areas", { p_rows: rows });
@@ -161,6 +163,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 }
 
 export default function AdminZones({ loaderData }: Route.ComponentProps) {
+  const listLoading = useListLoading();
   const { t, i18n } = useTranslation();
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
@@ -210,7 +213,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
             </label>
             <label className="flex flex-col gap-1 text-xs font-bold text-text">
               {t("z.shippingFee")}
-              <input name="fee_piastres" type="number" min={0} defaultValue={0} dir="ltr" className="w-24 rounded-md border border-border bg-surface px-2 py-1.5" />
+              <input name="fee_egp" type="number" min={0} step="0.01" inputMode="decimal" defaultValue={0} dir="ltr" className="w-24 rounded-md border border-border bg-surface px-2 py-1.5" />
             </label>
             <Button type="submit" size="sm" disabled={busy}>{t("z.createGov")}</Button>
           </fetcher.Form>
@@ -236,7 +239,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
                       <input type="hidden" name="id" value={g.id} />
                       <input name="name_ar" aria-label={t("z.nameAr")} defaultValue={g.name_ar} className="w-28 rounded-md border border-border bg-surface px-2 py-1" />
                       <input name="name_en" aria-label={t("z.nameEn")} defaultValue={g.name_en} dir="ltr" className="w-28 rounded-md border border-border bg-surface px-2 py-1" />
-                      <input name="fee_piastres" type="number" min={0} aria-label={t("z.shippingFee")} defaultValue={g.shipping_fee_piastres} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1 num" />
+                      <input name="fee_egp" type="number" min={0} step="0.01" inputMode="decimal" aria-label={t("z.shippingFee")} defaultValue={piastresToEgp(g.shipping_fee_piastres)} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1 num" />
                       <input name="sort" type="number" aria-label={t("bn.order")} defaultValue={g.sort} dir="ltr" className="w-14 rounded-md border border-border bg-surface px-2 py-1 num" />
                       <label className="flex items-center gap-1 text-xs font-bold text-text">
                         <input type="checkbox" name="is_active" defaultChecked={g.is_active} className="size-4 accent-[var(--color-action)]" />
@@ -263,7 +266,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
       {selected ? (
         <section className="mt-5" aria-label={t("z.areasOf", { name: en ? selected.name_en : selected.name_ar })}>
           <h2 className="text-sm font-extrabold text-text">{t("z.areasOf", { name: en ? selected.name_en : selected.name_ar })}</h2>
-          {loaderData.areas.length === 0 ? (
+          {listLoading ? <ListSkeleton /> : loaderData.areas.length === 0 ? (
             <div className="mt-2"><EmptyState title={t("z.noAreas")} body={t("z.importHint")} /></div>
           ) : (
             <ul className="mt-2 flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
@@ -275,7 +278,7 @@ export default function AdminZones({ loaderData }: Route.ComponentProps) {
                     <input type="hidden" name="governorate_id" value={selected.id} />
                     <input name="name_ar" aria-label={t("z.nameAr")} defaultValue={a.name_ar} className="w-36 rounded-md border border-border bg-surface px-2 py-1" />
                     <input name="name_en" aria-label={t("z.nameEn")} defaultValue={a.name_en} dir="ltr" className="w-36 rounded-md border border-border bg-surface px-2 py-1" />
-                    <input name="pickup_fee_piastres" type="number" min={0} aria-label={t("rf.amount")} defaultValue={a.pickup_fee_piastres} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1 num" />
+                    <input name="pickup_fee_egp" type="number" min={0} step="0.01" inputMode="decimal" aria-label={t("rf.amount")} defaultValue={piastresToEgp(a.pickup_fee_piastres)} dir="ltr" className="w-20 rounded-md border border-border bg-surface px-2 py-1 num" />
                     <label className="flex items-center gap-1 text-xs font-bold text-text">
                       <input type="checkbox" name="is_active" defaultChecked={a.is_active} className="size-4 accent-[var(--color-action)]" />
                       {t("pn.active")}

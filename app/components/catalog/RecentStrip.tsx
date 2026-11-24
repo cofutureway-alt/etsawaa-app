@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ProductCard as ProductCardRow } from "~/features/storefront/api";
+// Layering exception: recent-view recording is feature-owned logic; the
+// strip calls it in place rather than duplicating it in components.
 import { readRecent, recordRecentGuest, recordViewRemote } from "~/features/discovery/recent";
 import { lazy, Suspense } from "react";
 const ProductCard = lazy(() => import("./ProductCard").then((m) => ({ default: m.ProductCard })));

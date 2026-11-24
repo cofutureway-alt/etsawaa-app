@@ -14,6 +14,7 @@ import { SkeletonTable } from "~/components/ui/Skeleton";
 // Surfaces the action result: these pages used to discard {ok:false} and
 // render nothing, so a failed write looked like a dead button.
 import { useActionToast } from "~/components/layout/ActionFeedback";
+import { ListSkeleton, useListLoading } from "~/components/ui/ListLoading";
 
 
 /**
@@ -26,18 +27,21 @@ interface WdRow {
   id: string; vendor_ar: string; vendor_en: string; amount_piastres: number;
   method: string; details: { holder?: string; account?: string }; status: string;
   created_at: string;
+  adRefund: string | null;
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) throw data({ reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "admin", request);
+  const viewer = await requirePanelAccess(client, lang, "admin", request);
+  // wallet money is the owner's eyes only
+  if (viewer.profile.role !== "admin") throw new Response("Forbidden", { status: 403 });
 
   const tab = new URL(request.url).searchParams.get("tab") ?? "pending";
   let q = client
     .from("withdrawal_requests")
-    .select("id, amount_piastres, method, details, status, created_at, vendors(store_name_ar, store_name_en)")
+    .select("id, amount_piastres, method, details, status, created_at, kind, reference, vendors(store_name_ar, store_name_en)")
     .order("created_at", { ascending: false })
     .limit(200);
   if (["pending", "approved", "cancelled"].includes(tab)) q = q.eq("status", tab);
@@ -53,6 +57,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       vendor_ar: v?.store_name_ar ?? "", vendor_en: v?.store_name_en ?? "",
       amount_piastres: r.amount_piastres as number,
       method: r.method as string,
+      // an ad refund paid out on the vendor's payout method (rejected ad order)
+      adRefund: r.kind === "ad_refund" ? ((r.reference as string | null) ?? "") : null,
       details: (r.details ?? {}) as { holder?: string; account?: string },
       status: r.status as string,
       created_at: r.created_at as string,
@@ -73,7 +79,8 @@ export async function action({ request, params }: Route.ActionArgs) {
   const lang = requireLang(params);
   const { client } = createSupabaseServerClient(request);
   if (!client) return data({ ok: false, reason: "db" }, { status: 503 });
-  await requirePanelAccess(client, lang, "admin", request);
+  const viewer = await requirePanelAccess(client, lang, "admin", request);
+  if (viewer.profile.role !== "admin") throw new Response("Forbidden", { status: 403 });
   const form = await request.formData();
   const id = String(form.get("id") ?? "");
   const decision = String(form.get("decision") ?? "");
@@ -89,6 +96,7 @@ export async function action({ request, params }: Route.ActionArgs) {
 }
 
 export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
+  const listLoading = useListLoading();
   const { t, i18n } = useTranslation();
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
@@ -113,13 +121,11 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl font-black text-text">{t("wd.title")}</h1>
             <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {loaderData.stats.pending} {en ? "Pending" : "معلق"}
+              {loaderData.stats.pending} {t("common.pending")}
             </span>
           </div>
           <p className="mt-1 text-xs text-text-muted">
-            {en
-              ? "Review vendor payout requests, verify bank / InstaPay accounts, and authorize settlements."
-              : "متابعة طلبات سحب أرباح التجار، التحقق من الحسابات البنكية ومحافظ إنستاباي، واعتماد التحويلات."}
+            {t("wd.subtitle")}
           </p>
         </div>
         {/* CSV export of the currently listed rows */}
@@ -171,7 +177,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
         ))}
       </nav>
 
-      {loaderData.wd.length === 0 ? (
+      {listLoading ? <ListSkeleton /> : loaderData.wd.length === 0 ? (
         <div className="mt-4"><EmptyState title={t("wd.empty")} body={t("wd.emptyHint")} /></div>
       ) : (
         <>
@@ -194,7 +200,7 @@ export default function AdminWithdrawals({ loaderData }: Route.ComponentProps) {
                   <tr key={w.id} className="border-b border-border/60">
                     <td className="p-2 font-bold text-text">{en ? w.vendor_en : w.vendor_ar}</td>
                     <td className="p-2 tabular-nums" dir="ltr">{money(w.amount_piastres)}</td>
-                    <td className="p-2">{t(`withdrawal.method_${w.method}`)}</td>
+                    <td className="p-2">{t(`withdrawal.method_${w.method}`)}{w.adRefund !== null ? <span className="ms-1.5 rounded-full bg-info-soft px-2 py-0.5 text-2xs font-bold text-info">{t("wd.adRefund", { number: w.adRefund })}</span> : null}</td>
                     <td className="p-2 text-xs text-text-muted" dir="ltr">{w.details.account ?? "—"}</td>
                     <td className="p-2 text-xs text-text-muted" dir="ltr">{w.created_at.slice(0, 10)}</td>
                     <td className="p-2">{t(`withdrawal.status_${w.status}`)}</td>

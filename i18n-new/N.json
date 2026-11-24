@@ -1,0 +1,18 @@
+{
+  "cu.roleHint_custom": {
+    "ar": "يدخل لوحة الإدارة بصلاحيات دور «{{name}}» ({{count}} صلاحية)، وتقدر تعدّلها له أدناه.",
+    "en": "Gets the admin panel with the “{{name}}” role permissions ({{count}}); you can adjust them below."
+  },
+  "users.roleHint.custom": {
+    "ar": "يدخل لوحة الإدارة بصلاحيات دور «{{name}}» فقط.",
+    "en": "Gets the admin panel with the “{{name}}” role permissions only."
+  },
+  "cu.rolePerms": {
+    "ar": "صلاحيات «{{name}}»",
+    "en": "“{{name}}” permissions"
+  },
+  "cu.defaultsHint_custom": {
+    "ar": "تُطبَّق صلاحيات دور «{{name}}». يمكنك تعديلها لاحقًا من الملف.",
+    "en": "The “{{name}}” role permissions apply. You can change them later from the profile."
+  }
+}

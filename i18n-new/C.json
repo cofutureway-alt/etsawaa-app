@@ -1,0 +1,86 @@
+{
+  "productWizard.pendingEditable": {
+    "ar": "هذا المنتج قيد المراجعة. يمكنك تعديله مباشرة: أول تغيير يسحبه من قائمة المراجعة تلقائيًا، وعند الانتهاء اضغط «إرسال للمراجعة» ليبدأ فريق المراجعة العمل على النسخة الجديدة.",
+    "en": "This product is under review. You can edit it right away: the first change pulls it out of the review queue automatically, and when you are done press \"send for review\" so the team reviews the new version."
+  },
+  "productWizard.classification.video": {
+    "ar": "فيديو المنتج",
+    "en": "Product video"
+  },
+  "productWizard.classification.videoHint": {
+    "ar": "يمكن إضافة فيديوهين كحد أقصى لكل منتج، بصيغ MP4 أو WebM أو MOV.",
+    "en": "Up to two videos per product, in MP4, WebM or MOV format."
+  },
+  "productWizard.classification.videoLimit": {
+    "ar": "الحد الأقصى فيديوهان لكل منتج. لم تُضف الفيديوهات الزائدة.",
+    "en": "Two videos per product at most. The extra videos were not added."
+  },
+  "productWizard.classification.galleryLimit": {
+    "ar": "الحد الأقصى 12 عنصرًا في المعرض. لم تُضف العناصر الزائدة.",
+    "en": "The gallery holds 12 items at most. The extra items were not added."
+  },
+  "mediaSettings.videoHint": {
+    "ar": "تشغيل مفتاح الفيديو يكفي: تُقبل صيغ MP4 وWebM وMOV مباشرة، مع الالتزام بأقصى حجم للفيديو المحدد أدناه.",
+    "en": "Turning video on is enough: MP4, WebM and MOV are accepted directly, up to the maximum video size set below."
+  },
+  "mediaSettings.mimesHint": {
+    "ar": "قائمة الأنواع تُطبّق على الصور وملفات PDF؛ صيغ الفيديو الثلاث مقبولة تلقائيًا عند تشغيل مفتاح الفيديو.",
+    "en": "This list applies to images and PDF files; the three video formats are accepted automatically once the video switch is on."
+  },
+  "adminProductEdit.badge": {
+    "ar": "تعديل بواسطة الإدارة",
+    "en": "Editing as administration"
+  },
+  "adminProductEdit.back": {
+    "ar": "العودة إلى المنتج",
+    "en": "Back to the product"
+  },
+  "adminProductEdit.reasonLabel": {
+    "ar": "سبب التعديل (يظهر للتاجر)",
+    "en": "Reason for the edit (shown to the vendor)"
+  },
+  "adminProductEdit.reasonHint": {
+    "ar": "من 5 إلى 500 حرف. يُرسل السبب إلى التاجر مع إشعار بتعديل منتجه.",
+    "en": "5 to 500 characters. The vendor receives the reason with a notification that their product was edited."
+  },
+  "adminProductEdit.reasonRequired": {
+    "ar": "اكتب سبب التعديل (5 أحرف على الأقل) قبل الحفظ.",
+    "en": "Write the reason for the edit (at least 5 characters) before saving."
+  },
+  "adminProductEdit.save": {
+    "ar": "حفظ التعديلات",
+    "en": "Save changes"
+  },
+  "adminProductEdit.saved": {
+    "ar": "تم حفظ التعديلات وإبلاغ التاجر بالسبب.",
+    "en": "Changes saved and the vendor was notified with the reason."
+  },
+  "productReview.editProduct": {
+    "ar": "تعديل بيانات المنتج",
+    "en": "Edit product data"
+  },
+  "productReview.staleNotice": {
+    "ar": "أرسل التاجر نسخة جديدة أو سحب المنتج للتعديل أثناء مراجعتك. تم تحديث الصفحة؛ يرجى مراجعة أحدث نسخة قبل اتخاذ القرار.",
+    "en": "The vendor sent a new version or withdrew the product for editing while you were reviewing. The page was refreshed; please review the latest version."
+  },
+  "productReview.event.admin_edit": {
+    "ar": "تعديل من الإدارة",
+    "en": "Edited by the administration"
+  },
+  "productReview.event.admin_update": {
+    "ar": "تحديث بيانات المنتج بواسطة الإدارة",
+    "en": "Product data updated by the administration"
+  },
+  "productReview.event.reopened": {
+    "ar": "أُعيد فتح المنتج للتعديل",
+    "en": "Product reopened for editing"
+  },
+  "notif.product.admin_edited.title": {
+    "ar": "تم تعديل منتجك من الإدارة",
+    "en": "Your product was edited by the administration"
+  },
+  "notif.product.admin_edited.body": {
+    "ar": "عدّلت الإدارة بيانات {{name}}. راجع المنتج لمعرفة التفاصيل.",
+    "en": "The administration edited {{name}}. Review the product for the details."
+  }
+}

@@ -8,6 +8,8 @@ import { requireLang } from "~/lib/lang.server";
 import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { Rating } from "~/components/ui/Rating";
+import { ReviewMediaThumbs } from "~/components/catalog/ReviewMediaPicker";
+import type { ReviewMediaItem } from "~/lib/review-media";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonTable } from "~/components/ui/Skeleton";
@@ -26,6 +28,7 @@ import { PageHeader } from "~/components/layout/PageHeader";
 interface ReviewRow {
   id: string; rating: number; title: string; body: string; status: string;
   created_at: string;
+  media: ReviewMediaItem[];
   product: string; vendor: string; customer: string;
 }
 
@@ -43,7 +46,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   // never fail the page on a label lookup.
   let q = client
     .from("reviews")
-    .select("id, rating, title, body, status, created_at, product_id, vendor_id, customer_id")
+    .select("id, rating, title, body, status, created_at, media, product_id, vendor_id, customer_id")
     .order("created_at", { ascending: false })
     .limit(100);
   if (["pending", "published", "spam", "trash"].includes(status)) q = q.eq("status", status);
@@ -51,7 +54,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (error) throw new Error(error.message);
   const reviewRows = (rows ?? []) as unknown as Array<{
     id: string; rating: number; title: string; body: string; status: string; created_at: string;
-    product_id: string; vendor_id: string; customer_id: string;
+    media: ReviewMediaItem[] | null; product_id: string; vendor_id: string; customer_id: string;
   }>;
   const productIds = [...new Set(reviewRows.map((r) => r.product_id))];
   const vendorIds = [...new Set(reviewRows.map((r) => r.vendor_id))];
@@ -71,6 +74,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     body: r.body ?? "",
     status: r.status,
     created_at: r.created_at,
+    media: r.media ?? [],
     product: productName.get(r.product_id) ?? "—",
     vendor: vendorName.get(r.vendor_id) ?? "—",
     customer: customerName.get(r.customer_id) ?? "—",
@@ -141,6 +145,7 @@ export default function AdminReviews({ loaderData }: Route.ComponentProps) {
                 <span className="text-xs text-text-muted" dir="ltr">{r.created_at.slice(0, 10)}</span>
               </div>
               <p className="mt-1 text-text-muted">{r.body}</p>
+              <ReviewMediaThumbs media={r.media} alt={r.product} />
               <p className="mt-1 text-xs text-text-faint">
                 {r.customer} · {r.product} · {r.vendor}
               </p>

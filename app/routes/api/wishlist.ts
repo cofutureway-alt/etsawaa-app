@@ -24,6 +24,13 @@ export async function action({ request }: ActionFunctionArgs) {
     return data({ ok: true, added: false });
   }
 
+  // idempotent add (the heart a guest tapped before signing in)
+  if (body.intent === "add") {
+    const { data: existing } = await client.from("wishlist_items").select("product_id")
+      .eq("user_id", viewer.user.id).eq("product_id", body.product_id).maybeSingle();
+    if (existing) return data({ ok: true, added: true });
+  }
+
   const { data: res, error } = await client.rpc("fn_wishlist_toggle", { p_product_id: body.product_id });
   if (error) {
     const reason = error.message.includes("product_unavailable") ? "unavailable" : "query_failed";

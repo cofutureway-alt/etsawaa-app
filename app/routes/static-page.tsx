@@ -1,6 +1,7 @@
 import type { Route } from "./+types/static-page";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
+import { getI18n } from "~/lib/i18n/config";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { safeSlug } from "~/lib/postgrest";
@@ -41,13 +42,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const lang = (data?.lang as "ar" | "en") ?? "ar";
+  const t = getI18n(lang).t;
   const page = data?.page as StaticPage | undefined;
   const title = page ? (lang === "ar" ? page.title_ar : page.title_en) : "";
   const content = page ? (lang === "ar" ? page.content_ar : page.content_en) : "";
   return publicMeta({
     lang,
     path: `/p/${encodeURIComponent(lang === "ar" ? page?.slug_ar ?? "" : page?.slug_en ?? "")}`,
-    title: `${title} — ${lang === "ar" ? "اتسوء" : "Etsawaa"}`,
+    title: `${title} — ${t("app.name")}`,
     description: content.replace(/[#\n-]+/g, " ").trim().slice(0, 160) || title,
   });
 };

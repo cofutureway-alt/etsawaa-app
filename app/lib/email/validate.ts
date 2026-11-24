@@ -101,7 +101,7 @@ export function renderPreview(template: string, variables: Record<string, string
 export const SAMPLE_VARIABLES: Record<string, string> = {
   name: "أحمد",
   customer_name: "أحمد محمود",
-  site_name: "اتسوء",
+  site_name: "إتسوء",
   site_url: "https://etsawaa.example",
   order_number: "ETS-26-1042",
   order_total: "1,250.00 ج.م",
@@ -112,4 +112,13 @@ export const SAMPLE_VARIABLES: Record<string, string> = {
   reason: "نفاد المخزون",
   review_days: "7",
   return_days: "14",
+  first_name: "أحمد",
+  title: "تمت الموافقة على منتجك",
+  body: "منتجك «حذاء رياضي» أصبح منشورًا في المتجر.",
+  link: "https://etsawaa.example/ar/vendor/products",
+  subject: "استفسار عن طلب",
+  message: "مرحبًا، أريد معرفة موعد توصيل طلبي.",
+  kind: "نموذج العملاء",
+  email: "customer@example.com",
+  phone: "+201000000000",
 };

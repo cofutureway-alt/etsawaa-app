@@ -1,7 +1,12 @@
 import { redirect } from "react-router";
 import { isAuthSessionMissingError, AuthApiError } from "@supabase/auth-js";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
-import { canAccessPanel, isRole, type Role } from "~/lib/permissions";
+import { canAccessPanel, canAny, isRole, type Role } from "~/lib/permissions";
+import { adminRoutePerms, firstAdminPath } from "~/features/admin/nav";
+import type { VendorRow } from "~/features/vendor/config";
+import { isSharedClient } from "~/lib/supabase/request-scope";
+import { markSettled, peekSettled, scoped } from "~/lib/supabase/request-scope";
+import { verifyAccessToken, type AccessClaims } from "~/lib/auth/jwt.server";
 
 export interface ProfileRow {
   id: string;
@@ -13,11 +18,15 @@ export interface ProfileRow {
   /** H-21: default alternate phone prefilled into address forms. */
   phone_alternate: string | null;
   avatar_url: string | null;
+  /** profile cover strip (profiles.banner_url) — rendered by the account card */
+  banner_url?: string | null;
 }
 
 export interface Viewer {
   user: User;
   profile: ProfileRow;
+  /** Effective permission list (admin → ["*"]); loaded for the admin panel only. */
+  permissions?: string[];
 }
 
 /**
@@ -42,28 +51,94 @@ export interface GetViewerResult {
   sessionStale?: boolean;
 }
 
-export async function getViewer(client: SupabaseClient): Promise<GetViewerResult | null> {
-  const { data: userData, error } = await client.auth.getUser();
-  if (error) {
-    if (isAuthSessionMissingError(error)) return { viewer: null };
-    if (
-      error instanceof AuthApiError &&
-      (error.status === 400 || error.status === 401 || error.status === 403)
-    ) {
-      // definitively invalid token (expired & refresh refused, bad JWT…)
-      return { viewer: null };
+type LegalStatus = { terms?: { accepted?: boolean }; seller_agreement?: { accepted?: boolean; required?: boolean } };
+
+/** The signed-in person's store, as fn_viewer_context returns it. */
+export type ViewerVendor = VendorRow & { suspension_reason: string | null; needs_changes: number };
+
+/**
+ * Everything the app needs about the signed-in person, from ONE database
+ * call (fn_viewer_context): profile, legal status, effective permissions,
+ * own store (+ products waiting for changes, suspension reason) and the
+ * unread notification count. Resolved once per request and shared by the
+ * root/layout/page loaders (request-scope.server) — so a panel navigation
+ * costs 2 round-trips for identity (auth + context) instead of ~8.
+ */
+export interface ViewerContext {
+  user: User;
+  profile: ProfileRow;
+  legal: LegalStatus | null;
+  permissions: string[];
+  vendor: ViewerVendor | null;
+  unread: number;
+}
+
+interface ContextResult { ctx: ViewerContext | null; sessionStale?: boolean }
+
+export function getViewerContext(client: SupabaseClient): Promise<ContextResult> {
+  return scoped(client, "viewer-context", async (): Promise<ContextResult> => {
+    // fast path: the session cookie's access token, verified locally (no
+    // GoTrue round-trip). getSession() refreshes an expired token first.
+    const { data: sess } = await client.auth.getSession();
+    if (!sess.session) return { ctx: null };
+    const claims = verifyAccessToken(sess.session.access_token);
+    const { data: userData, error } = claims
+      ? { data: { user: userFromClaims(claims) }, error: null }
+      : await client.auth.getUser();
+    if (error) {
+      if (isAuthSessionMissingError(error)) return { ctx: null };
+      if (
+        error instanceof AuthApiError &&
+        (error.status === 400 || error.status === 401 || error.status === 403)
+      ) {
+        // definitively invalid token (expired & refresh refused, bad JWT…)
+        return { ctx: null };
+      }
+      // transient: never treat as signed-out
+      return { ctx: null, sessionStale: true };
     }
-    // transient: never treat as signed-out
-    return { viewer: null, sessionStale: true };
-  }
-  if (!userData?.user) return { viewer: null };
-  const { data: profile } = await client
-    .from("profiles")
-    .select("id, full_name, role, status, locale, phone, phone_alternate, avatar_url")
-    .eq("id", userData.user.id)
-    .single();
-  if (!profile || !isRole(profile.role)) return { viewer: null };
-  return { viewer: { user: userData.user, profile: profile as ProfileRow } };
+    if (!userData?.user) return { ctx: null };
+    const { data, error: ctxError } = await client.rpc("fn_viewer_context");
+    if (ctxError) return { ctx: null, sessionStale: true };
+    const raw = data as { profile?: ProfileRow; legal?: LegalStatus | null; permissions?: unknown; vendor?: ViewerVendor | null; unread?: number } | null;
+    if (!raw?.profile || !isRole(raw.profile.role)) return { ctx: null };
+    const ctx: ViewerContext = {
+      user: userData.user,
+      profile: raw.profile,
+      legal: raw.legal ?? null,
+      permissions: Array.isArray(raw.permissions) ? raw.permissions.filter((x): x is string => typeof x === "string") : [],
+      vendor: raw.vendor ?? null,
+      unread: Number(raw.unread ?? 0),
+    };
+    markSettled(client, "viewer-context", ctx);
+    return { ctx };
+  }, isSharedClient(client));
+}
+
+/** The fields of a Supabase User the app reads (id, email…), from verified claims. */
+function userFromClaims(c: AccessClaims): User {
+  return {
+    id: c.sub,
+    email: c.email,
+    phone: c.phone,
+    role: c.role,
+    aud: Array.isArray(c.aud) ? c.aud[0] ?? "authenticated" : c.aud ?? "authenticated",
+    app_metadata: (c.app_metadata ?? {}) as User["app_metadata"],
+    user_metadata: c.user_metadata ?? {},
+    created_at: "",
+  } as User;
+}
+
+/** Already-resolved context of this request, without waiting (undefined when not loaded yet). */
+export function peekViewerContext(client: SupabaseClient): ViewerContext | undefined {
+  return isSharedClient(client) ? peekSettled<ViewerContext>(client, "viewer-context") : undefined;
+}
+
+export async function getViewer(client: SupabaseClient): Promise<GetViewerResult | null> {
+  const { ctx, sessionStale } = await getViewerContext(client);
+  if (!ctx) return sessionStale ? { viewer: null, sessionStale } : { viewer: null };
+  // a fresh object per caller: requirePanelAccess attaches `permissions` to it
+  return { viewer: { user: ctx.user, profile: ctx.profile } };
 }
 
 const PANEL_PATHS = { admin: "admin", vendor: "vendor", account: "account" } as const;
@@ -80,9 +155,10 @@ export async function requirePanelAccess(
   panel: keyof typeof PANEL_PATHS,
   request: Request,
 ): Promise<Viewer> {
-  const result = await getViewer(client);
-  const viewer = result?.viewer ?? null;
-  if (!viewer) {
+  const { ctx, sessionStale } = await getViewerContext(client);
+  const viewer: Viewer | null = ctx ? { user: ctx.user, profile: ctx.profile } : null;
+  const result = { sessionStale };
+  if (!viewer || !ctx) {
     // Session STALE (network/5xx path): redirect preserves the cookies and the
     // next request retries verification — no destructive sign-out happened.
     const url = new URL(request.url);
@@ -95,5 +171,69 @@ export async function requirePanelAccess(
   if (!canAccessPanel(viewer.profile.role, panel)) {
     throw new Response("Forbidden", { status: 403 });
   }
+  legalGate(ctx.legal, lang, request, panel === "vendor");
+  if (panel === "admin") {
+    viewer.permissions = ctx.permissions;
+    guardAdminPath(viewer, lang, request);
+  }
   return viewer;
+}
+
+/**
+ * Route-level permission gate for /:lang/admin/* — every admin loader and
+ * action goes through requirePanelAccess, so this one check covers them all
+ * (table: features/admin/nav.ts). Staff without the dashboard permission are
+ * sent to the first page they may open instead of a 403.
+ */
+function guardAdminPath(viewer: Viewer, lang: string, request: Request): void {
+  const prefix = `/${lang}/admin`;
+  const { pathname } = new URL(request.url);
+  if (pathname !== prefix && !pathname.startsWith(`${prefix}/`)) return;
+  const sub = pathname.slice(prefix.length).replace(/\.data$/, "");
+  const perms = adminRoutePerms(sub);
+  const role = viewer.profile.role;
+  const list = viewer.permissions ?? [];
+  if (perms.length === 0 || canAny(role, list, perms)) return;
+  if (sub.replace(/\//g, "") === "" && request.method === "GET") {
+    throw redirect(`${prefix}/${firstAdminPath(role, list)}`);
+  }
+  throw new Response("Forbidden", { status: 403 });
+}
+
+/** Effective permissions of the signed-in user (fn_my_permissions). */
+export async function loadMyPermissions(client: SupabaseClient): Promise<string[]> {
+  const { ctx } = await getViewerContext(client);
+  return ctx?.permissions ?? [];
+}
+
+/**
+ * 403 unless the viewer holds any of `required` (admin always passes).
+ * Use after requirePanelAccess(…, "admin", …), which loads the permissions.
+ */
+export function requirePermission(viewer: Viewer, required: string | readonly string[]): void {
+  const list = typeof required === "string" ? [required] : required;
+  if (list.length === 0) return;
+  if (!canAny(viewer.profile.role, viewer.permissions ?? [], list)) {
+    throw new Response("Forbidden", { status: 403 });
+  }
+}
+
+/**
+ * Terms & Conditions are mandatory for every signed-in user and the seller
+ * agreement for every seller past onboarding: until the CURRENT version is
+ * accepted (new account via Google, older account, or a newly published
+ * version), every panel page sends the user to the acceptance page and back.
+ */
+export async function requireLegalAccepted(client: SupabaseClient, lang: string, request: Request, seller = false): Promise<void> {
+  const { ctx } = await getViewerContext(client);
+  legalGate(ctx?.legal ?? null, lang, request, seller);
+}
+
+function legalGate(status: LegalStatus | null, lang: string, request: Request, seller: boolean): void {
+  if (!status) return;
+  const needTerms = status.terms?.accepted === false;
+  const needSeller = seller && status.seller_agreement?.required === true && status.seller_agreement.accepted === false;
+  if (!needTerms && !needSeller) return;
+  const url = new URL(request.url);
+  throw redirect(`/${lang}/legal/accept?next=${encodeURIComponent(url.pathname + url.search)}`);
 }

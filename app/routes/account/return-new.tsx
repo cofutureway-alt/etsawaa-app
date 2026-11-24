@@ -147,7 +147,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
             <legend className="text-sm font-bold text-text">{t("returns.itemsTitle")}</legend>
             <div className="mt-2 flex flex-col gap-2">
               {loaderData.items.map((it: {
-                id: string; product_name_ar: string; product_name_en: string; option_key: string;
+                id: string; product_name_ar: string; product_name_en: string; option_key: string; option_label_ar?: string | null; option_label_en?: string | null;
                 qty: number; line_total_piastres: number; group_id: string;
               }) => {
                 const remaining = remainingFor(it.id, it.qty);
@@ -165,7 +165,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
                       />
                       <span className="flex-1 text-sm">
                         <span className="block font-bold text-text">
-                          {en ? it.product_name_en : it.product_name_ar}{it.option_key ? ` (${it.option_key})` : ""}
+                          {en ? it.product_name_en : it.product_name_ar}{(en ? it.option_label_en : it.option_label_ar) ? ` (${en ? it.option_label_en : it.option_label_ar})` : ""}
                         </span>
                         <span className="block text-text-muted">
                           {en ? group?.vendor.store_name_en : group?.vendor.store_name_ar} · {money(it.line_total_piastres)}

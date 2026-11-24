@@ -4,11 +4,14 @@ import { Link, data, redirect, useActionData, useFetcher, useNavigate, useSearch
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { otpCodeSchema } from "~/features/auth/schemas";
+import { rememberLocale } from "~/lib/locale-preference.server";
+import { getSiteUrl } from "~/lib/env.server";
 import { resendSecondsLeft } from "~/features/auth/otp";
 import { Button, Card, CardBody, AlertIcon } from "~/components/ui";
 import { requireLang } from "~/lib/lang.server";
 import { safeNext } from "~/lib/auth/next";
-import { getSupabaseAdminClient } from "~/lib/supabase/admin";
+import { clientKey, rateLimit } from "~/lib/rate-limit.server";
+import { finishVerifiedSignup } from "~/features/auth/verified-signup.server";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
@@ -19,17 +22,21 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const tokenHash = url.searchParams.get("token_hash");
   const linkType = url.searchParams.get("type");
-  if (tokenHash && (linkType === "signup" || linkType === "email_change")) {
+  if (tokenHash && (linkType === "signup" || linkType === "email_change" || linkType === "magiclink")) {
     const { client, headers } = createSupabaseServerClient(request);
     if (client) {
       // verifyOtp mints the session cookies; they must ride the redirect.
       const { error } = await client.auth.verifyOtp({
         token_hash: tokenHash,
-        type: linkType === "email_change" ? "email_change" : "signup",
+        type: linkType,
       });
       if (!error) {
+        const target = linkType === "signup"
+          ? await finishVerifiedSignup(client, lang, request.url, url.searchParams.get("next"))
+          : linkType === "email_change" ? `/${lang}/account/profile?email=changed` : safeNext(url.searchParams.get("next"), `/${lang}/account`);
+        if (linkType !== "signup") await rememberLocale(client, lang);
         throw redirect(
-          linkType === "email_change" ? `/${lang}/account/profile?email=changed` : `/${lang}/account`,
+          target,
           { headers },
         );
       }
@@ -61,7 +68,18 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (String(form.get("intent") ?? "") === "resend") {
     const email = String(form.get("email") ?? "");
     if (!email) return data<ResendActionData>({ ok: false, reason: "failed" });
-    const { error } = await client.auth.resend({ type: "signup", email });
+    // App-level cap — the UI countdown is client-side only, so without this a
+    // scripted caller could resend at full speed (app/lib/rate-limit.server.ts).
+    // Keyed by the target address (what gets mail-bombed) and, when a trusted
+    // proxy supplies it, by client IP.
+    const ip = clientKey(request);
+    if (
+      !rateLimit(`otp-resend:email:${email.trim().toLowerCase()}`, 3, 5 * 60_000) ||
+      (ip && !rateLimit(`otp-resend:ip:${ip}`, 20, 5 * 60_000))
+    ) {
+      return data<ResendActionData>({ ok: false, reason: "rate_limited" });
+    }
+    const { error } = await client.auth.resend({ type: "signup", email, options: { emailRedirectTo: `${getSiteUrl(request.url)}/${lang}/auth/verify` } });
     if (error && /rate|too many|wait/i.test(error.message)) {
       return data<ResendActionData>({ ok: false, reason: "rate_limited" });
     }
@@ -87,6 +105,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   const url = new URL(request.url);
   const next = url.searchParams.get("next");
   if (otpType === "email_change") {
+    await rememberLocale(client, lang);
     // the OLD address is now replaced — back to the profile with the receipt
     const redirectToChange = `/${lang}/account/profile?email=changed`;
     if (request.headers.get("sec-fetch-mode") === "navigate") {
@@ -95,23 +114,7 @@ export async function action({ request, params }: Route.ActionArgs) {
     return data<VerifyActionData>({ ok: true, redirectTo: redirectToChange }, { headers });
   }
 
-  // Vendor funnel (phase 03): the signup metadata carries the intent —
-  // promotion happens server-side right after the OTP, so the fresh vendor
-  // lands on the forced onboarding wizard and nowhere else (US-01).
-  let effectiveNext = safeNext(next, `/${lang}/account`);
-  const { data: userData } = await client.auth.getUser();
-  if (userData?.user?.user_metadata?.signup_intent === "vendor") {
-    const admin = getSupabaseAdminClient();
-    if (admin && userData.user.id) {
-      await admin.from("profiles").update({ role: "vendor" }).eq("id", userData.user.id);
-    }
-    if (!next) effectiveNext = `/${lang}/vendor/onboarding`;
-  }
-
-  // Welcome email is sent once, at register (it carries the real first name).
-  // Re-sending here duplicated it with an empty {{name}}.
-
-  const redirectTo = effectiveNext;
+  const redirectTo = await finishVerifiedSignup(client, lang, request.url, next);
   if (request.headers.get("sec-fetch-mode") === "navigate") {
     throw redirect(redirectTo, { headers });
   }
@@ -130,7 +133,25 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
 
   const [digits, setDigits] = useState<string[]>(Array(6).fill(""));
-  const [cooldownStart, setCooldownStart] = useState(() => Date.now());
+  // Resend countdown survives a refresh: it starts when the code was really
+  // sent (`sent` from register, or the last resend, kept in localStorage per
+  // address) instead of at every page load.
+  const cooldownKey = `etsawaa:otp-sent:${loaderData.emailChangeMode ? "email_change" : "signup"}:${email.toLowerCase()}`;
+  const [cooldownStart, setCooldownStart] = useState(() => {
+    const sent = Number(searchParams.get("sent"));
+    return Number.isFinite(sent) && sent > 0 && sent <= Date.now() ? sent : Date.now();
+  });
+  useEffect(() => {
+    try {
+      const stored = Number(window.localStorage.getItem(cooldownKey));
+      if (Number.isFinite(stored) && stored > cooldownStart && stored <= Date.now()) setCooldownStart(stored);
+      else window.localStorage.setItem(cooldownKey, String(cooldownStart));
+    } catch {
+      // storage blocked (private mode): the countdown still runs for this view
+    }
+    // run once per address
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cooldownKey]);
   const [secondsLeft, setSecondsLeft] = useState(() => resendSecondsLeft(cooldownStart, Date.now()));
   const cellsRef = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -144,9 +165,11 @@ export default function VerifyPage({ loaderData }: Route.ComponentProps) {
   // and only Supabase's rate limiter stood in the way.
   useEffect(() => {
     if (resendFetcher.state === "idle" && resendFetcher.data && "ok" in resendFetcher.data && resendFetcher.data.ok) {
-      setCooldownStart(Date.now());
+      const now = Date.now();
+      setCooldownStart(now);
+      try { window.localStorage.setItem(cooldownKey, String(now)); } catch { /* storage blocked */ }
     }
-  }, [resendFetcher.state, resendFetcher.data]);
+  }, [resendFetcher.state, resendFetcher.data, cooldownKey]);
 
   const token = useMemo(() => digits.join(""), [digits]);
   const canSubmit = token.length === 6;

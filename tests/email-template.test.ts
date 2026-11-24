@@ -7,6 +7,7 @@ import {
   renderPreview,
   SAMPLE_VARIABLES,
 } from "../app/lib/email/validate.ts";
+import { renderSubject, renderTemplate } from "../app/lib/email/server.ts";
 
 const DECLARED = ["name", "site_name", "site_url"];
 
@@ -57,4 +58,28 @@ test("renderPreview substitutes sample values and leaves unknown tokens", () => 
   assert.equal(renderPreview("Hi {{name}}", SAMPLE_VARIABLES), "Hi أحمد");
   assert.equal(renderPreview("{{unknown_x}}", SAMPLE_VARIABLES), "{{unknown_x}}");
   assert.ok((SAMPLE_VARIABLES.site_url ?? "").startsWith("https://"));
+});
+
+test("renderTemplate HTML-escapes substituted values (email content injection)", () => {
+  // a variable value containing markup cannot inject it into the email body
+  assert.equal(
+    renderTemplate("<p>Hello {{name}}</p>", { name: "<script>alert(1)</script>" }),
+    "<p>Hello &lt;script&gt;alert(1)&lt;/script&gt;</p>",
+  );
+  // the surrounding template markup is NOT escaped — only the values
+  assert.equal(
+    renderTemplate("<p>Hi {{name}} & {{other}}</p>", { name: "A & B", other: "C" }),
+    "<p>Hi A &amp; B & C</p>",
+  );
+  // unknown variables stay untouched
+  assert.equal(renderTemplate("<p>{{mystery}}</p>", {}), "<p>{{mystery}}</p>");
+});
+
+test("renderSubject keeps values as plain text and strips line breaks", () => {
+  assert.equal(
+    renderSubject("Order for {{name}}", { name: "Ahmed & Sons's" }),
+    "Order for Ahmed & Sons's",
+  );
+  assert.equal(renderSubject("Hi {{name}}", { name: "a\r\nBcc: x@y.z" }), "Hi a Bcc: x@y.z");
+  assert.equal(renderSubject("{{mystery}}", {}), "{{mystery}}");
 });

@@ -12,16 +12,6 @@ export function stashPendingWishlist(productId: string): void {
   } catch { /* non-critical */ }
 }
 
-export function popPendingWishlist(): string | null {
-  try {
-    const value = localStorage.getItem(WISH_PENDING_KEY);
-    if (value) localStorage.removeItem(WISH_PENDING_KEY);
-    return value;
-  } catch {
-    return null;
-  }
-}
-
 /** POST /api/wishlist — returns the new state or `auth` when the guest must sign in. */
 export async function toggleWishlist(productId: string): Promise<{ ok: boolean; added?: boolean; auth?: boolean }> {
   const res = await fetch("/api/wishlist", {

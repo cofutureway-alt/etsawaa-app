@@ -9,8 +9,10 @@ import type { SearchResult } from "~/features/storefront/api";
 import type { FacetDef, FilterState } from "./FacetPanel";
 import { FacetPanel } from "./FacetPanel";
 import { ProductGrid, ProductGridSkeleton } from "./ProductGrid";
+// Layering exception: listing query/state helpers are feature-owned logic;
+// this view consumes them in place rather than duplicating them in components.
 import { buildListingQuery, filterCount, isFiltered, SORT_OPTIONS } from "~/features/storefront/listing";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 /**
  * The shared listing view (S-03): facets sidebar (drawer on mobile), sort,
@@ -31,6 +33,8 @@ export function Listing({
   description,
   /** search "did you mean" chip shown above the zero-results state (US-04) */
   zeroSuggestion,
+  /** extra content under the title row (brand intro, sub-category carousel) */
+  intro,
 }: {
   lang: string;
   result: SearchResult | null;
@@ -44,6 +48,7 @@ export function Listing({
   wishedIds?: Set<string>;
   description?: string;
   zeroSuggestion?: string | null;
+  intro?: ReactNode;
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -62,8 +67,10 @@ export function Listing({
   };
 
   // zero-result edge (US-03): when filters are active, offer removing the last one
-  const zeroWithFilters = result && result.total === 0 && isFiltered(state);
-  const lastFilterKey = zeroWithFilters ? filterCount(state) : 0;
+  // on a category page the category is the page itself, not a filter (UI-02)
+  const ownFilters = hideCategoryFacet ? { ...state, category: null } : state;
+  const zeroWithFilters = result && result.total === 0 && isFiltered(ownFilters);
+  const lastFilterKey = zeroWithFilters ? filterCount(ownFilters) : 0;
 
   return (
     <div className="flex flex-col gap-4">
@@ -106,6 +113,8 @@ export function Listing({
           </label>
         </div>
       </div>
+
+      {intro}
 
       <div className="grid gap-5 lg:grid-cols-[250px_minmax(0,1fr)]">
         <aside className="hidden self-start rounded-lg border border-border bg-surface p-3 lg:block" aria-label={t("store.filters.title")}>

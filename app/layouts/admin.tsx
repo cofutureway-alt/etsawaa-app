@@ -1,26 +1,29 @@
-import { Outlet, useRouteLoaderData } from "react-router";
+import { Outlet, useRouteLoaderData, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/admin";
 import { useTranslation } from "react-i18next";
 import { requireLang } from "~/lib/lang.server";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
-import { requirePanelAccess } from "~/lib/auth/guards";
+import { getViewerContext, requirePanelAccess } from "~/lib/auth/guards";
 import type { RootLoaderData } from "~/features/settings/api";
-import { listNotifications } from "~/features/notifications/api";
 import { LanguageSwitch } from "~/components/layout/LanguageSwitch";
 import { NotificationBell } from "~/features/notifications/NotificationBell";
 import { PanelShell } from "~/components/layout/PanelShell";
+import type { PanelLink } from "~/components/layout/PanelShell";
 import type { SidebarGroup } from "~/components/layout/SidebarNav";
 import { RoutePending } from "~/components/layout/RoutePending";
 import {
-  ChartIcon,
-  GridIcon,
-  ListIcon,
-  SettingsIcon,
-  StoreIcon,
-  TagIcon,
-  UploadIcon,
-  UsersIcon,
-} from "~/components/ui/icons";
+  AlertIcon, ChartIcon, CreditCardIcon, FileIcon, GlobeIcon, GridIcon, ListIcon, MailIcon, MegaphoneIcon, PackageIcon,
+  RotateIcon, ScaleIcon, SettingsIcon, ShieldIcon, StarIcon, StoreIcon, TagIcon, TruckIcon, UploadIcon, UserIcon, UsersIcon, CameraIcon } from "~/components/ui/icons";
+import { visibleAdminNav, type AdminNavIcon } from "~/features/admin/nav";
+import { MobileBottomNav } from "~/components/layout/MobileBottomNav";
+import { can } from "~/lib/permissions";
+
+const NAV_ICONS: Record<AdminNavIcon, typeof ChartIcon> = {
+  chart: ChartIcon, list: ListIcon, rotate: RotateIcon, truck: TruckIcon, package: PackageIcon, store: StoreIcon,
+  wallet: CreditCardIcon, alert: AlertIcon, tag: TagIcon, star: StarIcon, users: UsersIcon, shield: ShieldIcon,
+  megaphone: MegaphoneIcon, grid: GridIcon, scale: ScaleIcon, file: FileIcon, upload: UploadIcon,
+  settings: SettingsIcon, user: UserIcon, mail: MailIcon, map: GlobeIcon, camera: CameraIcon,
+};
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   const lang = requireLang(params);
@@ -28,103 +31,62 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (!client) {
     throw Response.redirect(new URL(`/${lang}/auth/login?error=db`, request.url).toString(), 302);
   }
-  const viewer = await requirePanelAccess(client, lang, "admin", request);
-  let unread = 0;
-  try {
-    const rows = await listNotifications(client, viewer.user.id);
-    unread = rows.filter((row) => row.read_at === null).length;
-  } catch {
-    unread = 0;
-  }
-  return { lang, viewer, unread };
+  // guard + sidebar counters in ONE parallel round (the RPC checks permissions
+  // itself; its result is simply dropped if the guard redirects)
+  const [viewer, { data: navCounts }, { ctx }] = await Promise.all([
+    requirePanelAccess(client, lang, "admin", request),
+    client.rpc("fn_admin_nav_counts"),
+    getViewerContext(client),
+  ]);
+  // real unread count (the old count only looked at the latest 20 rows)
+  const unread = ctx?.unread ?? 0;
+  // dashboards this person can open (own store = seller panel; account always)
+  const panels: PanelLink[] = [
+    { to: `/${lang}/admin`, labelKey: "admin.title", current: true },
+    ...(ctx?.vendor ? [{ to: `/${lang}/vendor`, labelKey: "vendor.title" }] : []),
+    { to: `/${lang}/account`, labelKey: "account.title" },
+  ];
+  return { lang, viewer, unread, panels, permissions: viewer.permissions ?? [], navCounts: (navCounts ?? {}) as Record<string, number> };
+}
+
+/** Re-run on every in-panel navigation so the permission gate (requirePanelAccess) sees each page. */
+export function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) {
+  return currentUrl.pathname !== nextUrl.pathname || defaultShouldRevalidate;
 }
 
 /** Admin panel shell — reference sidebar (grouped, dark) + topbar. */
 export default function AdminLayout({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
-  const { lang, viewer, unread } = loaderData;
+  const { lang, viewer, unread, panels, permissions, navCounts } = loaderData;
   const root = useRouteLoaderData("root") as RootLoaderData | undefined;
   const siteName =
     (root?.locale === "en" ? root?.site.site_name_en : root?.site.site_name_ar) ?? t("app.name");
 
-  const groups: SidebarGroup[] = [
-    {
-      label: lang === "ar" ? "العمليات" : "Operations",
-      items: [
-        { to: `/${lang}/admin`, label: t("admin.dashboard"), end: true, icon: <ChartIcon /> },
-        { to: `/${lang}/admin/orders`, label: t("adminNav.orders"), icon: <ListIcon /> },
-        { to: `/${lang}/admin/refunds`, label: t("rf.title"), icon: <ListIcon /> },
-        { to: `/${lang}/admin/vendors`, label: t("nav.vendors"), icon: <StoreIcon /> },
-        { to: `/${lang}/admin/products`, label: t("adminProducts.title"), icon: <TagIcon /> },
-        { to: `/${lang}/admin/shipping`, label: t("adminNav.shipping"), icon: <ListIcon /> },
-        { to: `/${lang}/admin/withdrawals`, label: t("wd.title"), icon: <ListIcon /> },
-      ],
-    },
-    {
-      label: lang === "ar" ? "التسويق" : "Marketing",
-      items: [
-        { to: `/${lang}/admin/coupons`, label: t("cp.title"), icon: <TagIcon /> },
-        { to: `/${lang}/admin/ads`, label: t("ad.title"), icon: <TagIcon /> },
-        { to: `/${lang}/admin/events`, label: t("ev.title"), icon: <TagIcon /> },
-        { to: `/${lang}/admin/banners`, label: t("bn.title"), icon: <TagIcon /> },
-      ],
-    },
-    {
-      label: lang === "ar" ? "الكتالوج" : "Catalog",
-      items: [
-        { to: `/${lang}/admin/data-import`, label: t("dim.title"), icon: <UploadIcon /> },
-        { to: `/${lang}/admin/catalog/categories`, label: t("catalog.categories"), icon: <GridIcon /> },
-        { to: `/${lang}/admin/catalog/brands`, label: t("catalog.brands"), icon: <TagIcon /> },
-        { to: `/${lang}/admin/catalog/tags`, label: t("catalog.tags"), icon: <TagIcon /> },
-        { to: `/${lang}/admin/catalog/attributes`, label: t("catalog.attributes"), icon: <ListIcon /> },
-        { to: `/${lang}/admin/reviews`, label: t("rv.title"), icon: <ListIcon /> },
-      ],
-    },
-    {
-      label: lang === "ar" ? "الثقة" : "Trust",
-      items: [
-        { to: `/${lang}/admin/penalties`, label: t("pn.title"), icon: <ListIcon /> },
-        { to: `/${lang}/admin/levels`, label: t("lv.title"), icon: <ChartIcon /> },
-      ],
-    },
-    {
-      label: lang === "ar" ? "التقارير" : "Reports",
-      items: [
-        { to: `/${lang}/admin/reports`, label: t("rpt.title"), icon: <ChartIcon /> },
-        { to: `/${lang}/admin/logs`, label: t("admin.logs"), icon: <ListIcon /> },
-      ],
-    },
-    {
-      label: lang === "ar" ? "المحتوى" : "Content",
-      items: [
-        { to: `/${lang}/admin/blog`, label: t("bl.title"), icon: <ListIcon /> },
-        { to: `/${lang}/admin/pages`, label: t("sp.title"), icon: <ListIcon /> },
-      ],
-    },
-    {
-      label: lang === "ar" ? "المنصة" : "Platform",
-      items: [
-        { to: `/${lang}/admin/users`, label: t("admin.users"), icon: <UsersIcon /> },
-        { to: `/${lang}/admin/roles`, label: t("ro.title"), icon: <UsersIcon /> },
-        { to: `/${lang}/admin/customers`, label: t("cu.title"), icon: <UsersIcon /> },
-        { to: `/${lang}/admin/media`, label: t("media.title"), icon: <UploadIcon /> },
-        { to: `/${lang}/admin/zones`, label: t("z.title"), icon: <GridIcon /> },
-        { to: `/${lang}/admin/settings/sections`, label: t("st.title"), icon: <SettingsIcon /> },
-        { to: `/${lang}/admin/document-settings`, label: t("ds.title"), icon: <SettingsIcon /> },
-        { to: `/${lang}/admin/email-templates`, label: t("et.title"), icon: <SettingsIcon /> },
-        { to: `/${lang}/admin/settings`, label: t("admin.settings"), icon: <SettingsIcon /> },
-        { to: `/${lang}/admin/profile`, label: t("account.profile"), icon: <UsersIcon /> },
-      ],
-    },
-  ];
+  const role = viewer.profile.role;
+  const groups: SidebarGroup[] = visibleAdminNav(role, permissions).map((g) => ({
+    label: t(g.label),
+    items: g.items.map((it) => {
+      const Icon = NAV_ICONS[it.icon];
+      const badge = Number(navCounts[it.path] ?? 0);
+      return {
+        to: it.path ? `/${lang}/admin/${it.path}` : `/${lang}/admin`,
+        label: t(it.label), end: it.end, icon: <Icon />, badge,
+      };
+    }),
+  }));
 
   return (
     <PanelShell
       lang={lang}
       siteName={siteName}
       panelTitle={t("admin.title")}
-      subtitle={`${viewer.profile.full_name} · ${t("account.role")}: ${viewer.profile.role}`}
+      subtitle={`${viewer.profile.full_name} · ${t(`roles.${viewer.profile.role}`)}`}
       groups={groups}
+      panels={panels}
+      bottomNav={
+        <MobileBottomNav lang={lang} context="admin" signedIn
+          show={{ orders: can(role, permissions, "orders.view"), products: can(role, permissions, "products.view") }} />
+      }
       actions={
         <>
           <NotificationBell lang={lang} userId={viewer.user.id} initialCount={unread} />

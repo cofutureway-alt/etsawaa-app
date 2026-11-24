@@ -1,10 +1,13 @@
 import { useId, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { matchesFolded } from "~/lib/search-fold";
 import { CheckIcon, ChevronDownIcon } from "./icons";
 
 export interface ComboboxOption {
   value: string;
   label: string;
+  /** extra searchable text (e.g. the other-language name) */
+  keywords?: string;
 }
 
 export interface ComboboxProps {
@@ -31,7 +34,7 @@ export function Combobox({ label, options, placeholder, value, onChange, disable
 
   const selected = options.find((option) => option.value === value) ?? null;
   const filtered = options.filter((option) =>
-    option.label.toLowerCase().includes(query.trim().toLowerCase()),
+    matchesFolded(`${option.label} ${option.keywords ?? ""}`, query),
   );
 
   function openList() {

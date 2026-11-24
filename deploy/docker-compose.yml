@@ -1,0 +1,33 @@
+# Etsawaa storefront (React Router SSR). Reached only through supabase-caddy
+# on the shared supabase_default network — no host port is published.
+services:
+  app:
+    build: .
+    image: etsawaa-app:latest
+    container_name: etsawaa-app
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./.env:/app/.env:ro
+    networks: [supabase_default]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/ar').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+  # virus scanner for every upload (clamd INSTREAM on 3310, internal network only)
+  clamav:
+    image: clamav/clamav:stable
+    container_name: etsawaa-clamav
+    restart: unless-stopped
+    mem_limit: 3g
+    volumes:
+      - clamav-db:/var/lib/clamav
+      - ./clamd.conf:/etc/clamav/clamd.conf:ro
+    networks: [supabase_default]
+volumes:
+  clamav-db:
+networks:
+  supabase_default:
+    external: true

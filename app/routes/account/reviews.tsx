@@ -1,10 +1,14 @@
 import { Link, data, useFetcher } from "react-router";
 import type { Route } from "./+types/reviews";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
 import { listOwnReviews } from "~/features/orders/api";
+import { parseReviewMedia, type ReviewMediaItem } from "~/lib/review-media";
+import { Rating } from "~/components/ui/Rating";
+import { ReviewMediaPicker, ReviewMediaThumbs } from "~/components/catalog/ReviewMediaPicker";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
@@ -39,6 +43,7 @@ export async function action({ request, params }: Route.ActionArgs) {
         rating: Number(form.get("rating") ?? 5),
         title: String(form.get("title") ?? "").slice(0, 200),
         body: String(form.get("body") ?? "").slice(0, 2000),
+        media: parseReviewMedia(form.get("media")),
         status: "pending",
       })
       .eq("id", id);
@@ -63,6 +68,7 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
         <ul className="flex flex-col gap-3">
           {loaderData.reviews.map((r: {
             id: string; rating: number; title: string; body: string; status: string; created_at: string;
+            media?: ReviewMediaItem[] | null;
             product: { name_ar: string; name_en: string; slug_ar: string; slug_en: string } | null;
           }) => (
             <li key={r.id} className="rounded-md border border-border bg-surface p-4">
@@ -78,7 +84,8 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
                   ) : "—"}
                 </span>
                 <span className="flex items-center gap-2 text-xs">
-                  <span className="font-extrabold text-text">{r.rating} / 5</span>
+                  <Rating value={r.rating} size="sm" />
+                  <span className="num font-extrabold text-text">{r.rating}</span>
                   <span className={`rounded-md px-2 py-0.5 font-bold ${r.status === "published" ? "bg-surface-tint text-text" : "bg-surface-tint text-text-muted"}`}>
                     {t(`reviews.status_${r.status}`)}
                   </span>
@@ -86,25 +93,11 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
               </div>
               {r.title ? <p className="mt-1 text-sm font-bold text-text">{r.title}</p> : null}
               {r.body ? <p className="text-sm text-text-muted">{r.body}</p> : null}
+              <ReviewMediaThumbs media={r.media ?? []} alt={en ? r.product?.name_en ?? "" : r.product?.name_ar ?? ""} />
 
               <details className="mt-2">
                 <summary className="cursor-pointer text-xs font-bold text-action">{t("reviews.edit")}</summary>
-                <fetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
-                  <input type="hidden" name="intent" value="edit" />
-                  <input type="hidden" name="id" value={r.id} />
-                  <select name="rating" defaultValue={String(r.rating)} className="w-32 rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text">
-                    {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((v) => (
-                      <option key={v} value={v}>{v} / 5</option>
-                    ))}
-                  </select>
-                  <input name="title" defaultValue={r.title} maxLength={200} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
-                  <textarea name="body" defaultValue={r.body} rows={3} maxLength={2000} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
-                  <div className="flex gap-2">
-                    <button type="submit" className="cursor-pointer rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action hover:bg-action-hover">
-                      {t("reviews.saveEdit")}
-                    </button>
-                  </div>
-                </fetcher.Form>
+                <EditReviewForm review={r} />
               </details>
               <fetcher.Form method="post" preventScrollReset className="mt-2">
                 <input type="hidden" name="intent" value="delete" />
@@ -124,6 +117,35 @@ export default function AccountReviewsPage({ loaderData }: Route.ComponentProps)
   );
 }
 
+
+/** The edit form: real stars + the review's existing media, editable. */
+function EditReviewForm({ review }: { review: { id: string; rating: number; title: string; body: string; media?: ReviewMediaItem[] | null } }) {
+  const { t } = useTranslation();
+  const fetcher = useFetcher<{ ok: boolean; reason?: string }>();
+  const [rating, setRating] = useState(Number(review.rating) || 5);
+  const [media, setMedia] = useState<ReviewMediaItem[]>(review.media ?? []);
+  return (
+    <fetcher.Form method="post" preventScrollReset className="mt-2 flex flex-col gap-2">
+      <input type="hidden" name="intent" value="edit" />
+      <input type="hidden" name="id" value={review.id} />
+      <input type="hidden" name="rating" value={rating} />
+      <Rating value={rating} onChange={setRating} size="lg" />
+      <input name="title" defaultValue={review.title} maxLength={200} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
+      <textarea name="body" defaultValue={review.body} rows={3} maxLength={2000} className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text" />
+      <ReviewMediaPicker value={media} onChange={setMedia} />
+      <div className="flex gap-2">
+        <button type="submit" disabled={fetcher.state !== "idle"} className="cursor-pointer rounded-md bg-action px-4 py-2 text-sm font-bold text-on-action hover:bg-action-hover disabled:opacity-50">
+          {t("reviews.saveEdit")}
+        </button>
+      </div>
+      {fetcher.data && !fetcher.data.ok ? (
+        <p role="alert" className="text-xs text-danger">
+          {fetcher.data.reason === "bad_media" ? t("reviews.badMedia") : t("reviews.failed")}
+        </p>
+      ) : null}
+    </fetcher.Form>
+  );
+}
 
 /** H-06: friendly route error page (500s log a CORERR id; 403/404 keep their message) */
 export function ErrorBoundary() {

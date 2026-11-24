@@ -17,6 +17,11 @@ export function Select({ label, options, error, className = "", id: idOverride, 
     <div className={`flex flex-col gap-1.5 ${className}`}>
       <label htmlFor={id} className="relative block text-sm font-bold text-text">
         {label}
+        {rest.required ? (
+          <span aria-hidden="true" className="ms-0.5 text-danger">
+            *
+          </span>
+        ) : null}
       </label>
       <div className="relative">
         <select

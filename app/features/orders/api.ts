@@ -1,4 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { asRow, asRows } from "~/lib/supabase/typed";
+import type { ReviewMediaItem } from "~/lib/review-media";
 
 /**
  * Order reads (all RLS-scoped by the caller's client — customers see only
@@ -11,6 +13,8 @@ export interface OrderRow {
   status: "pending_payment" | "processing" | "on_hold" | "completed" | "cancelled";
   payment_method: "kashier" | "cod";
   payment_status: "unpaid" | "paid" | "cod_pending" | "cod_collected";
+  /** Kashier mode — "test" orders are sandbox payments kept out of wallets and billing */
+  payment_mode?: "live" | "test";
   email: string;
   phone_primary: string;
   phone_alternate: string;
@@ -57,6 +61,9 @@ export interface ItemRow {
   product_name_ar: string;
   product_name_en: string;
   option_key: string;
+  /** readable options ("أسود · M · 8 جيجا"), from the key */
+  option_label_ar?: string | null;
+  option_label_en?: string | null;
   sku: string | null;
   image_path: string | null;
   unit_price_piastres: number;
@@ -85,7 +92,7 @@ export async function getOwnOrder(client: SupabaseClient, number: string): Promi
     .select(ORDER_SELECT)
     .eq("number", decodeURIComponent(number))
     .maybeSingle();
-  return (data as OrderRow) ?? null;
+  return asRow<OrderRow>(data);
 }
 
 export async function listOwnOrders(
@@ -99,8 +106,11 @@ export async function listOwnOrders(
   else if (filter === "cancelled") q = q.eq("status", "cancelled");
   const { data, error } = await q;
   if (error) throw new Error(error.message);
-  return (data ?? []) as OrderRow[];
+  return asRows<OrderRow>(data);
 }
+
+const ORDER_GROUP_COLUMNS = "id, order_id, vendor_id, status, shipping_mode, vendor_ship_status, items_subtotal_piastres, discount_piastres, commission_piastres, cancel_reason, shipped_at, delivered_at, cancelled_at, created_at";
+const ORDER_ITEM_COLUMNS = "id, order_id, group_id, vendor_id, variant_id, product_id, leaf_category_id, product_name_ar, product_name_en, option_key, option_label_ar, option_label_en, sku, image_path, unit_price_piastres, qty, line_total_piastres, coupon_discount_piastres, commission_piastres, commission_rate_bps, is_fragile, created_at";
 
 /** Groups + items + history for one order the caller can read (RLS enforces). */
 export async function getOrderParts(client: SupabaseClient, orderId: string): Promise<{
@@ -111,18 +121,18 @@ export async function getOrderParts(client: SupabaseClient, orderId: string): Pr
   const [groupsRes, itemsRes, historyRes] = await Promise.all([
     // no vendors() embed — customers have no SELECT on vendors (phase-04
     // lesson); store names resolve through the public storefront view below
-    client.from("order_vendor_groups").select("*").eq("order_id", orderId).order("created_at"),
-    client.from("order_items").select("*").eq("order_id", orderId).order("created_at"),
+    client.from("order_vendor_groups").select(ORDER_GROUP_COLUMNS).eq("order_id", orderId).order("created_at"),
+    client.from("order_items").select(ORDER_ITEM_COLUMNS).eq("order_id", orderId).order("created_at"),
     client.from("order_status_history").select("id, group_id, status, note, created_at").eq("order_id", orderId).order("created_at"),
   ]);
-  const groups = (groupsRes.data ?? []) as unknown as GroupRow[];
+  const groups = asRows<GroupRow>(groupsRes.data);
   const vendorIds = [...new Set(groups.map((g) => g.vendor_id))];
   if (vendorIds.length > 0) {
     const { data: stores } = await client
       .from("v_storefront_stores")
       .select("id, store_name_ar, store_name_en, slug")
       .in("id", vendorIds);
-    const byId = new Map(((stores ?? []) as Array<{ id: string; store_name_ar: string; store_name_en: string; slug: string }>).map((st) => [st.id, st]));
+    const byId = new Map(asRows<{ id: string; store_name_ar: string; store_name_en: string; slug: string }>(stores).map((st) => [st.id, st]));
     for (const g of groups) {
       const st = byId.get(g.vendor_id);
       g.vendor = st ?? { store_name_ar: "", store_name_en: "", slug: "" };
@@ -130,8 +140,8 @@ export async function getOrderParts(client: SupabaseClient, orderId: string): Pr
   }
   return {
     groups,
-    items: (itemsRes.data ?? []) as unknown as ItemRow[],
-    history: (historyRes.data ?? []) as HistoryRow[],
+    items: asRows<ItemRow>(itemsRes.data),
+    history: asRows<HistoryRow>(historyRes.data),
   };
 }
 
@@ -144,43 +154,9 @@ export async function getGeoNames(client: SupabaseClient, governorateId: number,
     client.from("areas").select("name_ar, name_en").eq("id", areaId).maybeSingle(),
   ]);
   return {
-    governorate: (g.data as { name_ar: string; name_en: string } | null),
-    area: (a.data as { name_ar: string; name_en: string } | null),
+    governorate: asRow<{ name_ar: string; name_en: string }>(g.data),
+    area: asRow<{ name_ar: string; name_en: string }>(a.data),
   };
-}
-
-/** Customer-view reorder payload: live availability for every ordered line. */
-export async function getReorderLines(client: SupabaseClient, orderId: string): Promise<Array<{
-  item: ItemRow;
-  variantLive: boolean;
-  stock: number;
-  priceNow: number | null;
-}>> {
-  const { data: items } = await client.from("order_items").select("*").eq("order_id", orderId);
-  const rows = (items ?? []) as unknown as ItemRow[];
-  if (rows.length === 0) return [];
-  const variantIds = [...new Set(rows.map((r) => r.variant_id))];
-  const { data: variants } = await client
-    .from("variants")
-    .select("id, stock, is_active, deleted_at, price_piastres, sale_price_piastres, products(status, deleted_at)")
-    .in("id", variantIds);
-  const live = new Map(((variants ?? []) as unknown as Array<{
-    id: string; stock: number; is_active: boolean; deleted_at: string | null;
-    price_piastres: number | null; sale_price_piastres: number | null;
-    products: { status: string; deleted_at: string | null };
-  }>).map((v) => [v.id, v]));
-  return rows.map((item) => {
-    const v = live.get(item.variant_id);
-    const variantLive =
-      Boolean(v) && v!.is_active && v!.deleted_at === null &&
-      v!.products.status === "approved" && v!.products.deleted_at === null;
-    return {
-      item,
-      variantLive,
-      stock: v?.stock ?? 0,
-      priceNow: v ? (v.sale_price_piastres ?? v.price_piastres) : null,
-    };
-  });
 }
 
 /* ---------------- refunds ---------------- */
@@ -204,7 +180,7 @@ export async function listRefundRequests(client: SupabaseClient, limit = 30): Pr
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
-  return ((data ?? []) as unknown as Array<RefundRequestRow & { order: { number: string } | null }>)
+  return asRows<RefundRequestRow & { order: { number: string } | null }>(data)
     .map((r) => ({ ...r, order: r.order ?? undefined }));
 }
 
@@ -216,7 +192,7 @@ export async function requestedQtyByItem(client: SupabaseClient, orderItemIds: s
     .select("order_item_id, qty")
     .in("order_item_id", orderItemIds);
   const map = new Map<string, number>();
-  for (const row of ((data ?? []) as Array<{ order_item_id: string; qty: number }>)) {
+  for (const row of asRows<{ order_item_id: string; qty: number }>(data)) {
     map.set(row.order_item_id, (map.get(row.order_item_id) ?? 0) + row.qty);
   }
   return map;
@@ -232,16 +208,19 @@ export interface ReviewRow {
   body: string;
   status: "pending" | "published" | "spam" | "trash";
   created_at: string;
+  media?: ReviewMediaItem[] | null;
   product: { name_ar: string; name_en: string; slug_ar: string; slug_en: string };
 }
 
 export async function listOwnReviews(client: SupabaseClient, limit = 50): Promise<ReviewRow[]> {
   const { data, error } = await client
     .from("reviews")
-    .select("id, product_id, rating, title, body, status, created_at, product:products(name_ar, name_en, slug_ar, slug_en)")
+    .select("id, product_id, rating, title, body, status, created_at, media, product:products(name_ar, name_en, slug_ar, slug_en)")
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
-  return ((data ?? []) as unknown as Array<ReviewRow & { product: ReviewRow["product"] | null }>)
-    .map((r) => ({ ...r, product: r.product ?? undefined as unknown as ReviewRow["product"] }));
+  // the products join comes back null when the product was hard-deleted;
+  // consumers treat it as absent, so keep undefined without inventing a row
+  return asRows<ReviewRow & { product: ReviewRow["product"] | null }>(data)
+    .map((r) => ({ ...r, product: (r.product ?? undefined) as ReviewRow["product"] }));
 }

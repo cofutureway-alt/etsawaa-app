@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { data, useFetcher, useSearchParams } from "react-router";
 import type { Route } from "./+types/orders";
 import { useTranslation } from "react-i18next";
@@ -8,9 +9,9 @@ import { formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
+import { Pagination } from "~/components/ui/Pagination";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
-import { SearchIcon } from "~/components/ui/icons";
 
 
 /**
@@ -29,34 +30,32 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (!client) throw data({ reason: "db" }, { status: 503 });
   await requirePanelAccess(client, lang, "vendor", request);
 
-  const { data: vendorId } = await client.rpc("own_vendor_id");
-  if (!vendorId) throw new Response("Forbidden", { status: 403 });
-
-  const { data: groups, error } = await client.rpc("fn_vendor_orders_list");
-  if (error) throw new Error(error.message);
-  let list = (groups ?? []) as VendorGroup[];
-
-  // VO-01 filters + search (client of the definer list — same isolation)
+  // ONE call: filter + search + pagination run in SQL and the page's lines
+  // and print history come back embedded (before: own_vendor_id → the store's
+  // ENTIRE order list filtered in Node → items → documents, in sequence)
   const url = new URL(request.url);
   const status = url.searchParams.get("status") ?? "";
-  const q = (url.searchParams.get("q") ?? "").trim().toLowerCase();
-  if (status) list = list.filter((g) => g.status === status);
-  if (q) list = list.filter((g) => g.order.number.toLowerCase().includes(q) || (g.order.ship_name ?? "").toLowerCase().includes(q));
-
-  const groupIds = list.map((g) => g.id);
-  const { data: items } = groupIds.length > 0
-    ? await client.from("order_items").select("id, group_id, product_name_ar, product_name_en, option_key, qty, line_total_piastres, coupon_discount_piastres").in("group_id", groupIds)
-    : { data: [] };
-  const { data: docs } = groupIds.length > 0
-    ? await client.from("order_documents").select("id, order_id, doc_type, copies, created_at").in("order_id", [...new Set(list.map((g) => g.order.id))]).order("created_at", { ascending: false })
-    : { data: [] };
+  const q = (url.searchParams.get("q") ?? "").trim().slice(0, 80);
+  const page = Math.max(1, Math.trunc(Number(url.searchParams.get("page"))) || 1);
+  const { data: res, error } = await client.rpc("fn_vendor_orders_page", {
+    p_status: status || null, p_q: q || null, p_page: page, p_per_page: PER_PAGE,
+  });
+  if (error) throw new Error(error.message);
+  type ItemLine = { id: string; group_id: string; product_name_ar: string; product_name_en: string; option_key: string; option_label_ar?: string | null; option_label_en?: string | null; qty: number; line_total_piastres: number; coupon_discount_piastres: number };
+  type DocRow = { id: string; order_id: string; doc_type: string; copies: number; created_at: string };
+  const out = res as { ok: boolean; total?: number; groups?: VendorGroup[]; items?: ItemLine[]; docs?: DocRow[] } | null;
+  if (!out?.ok) throw new Response("Forbidden", { status: 403 });
+  const list = out.groups ?? [];
+  const items = out.items ?? [];
+  const docs = out.docs ?? [];
 
   return {
     lang,
     groups: JSON.parse(JSON.stringify(list)),
-    items: items ?? [],
-    docs: docs ?? [],
+    items,
+    docs,
     filters: { status, q },
+    page, perPage: PER_PAGE, total: out.total ?? list.length,
   };
 }
 
@@ -112,6 +111,8 @@ const NEXT_STEP: Record<string, { to: string; key: string }> = {
   out_for_delivery: { to: "delivered", key: "order.status_delivered" },
 };
 
+const PER_PAGE = 30;
+
 export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
   const { t, i18n } = useTranslation();
   const en = i18n.language?.startsWith("en");
@@ -123,7 +124,20 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
   const setFilter = (key: string, value: string) => {
     const next = new URLSearchParams(searchParams);
     if (value) next.set(key, value); else next.delete(key);
+    next.delete("page"); // a new filter starts at page 1
     setSearchParams(next, { preventScrollReset: true });
+  };
+  // search: typed locally, sent once typing pauses (was one reload per keystroke)
+  const [text, setText] = useState(loaderData.filters.q);
+  useEffect(() => {
+    if (text.trim() === loaderData.filters.q) return;
+    const timer = window.setTimeout(() => setFilter("q", text.trim()), 350);
+    return () => window.clearTimeout(timer);
+  }, [text]); // eslint-disable-line react-hooks/exhaustive-deps
+  const hrefFor = (p: number) => {
+    const next = new URLSearchParams(searchParams);
+    if (p > 1) next.set("page", String(p)); else next.delete("page");
+    return `?${next.toString()}`;
   };
 
   return (
@@ -134,13 +148,11 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl font-black text-text">{t("vendorOrders.title")}</h1>
             <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-black text-action">
-              {loaderData.groups.length} {en ? "Orders" : "طلب"}
+              {loaderData.total} {t("vendorOrders.countLabel")}
             </span>
           </div>
           <p className="mt-1 text-xs text-text-muted">
-            {en
-              ? "Track your orders, prepare packages, request carrier handoffs, and print labels."
-              : "متابعة طلبات متجرك، تجهيز الشحنات، وتسليم الطرود لشركات الشحن."}
+            {t("vendorOrders.subtitle")}
           </p>
         </div>
       </div>
@@ -151,8 +163,8 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
           <input
             type="search"
             placeholder={t("vendorOrders.search")}
-            value={loaderData.filters.q}
-            onChange={(e) => setFilter("q", e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             className="w-full rounded-md border border-border bg-surface-alt px-3 py-2 text-sm text-text transition-all focus:border-primary focus:bg-surface focus:outline-none"
             aria-label={t("vendorOrders.search")}
           />
@@ -206,7 +218,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                       </span>
                     </div>
                     <p className="mt-1 text-xs text-text-muted">
-                      {new Date(g.order.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")} · {g.order.ship_name}
+                      {new Date(g.order.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")} · {g.order.ship_name}
                     </p>
                   </div>
                   <Badge tone={tone} dot>
@@ -241,11 +253,11 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
 
                 {/* Items List */}
                 <ul className="mt-3 flex flex-col divide-y divide-border text-sm">
-                  {own.map((it: { id: string; product_name_ar: string; product_name_en: string; option_key: string; qty: number; line_total_piastres: number; coupon_discount_piastres: number }) => (
+                  {own.map((it: { id: string; product_name_ar: string; product_name_en: string; option_key: string; option_label_ar?: string | null; option_label_en?: string | null; qty: number; line_total_piastres: number; coupon_discount_piastres: number }) => (
                     <li key={it.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
                       <span className="font-bold text-text">
                         {en ? it.product_name_en : it.product_name_ar}
-                        {it.option_key ? <span className="text-text-muted font-normal"> ({it.option_key})</span> : null}
+                        {(en ? it.option_label_en : it.option_label_ar) ? <span className="text-text-muted font-normal"> ({en ? it.option_label_en : it.option_label_ar})</span> : null}
                         <span className="text-action ms-1">× {it.qty}</span>
                       </span>
                       <span className="tabular-nums font-bold text-text-muted">
@@ -318,7 +330,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
                       {history.slice(0, 8).map((d, i) => (
                         <li key={`${d.created_at}-${i}`} className="flex flex-wrap justify-between gap-2">
                           <span>{t(`order.doc_${d.doc_type}`)} × <span className="num">{d.copies}</span></span>
-                          <span className="num">{new Date(d.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}</span>
+                          <span className="num">{new Date(d.created_at).toLocaleString(en ? "en-EG" : "ar-EG-u-nu-latn")}</span>
                         </li>
                       ))}
                     </ul>
@@ -329,6 +341,7 @@ export default function VendorOrdersPage({ loaderData }: Route.ComponentProps) {
           })}
         </div>
       )}
+      <Pagination page={loaderData.page} total={loaderData.total} perPage={loaderData.perPage} hrefFor={hrefFor} />
     </div>
   );
 }

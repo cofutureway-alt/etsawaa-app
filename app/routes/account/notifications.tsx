@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
-import { listNotifications, notificationText } from "~/features/notifications/api";
+import { listNotifications } from "~/features/notifications/api";
+import { formatNotification } from "~/features/notifications/format";
 import { Button } from "~/components/ui/Button";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
@@ -58,7 +59,7 @@ export default function AccountNotifications({ loaderData }: Route.ComponentProp
   const fetcher = useFetcher<typeof action>();
   const rows = (loaderData.rows as Array<{
     id: string; type: string; read_at: string | null; created_at: string;
-    payload: { ar?: { title: string; body: string }; en?: { title: string; body: string }; link?: string };
+    payload: Record<string, unknown> | null;
   }>).filter((r) => (loaderData.filter === "unread" ? r.read_at === null : true));
 
   return (
@@ -91,22 +92,19 @@ export default function AccountNotifications({ loaderData }: Route.ComponentProp
       ) : (
         <ul className="mt-3 flex flex-col gap-2">
           {rows.map((r) => {
-            const text = notificationText(
-              { id: r.id, type: r.type, payload: r.payload, read_at: r.read_at, created_at: r.created_at },
-              en ? "en" : "ar",
-            );
+            const text = formatNotification(r, en ? "en" : "ar", t);
             return (
               <li key={r.id} className={`rounded-md border p-3.5 ${r.read_at === null ? "border-action bg-surface-tint" : "border-border bg-surface"}`}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-sm font-bold text-text">{text.title}</p>
                   <span className="text-xs text-text-faint" dir="ltr">
-                    {new Date(r.created_at).toLocaleString(en ? "en-EG" : "ar-EG")}
+                    {new Date(r.created_at).toLocaleString(en ? "en-EG" : "ar-EG-u-nu-latn")}
                   </span>
                 </div>
                 {text.body ? <p className="mt-0.5 text-sm text-text-muted">{text.body}</p> : null}
                 <div className="mt-1.5 flex items-center gap-3">
-                  {r.payload.link ? (
-                    <Link to={r.payload.link} className="text-sm font-bold text-action hover:underline">
+                  {text.link ? (
+                    <Link to={text.link} className="text-sm font-bold text-action hover:underline">
                       {t("notifications.open")}
                     </Link>
                   ) : null}

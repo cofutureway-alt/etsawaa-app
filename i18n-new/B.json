@@ -1,0 +1,15 @@
+{
+  "home.sections.discounts": { "ar": "العروض", "en": "Offers" },
+  "store.product.related": { "ar": "منتجات مشابهة", "en": "Similar products" },
+  "store.product.brandLabel": { "ar": "الماركة: {{brand}}", "en": "Brand: {{brand}}" },
+  "store.card.discount": { "ar": "خصم", "en": "OFF" },
+  "store.gallery.prev": { "ar": "الصورة السابقة", "en": "Previous image" },
+  "store.gallery.next": { "ar": "الصورة التالية", "en": "Next image" },
+  "store.gallery.zoom": { "ar": "تكبير", "en": "Zoom" },
+  "store.gallery.zoomIn": { "ar": "تقريب", "en": "Zoom in" },
+  "store.gallery.zoomOut": { "ar": "إبعاد", "en": "Zoom out" },
+  "store.gallery.zoomReset": { "ar": "إعادة الحجم الأصلي", "en": "Reset zoom" },
+  "store.gallery.close": { "ar": "إغلاق العارض", "en": "Close viewer" },
+  "store.gallery.counter": { "ar": "{{index}} من {{total}}", "en": "{{index}} of {{total}}" },
+  "store.gallery.video": { "ar": "فيديو", "en": "Video" }
+}

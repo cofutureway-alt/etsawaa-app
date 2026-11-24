@@ -3,12 +3,13 @@ import { useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { BellIcon } from "~/components/ui/icons";
 import type { NotificationRow } from "./api";
-import { notificationText } from "./api";
+import { formatNotification } from "./format";
 
 /**
- * NotificationBell (F-17). TanStack Query polling keeps the unread badge
- * fresh; when a browser Supabase client exists we additionally subscribe to
- * the Realtime channel for the user's rows (inserts flip read_at state).
+ * NotificationBell (F-17). A hand-rolled 20 s interval refetches the list
+ * through the notifications API route to keep the unread badge fresh; when a
+ * browser Supabase client exists we additionally subscribe to the Realtime
+ * channel for the user's rows (any change triggers another refetch).
  * Without a DB the bell renders but the dropdown explains the state.
  */
 export function NotificationBell({
@@ -23,13 +24,15 @@ export function NotificationBell({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<NotificationRow[] | null>(null);
+  const [serverUnread, setServerUnread] = useState<number | null>(null);
   const [, startTransition] = useTransition();
 
   async function fetchList(): Promise<NotificationRow[] | null> {
     try {
       const response = await fetch(`/${lang}/api/notifications`, { headers: { Accept: "application/json" } });
       if (!response.ok) return null;
-      const body = (await response.json()) as { notifications: NotificationRow[] | null };
+      const body = (await response.json()) as { notifications: NotificationRow[] | null; unread?: number };
+      if (typeof body.unread === "number") setServerUnread(body.unread);
       return body.notifications;
     } catch {
       return null;
@@ -43,7 +46,11 @@ export function NotificationBell({
 
     const refresh = () => void fetchList().then((list) => active && startTransition(() => setItems(list)));
     void refresh();
-    interval = window.setInterval(refresh, 20000);
+    // poll once a minute and only while the tab is visible (was every 20 s in
+    // every open tab, 3 DB round-trips each); catch up when the tab returns
+    interval = window.setInterval(() => { if (document.visibilityState === "visible") refresh(); }, 60000);
+    const onVisible = () => { if (document.visibilityState === "visible") refresh(); };
+    document.addEventListener("visibilitychange", onVisible);
 
     // Realtime subscription (works once the database is connected)
     const browser = createBrowserClientSafe();
@@ -61,29 +68,39 @@ export function NotificationBell({
     return () => {
       active = false;
       if (interval) window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
       if (channel && browser) void browser.removeChannel(channel);
     };
   }, [lang, userId]);
 
   const list = items;
-  const unread = list ? list.filter((n) => n.read_at === null).length : initialCount;
+  const unread = serverUnread ?? (list ? list.filter((n) => n.read_at === null).length : initialCount);
 
+  // optimistic: the row (and the badge) update on the click; a failed request puts them back
   async function markRead(id: string) {
-    await fetch(`/${lang}/api/notifications`, {
+    const before = items;
+    const wasUnread = Boolean(items?.find((n) => n.id === id && n.read_at === null));
+    setItems((current) => current ? current.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)) : current);
+    if (wasUnread) setServerUnread((u) => (u === null ? u : Math.max(0, u - 1)));
+    const ok = await fetch(`/${lang}/api/notifications`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "read", id }),
-    });
-    setItems((current) => current ? current.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n)) : current);
+    }).then((r) => r.ok).catch(() => false);
+    if (!ok) { setItems(before); if (wasUnread) setServerUnread((u) => (u === null ? u : u + 1)); }
   }
 
   async function markAllRead() {
-    await fetch(`/${lang}/api/notifications`, {
+    const before = items;
+    const beforeUnread = serverUnread;
+    setItems((current) => current ? current.map((n) => ({ ...n, read_at: n.read_at ?? new Date().toISOString() })) : current);
+    setServerUnread(0);
+    const ok = await fetch(`/${lang}/api/notifications`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "read-all" }),
-    });
-    setItems((current) => current ? current.map((n) => ({ ...n, read_at: n.read_at ?? new Date().toISOString() })) : current);
+    }).then((r) => r.ok).catch(() => false);
+    if (!ok) { setItems(before); setServerUnread(beforeUnread); }
   }
 
   return (
@@ -119,11 +136,12 @@ export function NotificationBell({
             ) : (
               <ul>
                 {list.map((row) => {
-                  const text = notificationText(row, lang === "en" ? "en" : "ar");
+                  const text = formatNotification(row, lang === "en" ? "en" : "ar", t);
                   return (
                     <li key={row.id} className={`border-b border-border px-3 py-2.5 last:border-b-0 ${row.read_at ? "" : "bg-surface-tint"}`}>
                       <p className="text-sm font-bold text-text">{text.title}</p>
                       {text.body ? <p className="text-xs text-text-muted">{text.body}</p> : null}
+                      {text.link ? <a href={text.link} className="me-3 text-xs font-bold text-action hover:underline">{t("notifications.open")}</a> : null}
                       {row.read_at ? null : (
                         <button type="button" onClick={() => void markRead(row.id)} className="mt-1 cursor-pointer text-xs font-bold text-action hover:underline">
                           {t("notifications.markRead")}

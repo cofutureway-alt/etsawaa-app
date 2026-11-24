@@ -29,7 +29,8 @@ export const onboardingStoreSchema = z.object({
     .default(""),
   logo_path: z.string().trim().optional().default(""),
   banner_path: z.string().trim().optional().default(""),
-  category_ids: z.array(z.string().uuid()).min(1, "category_required").max(10),
+  // no upper cap: a seller may pick every branch (the DB only requires one)
+  category_ids: z.array(z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)).min(1, "category_required"),
 });
 export type OnboardingStoreInput = z.infer<typeof onboardingStoreSchema>;
 

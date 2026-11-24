@@ -62,6 +62,9 @@ export async function action({ request, params }: Route.ActionArgs) {
     tagline_en: String(form.get("tagline_en") ?? "").trim() || DEFAULT_SITE_GENERAL.tagline_en,
     default_locale: String(form.get("default_locale") ?? "ar") === "en" ? "en" : "ar",
     timezone: DEFAULT_SITE_GENERAL.timezone,
+    portal_url: /^https:\/\/[^\s]+$/.test(String(form.get("portal_url") ?? "").trim()) ? String(form.get("portal_url")).trim() : "",
+    portal_label_ar: String(form.get("portal_label_ar") ?? "").trim().slice(0, 40) || DEFAULT_SITE_GENERAL.portal_label_ar,
+    portal_label_en: String(form.get("portal_label_en") ?? "").trim().slice(0, 40) || DEFAULT_SITE_GENERAL.portal_label_en,
   };
   const designRaw: Record<string, string> = {};
   for (const token of EDITABLE_COLOR_TOKENS) {
@@ -154,6 +157,32 @@ export default function AdminSettings({ loaderData }: Route.ComponentProps) {
             name="tagline_en"
             dir="ltr"
           />
+          {/* external link in the dashboards' "switch dashboard" list */}
+          <Input
+            label={t("admin.settings.portalUrl")}
+            hint={t("admin.settings.portalUrlHint")}
+            value={siteState.portal_url}
+            onChange={(event) => setSiteState((s) => ({ ...s, portal_url: event.target.value }))}
+            name="portal_url"
+            type="url"
+            placeholder="https://"
+            dir="ltr"
+          />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Input
+              label={t("admin.settings.portalLabelAr")}
+              value={siteState.portal_label_ar}
+              onChange={(event) => setSiteState((s) => ({ ...s, portal_label_ar: event.target.value }))}
+              name="portal_label_ar"
+            />
+            <Input
+              label={t("admin.settings.portalLabelEn")}
+              value={siteState.portal_label_en}
+              onChange={(event) => setSiteState((s) => ({ ...s, portal_label_en: event.target.value }))}
+              name="portal_label_en"
+              dir="ltr"
+            />
+          </div>
         </CardBody>
       </Card>
 

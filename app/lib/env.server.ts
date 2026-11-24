@@ -44,24 +44,43 @@ export function getSupabaseEnv(): SupabaseEnv | null {
   return { url, anonKey };
 }
 
-export function isDatabaseConfigured(): boolean {
-  return getSupabaseEnv() !== null;
-}
-
 /** Server-only. Returns null when not configured — callers must fail loudly, never fake. */
 export function getServiceRoleKey(): string | null {
   ensureDotEnv();
   return process.env.SUPABASE_SERVICE_ROLE_KEY ?? null;
 }
 
-export function getResendApiKey(): string | null {
-  ensureDotEnv();
-  return process.env.RESEND_API_KEY ?? null;
+export interface SmtpSender {
+  host: string;
+  port: number;
+  user: string;
+  pass: string;
+  from: string;
+  replyTo: string | null;
 }
 
-export function getEmailFrom(): string {
+/**
+ * SMTP settings for one of our own mailboxes on mx.etsawaa.com (Stalwart).
+ * Returns null when that mailbox's credentials are not configured — callers
+ * must report it, never pretend the email was sent.
+ */
+export function getSmtpSender(kind: "notifications" | "support"): SmtpSender | null {
   ensureDotEnv();
-  return process.env.EMAIL_FROM ?? "Etsawaa <no-reply@etsawaa.com>";
+  const env = process.env;
+  const user = kind === "support" ? env.SMTP_SUPPORT_USER : env.SMTP_NOTIFY_USER;
+  const pass = kind === "support" ? env.SMTP_SUPPORT_PASS : env.SMTP_NOTIFY_PASS;
+  if (!user || !pass) return null;
+  const from = kind === "support"
+    ? env.EMAIL_FROM_SUPPORT ?? `Etsawaa Support <${user}>`
+    : env.EMAIL_FROM_NOTIFY ?? `Etsawaa <${user}>`;
+  return {
+    host: env.SMTP_HOST ?? "mx.etsawaa.com",
+    port: Number(env.SMTP_PORT ?? 465),
+    user,
+    pass,
+    from,
+    replyTo: kind === "support" ? null : env.EMAIL_REPLY_TO ?? "support@etsawaa.com",
+  };
 }
 
 export function getSiteUrl(requestUrl: string): string {
@@ -71,21 +90,39 @@ export function getSiteUrl(requestUrl: string): string {
   return `${url.protocol}//${url.host}`;
 }
 
-/* Kashier payment gateway (phase 05) — real keys only; without them the
-   Kashier method is unavailable and the checkout shows COD or nothing. */
+/* Kashier payment gateway — Merchant ID plus a Payment API key / Secret key
+   pair per mode. Which mode a payment uses is an admin setting (payments →
+   kashier_test_mode), not an env var; a mode without keys is unavailable.
+   Secret keys contain "$" and are written as "\$" in .env so the dev server's
+   dotenv-expand leaves them alone; `node --env-file` keeps the backslash, so
+   it is stripped here. */
+export type KashierMode = "live" | "test";
+export interface KashierKeys {
+  mode: KashierMode;
+  apiKey: string;
+  secretKey: string;
+  /** REST host: test-api.kashier.io / api.kashier.io */
+  apiBase: string;
+}
 export interface KashierEnv {
   merchantId: string;
-  hmacSecret: string;
-  mode: "test" | "live";
-  baseUrl: string;
+  live: KashierKeys | null;
+  test: KashierKeys | null;
 }
 
 export function getKashierEnv(): KashierEnv | null {
   ensureDotEnv();
-  const merchantId = process.env.KASHIER_MERCHANT_ID ?? null;
-  const hmacSecret = process.env.KASHIER_HMAC_SECRET ?? null;
-  if (!merchantId || !hmacSecret) return null;
-  const mode = process.env.KASHIER_MODE === "live" ? "live" : "test";
-  const baseUrl = process.env.KASHIER_BASE_URL ?? "https://checkout.kashier.io";
-  return { merchantId, hmacSecret, mode, baseUrl };
+  const merchantId = process.env.KASHIER_MERCHANT_ID?.trim() || null;
+  if (!merchantId) return null;
+  const keys = (mode: KashierMode): KashierKeys | null => {
+    const prefix = mode === "live" ? "KASHIER_LIVE_" : "KASHIER_TEST_";
+    const apiKey = process.env[`${prefix}API_KEY`]?.trim();
+    const secretKey = process.env[`${prefix}SECRET_KEY`]?.trim().split("\\$").join("$");
+    if (!apiKey || !secretKey) return null;
+    return { mode, apiKey, secretKey, apiBase: mode === "live" ? "https://api.kashier.io" : "https://test-api.kashier.io" };
+  };
+  const live = keys("live");
+  const test = keys("test");
+  if (!live && !test) return null;
+  return { merchantId, live, test };
 }

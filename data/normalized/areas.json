@@ -1,0 +1,3051 @@
+[
+ {
+  "en": "Cairo",
+  "ar": "القاهرة",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Abdeen",
+    "ar": "عابدين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ain Shams",
+    "ar": "عين شمس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Amreya",
+    "ar": "العامرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bab El Shaaria",
+    "ar": "باب الشعرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bulaq",
+    "ar": "بولاق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dar El Salam",
+    "ar": "دار السلام",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Basatin",
+    "ar": "البساتين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Daher",
+    "ar": "الظاهر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gamaliya",
+    "ar": "الجمالية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khalifa",
+    "ar": "الخليفة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marg",
+    "ar": "المرج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Matareya",
+    "ar": "المطرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mokattam",
+    "ar": "المقطم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Muski",
+    "ar": "الموسكي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nozha",
+    "ar": "النزهة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qasr El Aini",
+    "ar": "قصر العيني",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sayeda Zeinab",
+    "ar": "السيدة زينب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sharabiya",
+    "ar": "الشرابية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shorouk",
+    "ar": "الشروق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tahrir",
+    "ar": "التحرير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wayli",
+    "ar": "الوايلي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gamaleya",
+    "ar": "الجمالية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Garden City",
+    "ar": "جاردن سيتي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hadayek El Qobba",
+    "ar": "حدائق القبة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Heliopolis",
+    "ar": "مصر الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Maadi",
+    "ar": "المعادي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Helwan",
+    "ar": "حلوان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Badr City",
+    "ar": "مدينة بدر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Manial",
+    "ar": "المنيل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nasr City",
+    "ar": "مدينة نصر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Cairo",
+    "ar": "القاهرة الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old Cairo",
+    "ar": "مصر القديمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rod El Farag",
+    "ar": "روض الفرج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shoubra",
+    "ar": "شبرا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tora",
+    "ar": "طرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zamalek",
+    "ar": "الزمالك",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ramsis",
+    "ar": "رمسيس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "the first settlement",
+    "ar": "التجمع الاول",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "the third settlement",
+    "ar": "التجمع الثالث",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "the fifth settlement",
+    "ar": "التجمع الخامس",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Giza",
+  "ar": "الجيزة",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Dokki",
+    "ar": "الدقي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Agouza",
+    "ar": "العجوزة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mohandessin",
+    "ar": "المهندسين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Imbaba",
+    "ar": "إمبابة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Warraq",
+    "ar": "الوراق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Boulaq Dakrour",
+    "ar": "بولاق الدكرور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Giza Square",
+    "ar": "ميدان الجيزة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Haram",
+    "ar": "الهرم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Omraneya",
+    "ar": "العمرانية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Talbeya",
+    "ar": "الطالبية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Monib",
+    "ar": "المنيب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hadaeq Al-Ahram",
+    "ar": "حدائق الأهرام",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "October",
+    "ar": "أكتوبر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sheikh Zayed",
+    "ar": "الشيخ زايد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kerdasa",
+    "ar": "كرداسة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Nomros",
+    "ar": "أبو النمرس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hawamdeya",
+    "ar": "الحوامدية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Badrashin",
+    "ar": "البدرشين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ayyat",
+    "ar": "العياط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Atfih",
+    "ar": "أطفيح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Othaim",
+    "ar": "أوسيم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Manshiyet El Qanater",
+    "ar": "منشأة القناطر",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Alexandria",
+  "ar": "الإسكندرية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Montaza",
+    "ar": "المنتزه",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Miami",
+    "ar": "ميامي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Asafra",
+    "ar": "العصافرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sidi Bishr",
+    "ar": "سيدي بشر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mandara",
+    "ar": "المندرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Maamoura",
+    "ar": "المعمورة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Qir",
+    "ar": "أبو قير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tosson",
+    "ar": "طوسون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sidi Gaber",
+    "ar": "سيدي جابر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Cleopatra",
+    "ar": "كليوباترا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sporting",
+    "ar": "سبورتنج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Louran",
+    "ar": "لوران",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gleem",
+    "ar": "جليم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "San Stefano",
+    "ar": "سان ستيفانو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Roushdy",
+    "ar": "رشدي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zizinia",
+    "ar": "زيزينيا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr Abdo",
+    "ar": "كفر عبده",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Smouha",
+    "ar": "سموحة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Fleming",
+    "ar": "فلمنج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bakos",
+    "ar": "باكوس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shads",
+    "ar": "شدس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ibrahimia",
+    "ar": "الإبراهيمية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Camp Caesar",
+    "ar": "كامب شيزار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shatby",
+    "ar": "الشاطبي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Azarita",
+    "ar": "الأزاريطة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Raml Station",
+    "ar": "محطة الرمل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mansheya",
+    "ar": "المنشية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gomrok",
+    "ar": "الجمرك",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bahary",
+    "ar": "بحري",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Anfushi",
+    "ar": "الأنفوشي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras El Tin",
+    "ar": "رأس التين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Moharam Bek",
+    "ar": "محرم بك",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hadara",
+    "ar": "الحضرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nozha",
+    "ar": "النزهة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Karmouz",
+    "ar": "كرموز",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gheit El Enab",
+    "ar": "غيط العنب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wardian",
+    "ar": "الورديان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qabary",
+    "ar": "القباري",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mina El Basal",
+    "ar": "مينا البصل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Agamy",
+    "ar": "العجمي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bitash",
+    "ar": "البيطاش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hanoville",
+    "ar": "الهانوفيل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Youssef",
+    "ar": "أبو يوسف",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dekheila",
+    "ar": "الدخيلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Amreya",
+    "ar": "العامرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Borg El Arab",
+    "ar": "برج العرب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Borg El Arab",
+    "ar": "برج العرب الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "King Mariout",
+    "ar": "الكينج مريوط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Amreya",
+    "ar": "العامرية الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Margham",
+    "ar": "مرغم",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Qalyubia",
+  "ar": "القليوبية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Banha",
+    "ar": "بنها",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shubra El Kheima",
+    "ar": "شبرا الخيمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qalyub",
+    "ar": "قليوب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qanater El Khayreya",
+    "ar": "القناطر الخيرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khanka",
+    "ar": "الخانكة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr Shokr",
+    "ar": "كفر شكر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Toukh",
+    "ar": "طوخ",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shibin El Qanater",
+    "ar": "شبين القناطر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qaha",
+    "ar": "قها",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khusus",
+    "ar": "الخصوص",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Obour",
+    "ar": "العبور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "East Shubra El Kheima",
+    "ar": "شرق شبرا الخيمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "West Shubra El Kheima",
+    "ar": "غرب شبرا الخيمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mostorod",
+    "ar": "مسطرد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bahtim",
+    "ar": "بهتيم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mit Nama",
+    "ar": "ميت نما",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Mostorod",
+    "ar": "مسطرد الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Zaabal",
+    "ar": "أبو زعبل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arab El Aliqat",
+    "ar": "عرب العليقات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khanka El Balad",
+    "ar": "الخانكة البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gabal El Asfar",
+    "ar": "الجبل الأصفر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khusus El Balad",
+    "ar": "الخصوص البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qalaj",
+    "ar": "القلج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arab El Ayayda",
+    "ar": "عرب العيايدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shibin El Qanater El Balad",
+    "ar": "شبين القناطر البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tahanoub",
+    "ar": "طحانوب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nawa",
+    "ar": "نوى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr Shibin",
+    "ar": "كفر شبين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Toukh El Balad",
+    "ar": "طوخ البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Moshtohor",
+    "ar": "مشتهر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qaha El Balad",
+    "ar": "قها البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sandiyon",
+    "ar": "سنديون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Basous",
+    "ar": "باسوس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shalakan",
+    "ar": "شلقان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Warraq",
+    "ar": "الوراق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qarnfil",
+    "ar": "قرنفيل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Aghour El Kobra",
+    "ar": "أجهور الكبرى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Aghour El Soghra",
+    "ar": "أجهور الصغرى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr Shokr El Balad",
+    "ar": "كفر شكر البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "El Mansheya El Kobra",
+    "ar": "المنشأة الكبرى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Asneet",
+    "ar": "أسنيت",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr Tasfa",
+    "ar": "كفر تصفا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mit El Doreig",
+    "ar": "ميت الدريج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Banha",
+    "ar": "بنها الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr El Gazar",
+    "ar": "كفر الجزار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Warwara",
+    "ar": "ورورة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bata",
+    "ar": "بطا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gmgmra",
+    "ar": "جمجرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marsafa",
+    "ar": "مرصفا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tanan",
+    "ar": "طنان",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Beheira",
+  "ar": "البحيرة",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Kafr El Dawwar",
+    "ar": "كفر الدوار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rosetta",
+    "ar": "رشيد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Edku",
+    "ar": "إدكو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Hummus",
+    "ar": "أبو حمص",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu El Matamir",
+    "ar": "أبو المطامير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hosh Essa",
+    "ar": "حوش عيسى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Delengat",
+    "ar": "الدلنجات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mahmoudia",
+    "ar": "المحمودية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Damanhour",
+    "ar": "دمنهور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rahmaniya",
+    "ar": "الرحمانية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Itay El Baroud",
+    "ar": "إيتاي البارود",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shubrakhit",
+    "ar": "شبراخيت",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kom Hamada",
+    "ar": "كوم حمادة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Badr",
+    "ar": "بدر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wadi El Natrun",
+    "ar": "وادي النطرون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Nubaria",
+    "ar": "النوبارية الجديدة",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Damietta",
+  "ar": "دمياط",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Damietta",
+    "ar": "دمياط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ezbet El Borg",
+    "ar": "عزبة البرج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Faraskour",
+    "ar": "فارسكور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rawda",
+    "ar": "الروضة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sarw",
+    "ar": "السرو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zarqa",
+    "ar": "الزرقا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr Saad",
+    "ar": "كفر سعد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mit Abu Ghalib",
+    "ar": "ميت أبو غالب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr El Batikh",
+    "ar": "كفر البطيخ",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras El Bar",
+    "ar": "رأس البر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Damietta",
+    "ar": "دمياط الجديدة",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Port Said",
+  "ar": "بورسعيد",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Sharq",
+    "ar": "الشرق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arab",
+    "ar": "العرب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Manakh",
+    "ar": "المناخ",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dawahi",
+    "ar": "الضواحي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zohour",
+    "ar": "الزهور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ganoub",
+    "ar": "الجنوب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gharb",
+    "ar": "الغرب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Port Fouad",
+    "ar": "بورفؤاد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kuwait",
+    "ar": "الكويت",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Horeya",
+    "ar": "الحرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qabouti",
+    "ar": "القابوطي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qanal Al Dakhili",
+    "ar": "القنال الداخلي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Taawoniat",
+    "ar": "التعاونيات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Omar Ibn Al Khattab",
+    "ar": "عمر بن الخطاب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ali Ibn Abi Talib",
+    "ar": "علي بن أبي طالب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Othman Ibn Affan",
+    "ar": "عثمان بن عفان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Five Thousand Housing Units",
+    "ar": "الخمس آلاف وحدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "East Cemeteries",
+    "ar": "شرق الجبانات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gabal Land",
+    "ar": "أرض الجبل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Raswa",
+    "ar": "الرسوة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gamil",
+    "ar": "الجميل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old Al Gamil Area",
+    "ar": "منطقة الجميل القديمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "South Port Said Industrial Area",
+    "ar": "المنطقة الصناعية جنوب بورسعيد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "East Tafrea",
+    "ar": "شرق التفريعة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Port Fouad 2",
+    "ar": "بورفؤاد الثانية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Free Zone",
+    "ar": "المنطقة الحرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tarh Al Bahr",
+    "ar": "طرح البحر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Palestine Street",
+    "ar": "شارع فلسطين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old Al Arab District",
+    "ar": "حي العرب القديم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old Al Sharq District",
+    "ar": "حي الشرق القديم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sports City",
+    "ar": "المدينة الرياضية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Fatma Al Zahraa Area",
+    "ar": "منطقة فاطمة الزهراء",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nahdet Misr Area",
+    "ar": "منطقة نهضة مصر",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "North Sinai",
+  "ar": "شمال سيناء",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Arish",
+    "ar": "العريش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arish 1",
+    "ar": "قسم أول العريش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arish 2",
+    "ar": "قسم ثان العريش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arish 3",
+    "ar": "قسم ثالث العريش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arish 4",
+    "ar": "قسم رابع العريش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Massaeed",
+    "ar": "المساعيد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Skaska",
+    "ar": "السكاسكة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tawil",
+    "ar": "الطويل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sabil",
+    "ar": "السبيل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Midan",
+    "ar": "الميدان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bir Lahfen",
+    "ar": "بئر لحفن",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Lahfen",
+    "ar": "لحفن",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Sokkoul",
+    "ar": "أبو صقل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Raysa",
+    "ar": "الريسة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Obour District",
+    "ar": "حي العبور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kawthar District",
+    "ar": "حي الكوثر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Airport Area",
+    "ar": "منطقة المطار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bir El Abd",
+    "ar": "بئر العبد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sheikh Zuweid",
+    "ar": "الشيخ زايد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Balouza",
+    "ar": "بالوظة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ahrar",
+    "ar": "الأحرار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shohada",
+    "ar": "الشهداء",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Romana",
+    "ar": "رمانة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "6 October",
+    "ar": "2026-10-06 00:00:00",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Karama",
+    "ar": "الكرامة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rabaa",
+    "ar": "رابعة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qatiya",
+    "ar": "قاطية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ganayen",
+    "ar": "الجناين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mareeh",
+    "ar": "المريح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Aqtiya",
+    "ar": "أقطية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shawhat",
+    "ar": "الشوحط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Umm Aqaba",
+    "ar": "أم عقبة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nagila",
+    "ar": "نجيلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nasr",
+    "ar": "النصر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kharouba",
+    "ar": "الخربة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nagah",
+    "ar": "النجاح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Salmana",
+    "ar": "سلمانة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Teloul",
+    "ar": "التلول",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sadat",
+    "ar": "السادات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rawda",
+    "ar": "الروضة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Aqayla",
+    "ar": "العقايلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Tawila",
+    "ar": "أبو طويلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Goura",
+    "ar": "الجورة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kawar'a",
+    "ar": "العكور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zawara'a",
+    "ar": "الزوارعة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zohoor",
+    "ar": "الظهير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Al Arraj",
+    "ar": "أبو العراج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shallaq",
+    "ar": "الشلاق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Moqataa",
+    "ar": "المقاطعة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Touma",
+    "ar": "التومة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qureia",
+    "ar": "القريعة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qabr Omeir",
+    "ar": "قبر عمير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Al Fita",
+    "ar": "أبو الفيتة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Skadera",
+    "ar": "السكادرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Rafah",
+    "ar": "رفح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old Rafah",
+    "ar": "رفح القديمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Imam Ali District",
+    "ar": "حي الإمام علي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Shanar",
+    "ar": "أبو شنار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Matalla",
+    "ar": "المطلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hossainat",
+    "ar": "الحسينات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kharafin",
+    "ar": "الخرافين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wafaq",
+    "ar": "الوفاق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tayera",
+    "ar": "الطايرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mahdia",
+    "ar": "المهدية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nagaa Shabana",
+    "ar": "نجع شبانة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Goz Abu Raad",
+    "ar": "جوز أبو رعد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kilometer 21",
+    "ar": "الكيلو 21",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Barth",
+    "ar": "البرث",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hassana",
+    "ar": "الحسنة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Baghdad",
+    "ar": "بغداد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Moqadaba",
+    "ar": "المقضبة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Umm Sheihan",
+    "ar": "أم شيحان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Awlad Ali",
+    "ar": "أولاد علي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gharqada",
+    "ar": "الغرقدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Reisan",
+    "ar": "الريسان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bali",
+    "ar": "بلي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Maghara",
+    "ar": "المغارة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gafgafa",
+    "ar": "الجفجافة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Natila",
+    "ar": "النتيلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Raid",
+    "ar": "الريد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arab Bali",
+    "ar": "عرب بلي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khariza",
+    "ar": "خريزة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bir Bida",
+    "ar": "بئر بدا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Awja",
+    "ar": "العوجة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Ageila",
+    "ar": "أبو عجيلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nakhl",
+    "ar": "نخل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bir Girid",
+    "ar": "بئر جريد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tamad",
+    "ar": "التمد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kantala",
+    "ar": "الكنتلا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sadr Al Haitan",
+    "ar": "صدر الحيطان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Khafga",
+    "ar": "الخفجة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Salam",
+    "ar": "السلام",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Barouk",
+    "ar": "البروك",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ain Tawiba",
+    "ar": "عين طويبة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wadi Al Hajj",
+    "ar": "وادي الحاج",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Red Sea",
+  "ar": "البحر الأحمر",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Hurghada",
+    "ar": "الغردقة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "North Hurghada District",
+    "ar": "حي شمال الغردقة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "South Hurghada District",
+    "ar": "حي جنوب الغردقة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dahar",
+    "ar": "الدهار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sakkala",
+    "ar": "السقالة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ahiya",
+    "ar": "الأحياء",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arab",
+    "ar": "العرب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Al Kawthar",
+    "ar": "الكوثر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tourist Area",
+    "ar": "المنطقة السياحية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tourist Promenade",
+    "ar": "الممشى السياحي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Montazah",
+    "ar": "المنتزه",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hadaba",
+    "ar": "الهضبة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gouna",
+    "ar": "الجونة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Makadi",
+    "ar": "مكادي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sahl Hasheesh",
+    "ar": "سهل حشيش",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Al Gabal",
+    "ar": "الجبل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Industrial Area",
+    "ar": "المنطقة الصناعية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Intercontinental",
+    "ar": "الإنتركونتيننتال",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Port Area",
+    "ar": "الميناء",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras Gharib",
+    "ar": "رأس غارب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old City",
+    "ar": "المدينة القديمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras Gharib Petroleum",
+    "ar": "بترول رأس غارب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "El Zafarana",
+    "ar": "الزعفرانة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras Shukeir",
+    "ar": "رأس شقير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Ras Gharib",
+    "ar": "رأس غارب الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Safaga",
+    "ar": "سفاجا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Safaga El Balad",
+    "ar": "سفاجا البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Safaga Port",
+    "ar": "ميناء سفاجا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Umm El Huwaitat",
+    "ar": "أم الحويطات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Umm El Huwaitat",
+    "ar": "أم الحويطات الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nasr",
+    "ar": "النصر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hamrawein",
+    "ar": "الحمراوين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Quseir",
+    "ar": "القصير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Old El Quseir",
+    "ar": "القصير القديمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New El Quseir",
+    "ar": "القصير الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marsa",
+    "ar": "المرسى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marsa Alam",
+    "ar": "مرسى علم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Ghosoun",
+    "ar": "أبو غصون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sheikh Shazly",
+    "ar": "الشيخ الشاذلي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Berenice",
+    "ar": "برنيس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras Banas",
+    "ar": "رأس بناس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marsa Hemira",
+    "ar": "مرسى حميرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shalateen",
+    "ar": "الشلاتين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Ramad",
+    "ar": "أبو رماد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Halayeb",
+    "ar": "حلايب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras Hadarba",
+    "ar": "رأس حدربة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abraq",
+    "ar": "أبرق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wadi El Gemal",
+    "ar": "وادي الجمال",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wadi Lahmi",
+    "ar": "وادي لحمي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qulaan",
+    "ar": "القُلعان",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Minya",
+  "ar": "المنيا",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "New Minya",
+    "ar": "المنيا الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Qurqas",
+    "ar": "أبو قرقاص",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Qurqas El Balad",
+    "ar": "أبو قرقاص البلد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Abu Qurqas",
+    "ar": "أبو قرقاص الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Mallawi",
+    "ar": "ملوي الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Maghagha",
+    "ar": "مغاغة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Adwa",
+    "ar": "العدوة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Beni Mazar",
+    "ar": "بني مزار",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Samalout",
+    "ar": "سمالوط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Matay",
+    "ar": "مطاي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Minya District",
+    "ar": "مركز المنيا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Minya",
+    "ar": "المنيا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mallawi",
+    "ar": "ملوي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Deir Mawas",
+    "ar": "ديرمواس",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Assiut",
+  "ar": "أسيوط",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Abu Tig",
+    "ar": "أبو تيج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ghanayem",
+    "ar": "الغنايم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Saadfa",
+    "ar": "صدفا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Manfalut",
+    "ar": "منفلوط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qusiya",
+    "ar": "القوصية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dairut",
+    "ar": "ديروط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abnoub",
+    "ar": "أبنوب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Fath",
+    "ar": "الفتح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sahel Selim",
+    "ar": "ساحل سليم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Badari",
+    "ar": "البداري",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Assiut",
+    "ar": "أسيوط الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nasser New City",
+    "ar": "ناصر الجديدة",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Sohag",
+  "ar": "سوهاج",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Akhmim",
+    "ar": "أخميم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Baliana",
+    "ar": "البلينا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Girga",
+    "ar": "جرجا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dar El Salam",
+    "ar": "دار السلام",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Juhaynah",
+    "ar": "جهينة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Saqalta",
+    "ar": "ساقلتة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tama",
+    "ar": "طما",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sohag City",
+    "ar": "سوهاج",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Sohag",
+    "ar": "سوهاج الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tahta",
+    "ar": "طهطا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Maragha",
+    "ar": "المراغة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Monshah",
+    "ar": "المنشاة",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Qena",
+  "ar": "قنا",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Abu Tesht",
+    "ar": "أبو تشت",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Farshout",
+    "ar": "فرشوط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nag Hammadi",
+    "ar": "نجع حمادي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Deshna",
+    "ar": "دشنا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Waqf",
+    "ar": "الوقف",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qena",
+    "ar": "قنا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qift",
+    "ar": "قفط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qus",
+    "ar": "قوص",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Naqada",
+    "ar": "نقادة",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Luxor",
+  "ar": "الأقصر",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "New Luxor",
+    "ar": "الأقصر الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bayadiya",
+    "ar": "البياضية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tod",
+    "ar": "الطود",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zinya",
+    "ar": "الزينية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qurna",
+    "ar": "القرنة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bairat",
+    "ar": "البعيرات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Armant",
+    "ar": "أرمنت",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Esna",
+    "ar": "إسنا",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Matrouh",
+  "ar": "مطروح",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Hammam",
+    "ar": "الحمام",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Alamein",
+    "ar": "العلمين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marsa Matrouh",
+    "ar": "مرسى مطروح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "North Coast (Sahel)",
+    "ar": "الساحل الشمالي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dabaa",
+    "ar": "الضبعة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nageela",
+    "ar": "النجيلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sidi Barran",
+    "ar": "سيدي براني",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sallum",
+    "ar": "السلوم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Siwa",
+    "ar": "سيوة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marina",
+    "ar": "مارينا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras El Hekma",
+    "ar": "رأس الحكمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Foka",
+    "ar": "فوكة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sidi Abdel Rahman",
+    "ar": "سيدي عبد الرحمن",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Marsi matrouh",
+    "ar": "مرسي مطروح",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "South Sinai",
+  "ar": "جنوب سيناء",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Sharm El Sheikh",
+    "ar": "شرم الشيخ",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dahab",
+    "ar": "دهب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nuweiba",
+    "ar": "نويبع",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Taba",
+    "ar": "طابا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Saint Catherine",
+    "ar": "سانت كاترين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tor",
+    "ar": "الطور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ras Sedr",
+    "ar": "رأس سدر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Zenima",
+    "ar": "أبو زنيمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tor Sinai",
+    "ar": "طور سيناء",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wadi Feiran",
+    "ar": "وادي فيران",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Beni Suef",
+  "ar": "بني سويف",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "East of the Nile",
+    "ar": "شرق النيل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Barout",
+    "ar": "باروط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bayad El Arab",
+    "ar": "بياض العرب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tazmant",
+    "ar": "تزمنت",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kom Abu Radi",
+    "ar": "كوم أبو راضي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dashot",
+    "ar": "دشطوط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Maimun",
+    "ar": "الميمون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Beni Suef City",
+    "ar": "مدينه بنى سويف",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "New Beni Suef",
+    "ar": "بني سويف الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Biba",
+    "ar": "ببا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Wasta",
+    "ar": "الواسطى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qaman Al-Aroos",
+    "ar": "قمن العروس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bahbeshin",
+    "ar": "بهبشين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Alalima",
+    "ar": "العلالمة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Biba Island",
+    "ar": "جزيرة ببا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Saft Rashin",
+    "ar": "صفط راشين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shenra",
+    "ar": "شنرا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dalhans",
+    "ar": "دلهانس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mazura",
+    "ar": "مازورة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bedehl",
+    "ar": "بدهل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Samasta",
+    "ar": "سمسطا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Fashn",
+    "ar": "الفشن",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ehnasya",
+    "ar": "إهناسيا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Naser",
+    "ar": "ناصر",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Dakahlia",
+  "ar": "الدقهلية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Mansoura",
+    "ar": "المنصورة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Talkha",
+    "ar": "طلخا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mit Ghamr",
+    "ar": "ميت غمر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dekernes",
+    "ar": "دكرنس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Senbellawein",
+    "ar": "السنبلاوين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gamasa",
+    "ar": "جمصة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Belqas",
+    "ar": "بلقاس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sherbin",
+    "ar": "شربين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Aga",
+    "ar": "أجا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Menia El Nasr",
+    "ar": "منية النصر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Manzala",
+    "ar": "المنزلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mataria",
+    "ar": "المطرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gamalia",
+    "ar": "الجمالية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Beni Ebeid",
+    "ar": "بني عبيد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mit Salsil",
+    "ar": "ميت سلسيل",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Gharbia",
+  "ar": "الغربية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Mahalla El Kubra",
+    "ar": "المحلة الكبرى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr El Zayat",
+    "ar": "كفر الزيات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tanta",
+    "ar": "طنطا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Zefta",
+    "ar": "زفتى",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Samanoud",
+    "ar": "سمنود",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qutur",
+    "ar": "قطور",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Basyoun",
+    "ar": "بسيون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Santa",
+    "ar": "السنطه",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Kafr El Sheikh",
+  "ar": "كفر الشيخ",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Desouk",
+    "ar": "دسوق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kafr El Sheikh City",
+    "ar": "كفر الشيخ",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Fooh",
+    "ar": "فوه",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Matubis",
+    "ar": "مطوبس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Baltim",
+    "ar": "بلطيم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hamoul",
+    "ar": "الحامول",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bela",
+    "ar": "بيلا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sidi Salem",
+    "ar": "سيدي سالم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Riyadh",
+    "ar": "الرياض",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qallin",
+    "ar": "قلين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Barlas",
+    "ar": "البرلس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sidi Ghazi",
+    "ar": "سيدي غازي",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Fayoum",
+  "ar": "الفيوم",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "New Fayoum",
+    "ar": "الفيوم الجديدة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Damu",
+    "ar": "دمو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Keman Faris",
+    "ar": "كيمان فارس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hadqa",
+    "ar": "الحادقة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Masla",
+    "ar": "المسلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qahafa",
+    "ar": "قحافة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Azab",
+    "ar": "العزب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hawara",
+    "ar": "هوارة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sanhur Al-Qibliya",
+    "ar": "سنهور القبلية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sanhur Al-Bahriya",
+    "ar": "سنهور البحرية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Kasa",
+    "ar": "أبو كساه",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Senouris",
+    "ar": "سنورس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Itsa",
+    "ar": "إطسا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shakshouk",
+    "ar": "شكشوك",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qarun",
+    "ar": "قارون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abshaway",
+    "ar": "أبشواي",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tamiya",
+    "ar": "طامية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Al-Rawda",
+    "ar": "الروضة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dar Al-Salam",
+    "ar": "دار السلام",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Gharq",
+    "ar": "الغرق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qasr Rashwan",
+    "ar": "قصر رشوان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tatoon",
+    "ar": "تطون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Muniyat Al-Hayt",
+    "ar": "منية الحيط",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hajar",
+    "ar": "الحجر",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nazla",
+    "ar": "النزلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Yusuf Al-Siddiq",
+    "ar": "يوسف الصديق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shawashna",
+    "ar": "الشواشنة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hamouli",
+    "ar": "الحامولي",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Sharqia",
+  "ar": "الشرقية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Zagazig",
+    "ar": "الزقازيق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "10th of Ramadan",
+    "ar": "العاشر من رمضان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Belbeis",
+    "ar": "بلبيس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Minya El Qamh",
+    "ar": "منيا القمح",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Faqous",
+    "ar": "فاقوس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Kebir",
+    "ar": "أبو كبير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Hehya",
+    "ar": "ههيا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Hammad",
+    "ar": "أبو حماد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Mashtool El Souk",
+    "ar": "مشتول السوق",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Monufia",
+  "ar": "المنوفية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Shibin El Kom",
+    "ar": "شبين الكوم",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Sadat City",
+    "ar": "مدينة السادات",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Menouf",
+    "ar": "منوف",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ashmoun",
+    "ar": "أشمون",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Quesna",
+    "ar": "قويسنا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tala",
+    "ar": "تلا",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Shohada",
+    "ar": "الشهداء",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Bagour",
+    "ar": "الباجور",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Ismailia",
+  "ar": "الإسماعيلية",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Ismailia City",
+    "ar": "مدينة الإسماعيلية",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Fayed",
+    "ar": "فايد",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qantara West",
+    "ar": "القنطرة غرب",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Qantara East",
+    "ar": "القنطرة شرق",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Tell El Kebir",
+    "ar": "التل الكبير",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Swair",
+    "ar": "أبو صوير",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Suez",
+  "ar": "السويس",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Suez City",
+    "ar": "مدينة السويس",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Arbaeen",
+    "ar": "حي الأربعين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ataqah",
+    "ar": "عتاقة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Faisal",
+    "ar": "حي فيصل",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ganayen",
+    "ar": "الجناين",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Ain Sokhna",
+    "ar": "العين السخنة",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "Aswan",
+  "ar": "أسوان",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Aswan City",
+    "ar": "مدينة أسوان",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Kom Ombo",
+    "ar": "كوم أمبو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Edfu",
+    "ar": "إدفو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Nasr Nuba",
+    "ar": "نصر النوبة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Daraw",
+    "ar": "دراو",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Abu Simbel",
+    "ar": "أبو سمبل",
+    "pickup_fee_egp": 20
+   }
+  ]
+ },
+ {
+  "en": "New Valley",
+  "ar": "الوادي الجديد",
+  "shipping_fee_egp": 100,
+  "areas": [
+   {
+    "en": "Kharga Oasis",
+    "ar": "الخارجة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Dakhla Oasis",
+    "ar": "الدخلة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Farafra",
+    "ar": "الفرافرة",
+    "pickup_fee_egp": 20
+   },
+   {
+    "en": "Baris",
+    "ar": "باريس",
+    "pickup_fee_egp": 20
+   }
+  ]
+ }
+]

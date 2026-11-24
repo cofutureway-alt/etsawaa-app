@@ -1,14 +1,16 @@
-import { data, redirect, Link } from "react-router";
+import { data } from "react-router";
 import type { Route } from "./+types/blog.$slug";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { safeSlug } from "~/lib/postgrest";
 import { requireLang } from "~/lib/lang.server";
-import { publicMeta, jsonLd, breadcrumbLd, siteUrl } from "~/lib/seo";
+import { ogMedia, publicMeta, jsonLd, breadcrumbLd, siteUrl } from "~/lib/seo";
 import { publicMediaUrl } from "~/lib/media.shared";
+import { sanitizeBlogHtml } from "~/lib/sanitize";
 import { Breadcrumbs } from "~/components/ui/Breadcrumbs";
 import { FallbackCover } from "~/components/blog/FallbackCover";
+import { BlogCard } from "~/components/blog/BlogCard";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 
 
@@ -70,19 +72,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     .select(`id, title_ar, title_en, slug_ar, slug_en, excerpt_ar, excerpt_en,
              content_ar, content_en, cover_path, published_at, updated_at,
              seo_title_ar, seo_title_en, seo_desc_ar, seo_desc_en, status, author`)
-    .eq(isAr ? "slug_ar" : "slug_en", decodeURIComponent(slug))
+    // either language's slug: the language switch keeps the slug it was on
+    .or(`slug_ar.eq.${safeSlug(slug) ?? "-"},slug_en.eq.${safeSlug(slug) ?? "-"}`)
     .limit(1);
-  // admins may preview drafts; everyone else sees published only.
-  // NOTE: the author name resolves through the DEFITER service client AFTER the
+  // anyone holding blog.manage (admins and permitted staff) may preview
+  // drafts; everyone else sees published only (RLS enforces the same rule).
+  // NOTE: the author name resolves through the DEFINER service client AFTER the
   // main read — an inline profiles() embed would fail the whole query for
   // visitors (anon has no SELECT on profiles by design; AGENT §4).
   const { getSupabaseAdminClient } = await import("~/lib/supabase/admin");
   const adminClient = getSupabaseAdminClient();
-  const { data: prof } = adminClient
-    ? await adminClient.from("profiles").select("role").eq("id", (await client.auth.getUser()).data?.user?.id ?? "00000000-0000-0000-0000-000000000000").limit(1)
-    : { data: [] as Array<{ role: string }> | null };
-  const isAdmin = prof?.[0]?.role === "admin";
-  if (!isAdmin) query = query.eq("status", "published");
+  const { data: canPreview } = await client.rpc("has_permission", { p_permission: "blog.manage" });
+  if (canPreview !== true) query = query.eq("status", "published");
 
   const { data: rows, error: rowsErr } = await query;
   if (rowsErr) console.error("[blog.$slug] rows error:", rowsErr.message);
@@ -106,6 +107,10 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     throw new Response("Not found", { status: 404 });
   }
 
+  // opened with the other language's slug → the canonical URL of this language
+  const ownSlug = isAr ? post.slug_ar : post.slug_en;
+  if (ownSlug && ownSlug !== slug) throw redirect301(`/${lang}/blog/${encodeURIComponent(ownSlug)}`);
+
   let author: string | null = null;
   if (adminClient && post.author) {
     const { data: profRow } = await adminClient.from("profiles").select("full_name").eq("id", post.author).single();
@@ -127,7 +132,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   const meta = publicMeta({
     lang, path: `/blog/${encodeURIComponent(isAr ? clean.slug_ar : clean.slug_en)}`,
-    title: `${title} — Etsawaa`, description,
+    altPath: `/blog/${encodeURIComponent(isAr ? clean.slug_en || clean.slug_ar : clean.slug_ar || clean.slug_en)}`,
+    title: `${title} — ${isAr ? "إتسوء" : "Etsawaa"}`, description,
+    ogType: "article", ogImage: ogMedia(clean.cover_path), ogImageAlt: title,
   });
 
   return {
@@ -145,17 +152,17 @@ export function meta({ loaderData }: Route.MetaArgs) {
   return loaderData.meta as unknown as ReturnType<typeof publicMeta>;
 }
 
-const html = (d: Record<string, unknown>) => jsonLd(d);
-
 export default function BlogArticle({ loaderData }: Route.ComponentProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const lang = loaderData.lang;
   const en = lang === "en";
   const p = loaderData.post;
-  const supabaseUrl = process.env.SUPABASE_URL ?? "";
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? "";
 
   const raw = en ? p.content_en : p.content_ar;
-  const withIds = useMemo(() => withHeadingIds(raw), [raw]);
+  // Sanitize AFTER withHeadingIds so the injected sec-N ids survive (the
+  // allowlist permits id/class) — DB content is untrusted even from editors.
+  const withIds = useMemo(() => sanitizeBlogHtml(withHeadingIds(raw)), [raw]);
   const toc = useMemo(() => buildToc(raw), [raw]);
   const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState<string>("");
@@ -228,7 +235,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
           <p className="mt-1.5 text-sm text-text-muted">
             {p.author_name ? `${p.author_name} · ` : ""}
             <time dateTime={p.published_at ?? undefined} dir="ltr">
-              {new Date(p.published_at ?? p.updated_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
+              {new Date(p.published_at ?? p.updated_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}
             </time>
           </p>
 
@@ -271,7 +278,7 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
 
           <div
             className="pubProse mt-5 flex flex-col gap-3 text-lg leading-7 text-text"
-            dangerouslySetInnerHTML={{ __html: withIds }}
+            dangerouslySetInnerHTML={{ __html: withIds /* sanitized above via sanitizeBlogHtml */ }}
           />
 
           {/* share row */}
@@ -315,25 +322,10 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
       {loaderData.related.length > 0 ? (
         <section className="mt-8" aria-label={t("pubBlog.related")}>
           <h2 className="text-lg font-extrabold text-text">{t("pubBlog.related")}</h2>
-          <ul className="mt-3 grid gap-3 sm:grid-cols-3">
-            {loaderData.related.map((r: { slug_ar: string; slug_en: string; title_ar: string; title_en: string; excerpt_ar: string; excerpt_en: string; cover_path: string | null }) => (
-              <li key={r.slug_en} className="overflow-hidden rounded-md border border-border bg-surface">
-                <Link to={`/${lang}/blog/${encodeURIComponent(en ? r.slug_en : r.slug_ar)}`} className="block">
-                  {r.cover_path ? (
-                    <img src={publicMediaUrl(supabaseUrl, r.cover_path)} alt="" width={600} height={315}
-                      loading="lazy" decoding="async" className="aspect-[600/315] w-full object-cover" />
-                  ) : (
-                    /* U2 — same deterministic cover as the listing */
-                    <FallbackCover title={en ? r.title_en : r.title_ar} seed={r.slug_en} className="border-b-0" />
-                  )}
-                </Link>
-                <div className="p-3">
-                  <Link to={`/${lang}/blog/${encodeURIComponent(en ? r.slug_en : r.slug_ar)}`}
-                    className="text-base font-bold text-text hover:text-primary">
-                    {en ? r.title_en : r.title_ar}
-                  </Link>
-                  <p className="mt-1 line-clamp-2 text-xs text-text-muted">{en ? r.excerpt_en : r.excerpt_ar}</p>
-                </div>
+          <ul className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {loaderData.related.map((r: { slug_ar: string; slug_en: string; title_ar: string; title_en: string; excerpt_ar: string; excerpt_en: string; cover_path: string | null; published_at: string | null }) => (
+              <li key={r.slug_en} className="flex">
+                <BlogCard post={r} lang={lang} headingLevel={3} />
               </li>
             ))}
           </ul>

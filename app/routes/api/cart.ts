@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { getViewer } from "~/lib/auth/guards";
 import type { CartLine } from "~/features/cart/api";
@@ -18,6 +19,8 @@ interface PeekRow {
   product_id: string;
   sku: string | null;
   option_key: string;
+  option_label_ar?: string | null;
+  option_label_en?: string | null;
   price_piastres: number | null;
   sale_price_piastres: number | null;
   stock: number;
@@ -33,6 +36,20 @@ interface PeekRow {
   sale_starts_at: string | null;
   sale_ends_at: string | null;
   image_path: string | null;
+}
+
+/** fn_cart_get returns option_key only — join the colour/size labels the line shows. */
+async function withOptionLabels(client: SupabaseClient, lines: CartLine[]): Promise<CartLine[]> {
+  const ids = [...new Set(lines.map((l) => l.variant_id).filter((id) => id))];
+  if (ids.length === 0) return lines;
+  const { data } = await client.from("variants").select("id, option_label_ar, option_label_en").in("id", ids);
+  const rows = (data ?? []) as Array<{ id: string; option_label_ar: string | null; option_label_en: string | null }>;
+  if (rows.length === 0) return lines;
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return lines.map((line) => {
+    const hit = byId.get(line.variant_id);
+    return hit ? { ...line, option_label_ar: hit.option_label_ar, option_label_en: hit.option_label_en } : line;
+  });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -56,7 +73,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // a vendors() embed would 500 for guests)
     const { data: rows, error } = await client
       .from("variants")
-      .select(`id, product_id, sku, option_key, price_piastres, sale_price_piastres, stock,
+      .select(`id, product_id, sku, option_key, option_label_ar, option_label_en, price_piastres, sale_price_piastres, stock,
                products!inner(id, name_ar, name_en, slug_ar, slug_en, leaf_category_id, brand_id, vendor_id, sale_starts_at, sale_ends_at,
                  product_media(path, kind, position))`)
       .in("id", ids)
@@ -76,7 +93,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
     const lines: CartLine[] = ((rows ?? []) as unknown[]).map((raw) => {
       const row = raw as unknown as {
-        id: string; product_id: string; sku: string | null; option_key: string;
+        id: string; product_id: string; sku: string | null; option_key: string; option_label_ar: string | null; option_label_en: string | null;
         price_piastres: number | null; sale_price_piastres: number | null; stock: number;
         products: {
           id: string; name_ar: string; name_en: string; slug_ar: string; slug_en: string;
@@ -102,6 +119,8 @@ export async function action({ request }: ActionFunctionArgs) {
         stock: row.stock,
         sku: row.sku,
         option_key: row.option_key,
+        option_label_ar: row.option_label_ar ?? null,
+        option_label_en: row.option_label_en ?? null,
         price_piastres: onSale ? (row.sale_price_piastres ?? row.price_piastres ?? 0) : (row.price_piastres ?? 0),
         regular_price_piastres: row.price_piastres ?? 0,
         on_sale: onSale,
@@ -126,7 +145,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (body.intent === "get") {
     const { data: lines, error } = await client.rpc("fn_cart_get");
     if (error) return data({ ok: false, reason: "query_failed" }, { status: 500 });
-    return data({ ok: true, lines: lines ?? [] });
+    return data({ ok: true, lines: await withOptionLabels(client, (lines ?? []) as CartLine[]) });
   }
 
   if (body.intent === "add") {
@@ -141,7 +160,7 @@ export async function action({ request }: ActionFunctionArgs) {
       return data({ ok: false, reason }, { status: reason === "query_failed" ? 500 : 400 });
     }
     const { data: lines } = await client.rpc("fn_cart_get");
-    return data({ ok: true, ...(res as { qty: number; stock: number; capped: boolean }), lines: lines ?? [] });
+    return data({ ok: true, ...(res as { qty: number; stock: number; capped: boolean }), lines: await withOptionLabels(client, (lines ?? []) as CartLine[]) });
   }
 
   if (body.intent === "set") {
@@ -151,7 +170,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const { data: res, error } = await client.rpc("fn_cart_set_qty", { p_variant_id: body.variant_id, p_qty: Math.min(Math.round(body.qty ?? 0), 99) });
     if (error) return data({ ok: false, reason: "query_failed" }, { status: 500 });
     const { data: lines } = await client.rpc("fn_cart_get");
-    return data({ ok: true, ...(res as { removed?: boolean }), lines: lines ?? [] });
+    return data({ ok: true, ...(res as { removed?: boolean }), lines: await withOptionLabels(client, (lines ?? []) as CartLine[]) });
   }
 
   if (body.intent === "remove") {
@@ -159,7 +178,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const { error } = await client.rpc("fn_cart_remove", { p_variant_id: body.variant_id });
     if (error) return data({ ok: false, reason: "query_failed" }, { status: 500 });
     const { data: lines } = await client.rpc("fn_cart_get");
-    return data({ ok: true, lines: lines ?? [] });
+    return data({ ok: true, lines: await withOptionLabels(client, (lines ?? []) as CartLine[]) });
   }
 
   if (body.intent === "merge") {
@@ -169,7 +188,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const { data: res, error } = await client.rpc("fn_cart_merge", { p_lines: lines });
     if (error) return data({ ok: false, reason: "query_failed" }, { status: 500 });
     const merged = res as { lines: CartLine[]; notices: Array<{ variant_id: string; key: string }> };
-    return data({ ok: true, lines: merged.lines, notices: merged.notices });
+    return data({ ok: true, lines: await withOptionLabels(client, merged.lines), notices: merged.notices });
   }
 
   return data({ ok: false, reason: "bad_request" }, { status: 400 });

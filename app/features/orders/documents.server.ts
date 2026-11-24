@@ -103,7 +103,7 @@ function docDate(iso: string): string {
 }
 
 function money(piastres: number, lang: "ar" | "en"): string {
-  const v = (piastres / 100).toLocaleString(lang === "ar" ? "ar-EG" : "en-EG", {
+  const v = (piastres / 100).toLocaleString(lang === "ar" ? "ar-EG-u-nu-latn" : "en-EG", {
     minimumFractionDigits: 2, maximumFractionDigits: 2,
   });
   return lang === "ar" ? `${v} ج.م` : `EGP ${v}`;
@@ -118,8 +118,8 @@ function head(lang: "ar" | "en", settings?: DocSettings): string {
     : "";
   if (custom) return `<div class="brand">${logo}${esc(custom)}</div>`;
   return lang === "ar"
-    ? `<div class="brand">${logo}اتسوء<small>etsawaa.com — سوقك المصري متعدد البائعين</small></div>`
-    : `<div class="brand">${logo}Etsawaa<small>etsawaa.com — Egypt's multi-vendor marketplace</small></div>`;
+    ? `<div class="brand">${logo}إتسوء<small>etsawaa.com — تسوّق من بائعين مصريين موثوقين</small></div>`
+    : `<div class="brand">${logo}Etsawaa<small>etsawaa.com — Shop trusted Egyptian vendors</small></div>`;
 }
 
 function footer(lang: "ar" | "en", settings?: DocSettings): string {
@@ -242,7 +242,7 @@ export function renderAdminInvoice(input: DocInput): string {
     const own = items.filter((i) => i.group_id === g.id);
     const rows = own.map((i) => `
       <tr>
-        <td>${esc(ar ? i.product_name_ar : i.product_name_en)}${i.option_key ? ` <span class="muted">(${esc(i.option_key)})</span>` : ""}</td>
+        <td>${esc(ar ? i.product_name_ar : i.product_name_en)}${(ar ? i.option_label_ar : i.option_label_en) ? ` <span class="muted">(${esc((ar ? i.option_label_ar : i.option_label_en) ?? "")})</span>` : ""}</td>
         <td class="num">${i.qty}</td>
         <td class="num">${money(i.unit_price_piastres, lang)}</td>
         <td class="num">${money(i.line_total_piastres, lang)}</td>
@@ -405,7 +405,7 @@ export function renderVendorLabel(input: DocInput, group: GroupRow): string {
       <table style="flex:1;min-width:0;">
         <thead><tr><th>${L.item}</th><th style="width:22mm;">${L.qty}</th></tr></thead>
         <tbody>
-          ${own.map((i) => `<tr><td>${esc(ar ? i.product_name_ar : i.product_name_en)}${i.option_key ? ` <span class="muted">(${esc(i.option_key)})</span>` : ""}</td><td class="num">${i.qty}</td></tr>`).join("")}
+          ${own.map((i) => `<tr><td>${esc(ar ? i.product_name_ar : i.product_name_en)}${(ar ? i.option_label_ar : i.option_label_en) ? ` <span class="muted">(${esc((ar ? i.option_label_ar : i.option_label_en) ?? "")})</span>` : ""}</td><td class="num">${i.qty}</td></tr>`).join("")}
         </tbody>
       </table>
       <table class="totals" style="width:56mm;flex-shrink:0;margin-top:0;">
@@ -460,7 +460,7 @@ export function renderVendorInvoice(input: DocInput, group: GroupRow): string {
       <thead><tr><th>${L.item}</th><th>${L.qty}</th><th>${L.unit}</th><th>${L.total}</th><th>${L.discount}</th></tr></thead>
       <tbody>
         ${own.map((i) => `<tr>
-          <td>${esc(ar ? i.product_name_ar : i.product_name_en)}${i.option_key ? ` <span class="muted">(${esc(i.option_key)})</span>` : ""}</td>
+          <td>${esc(ar ? i.product_name_ar : i.product_name_en)}${(ar ? i.option_label_ar : i.option_label_en) ? ` <span class="muted">(${esc((ar ? i.option_label_ar : i.option_label_en) ?? "")})</span>` : ""}</td>
           <td class="num">${i.qty}</td>
           <td class="num">${money(i.unit_price_piastres, lang)}</td>
           <td class="num">${money(i.line_total_piastres, lang)}</td>

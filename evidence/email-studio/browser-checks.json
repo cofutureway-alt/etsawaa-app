@@ -1,0 +1,8 @@
+{
+  "results": [
+    "Arabic editor, cursor insertion, draft/publish isolation, toggle revision, unsaved test and restore: PASS",
+    "Both UI languages, desktop/mobile, no horizontal overflow: PASS",
+    "Bilingual email frame at 360/600 px, no browser errors: PASS"
+  ],
+  "errors": []
+}

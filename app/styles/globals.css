@@ -104,7 +104,7 @@
   body {
     background-color: var(--color-surface-alt);
     color: var(--color-text);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.55;
   }
 
@@ -178,6 +178,17 @@
     overflow-x: clip;
   }
 
+  /* Android Chrome gives date / time inputs a wide built-in minimum width; inside a
+     grid or flex column that width pushed the whole wizard (and its dialogs) past the
+     screen. Let them shrink like any other field. */
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="time"],
+  input[type="month"] {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   /* Long unbroken strings (emails, URLs) never push the layout */
   .break-anywhere {
     overflow-wrap: anywhere;
@@ -234,6 +245,100 @@
     scroll-margin-top: 6rem; /* sticky header + progress bar */
   }
 
+  /* Long unbroken text (a pasted URL, a word chain) wraps inside the box
+     instead of running off the page. */
+  :is(.pubProse, .richText) {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* Rich media from the TinyMCE editor (articles + product descriptions).
+     Embeds and images never overflow a phone screen; video embeds keep 16:9. */
+  :is(.pubProse, .richText) :is(img, video) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+  :is(.pubProse, .richText) iframe {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: var(--radius-md);
+  }
+  :is(.pubProse, .richText) figure {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 2);
+  }
+  :is(.pubProse, .richText) figcaption {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+  :is(.pubProse, .richText) table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  :is(.pubProse, .richText) :is(td, th) {
+    border: 1px solid var(--color-border);
+    padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+    text-align: start;
+  }
+  :is(.pubProse, .richText) th {
+    background-color: var(--color-surface-tint);
+    font-weight: 800;
+  }
+  /* Call-to-action buttons inserted with the editor's Button tool */
+  :is(.pubProse, .richText) a.ets-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 6);
+    border-radius: var(--radius-md);
+    background-color: var(--color-action);
+    color: var(--color-on-action);
+    font-weight: 800;
+    text-decoration: none;
+    transition: filter 150ms ease;
+  }
+  :is(.pubProse, .richText) a.ets-btn:hover {
+    filter: brightness(1.1);
+  }
+  :is(.pubProse, .richText) a.ets-btn.ets-btn-outline {
+    background-color: transparent;
+    color: var(--color-action);
+    box-shadow: inset 0 0 0 2px var(--color-action);
+  }
+
+  /* Product description from the editor — same rhythm, smaller scale */
+  .richText {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 3);
+  }
+  .richText > :is(h2, h3, h4) {
+    margin-top: calc(var(--spacing) * 2);
+    font-weight: 800;
+    color: var(--color-text);
+  }
+  .richText > h2 { font-size: 1.125rem; }
+  .richText > :is(h3, h4) { font-size: 1rem; }
+  .richText > ul { list-style: disc; padding-inline-start: calc(var(--spacing) * 6); }
+  .richText > ol { list-style: decimal; padding-inline-start: calc(var(--spacing) * 6); }
+  .richText a { color: var(--color-action); text-decoration: underline; }
+  .richText blockquote {
+    padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-tint);
+    color: var(--color-text-muted);
+  }
+
   /* AGENT.md §10: disabled motion for users who prefer reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -244,5 +349,47 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/* Phones zoom the page into a focused field whose text is smaller than 16px
+   (and stay zoomed). Form controls read at 16px on small screens instead. */
+@media (max-width: 767.98px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea,
+  [contenteditable="true"] {
+    font-size: 16px !important;
+  }
+}
+
+/* Mobile bottom navigation (components/layout/MobileBottomNav): while it is on
+   screen, page bottoms and other fixed bars sit above it. */
+@media (max-width: 767.98px) {
+  :root:has([data-bottom-nav]) {
+    --bottom-nav-h: calc(64px + env(safe-area-inset-bottom, 0px));
+    /* the Home button rises ~22px above the bar */
+    --bottom-nav-clear: 22px;
+  }
+  body:has([data-bottom-nav]) {
+    padding-bottom: var(--bottom-nav-h);
+  }
+}
+
+/* product page mobile buy card: the compare card stacks above it */
+@media (max-width: 767.98px) {
+  :root:has([data-buy-bar]) {
+    --buy-bar-h: 72px;
+  }
+}
+
+/* Vendor → My agreement: printing (or "Save as PDF") keeps only the contract */
+@media print {
+  @page { margin: 14mm; }
+  body * { visibility: hidden !important; }
+  #contract-print, #contract-print * { visibility: visible !important; }
+  #contract-print {
+    position: absolute; inset: 0 0 auto 0;
+    border: 0 !important; box-shadow: none !important; padding: 0 !important;
   }
 }

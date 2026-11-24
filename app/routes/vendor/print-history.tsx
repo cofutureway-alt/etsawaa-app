@@ -80,7 +80,7 @@ export default function VendorPrintHistory({ loaderData }: Route.ComponentProps)
                     <td className="p-2.5"><Badge tone="neutral">{t(`vph.doc_${r.doc_type}`)}</Badge></td>
                     <td className="num p-2.5" dir="ltr">{r.copies}</td>
                     <td className="num p-2.5 text-text-muted">
-                      {new Date(r.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG")}
+                      {new Date(r.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}
                     </td>
                     <td className="p-2.5">
                       {printable && number ? (

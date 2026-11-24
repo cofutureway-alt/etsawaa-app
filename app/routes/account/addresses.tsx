@@ -1,3 +1,4 @@
+import { PhoneInput } from "~/components/phone/PhoneInput";
 import { data, useFetcher } from "react-router";
 import type { Route } from "./+types/addresses";
 import { useTranslation } from "react-i18next";
@@ -12,7 +13,7 @@ import { Dialog } from "~/components/ui/Overlay";
 import { Badge } from "~/components/ui/Badge";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
-import { PencilIcon, PinIcon, TrashIcon, TruckIcon } from "~/components/ui/icons";
+import { PinIcon, TrashIcon, TruckIcon } from "~/components/ui/icons";
 import { GovernateAreaSelects } from "~/components/location/GovernateAreaSelects";
 import { LocationPicker } from "~/components/location/LocationPicker";
 import type { PinValue } from "~/components/checkout/MapPin";
@@ -342,13 +343,12 @@ export default function AccountAddressesPage({ loaderData }: Route.ComponentProp
 
           <Input id="ad-label" label={`${t("addresses.label")} (${t("checkout.optional")})`} name="label" value={form.label} onChange={(e) => set("label", e.target.value)} />
           <Input id="ad-name" label={t("checkout.fullName")} name="full_name" required autoComplete="name" value={form.full_name} onChange={(e) => set("full_name", e.target.value)} />
-          <Input
-            id="ad-phone" label={t("checkout.primaryPhone")} name="phone" required type="tel" dir="ltr"
-            hint={t("checkout.phoneHint")} value={form.phone} onChange={(e) => set("phone", e.target.value)}
+          <PhoneInput
+            id="ad-phone" label={t("checkout.primaryPhone")} name="phone" required value={form.phone} onChange={(e) => set("phone", e.target.value)}
             error={reason === "phone" ? t("addresses.error_phone") : undefined}
           />
-          <Input
-            id="ad-phone2" label={t("checkout.alternatePhone")} name="phone_alternate" required type="tel" dir="ltr"
+          <PhoneInput
+            id="ad-phone2" label={t("checkout.alternatePhone")} name="phone_alternate" required
             hint={t("addresses.alternateHint")} value={form.phone_alternate} onChange={(e) => set("phone_alternate", e.target.value)}
             error={reason === "alternate" ? t("addresses.error_phone") : reason === "phones_equal" ? t("checkout.errPhonesEqual") : undefined}
           />

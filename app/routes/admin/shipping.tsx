@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { createSupabaseServerClient } from "~/lib/supabase/server";
 import { requirePanelAccess } from "~/lib/auth/guards";
 import { requireLang } from "~/lib/lang.server";
-import { formatPiastres } from "~/lib/money";
+import { egpToPiastres, formatPiastres, piastresToEgp } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { Dialog } from "~/components/ui/Overlay";
 import { Input } from "~/components/ui/Input";
@@ -76,9 +76,10 @@ export async function action({ request, params }: Route.ActionArgs) {
     const groupId = String(form.get("group_id") ?? "");
     const decision = String(form.get("decision") ?? "");
     const note = String(form.get("note") ?? "");
-    const share = Math.max(0, Math.trunc(Number(form.get("shipping_piastres") ?? 0)) || 0);
+    const share = egpToPiastres(form.get("shipping_egp"));
+    if (decision === "approve" && share == null) return data({ ok: false, reason: "bad_amount" }, { status: 400 });
     const { data: res, error } = await client.rpc("fn_approve_vendor_shipping", {
-      p_group_id: groupId, p_decision: decision, p_shipping_piastres: share, p_note: note || null,
+      p_group_id: groupId, p_decision: decision, p_shipping_piastres: share ?? 0, p_note: note || null,
     });
     if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
     const r = res as { ok: boolean; reason?: string };
@@ -110,11 +111,7 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
       <PageHeader
         title={t("vendorShip.title")}
         count={loaderData.ship.length}
-        subtitle={
-          en
-            ? "Review vendor self-shipping requests, approve shipping fee shares, or reject non-eligible packages."
-            : "متابعة طلبات الشحن الذاتي من التجار، اعتماد نسب مصاريف التوصيل، وفحص الطلبات المؤهلة."
-        }
+        subtitle={t("vendorShip.subtitle")}
       />
 
       {/* shipping queue */}
@@ -140,8 +137,8 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
                     <input type="hidden" name="group_id" value={g.group_id} />
                     <input type="hidden" name="decision" value="approve" />
                     <label htmlFor={`share-${g.group_id}`} className="text-xs font-bold text-text">{t("vendorShip.shippingShare")}</label>
-                    <input id={`share-${g.group_id}`} name="shipping_piastres" type="number" min={0} step={1}
-                      defaultValue={g.shipping_fee_piastres}
+                    <input id={`share-${g.group_id}`} name="shipping_egp" type="number" min={0} step="0.01" inputMode="decimal"
+                      defaultValue={piastresToEgp(g.shipping_fee_piastres)}
                       className="w-28 rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-text font-bold" dir="ltr" />
                     <Button type="submit" size="sm" disabled={busy}>{t("vendorShip.approve")}</Button>
                   </fetcher.Form>
@@ -156,20 +153,6 @@ export default function AdminShippingPage({ loaderData }: Route.ComponentProps) 
             ))}
           </ul>
         )}
-      </section>
-
-      {/* H-14: withdrawal review moved to its OWN page (US-02: tabs + stats + CSV).
-          Link out, never duplicate CRUD surfaces. */}
-      <section className="mt-2" aria-label={t("wallet.withdrawals")}>
-        <div className="flex items-center justify-between rounded-lg border border-border bg-surface p-4 shadow-1">
-          <div>
-            <p className="text-sm font-bold text-text">{t("wd.movedToOwnPage")}</p>
-            <p className="text-xs text-text-muted">{en ? "Manage merchant wallet requests and settlements" : "إدارة تسويات ومحافظ التجار وسحب الأرباح"}</p>
-          </div>
-          <a href={`/${loaderData.lang}/admin/withdrawals`} className="rounded-md bg-action px-3.5 py-2 text-xs font-black text-on-action hover:bg-action-hover transition-colors shadow-1">
-            {t("wd.openPage")}
-          </a>
-        </div>
       </section>
 
       {/* reject dialog — reason required (US-12) */}
