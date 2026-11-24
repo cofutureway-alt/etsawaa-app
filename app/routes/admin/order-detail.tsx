@@ -176,7 +176,8 @@ export default function AdminOrderDetail({ loaderData }: Route.ComponentProps) {
   const piecesFinal = pieces === "auto" ? piecesAuto : pieces;
   const printQs = `copies=${copies}&pieces=${piecesFinal}&lang=${en ? "en" : "ar"}`;
   const print = (doc: string, vendor?: string) =>
-    `/${loaderData.lang}/order/${encodeURIComponent(order.number)}/print/${doc}?${printQs}${vendor ? `&vendor=${vendor}` : ""}`;
+    // The print view is a root-level route (/order/:number/print/:doc); the language travels as ?lang=.
+    `/order/${encodeURIComponent(order.number)}/print/${doc}?${printQs}${vendor ? `&vendor=${encodeURIComponent(vendor)}` : ""}`;
 
   return (
     <div className="space-y-6">
