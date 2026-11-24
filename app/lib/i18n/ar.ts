@@ -4187,6 +4187,7 @@ export const ar = {
   "notif.brand.proposed.body": "{{name}} — أضافها تاجر مع منتج.",
   "store.card.discountBadge": "خصم {{percent}}٪",
   "nav.goHome": "الذهاب للصفحة الرئيسية",
+  "nav.teamMail": "بريد الشركة",
   "nav.switchDashboard": "التنقل بين لوحات التحكم",
   "adminDash.ordersAction": "طلبات تحتاج إجراء",
   "adminDash.openMessages": "رسائل تواصل مفتوحة",

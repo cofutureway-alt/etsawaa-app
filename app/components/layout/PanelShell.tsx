@@ -3,7 +3,8 @@ import { Link, useLocation, useRouteLoaderData } from "react-router";
 import type { RootLoaderData } from "~/features/settings/api";
 import { useTranslation } from "react-i18next";
 import { Drawer } from "~/components/ui";
-import { CheckIcon, ChevronDownIcon, GridIcon, HomeIcon, MenuIcon, PanelLeftIcon, StoreIcon, UsersIcon, XIcon } from "~/components/ui/icons";
+import { CheckIcon, ChevronDownIcon, GridIcon, HomeIcon, MailIcon, MenuIcon, PanelLeftIcon, StoreIcon, UsersIcon, XIcon } from "~/components/ui/icons";
+import { TEAM_MAIL_URL } from "./public/shared";
 import { SidebarNav, type SidebarGroup } from "./SidebarNav";
 
 /** One dashboard the signed-in user can open (label stays an i18n key). */
@@ -53,7 +54,7 @@ function PanelSwitcher({ panels, onNavigate }: { panels: PanelLink[]; onNavigate
   // the staff portal is for the team only: shown when this person can open the admin panel (admin / staff)
   const isTeam = panels.some((panel) => panel.to.endsWith("/admin"));
   const portal = isTeam && site?.portal_url ? { url: site.portal_url, label: root?.locale === "en" ? site.portal_label_en : site.portal_label_ar } : null;
-  if (panels.length < 2 && !portal) return null;
+  if (panels.length < 2 && !portal && !isTeam) return null;
   return (
     <div className="flex flex-col">
       <button
@@ -89,6 +90,17 @@ function PanelSwitcher({ panels, onNavigate }: { panels: PanelLink[]; onNavigate
               className="flex min-h-10 items-center gap-2 rounded-sm px-2.5 py-2 text-xs font-bold text-side-text transition-colors duration-150 hover:bg-white/10 hover:text-white">
               <UsersIcon aria-hidden="true" className="size-3.5 shrink-0" />
               <span className="truncate">{portal.label}</span>
+              <span aria-hidden="true" className="ms-auto text-2xs opacity-70">↗</span>
+            </a>
+          </li>
+        ) : null}
+        {/* company mail: the team only (same rule as the staff portal) */}
+        {isTeam ? (
+          <li>
+            <a href={TEAM_MAIL_URL} target="_blank" rel="noopener noreferrer"
+              className="flex min-h-10 items-center gap-2 rounded-sm px-2.5 py-2 text-xs font-bold text-side-text transition-colors duration-150 hover:bg-white/10 hover:text-white">
+              <MailIcon aria-hidden="true" className="size-3.5 shrink-0" />
+              <span className="truncate">{t("nav.teamMail")}</span>
               <span aria-hidden="true" className="ms-auto text-2xs opacity-70">↗</span>
             </a>
           </li>

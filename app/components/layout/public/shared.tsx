@@ -73,6 +73,14 @@ export function IconLink({
   );
 }
 
+/** The team's webmail (mail.etsawaa.com). The mail server's admin site (dmail) is never linked. */
+export const TEAM_MAIL_URL = "https://mail.etsawaa.com";
+
+/** Company mail is for the team only: administrators and staff (supervisors are staff roles). */
+export function canOpenTeamMail(role: string | null | undefined): boolean {
+  return role === "admin" || role === "staff";
+}
+
 /**
  * Every dashboard a signed-in person can jump to from the avatar menu:
  * admin → admin · seller · customer; staff → staff · seller · customer (a staff

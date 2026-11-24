@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useRouteLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { MediaImg } from "~/components/catalog/MediaImg";
-import { ChartIcon, StoreIcon, UserIcon, UsersIcon } from "~/components/ui/icons";
+import { ChartIcon, MailIcon, StoreIcon, UserIcon, UsersIcon } from "~/components/ui/icons";
 import type { RootLoaderData } from "~/features/settings/api";
-import { panelLinks } from "./shared";
+import { canOpenTeamMail, panelLinks, TEAM_MAIL_URL } from "./shared";
 
 export function UserMenu({ lang, name, avatarUrl, role }: { lang: string; name: string; avatarUrl: string | null; role?: string }) {
   const { t } = useTranslation();
@@ -80,6 +80,14 @@ export function UserMenu({ lang, name, avatarUrl, role }: { lang: string; name: 
                   className="flex min-h-11 items-center gap-2.5 rounded-md bg-surface-tint px-3 text-sm font-extrabold text-action hover:bg-action hover:text-on-action">
                   <UsersIcon aria-hidden="true" className="size-4 shrink-0" />
                   <span className="min-w-0 flex-1 truncate">{portal.label}</span>
+                  <span aria-hidden="true" className="text-xs opacity-70">↗</span>
+                </a>
+              ) : null}
+              {canOpenTeamMail(role) ? (
+                <a href={TEAM_MAIL_URL} target="_blank" rel="noopener noreferrer" role="menuitem" onClick={() => setOpen(false)}
+                  className="flex min-h-11 items-center gap-2.5 rounded-md bg-surface-tint px-3 text-sm font-extrabold text-action hover:bg-action hover:text-on-action">
+                  <MailIcon aria-hidden="true" className="size-4 shrink-0" />
+                  <span className="min-w-0 flex-1 truncate">{t("nav.teamMail")}</span>
                   <span aria-hidden="true" className="text-xs opacity-70">↗</span>
                 </a>
               ) : null}

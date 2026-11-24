@@ -4188,6 +4188,7 @@ export const en = {
   "notif.brand.proposed.body": "{{name}} — proposed by a vendor with a product.",
   "store.card.discountBadge": "{{percent}}% OFF",
   "nav.goHome": "Go to the home page",
+  "nav.teamMail": "Company mail",
   "nav.switchDashboard": "Switch dashboard",
   "adminDash.ordersAction": "Orders needing action",
   "adminDash.openMessages": "Open contact messages",
