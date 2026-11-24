@@ -271,7 +271,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   for (let i = 0; i < brandThumbs.length; i += 2) brandPairs.push(brandThumbs.slice(i, i + 2));
   const root = useRouteLoaderData("root") as RootLoaderData | undefined;
   const contact = root?.contact;
-  const socialUrls = Object.entries(root?.social ?? {}).filter(([, v]) => Boolean(v)).map(([k, v]) => socialHref(k, v as string));
+  const socialUrls = Object.entries(root?.social ?? {})
+    .filter(([k, v]) => Boolean(v) && k !== "whatsapp")
+    .map(([k, v]) => socialHref(k, v as string));
   const viewAll = (to: string) => (
     <Link
       to={`/${lang}${to}`}

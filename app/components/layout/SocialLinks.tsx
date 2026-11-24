@@ -13,7 +13,10 @@ const PATHS: Record<string, string> = {
 };
 
 export function socialHref(key: string, value: string): string {
-  if (key === "whatsapp" && !/^https?:/.test(value)) return `https://wa.me/${value.replace(/[^\d]/g, "")}`;
+  if (key === "whatsapp" && !/^https?:/.test(value)) {
+    const digits = value.replace(/[^\d]/g, "");
+    return `https://wa.me/${/^01\d{9}$/.test(digits) ? `2${digits}` : digits.replace(/^00/, "")}`;
+  }
   return value;
 }
 

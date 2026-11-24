@@ -68,8 +68,8 @@ export const en = {
   "footer.languages": "Arabic, English",
 
   "home.welcome": "Welcome to Etsawaa",
-  "home.metaTitle": "Etsawaa | Online Shopping in Egypt from Trusted Stores — Cash on Delivery",
-  "home.metaDescription": "Etsawaa (إتسوء) is an Egyptian online marketplace: mobiles, electronics, fashion, home appliances and more from vetted stores, clear prices, delivery to every governorate, cash on delivery or online payment.",
+  "home.metaTitle": "Etsawaa (إتسوء) | Online Shopping in Egypt from Trusted Stores",
+  "home.metaDescription": "Shop mobiles, electronics, fashion and home appliances from trusted Egyptian stores on Etsawaa. Clear prices, delivery to every governorate, cash on delivery.",
 
   "auth.login.title": "Log in",
   "auth.login.subtitle": "Welcome back. Log in to continue.",

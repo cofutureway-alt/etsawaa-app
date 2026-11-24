@@ -267,8 +267,10 @@ export default function ProductPage({ loaderData }: Route.ComponentProps) {
             url: `${siteUrl()}/${lang}/product/${encodeURIComponent(lang === "ar" ? card.slug_ar : card.slug_en)}`,
             category: (lang === "ar" ? card.category_name_ar : card.category_name_en) || undefined,
             brand: card.brand_name_ar || card.brand_name_en
-              ? { "@type": "Brand", name: lang === "ar" ? card.brand_name_ar : card.brand_name_en }
-              : undefined,
+              ? { "@type": "Brand", name: (lang === "ar" ? card.brand_name_ar || card.brand_name_en : card.brand_name_en || card.brand_name_ar) }
+              : storeName
+                ? { "@type": "Brand", name: storeName }
+                : undefined,
             offers: {
               "@type": "Offer",
               priceCurrency: "EGP",
