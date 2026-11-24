@@ -184,7 +184,10 @@ export function PanelShell({
   );
 
   return (
-    <div className="min-h-dvh bg-surface-alt">
+    // relative + overflow-x-clip: nothing inside (a hidden label left in a
+    // wide table, a long word) can make the page wider than the phone; clip
+    // (not hidden) keeps the sticky header working
+    <div className="relative min-h-dvh overflow-x-clip bg-surface-alt">
       <meta name="robots" content="noindex, nofollow" />
       <div className="flex min-h-dvh">
         {/* Desktop sidebar: sticky, deep brand shell */}

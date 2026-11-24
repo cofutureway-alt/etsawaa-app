@@ -15,7 +15,8 @@ export interface ChildSize {
   skuEdited?: boolean;
   /** phones / computers: the row's RAM ("" = none) */
   ram_option_id?: string;
-  /** a row's own price / sale price ("" = the variant's) — phones: each storage + RAM has its price */
+  /** a row's own price / sale price ("" = the variant's) — phones: each storage + RAM has its
+   *  price; pack sizes and clothing sizes may too (150 mL and 250 mL cost differently) */
   price?: string;
   sale_price?: string;
 }
@@ -124,13 +125,14 @@ export function childrenFromLoader(children: LoaderChild[], _hasSize: boolean): 
     color_option_id: c.color_option_id ?? "",
     sizes: c.sizes.length > 0
       ? c.sizes.map((s) => {
-          // a row priced apart from its variant keeps its own price
+          // a row priced apart from its variant keeps its own price (and its own discount)
           const own = s.price_piastres != null && s.price_piastres !== c.price_piastres;
+          const ownSale = own || (s.price_piastres != null && (s.sale_price_piastres ?? null) !== (c.sale_price_piastres ?? null));
           return {
             size_option_id: s.size_option_id ?? "", stock: String(s.stock), sku: s.sku,
             ram_option_id: s.ram_option_id ?? "",
             price: own ? piastresToEgp(s.price_piastres ?? null) : "",
-            sale_price: own ? piastresToEgp(s.sale_price_piastres ?? null) : "",
+            sale_price: ownSale ? piastresToEgp(s.sale_price_piastres ?? null) : "",
           };
         })
       : [{ size_option_id: "", stock: "0", sku: null }],
@@ -142,12 +144,30 @@ export function childrenFromLoader(children: LoaderChild[], _hasSize: boolean): 
   }));
 }
 
+/** A row's price: its own when typed, else the variant's. */
+export function rowPrice(c: Pick<ChildDraft, "price">, s: ChildSize): string {
+  return s.price?.trim() ? s.price : c.price;
+}
+
+/** Lowest price a variant is sold at (its rows' own prices count) — 0 when none is set. */
+export function lowestPrice(c: ChildDraft): number {
+  const all = c.sizes.map((s) => egpToPiastres(rowPrice(c, s)) ?? 0).filter((n) => n > 0);
+  return all.length ? Math.min(...all) : 0;
+}
+
+/** Every row of the variant carries its own price, so the variant's price may stay empty. */
+export function allRowsPriced(c: ChildDraft): boolean {
+  return c.sizes.length > 0 && c.sizes.every((s) => Boolean(s.price?.trim()));
+}
+
 export function childrenPayload(children: ChildDraft[]) {
   return children.map((c) => ({
     id: c.id,
     color_option_id: c.color_option_id || null,
-    price_piastres: egpToPiastres(c.price),
-    sale_price_piastres: c.sale_price.trim() ? egpToPiastres(c.sale_price) : null,
+    // every size priced on its own: the variant stands at its lowest price
+    price_piastres: egpToPiastres(c.price) || (allRowsPriced(c) ? lowestPrice(c) || null : null),
+    // (no price of its own = no discount of its own: each size carries its discount)
+    sale_price_piastres: c.sale_price.trim() && c.price.trim() ? egpToPiastres(c.sale_price) : null,
     sale_starts_at: c.sale_starts_at ? new Date(c.sale_starts_at).toISOString() : null,
     sale_ends_at: c.sale_ends_at ? new Date(c.sale_ends_at).toISOString() : null,
     images: c.images,
@@ -156,9 +176,10 @@ export function childrenPayload(children: ChildDraft[]) {
       ram_option_id: s.ram_option_id || null,
       stock: Math.max(0, Math.trunc(Number(s.stock)) || 0),
       ...(s.skuEdited ? { sku: (s.sku ?? "").trim() } : {}),
-      // only rows priced on their own (configuration rows) send a price
-      ...(s.price?.trim() ? {
-        price_piastres: egpToPiastres(s.price),
+      // only rows priced on their own send a price: their own price (or the
+      // variant's, when only their discount is their own) and their own discount
+      ...(s.price?.trim() || s.sale_price?.trim() ? {
+        price_piastres: egpToPiastres(rowPrice(c, s)),
         sale_price_piastres: s.sale_price?.trim() ? egpToPiastres(s.sale_price) : null,
       } : {}),
     })),
@@ -249,12 +270,20 @@ export function childProblems(c: ChildDraft, all: ChildDraft[], hasColor: boolea
     const combos = c.sizes.map((s) => `${s.size_option_id}|${s.ram_option_id ?? ""}`);
     if (new Set(combos).size !== combos.length) out.push("children.err.rowDuplicate");
   } else {
+    // the variant's price may stay empty only when every size has its own
     const price = egpToPiastres(c.price);
-    if (!price) out.push("children.err.price");
-    if (c.sale_price.trim()) {
+    if (c.price.trim() ? !price : !allRowsPriced(c)) out.push("children.err.price");
+    if (c.sale_price.trim() && price) {
       const sale = egpToPiastres(c.sale_price);
-      if (!sale || (price && sale >= price)) out.push("children.err.sale");
+      if (!sale || sale >= price) out.push("children.err.sale");
     }
+    // a size's own price, and its own discount below the price it sells at
+    if (c.sizes.some((s) => s.price?.trim() && !egpToPiastres(s.price))) out.push("children.err.sizePrice");
+    if (c.sizes.some((s) => {
+      if (!s.sale_price?.trim()) return false;
+      const p = egpToPiastres(rowPrice(c, s)), sale = egpToPiastres(s.sale_price);
+      return !sale || (p != null && sale >= p);
+    }) && !out.includes("children.err.sale")) out.push("children.err.sale");
   }
   if (c.sale_starts_at && c.sale_ends_at && new Date(c.sale_ends_at) <= new Date(c.sale_starts_at)) out.push("children.err.window");
   if (c.sizes.some((s) => !/^\d+$/.test(s.stock.trim()))) out.push("children.err.stock");

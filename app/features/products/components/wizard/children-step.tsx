@@ -6,7 +6,8 @@ import { ChevronDownIcon, CopyIcon, PlusIcon, TrashIcon } from "~/components/ui/
 import { SelectMenu } from "~/components/ui/SelectMenu";
 import { MediaImage, MediaPickerDialog } from "~/features/media/components/media-ui";
 import type { MediaSettings } from "~/lib/media.shared";
-import { addVariant, childProblems, emptyChild, isBaseOffer, newKey, nextConfigRow, nextVariant, SIZES_MODE, sizeAxisKind, type ChildDraft, type ChildSize, type SizeOption, type VariantMode } from "./children";
+import { addVariant, childProblems, emptyChild, isBaseOffer, lowestPrice, newKey, nextConfigRow, nextVariant, SIZES_MODE, sizeAxisKind, type ChildDraft, type ChildSize, type SizeOption, type VariantMode } from "./children";
+import { piastresToEgp } from "~/lib/money";
 import { ColorPicker, swatchStyle } from "./color-picker";
 import type { SaveActionData, TemplateOption } from "./types";
 
@@ -255,29 +256,14 @@ export function ChildrenStep({
                     <p className="text-sm font-bold text-text">{t(sk("children.stockTitle"))}<span className="ms-0.5 text-danger">*</span></p>
                     <p className="text-xs text-text-muted">{t("children.baseSizesHint")}</p>
                   </div>
-                  <div className="overflow-hidden rounded-md border border-border bg-surface">
-                    <div className="grid grid-cols-[1fr_7rem] gap-2 bg-surface-tint/50 px-3 py-2 text-2xs font-bold text-text-muted sm:grid-cols-[1fr_8rem_1fr]">
-                      <span>{t(sk("children.size"))}</span>
-                      <span>{t("children.stock")}</span>
-                      <span className="hidden sm:block">{t("children.sku")}</span>
-                    </div>
-                    {baseRows.map((s, si) => (
-                      <div key={s.size_option_id || si} className="grid grid-cols-[1fr_7rem] items-center gap-2 border-t border-border px-3 py-2 sm:grid-cols-[1fr_8rem_1fr]">
-                        <span className="text-sm font-bold text-text">{s.size_option_id ? sizeName(s.size_option_id) : t("children.allUnits")}</span>
-                        <input type="number" min={0} step={1} inputMode="numeric" dir="ltr" value={s.stock} aria-label={t("children.stock")}
-                          onChange={(e) => patchBase({ sizes: baseRows.map((x, xi) => (xi === si ? { ...x, stock: e.target.value } : x)) })}
-                          className="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm focus:border-action focus:outline-none" />
-                        <SkuInput className="col-span-2 sm:col-span-1" value={s.sku}
-                          onChange={(sku) => patchBase({ sizes: baseRows.map((x, xi) => (xi === si ? { ...x, sku, skuEdited: true } : x)) })} />
-                      </div>
-                    ))}
-                  </div>
+                  <SizeRows rows={baseRows} child={base!} sizeName={sizeName} onChange={(rows) => patchBase({ sizes: rows })} />
                 </div>
               ) : null}
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <Input id="base-price" label={t("children.price")} required type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr"
-                  value={base?.price ?? ""} onChange={(e) => patchBase({ price: e.target.value })} />
+                <Input id="base-price" label={t("children.price")} required={!manyBaseSizes} type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr"
+                  value={base?.price ?? ""} onChange={(e) => patchBase({ price: e.target.value })}
+                  hint={manyBaseSizes ? t("children.basePriceHint") : undefined} />
                 {manyBaseSizes ? null : (
                   <Input id="base-stock" label={t("children.stock")} required type="number" min={0} step={1} inputMode="numeric" dir="ltr"
                     value={baseRow.stock}
@@ -292,9 +278,9 @@ export function ChildrenStep({
                 <Input id="base-sale" label={t("children.salePrice")} type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr"
                   value={base?.sale_price ?? ""} onChange={(e) => patchBase({ sale_price: e.target.value })} />
                 <div className="hidden lg:block" />
-                <Input id="base-from" label={t("children.saleFrom")} type="datetime-local" dir="ltr" disabled={!base?.sale_price.trim()}
+                <Input id="base-from" label={t("children.saleFrom")} type="datetime-local" dir="ltr" disabled={!hasSale(base)}
                   value={base?.sale_starts_at ?? ""} onChange={(e) => patchBase({ sale_starts_at: e.target.value })} hint={t("children.saleFromHint")} />
-                <Input id="base-to" label={t("children.saleTo")} type="datetime-local" dir="ltr" disabled={!base?.sale_price.trim()}
+                <Input id="base-to" label={t("children.saleTo")} type="datetime-local" dir="ltr" disabled={!hasSale(base)}
                   value={base?.sale_ends_at ?? ""} onChange={(e) => patchBase({ sale_ends_at: e.target.value })} />
               </div>
             </>
@@ -338,10 +324,9 @@ export function ChildrenStep({
                     <span className="block truncate text-xs text-text-muted">
                       {hasSize ? `${c.sizes.filter((s) => s.size_option_id).map((s) => sizeName(s.size_option_id)).join("، ") || t(sk("children.noSizes"))} · ` : ""}
                       {(() => {
-                        // phones: the lowest configuration price ("from")
-                        const shown = mode.config
-                          ? c.sizes.map((x) => Number(x.price)).filter((n) => n > 0).sort((a, b) => a - b)[0]
-                          : c.price;
+                        // sizes / configurations priced apart: the lowest price ("from")
+                        const low = lowestPrice(c);
+                        const shown = low ? piastresToEgp(low) : "";
                         return shown ? `${shown} ${t("children.egp")}` : t("children.noPrice");
                       })()} · {t("children.stockN", { count: stockTotal })}
                     </span>
@@ -430,35 +415,23 @@ export function ChildrenStep({
                     {c.sizes.length === 0 ? (
                       <p className="rounded-md border border-dashed border-border px-3 py-3 text-xs text-text-muted">{t(sk("children.pickSizesFirst"))}</p>
                     ) : (
-                      <div className="overflow-hidden rounded-md border border-border bg-surface">
-                        <div className="grid grid-cols-[1fr_7rem] gap-2 bg-surface-tint/50 px-3 py-2 text-2xs font-bold text-text-muted sm:grid-cols-[1fr_8rem_1fr]">
-                          <span>{c.sizes.some((s) => s.size_option_id) ? t(sk("children.size")) : t("children.item")}</span>
-                          <span>{t("children.stock")}</span>
-                          <span className="hidden sm:block">{t("children.sku")}</span>
-                        </div>
-                        {c.sizes.map((s, si) => (
-                          <div key={s.size_option_id || "plain"} className="grid grid-cols-[1fr_7rem] items-center gap-2 border-t border-border px-3 py-2 sm:grid-cols-[1fr_8rem_1fr]">
-                            <span className="text-sm font-bold text-text">{s.size_option_id ? sizeName(s.size_option_id) : t("children.allUnits")}</span>
-                            <input type="number" min={0} step={1} inputMode="numeric" dir="ltr" value={s.stock} aria-label={t("children.stock")}
-                              onChange={(e) => update(c.key, { sizes: c.sizes.map((x, xi) => (xi === si ? { ...x, stock: e.target.value } : x)) })}
-                              className="w-full rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm focus:border-action focus:outline-none" />
-                            <SkuInput className="col-span-2 sm:col-span-1" value={s.sku}
-                              onChange={(sku) => update(c.key, { sizes: c.sizes.map((x, xi) => (xi === si ? { ...x, sku, skuEdited: true } : x)) })} />
-                          </div>
-                        ))}
-                      </div>
+                      <>
+                        {c.sizes.some((s) => s.size_option_id) ? <p className="text-xs text-text-muted">{t("children.baseSizesHint")}</p> : null}
+                        <SizeRows rows={c.sizes} child={c} sizeName={sizeName} onChange={(rows) => update(c.key, { sizes: rows })} />
+                      </>
                     )}
                   </div>
 
                   {/* 4–6: price, discount, window */}
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <Input id={`ch-price-${c.key}`} label={t("children.price")} required type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr"
-                      value={c.price} onChange={(e) => update(c.key, { price: e.target.value })} />
+                    <Input id={`ch-price-${c.key}`} label={t("children.price")} required={c.sizes.length < 2} type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr"
+                      value={c.price} onChange={(e) => update(c.key, { price: e.target.value })}
+                      hint={c.sizes.length > 1 ? t("children.basePriceHint") : undefined} />
                     <Input id={`ch-sale-${c.key}`} label={t("children.salePrice")} type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr"
                       value={c.sale_price} onChange={(e) => update(c.key, { sale_price: e.target.value })} />
-                    <Input id={`ch-from-${c.key}`} label={t("children.saleFrom")} type="datetime-local" dir="ltr" disabled={!c.sale_price.trim()}
+                    <Input id={`ch-from-${c.key}`} label={t("children.saleFrom")} type="datetime-local" dir="ltr" disabled={!hasSale(c)}
                       value={c.sale_starts_at} onChange={(e) => update(c.key, { sale_starts_at: e.target.value })} hint={t("children.saleFromHint")} />
-                    <Input id={`ch-to-${c.key}`} label={t("children.saleTo")} type="datetime-local" dir="ltr" disabled={!c.sale_price.trim()}
+                    <Input id={`ch-to-${c.key}`} label={t("children.saleTo")} type="datetime-local" dir="ltr" disabled={!hasSale(c)}
                       value={c.sale_ends_at} onChange={(e) => update(c.key, { sale_ends_at: e.target.value })} />
                   </div>
                   </>
@@ -592,6 +565,70 @@ function ConfigRows({ rows, sizes, ramOptions, hasRam, isAr, onChange, allowAdd 
           <PlusIcon className="size-4" />{t("children.addConfig")}
         </button>
       ) : null}
+    </div>
+  );
+}
+
+/** A discount runs on the variant's price or on a size's own price. */
+function hasSale(c: ChildDraft | undefined): boolean {
+  return Boolean(c && (c.sale_price.trim() || c.sizes.some((s) => s.sale_price?.trim())));
+}
+
+/**
+ * Stock, price, discount and SKU of each size (pack size) of a variant. The
+ * price and discount are optional: empty = the variant's price and discount.
+ * One card per size, two fields a line on a phone: nothing wider than the screen.
+ */
+function SizeRows({ rows, child, sizeName, onChange }: {
+  rows: ChildSize[];
+  child: ChildDraft;
+  sizeName: (id: string) => string;
+  onChange: (rows: ChildSize[]) => void;
+}) {
+  const { t } = useTranslation();
+  const set = (i: number, patch: Partial<ChildSize>) => onChange(rows.map((x, xi) => (xi === i ? { ...x, ...patch } : x)));
+  // a lone plain row (no size) is priced by the variant's own fields
+  const priced = rows.some((s) => s.size_option_id);
+  const field = "w-full min-w-0 rounded-md border border-border bg-surface px-2.5 py-2 text-sm text-text placeholder:text-text-faint focus:border-action focus:outline-none";
+  const label = "flex min-w-0 flex-col gap-1 text-2xs font-bold text-text-muted";
+  return (
+    <div className="divide-y divide-border rounded-md border border-border bg-surface">
+      {rows.map((s, i) => {
+        const name = s.size_option_id ? sizeName(s.size_option_id) : t("children.allUnits");
+        const own = Boolean(s.price?.trim());
+        return (
+          <div key={s.size_option_id || i} className="flex flex-col gap-2 px-3 py-3">
+            <p className="text-sm font-extrabold text-text">{name}</p>
+            <div className={`grid grid-cols-2 gap-2 ${priced ? "sm:grid-cols-4" : "sm:grid-cols-2"}`}>
+              <label className={label}>
+                <span>{t("children.stock")}<span className="ms-0.5 text-danger">*</span></span>
+                <input type="number" min={0} step={1} inputMode="numeric" dir="ltr" className={field} value={s.stock}
+                  aria-label={`${t("children.stock")} ${name}`} onChange={(e) => set(i, { stock: e.target.value })} />
+              </label>
+              {priced ? (
+                <label className={label}>
+                  {t("children.sizePrice")}
+                  <input type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr" className={field} value={s.price ?? ""}
+                    placeholder={child.price.trim() || undefined} aria-label={`${t("children.sizePrice")} ${name}`}
+                    onChange={(e) => set(i, { price: e.target.value })} />
+                </label>
+              ) : null}
+              {priced ? (
+                <label className={label}>
+                  {t("children.sizeSalePrice")}
+                  <input type="number" min={0.01} step="0.01" inputMode="decimal" dir="ltr" className={field} value={s.sale_price ?? ""}
+                    placeholder={own ? t("children.noDiscount") : child.sale_price.trim() || undefined}
+                    aria-label={`${t("children.sizeSalePrice")} ${name}`} onChange={(e) => set(i, { sale_price: e.target.value })} />
+                </label>
+              ) : null}
+              <label className={`${label} ${priced ? "col-span-2 sm:col-span-1" : ""}`}>
+                {t("children.sku")}
+                <SkuInput className="py-2" value={s.sku} onChange={(sku) => set(i, { sku, skuEdited: true })} />
+              </label>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

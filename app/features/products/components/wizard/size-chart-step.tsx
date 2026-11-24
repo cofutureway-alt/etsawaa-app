@@ -70,7 +70,7 @@ export function SizeChartEditor({ chart, onChange, suggested, sizes, isAr, edita
           <GarmentDiagram garment={garment} className="h-40 w-40" />
           <MeasureHowTo garment={garment} />
         </div>
-        <div className="min-w-0 overflow-x-auto rounded-lg border border-border">
+        <div className="relative min-w-0 overflow-x-auto rounded-lg border border-border">
           <table className="w-full min-w-[520px] text-sm">
             <thead className="bg-surface-tint text-xs font-extrabold text-text">
               <tr>

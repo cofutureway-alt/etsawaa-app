@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { addVariant, childProblems, childrenPayload, emptyChild, isBaseOffer, isPlainChild, nextConfigRow, nextVariant, packSizesForForm, type SizeOption } from "../app/features/products/components/wizard/children.ts";
+import { addVariant, childProblems, childrenFromLoader, childrenPayload, emptyChild, isBaseOffer, isPlainChild, nextConfigRow, nextVariant, packSizesForForm, type SizeOption } from "../app/features/products/components/wizard/children.ts";
 
 test("a new product has no variant and counts as the base offer (price + stock only)", () => {
   assert.equal(isBaseOffer([]), true);
@@ -130,4 +130,52 @@ test("phones: a lone base-offer configuration row still needs storage, RAM, pric
   assert.ok(childProblems(noStorage, [noStorage], true, true, mode).includes("children.err.sizes"));
   const noPrice = { ...base, sizes: [{ ...row, price: "" }] };
   assert.ok(childProblems(noPrice, [noPrice], true, true, mode).includes("children.err.rowPrice"));
+});
+
+test("pack sizes: each size may have its own price and discount; empty = the variant's", () => {
+  const row = (size: string, price = "", sale = "") => ({ size_option_id: size, stock: "5", sku: null, price, sale_price: sale });
+  // 150 mL at the regular price, 250 mL priced apart with its own discount
+  const perfume = { ...emptyChild(true), price: "200", sale_price: "180", sizes: [row("v150"), row("v250", "300", "270")] };
+  assert.deepEqual(childProblems(perfume, [perfume], false, true), []);
+  const sent = childrenPayload([perfume])[0]!;
+  assert.equal(sent.price_piastres, 20000);
+  assert.equal(sent.sale_price_piastres, 18000);
+  assert.equal("price_piastres" in sent.sizes[0]!, false); // takes the variant's price and discount
+  assert.equal(sent.sizes[1]!.price_piastres, 30000);
+  assert.equal(sent.sizes[1]!.sale_price_piastres, 27000);
+  // a size with its own price and no discount of its own sells at its price
+  const noSale = { ...perfume, sizes: [row("v150"), row("v250", "300")] };
+  assert.equal(childrenPayload([noSale])[0]!.sizes[1]!.sale_price_piastres, null);
+});
+
+test("pack sizes: the regular price may stay empty once every size has its own", () => {
+  const row = (size: string, price = "", sale = "") => ({ size_option_id: size, stock: "5", sku: null, price, sale_price: sale });
+  const all = { ...emptyChild(true), sizes: [row("v150", "200"), row("v250", "300")] };
+  assert.deepEqual(childProblems(all, [all], false, true), []);
+  assert.equal(childrenPayload([all])[0]!.price_piastres, 20000); // the variant stands at its lowest price
+  const some = { ...all, sizes: [row("v150", "200"), row("v250")] };
+  assert.ok(childProblems(some, [some], false, true).includes("children.err.price"));
+});
+
+test("pack sizes: a wrong size price or a discount above it is flagged", () => {
+  const row = (size: string, price = "", sale = "") => ({ size_option_id: size, stock: "5", sku: null, price, sale_price: sale });
+  const zero = { ...emptyChild(true), price: "200", sizes: [row("v150", "0"), row("v250")] };
+  assert.ok(childProblems(zero, [zero], false, true).includes("children.err.sizePrice"));
+  const high = { ...emptyChild(true), price: "200", sizes: [row("v150"), row("v250", "300", "320")] };
+  assert.ok(childProblems(high, [high], false, true).includes("children.err.sale"));
+  // a discount on a size without its own price must stay below the regular price
+  const onBase = { ...emptyChild(true), price: "200", sizes: [row("v150", "", "250"), row("v250")] };
+  assert.ok(childProblems(onBase, [onBase], false, true).includes("children.err.sale"));
+});
+
+test("pack sizes: a saved size keeps its own price and discount when the form opens again", () => {
+  const loaded = childrenFromLoader([{
+    id: "g1", color_option_id: null, price_piastres: 20000, sale_price_piastres: 18000, sale_starts_at: null, sale_ends_at: null, images: [],
+    sizes: [
+      { size_option_id: "v150", stock: 5, sku: "A", price_piastres: 20000, sale_price_piastres: 18000 },
+      { size_option_id: "v250", stock: 5, sku: "B", price_piastres: 30000, sale_price_piastres: null },
+      { size_option_id: "v500", stock: 5, sku: "C", price_piastres: 20000, sale_price_piastres: 15000 },
+    ],
+  } as never], true)[0]!;
+  assert.deepEqual(loaded.sizes.map((s) => [s.price, s.sale_price]), [["", ""], ["300", ""], ["", "150"]]);
 });
