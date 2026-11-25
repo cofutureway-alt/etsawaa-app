@@ -196,10 +196,8 @@ function BalanceCard({ totalLabel, total, rows }: {
           <p className="text-xs font-bold opacity-80">{totalLabel}</p>
           <p className="num mt-1 text-3xl font-black leading-tight" dir="ltr">{total}</p>
         </div>
-        {/* the brand logo in its own colours on a light plate */}
-        <span className="shrink-0 rounded-xl bg-white px-2.5 py-1.5 shadow-sm">
-          <img src="/logo-mark.webp" alt="" width={548} height={245} className="h-7 w-auto" />
-        </span>
+        {/* the brand logo as it is, no plate behind it */}
+        <img src="/logo-mark.webp" alt="" width={548} height={245} className="h-10 w-auto shrink-0 drop-shadow" />
       </div>
       <div className="grid grid-cols-2 gap-3 border-t border-white/15 pt-3">
         {rows.map((r) => (
