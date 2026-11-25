@@ -9,7 +9,7 @@ import { EmptyState } from "~/components/ui/EmptyState";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 import type { ReactNode } from "react";
-import { nearestExpiry, walletAvailable } from "~/features/wallet/split";
+import { SYSTEM_REASONS, nearestExpiry, walletAvailable } from "~/features/wallet/split";
 import { Tabs } from "~/components/ui/Tabs";
 import { CartIcon, ClockIcon, GiftIcon, HistoryIcon, InfoIcon, WalletIcon } from "~/components/ui/icons";
 
@@ -31,9 +31,6 @@ interface WalletTx {
   order_number: string | null;
   created_at: string;
 }
-/** Reasons the database writes for automatic movements: not for the customer to read. */
-const SYSTEM_REASONS = new Set(["order_payment", "order_cancelled", "order_cancelled_admin", "expired", "refund"]);
-
 interface GiftLot {
   id: string;
   amount_piastres: number;

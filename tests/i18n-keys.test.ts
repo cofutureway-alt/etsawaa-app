@@ -28,6 +28,16 @@ test("dictionaries contain no emoji (G3 code-level check)", () => {
   for (const value of Object.values(en)) assert.equal(emoji.test(value), false);
 });
 
+test("placeholders use i18next double braces, never a single {name}", () => {
+  // a single-brace {date} is shown to people as literal text
+  const single = /(^|[^{])\{\w+\}(?!\})/;
+  for (const [dictionary, name] of [[ar, "ar"], [en, "en"]] as const) {
+    for (const [key, value] of Object.entries(dictionary)) {
+      assert.equal(single.test(String(value)), false, `single-brace placeholder in ${name}.${key}: ${value}`);
+    }
+  }
+});
+
 test("interpolation placeholders appear in both languages", () => {
   const keysWithVars = (Object.keys(en) as TranslationKey[]).filter((key) => /\{\{\w+\}\}/.test(en[key]));
   assert.ok(keysWithVars.length > 0);

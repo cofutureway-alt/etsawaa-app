@@ -14,7 +14,7 @@ import { EmptyState } from "~/components/ui/EmptyState";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { useActionToast } from "~/components/layout/ActionFeedback";
-import { nearestExpiry, walletAvailable } from "~/features/wallet/split";
+import { SYSTEM_REASONS, nearestExpiry, walletAvailable } from "~/features/wallet/split";
 
 /**
  * Admin → Customer wallets → one customer (Phase A): balances, gift lots and
@@ -180,7 +180,7 @@ export default function AdminCustomerWallet({ loaderData }: Route.ComponentProps
                   <p className="num font-black text-text" dir="ltr">{money(g.remaining_piastres)} / {money(g.amount_piastres)}</p>
                   <p className="truncate text-xs text-text-muted">{g.reason}</p>
                 </div>
-                <span className="text-xs text-text-muted">{t("cw.expiresOn", { date: day(g.expires_at) })}</span>
+                <span className="text-xs text-text-muted">{t(g.status === "active" ? "cw.expiresOn" : "cw.expiredOn", { date: day(g.expires_at) })}</span>
                 <Badge tone={g.status === "active" ? "success" : g.status === "used" ? "neutral" : "warning"}>
                   {t(`cw.giftStatus_${g.status}`)}
                 </Badge>
@@ -218,7 +218,7 @@ export default function AdminCustomerWallet({ loaderData }: Route.ComponentProps
                       <td className="p-3 text-xs text-text-muted" dir="ltr">{day(x.created_at)}</td>
                       <td className="p-3">
                         <span className="font-bold text-text">{t(`cw.tx_${x.type}`)}</span>
-                        {x.reason ? <span className="block text-xs text-text-muted">{x.reason}</span> : null}
+                        {x.reason && !SYSTEM_REASONS.has(x.reason) ? <span className="block text-xs text-text-muted">{x.reason}</span> : null}
                       </td>
                       <td className="p-3">
                         {x.order_number ? (

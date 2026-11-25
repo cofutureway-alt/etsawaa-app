@@ -96,3 +96,6 @@ export function nearestExpiry(lots: readonly WalletGiftLot[], now: number = Date
     .sort((a, b) => Date.parse(a) - Date.parse(b));
   return upcoming[0] ?? null;
 }
+
+/** Reasons the database writes on automatic movements: codes, not text for people to read. */
+export const SYSTEM_REASONS = new Set(["order_payment", "order_cancelled", "order_cancelled_admin", "expired", "refund"]);
