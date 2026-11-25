@@ -26,6 +26,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (q.length < 2 && products.length === 0) return data({ products: [] as ExchangeProduct[] });
   const { client } = createSupabaseServerClient(request);
   if (!client) return data({ products: [] as ExchangeProduct[] }, { status: 503 });
+  // only a signed-in customer picks replacements (the function is not granted to guests)
+  const { data: auth } = await client.auth.getUser();
+  if (!auth.user) return data({ products: [] as ExchangeProduct[] }, { status: 401 });
   const { data: rows, error } = await client.rpc("fn_exchange_options", {
     p_query: q.length >= 2 ? q : null,
     p_product_ids: products.length ? products : null,
