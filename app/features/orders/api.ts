@@ -30,6 +30,8 @@ export interface OrderRow {
   total_piastres: number;
   /** part of the total paid from the customer wallet (phase A) */
   wallet_paid_piastres?: number;
+  /** set when this order is the replacement order of an exchange */
+  exchange_request_id?: string | null;
   coupon_code: string | null;
   delivered_at: string | null;
   cancel_reason: string | null;
@@ -173,12 +175,18 @@ export interface RefundRequestRow {
   decision_note: string | null;
   created_at: string;
   order?: { number: string };
+  resolution?: "refund" | "same_product" | "other_products";
+  refund_total_piastres?: number;
+  exchange_applied_piastres?: number;
+  exchange_wallet_piastres?: number;
+  credit_destination?: "wallet" | "original" | null;
+  exchange_order?: { number: string; total_piastres: number; wallet_paid_piastres: number; payment_status: string; status: string } | null;
 }
 
 export async function listRefundRequests(client: SupabaseClient, limit = 30): Promise<RefundRequestRow[]> {
   const { data, error } = await client
     .from("refund_requests")
-    .select("*, order:orders(number)")
+    .select("*, order:orders!refund_requests_order_id_fkey(number), exchange_order:orders!refund_requests_exchange_order_id_fkey(number, total_piastres, wallet_paid_piastres, payment_status, status)")
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
@@ -189,12 +197,16 @@ export async function listRefundRequests(client: SupabaseClient, limit = 30): Pr
 /** Quantities already requested per order item (partial-remainder rule). */
 export async function requestedQtyByItem(client: SupabaseClient, orderItemIds: string[]): Promise<Map<string, number>> {
   if (orderItemIds.length === 0) return new Map();
+  // same rule as fn_request_refund: rejected or closed requests (and rejected
+  // lines) free their units again
   const { data } = await client
     .from("refund_request_items")
-    .select("order_item_id, qty")
+    .select("order_item_id, qty, decision, refund_requests!inner(status)")
     .in("order_item_id", orderItemIds);
   const map = new Map<string, number>();
-  for (const row of asRows<{ order_item_id: string; qty: number }>(data)) {
+  for (const row of asRows<{ order_item_id: string; qty: number; decision: string | null; refund_requests: { status: string } | null }>(data)) {
+    if (row.decision === "reject") continue;
+    if (row.refund_requests && ["rejected", "closed"].includes(row.refund_requests.status)) continue;
     map.set(row.order_item_id, (map.get(row.order_item_id) ?? 0) + row.qty);
   }
   return map;

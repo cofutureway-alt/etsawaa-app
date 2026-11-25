@@ -234,8 +234,8 @@ export default function BlogArticle({ loaderData }: Route.ComponentProps) {
           </h1>
           <p className="mt-1.5 text-sm text-text-muted">
             {p.author_name ? `${p.author_name} · ` : ""}
-            <time dateTime={p.published_at ?? undefined} dir="ltr">
-              {new Date(p.published_at ?? p.updated_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}
+            <time dateTime={p.published_at ?? undefined}>
+              {new Date(p.published_at ?? p.updated_at).toLocaleDateString(en ? "en-GB" : "ar-EG-u-nu-latn", { day: "numeric", month: "long", year: "numeric" })}
             </time>
           </p>
 

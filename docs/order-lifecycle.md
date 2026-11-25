@@ -88,6 +88,41 @@ Test-mode orders never move wallet money: `fn_wallet_post` skips them, the same 
 
 ---
 
+## 1b. Returns and exchanges (phase B)
+
+When the buyer returns products (`/account/orders/:number/return`), they choose what they want:
+- **Money back** (`refund`), as before.
+- **The same product** (`same_product`): a new unit of a returned product. Another size or colour is allowed.
+- **Other products** (`other_products`): one or more products from the site.
+
+The picker shows only sellable options at **today's site price**. Coupons are never applied to an exchange.
+
+`fn_request_refund` checks everything before it saves anything, so a failing line can no longer leave a partial request. A rejected or closed request frees its units again.
+
+**Admin decision** (`/admin/refunds`, `fn_admin_decide_refund`):
+1. The usual engine settles the returned lines (`fn_refund_apply`): caps, seller clawbacks, penalties and return pickup fees.
+2. For an exchange, `fn_refund_make_exchange` runs next:
+   - It credits the approved return value to the customer's wallet (`exchange_credit`).
+   - It creates the **replacement order** through `fn_create_order` itself, as the customer and with their cart set aside, so pricing, stock, seller groups, commission and notifications are the checkout's own.
+   - The order is paid from that credit (`wallet_paid_piastres`).
+   - Shipping is the customer's when an approved line is their fault (change of mind). Otherwise it ships free.
+   - The order is linked both ways: `orders.exchange_request_id` and `refund_requests.exchange_order_id`.
+3. **If the replacements cost more**, the customer pays the difference on the new order after approval:
+   - by card (Kashier), or
+   - on delivery (`fn_exchange_choose_cod`),
+
+   as `settings.returns.exchange_pay_methods` allows. The cash-on-delivery limit and the rule for store-shipped products still apply.
+4. **If the return is worth more**, the admin chooses at approval where the rest goes (`credit_destination`):
+   - `wallet`: it stays in the customer's wallet.
+   - `original`: it is taken back out of the wallet and refunded later with a method and reference (execute step).
+5. The admin can also turn an exchange request into a plain refund (`p_options.resolution = 'refund'`).
+
+An exchange with nothing left to pay out is marked done (`refund_method = 'exchange'`) once the goods are back.
+
+**Invoice:** the replacement order's invoice is titled "Exchange invoice". It lists the returned products it replaces, the return value and the difference.
+
+**Settings:** `/admin/settings/sections` → Returns and exchanges. It turns exchanges on or off and sets how the difference may be paid.
+
 ## 2. Seller perspective
 
 1. **New order.** The seller sees only their own shipment of the order (`/vendor/orders`), with their items, quantities and payout, and gets a notification.

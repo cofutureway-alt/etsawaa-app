@@ -12,6 +12,7 @@ import { formatPiastres } from "~/lib/money";
 import { Button } from "~/components/ui/Button";
 import { MediaImg } from "~/components/catalog/MediaImg";
 import { SkeletonPage } from "~/components/ui/Skeleton";
+import { RotateIcon } from "~/components/ui/icons";
 
 
 /**
@@ -55,9 +56,10 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     if (res?.ok) order = (await getOwnOrder(client, order.number)) ?? order;
   }
 
-  const [parts, geo] = await Promise.all([
+  const [parts, geo, exchange] = await Promise.all([
     getOrderParts(client, order.id),
     getGeoNames(client, order.governorate_id, order.area_id),
+    loadExchangeInfo(client, order.exchange_request_id ?? null),
   ]);
 
   return {
@@ -68,11 +70,42 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     history: parts.history,
     governorate: geo.governorate,
     area: geo.area,
+    exchange,
     flags: {
       placed: new URL(request.url).searchParams.get("placed") === "1",
       kashierReturn: new URL(request.url).searchParams.get("kashier") === "return",
       kashierRetry: new URL(request.url).searchParams.get("kashier") === "retry",
     },
+  };
+}
+
+/**
+ * The exchange behind a replacement order: the original order, the credit
+ * the return gave, and how the difference may be paid (returns settings,
+ * read with the service key: the setting is not public).
+ */
+async function loadExchangeInfo(client: NonNullable<ReturnType<typeof createSupabaseServerClient>["client"]>, requestId: string | null) {
+  if (!requestId) return null;
+  const { data: req } = await client
+    .from("refund_requests")
+    .select("id, resolution, refund_total_piastres, exchange_applied_piastres, order:orders!refund_requests_order_id_fkey(number)")
+    .eq("id", requestId)
+    .maybeSingle();
+  if (!req) return null;
+  const { getSupabaseAdminClient } = await import("~/lib/supabase/admin");
+  const admin = getSupabaseAdminClient();
+  const { data: setting } = admin
+    ? await admin.from("settings").select("value").eq("key", "returns").maybeSingle()
+    : { data: null };
+  const methods = ((setting?.value as { exchange_pay_methods?: string[] } | null)?.exchange_pay_methods) ?? ["kashier", "cod"];
+  const r = req as unknown as { resolution: string; refund_total_piastres: number; exchange_applied_piastres: number; order: { number: string } | null };
+  return {
+    resolution: r.resolution,
+    credit: r.refund_total_piastres ?? 0,
+    applied: r.exchange_applied_piastres ?? 0,
+    originalNumber: r.order?.number ?? "",
+    payByCard: methods.includes("kashier"),
+    payOnDelivery: methods.includes("cod"),
   };
 }
 
@@ -91,6 +124,15 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (intent === "cancel") {
     const reason = String(form.get("reason") ?? "").trim();
     const { data: res, error } = await client.rpc("fn_cancel_order", { p_order_id: order.id, p_reason: reason });
+    if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
+    const r = res as { ok: boolean; reason?: string };
+    if (!r.ok) return data({ ok: false, reason: r.reason ?? "server_error" }, { status: 400 });
+    return { ok: true as const };
+  }
+
+  if (intent === "exchange_cod") {
+    // the difference of an exchange is paid to the courier (settings allowing)
+    const { data: res, error } = await client.rpc("fn_exchange_choose_cod", { p_order_id: order.id });
     if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
     const r = res as { ok: boolean; reason?: string };
     if (!r.ok) return data({ ok: false, reason: r.reason ?? "server_error" }, { status: 400 });
@@ -131,6 +173,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
   const lang = loaderData.lang;
   const cancelFetcher = useFetcher<typeof action>();
   const payFetcher = useFetcher<typeof action>();
+  const exchangeFetcher = useFetcher<typeof action>();
   const { order, groups, items, history } = loaderData;
   const [liveStatus, setLiveStatus] = useState({ status: order.status, payment_status: order.payment_status });
 
@@ -216,14 +259,54 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
         </div>
       ) : null}
 
+      {/* a replacement order: what the return covered and what is left to pay */}
+      {loaderData.exchange ? (
+        <section className="mt-4 rounded-md border border-action/40 bg-surface-tint p-4 text-sm" aria-label={t("exchange.orderTitle")}>
+          <p className="flex items-center gap-2 font-extrabold text-text">
+            <RotateIcon aria-hidden="true" className="size-4 text-action" />
+            {t("exchange.orderTitle")}
+          </p>
+          <p className="mt-1 text-text-muted">
+            {t("exchange.orderFrom")}{" "}
+            <Link to={`/${lang}/account/orders/${encodeURIComponent(loaderData.exchange.originalNumber)}`} className="font-bold text-action hover:underline" dir="ltr">
+              {loaderData.exchange.originalNumber}
+            </Link>
+          </p>
+          <dl className="mt-2 flex flex-col gap-1">
+            <div className="flex justify-between gap-2">
+              <dt className="text-text-muted">{t("exchange.creditApplied")}</dt>
+              <dd className="num font-bold text-success" dir="ltr">−{money(loaderData.exchange.applied)}</dd>
+            </div>
+            <div className="flex justify-between gap-2">
+              <dt className="font-extrabold text-text">{t("exchange.leftToPay")}</dt>
+              <dd className="num font-black text-text" dir="ltr">{money(Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0)))}</dd>
+            </div>
+          </dl>
+          {order.payment_status === "unpaid" && liveStatus.status !== "cancelled" && order.total_piastres - (order.wallet_paid_piastres ?? 0) > 0 ? (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {loaderData.exchange.payOnDelivery && order.payment_method === "kashier" ? (
+                <Button variant="outline" loading={exchangeFetcher.state !== "idle"}
+                  onClick={() => exchangeFetcher.submit({ intent: "exchange_cod" }, { method: "post", preventScrollReset: true })}>
+                  {t("exchange.payOnDelivery")}
+                </Button>
+              ) : null}
+              {exchangeFetcher.data && !exchangeFetcher.data.ok ? (
+                <p role="alert" className="text-xs font-bold text-danger">{t(`exchange.codErr_${exchangeFetcher.data.reason}`, { defaultValue: t("returns.failed") })}</p>
+              ) : null}
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
       {/* retry / resume for kashier orders still unpaid */}
-      {order.payment_method === "kashier" && liveStatus.payment_status === "unpaid" && liveStatus.status !== "cancelled" ? (
+      {order.payment_method === "kashier" && liveStatus.payment_status === "unpaid" && liveStatus.status !== "cancelled"
+        && (!loaderData.exchange || loaderData.exchange.payByCard) ? (
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <Button
             loading={payFetcher.state !== "idle"}
             onClick={() => payFetcher.submit({ intent: "pay" }, { method: "post", preventScrollReset: true })}
           >
-            {t("order.retryPayment")}
+            {loaderData.exchange ? t("exchange.payByCard") : t("order.retryPayment")}
           </Button>
           <p className="text-sm text-text-muted">{t("order.retryNote")}</p>
         </div>

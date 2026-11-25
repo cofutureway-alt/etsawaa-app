@@ -10,6 +10,8 @@ import { getOwnOrder, getOrderParts, requestedQtyByItem } from "~/features/order
 import { EvidenceUploader } from "~/features/account/EvidenceUploader";
 import { RouteErrorBoundary } from "~/components/layout/RouteErrorBoundary";
 import { SkeletonForm } from "~/components/ui/Skeleton";
+import { ExchangePicker, type PickedReplacement } from "~/features/account/ExchangePicker";
+import { CashIcon, PackageIcon, RotateIcon } from "~/components/ui/icons";
 
 
 /**
@@ -66,12 +68,26 @@ export async function action({ request, params }: Route.ActionArgs) {
     qty: Math.max(1, Number(form.get(`qty_${id}`) ?? 1)),
     reason: String(form.get(`reason_${id}`) ?? "defect"),
   }));
+  const resolutionRaw = String(form.get("resolution") ?? "refund");
+  const resolution = resolutionRaw === "same_product" || resolutionRaw === "other_products" ? resolutionRaw : "refund";
+  let replacements: Array<{ variant_id: string; qty: number }> = [];
+  try {
+    const parsed = JSON.parse(String(form.get("replacements") ?? "[]")) as unknown;
+    if (Array.isArray(parsed)) {
+      replacements = parsed
+        .filter((x): x is { variant_id: string; qty: number } => typeof x === "object" && x !== null && typeof (x as { variant_id?: unknown }).variant_id === "string")
+        .map((x) => ({ variant_id: x.variant_id, qty: Math.max(1, Math.min(20, Math.trunc(Number(x.qty) || 1))) }))
+        .slice(0, 10);
+    }
+  } catch { /* stays empty */ }
   const { data: res, error } = await client.rpc("fn_request_refund", {
     p_order_id: order.id,
     p_kind: kind,
     p_items: lines,
     p_description: String(form.get("description") ?? ""),
     p_evidence: evidence,
+    p_resolution: resolution,
+    p_replacements: resolution === "refund" ? [] : replacements,
   });
   if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
   const r = res as { ok: boolean; reason?: string };
@@ -91,6 +107,9 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
     loaderData.preselect ? loaderData.preselect.split(",").filter((id) => loaderData.items.some((i: { id: string }) => i.id === id)) : [],
   );
   const [evidence, setEvidence] = useState<string[]>([]);
+  const [qtys, setQtys] = useState<Record<string, number>>({});
+  const [resolution, setResolution] = useState<"refund" | "same_product" | "other_products">("refund");
+  const [replacements, setReplacements] = useState<PickedReplacement[]>([]);
 
   const deliveredAt = new Date(loaderData.deliveredAt);
   const returnDaysLeft = Math.max(0, 14 - Math.floor((Date.now() - deliveredAt.getTime()) / 86400000));
@@ -98,6 +117,19 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
 
   const remainingFor = (id: string, qty: number) => qty - (loaderData.requested[id] ?? 0);
   const anyRemaining = loaderData.items.some((i: { id: string; qty: number }) => remainingFor(i.id, i.qty) > 0);
+
+  type Line = { id: string; product_id: string; qty: number; line_total_piastres: number; coupon_discount_piastres: number };
+  const lines = loaderData.items as Line[];
+  const qtyOf = (it: Line) => Math.max(1, Math.min(qtys[it.id] ?? remainingFor(it.id, it.qty), remainingFor(it.id, it.qty)));
+  // estimate only: what the buyer paid for these units; the admin's decision sets the real credit
+  const returnValue = lines
+    .filter((it) => selected.includes(it.id))
+    .reduce((sum, it) => sum + Math.round(((it.line_total_piastres - (it.coupon_discount_piastres ?? 0)) * qtyOf(it)) / Math.max(it.qty, 1)), 0);
+  const replacementTotal = replacements.reduce((sum, r) => sum + r.unit_piastres * r.qty, 0);
+  const difference = replacementTotal - returnValue;
+  const returnedProducts = Array.from(new Set(lines.filter((it) => selected.includes(it.id)).map((it) => it.product_id)));
+  const exchange = resolution !== "refund";
+  const needsReplacement = exchange && replacements.length === 0;
 
   return (
     <div className="max-w-2xl">
@@ -113,6 +145,10 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
           {fetcher.data.reason === "window_expired" ? t("returns.windowExpired")
             : fetcher.data.reason === "qty_exceeded" ? t("returns.qtyExceeded")
             : fetcher.data.reason === "no_items" ? t("returns.noItems")
+            : fetcher.data.reason === "no_replacements" ? t("exchange.err_no_replacements")
+            : fetcher.data.reason === "not_same_product" ? t("exchange.err_not_same_product")
+            : fetcher.data.reason === "replacement_unavailable" ? t("exchange.err_replacement_unavailable")
+            : fetcher.data.reason === "exchange_disabled" ? t("exchange.err_exchange_disabled")
             : t("returns.failed")}
         </p>
       ) : null}
@@ -178,7 +214,9 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
                         <label className="text-xs font-bold text-text">
                           {t("returns.qtyLabel")} ({remaining})
                           <input
-                            type="number" name={`qty_${it.id}`} min={1} max={remaining} defaultValue={remaining}
+                            type="number" name={`qty_${it.id}`} min={1} max={remaining}
+                            value={qtys[it.id] ?? remaining}
+                            onChange={(e) => setQtys((q) => ({ ...q, [it.id]: Math.max(1, Math.min(remaining, Number(e.target.value) || 1)) }))}
                             className="ms-2 w-20 rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text"
                           />
                         </label>
@@ -199,7 +237,61 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
             </div>
           </fieldset>
 
-          {/* step 3 — description + evidence */}
+          {/* step 3 — what the customer wants: money back, the same product, or other products */}
+          <fieldset>
+            <legend className="text-sm font-bold text-text">{t("exchange.wantTitle")}</legend>
+            <input type="hidden" name="resolution" value={resolution} />
+            <input type="hidden" name="replacements" value={JSON.stringify(replacements.map((r) => ({ variant_id: r.variant_id, qty: r.qty })))} />
+            <div className="mt-2 grid gap-2 sm:grid-cols-3">
+              {([
+                ["refund", CashIcon, "exchange.optRefund", "exchange.optRefundHint"],
+                ["same_product", RotateIcon, "exchange.optSame", "exchange.optSameHint"],
+                ["other_products", PackageIcon, "exchange.optOther", "exchange.optOtherHint"],
+              ] as const).map(([value, Icon, title, hint]) => (
+                <label key={value}
+                  className={`flex cursor-pointer flex-col gap-1.5 rounded-md border p-3 ${resolution === value ? "border-action bg-surface-tint" : "border-border"}`}>
+                  <span className="flex items-center gap-2">
+                    <input type="radio" name="resolution_choice" value={value} checked={resolution === value}
+                      onChange={() => { setResolution(value); setReplacements([]); }}
+                      className="size-4 accent-[var(--color-action)]" />
+                    <Icon aria-hidden="true" className="size-4 text-action" />
+                    <span className="text-sm font-bold text-text">{t(title)}</span>
+                  </span>
+                  <span className="text-xs text-text-muted">{t(hint)}</span>
+                </label>
+              ))}
+            </div>
+
+            {exchange ? (
+              <div className="mt-3">
+                {selected.length === 0 ? (
+                  <p className="text-xs text-text-muted">{t("exchange.pickItemsFirst")}</p>
+                ) : (
+                  <ExchangePicker mode={resolution as "same_product" | "other_products"} productIds={returnedProducts}
+                    value={replacements} onChange={setReplacements} />
+                )}
+                {replacements.length > 0 ? (
+                  <dl className="mt-3 flex flex-col gap-1 rounded-md border border-border bg-surface p-3 text-sm">
+                    <div className="flex justify-between gap-2">
+                      <dt className="text-text-muted">{t("exchange.returnValue")}</dt>
+                      <dd className="num font-bold text-text" dir="ltr">{money(returnValue)}</dd>
+                    </div>
+                    <div className="flex justify-between gap-2">
+                      <dt className="text-text-muted">{t("exchange.newValue")}</dt>
+                      <dd className="num font-bold text-text" dir="ltr">{money(replacementTotal)}</dd>
+                    </div>
+                    <div className="flex justify-between gap-2 border-t border-border pt-1.5">
+                      <dt className="font-extrabold text-text">{difference > 0 ? t("exchange.youPay") : difference < 0 ? t("exchange.youGet") : t("exchange.noDifference")}</dt>
+                      <dd className={`num font-black ${difference > 0 ? "text-text" : "text-success"}`} dir="ltr">{difference === 0 ? "" : money(Math.abs(difference))}</dd>
+                    </div>
+                    <p className="mt-1 text-xs text-text-muted">{t("exchange.estimateNote")}</p>
+                  </dl>
+                ) : null}
+              </div>
+            ) : null}
+          </fieldset>
+
+          {/* step 4 — description + evidence */}
           <fieldset>
             <legend className="text-sm font-bold text-text">{t("returns.detailsTitle")}</legend>
             <textarea
@@ -216,7 +308,7 @@ export default function ReturnWizard({ loaderData }: Route.ComponentProps) {
           <p className="text-sm text-text-muted">{t("returns.reviewNotice")}</p>
           <button
             type="submit"
-            disabled={selected.length === 0 || fetcher.state !== "idle"}
+            disabled={selected.length === 0 || needsReplacement || fetcher.state !== "idle"}
             className="w-fit cursor-pointer rounded-md bg-action px-6 py-3 text-sm font-bold text-on-action transition-colors duration-150 hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             {t("returns.submitButton")}

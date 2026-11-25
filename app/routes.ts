@@ -232,6 +232,7 @@ export default [
   route("api/ad-event", "routes/api/ad-event.ts"),
   // product-card "Choose options" popup payload
   route("api/product-quick", "routes/api/product-quick.ts"),
+  route("api/exchange-options", "routes/api/exchange-options.ts"),
   // phase 05 — order status polling + reorder payload + Kashier webhook
   route("api/order-status", "routes/api/order-status.ts"),
   route("api/reorder", "routes/api/reorder.ts"),

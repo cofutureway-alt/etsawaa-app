@@ -192,6 +192,8 @@ export interface DocInput {
   categoryNames?: string[];
   /** settings['documents'] — header/footer/logo/watermark/barcode height. */
   docSettings?: DocSettings;
+  /** a replacement order: the original order and the returned products it replaces */
+  exchange?: { originalNumber: string; returned: Array<{ name_ar: string; name_en: string; qty: number; amount_piastres: number }> } | null;
 }
 
 export interface DocSettings {
@@ -276,18 +278,22 @@ export function renderAdminInvoice(input: DocInput): string {
         <p><strong>${L.pay}:</strong> ${order.payment_method === "cod" ? L.payCod : order.payment_method === "wallet" ? (ar ? "محفظة العميل" : "Customer wallet") : L.payCard}${L.paid ? L.payPaid : L.payUnpaid}</p>
       </div>
     </div>
-    <p style="margin:12px 0 2px;font-size:18px;font-weight:900;">${L.invoice}</p>
+    <p style="margin:12px 0 2px;font-size:18px;font-weight:900;">${input.exchange ? (ar ? "فاتورة استبدال" : "Exchange invoice") : L.invoice}</p>
     <p style="font-size:12px;"><strong>${L.customer}:</strong> ${esc(order.ship_name)} — <span dir="ltr">${esc(order.phone_primary)}</span></p>
     <p style="font-size:12px;"><strong>${L.address}:</strong> ${esc(order.address1)}${order.address2 ? "، " + esc(order.address2) : ""} — ${esc((ar ? governorate?.name_ar : governorate?.name_en) ?? "")} · ${esc((ar ? area?.name_ar : area?.name_en) ?? "")}</p>
     ${groupSections}
+    ${input.exchange ? `<p style="margin:14px 0 4px;font-size:13px;font-weight:800;">${ar ? "المنتجات المرتجعة مقابل هذا الطلب — من الطلب" : "Returned products this order replaces — from order"} <span class="num">${esc(input.exchange.originalNumber)}</span></p>
+    <table><thead><tr><th>${ar ? "المنتج" : "Product"}</th><th>${ar ? "الكمية" : "Qty"}</th><th>${ar ? "القيمة" : "Value"}</th></tr></thead><tbody>
+      ${input.exchange.returned.map((r) => `<tr><td>${esc(ar ? r.name_ar || r.name_en : r.name_en || r.name_ar)}</td><td class="num">${r.qty}</td><td class="num">${money(r.amount_piastres, lang)}</td></tr>`).join("")}
+    </tbody></table>` : ""}
     <table class="totals" style="margin-top:14px;width:60%;margin-inline-start:auto;">
       <tbody>
         <tr><td>${L.subtotal}</td><td class="num">${money(order.subtotal_piastres, lang)}</td></tr>
         ${order.discount_piastres > 0 ? `<tr><td>${L.discount}${order.coupon_code ? ` (${esc(order.coupon_code)})` : ""}</td><td class="num">−${money(order.discount_piastres, lang)}</td></tr>` : ""}
         <tr><td>${L.shipping}</td><td class="num">${money(order.shipping_fee_piastres, lang)}</td></tr>
         <tr><td class="grand">${L.grand}</td><td class="num grand">${money(order.total_piastres, lang)}</td></tr>
-        ${(order.wallet_paid_piastres ?? 0) > 0 ? `<tr><td>${ar ? "مدفوع من المحفظة" : "Paid from wallet"}</td><td class="num">${money(order.wallet_paid_piastres ?? 0, lang)}</td></tr>
-        <tr><td>${ar ? "المتبقي" : "Due"}</td><td class="num">${money(cashDue(order), lang)}</td></tr>` : ""}
+        ${(order.wallet_paid_piastres ?? 0) > 0 ? `<tr><td>${input.exchange ? (ar ? "قيمة المرتجع" : "Return value") : ar ? "مدفوع من المحفظة" : "Paid from wallet"}</td><td class="num">−${money(order.wallet_paid_piastres ?? 0, lang)}</td></tr>
+        <tr><td class="grand">${input.exchange ? (ar ? "الفرق" : "Difference") : ar ? "المتبقي" : "Due"}</td><td class="num grand">${money(cashDue(order), lang)}</td></tr>` : ""}
       </tbody>
     </table>
     <p class="copy-note">${L.copyNote}</p>${footer(lang, docSettings)}

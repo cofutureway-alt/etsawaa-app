@@ -54,6 +54,7 @@ export const MESSAGE_EVENTS: MessageEvent[] = [
   ev("payment_failed", "customer", "payments", "الدفع لم يكتمل", "Payment unsuccessful"),
   ev("refund_submitted", "customer", "refunds", "استلام طلب الاسترجاع", "Return request received"),
   ev("refund_decided", "customer", "refunds", "قرار طلب الاسترجاع", "Return request decision"),
+  ev("exchange_approved", "customer", "refunds", "الموافقة على الاستبدال", "Exchange approved"),
   ev("refund_executed", "customer", "refunds", "تنفيذ الاسترجاع المالي", "Refund processed"),
   ev("wallet_credited", "customer", "money", "إضافة رصيد إلى المحفظة", "Wallet balance credited"),
   ev("wallet_debited_admin", "customer", "money", "خصم رصيد من المحفظة", "Wallet balance deducted"),

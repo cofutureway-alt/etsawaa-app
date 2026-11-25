@@ -37,6 +37,12 @@ interface Rfq {
   /** jsonb array of documents-bucket paths uploaded with the request */
   evidence: string[] | null;
   items: RfqItem[];
+  resolution: "refund" | "same_product" | "other_products";
+  credit_destination: "wallet" | "original" | null;
+  exchange_applied_piastres: number;
+  exchange_wallet_piastres: number;
+  exchange_order: { number: string; total_piastres: number; wallet_paid_piastres: number; payment_status: string; payment_method: string } | null;
+  replacements: Array<{ variant_id: string; qty: number; name: string; label: string | null; unit_piastres: number | null }>;
 }
 
 function pickName(ar?: string | null, en?: string | null) { return ar ?? en ?? ""; }
@@ -51,8 +57,11 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   let q = client
     .from("refund_requests")
     .select(`id, kind, description, evidence, status, created_at, source, logistics_status, refund_total_piastres,
-             refund_method, refund_reference,
-             orders(number, ship_name),
+             refund_method, refund_reference, resolution, credit_destination,
+             exchange_applied_piastres, exchange_wallet_piastres,
+             orders!refund_requests_order_id_fkey(number, ship_name),
+             exchange_order:orders!refund_requests_exchange_order_id_fkey(number, total_piastres, wallet_paid_piastres, payment_status, payment_method),
+             refund_replacements(variant_id, qty, products(name_ar, name_en), variants(option_label_ar, option_label_en)),
              refund_request_items(id, order_item_id, qty, reason, decision, fault,
                refund_amount_piastres, restock,
                order_items(product_name_ar, product_name_en, unit_price_piastres, line_total_piastres,
@@ -96,8 +105,30 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       refund_reference: (r.refund_reference as string | null) ?? null,
       evidence: Array.isArray(r.evidence) ? (r.evidence as string[]) : null,
       items,
+      resolution: ((r.resolution as string) ?? "refund") as Rfq["resolution"],
+      credit_destination: (r.credit_destination as Rfq["credit_destination"]) ?? null,
+      exchange_applied_piastres: (r.exchange_applied_piastres as number) ?? 0,
+      exchange_wallet_piastres: (r.exchange_wallet_piastres as number) ?? 0,
+      exchange_order: (r.exchange_order as Rfq["exchange_order"]) ?? null,
+      replacements: ((r.refund_replacements ?? []) as Array<Record<string, unknown>>).map((x) => {
+        const prod = x.products as { name_ar: string; name_en: string } | null;
+        const vr = x.variants as { option_label_ar: string | null; option_label_en: string | null } | null;
+        return {
+          variant_id: x.variant_id as string, qty: x.qty as number,
+          name: pickName(prod?.name_ar, prod?.name_en), label: vr?.option_label_ar ?? vr?.option_label_en ?? null,
+          unit_piastres: null as number | null,
+        };
+      }),
     };
   });
+  // today's price of each replacement (the price the exchange order will charge)
+  const variantIds = Array.from(new Set(rfqs.flatMap((r) => r.replacements.map((x) => x.variant_id))));
+  const prices = new Map<string, number | null>();
+  await Promise.all(variantIds.map(async (id) => {
+    const { data: unit } = await client.rpc("fn_variant_unit_price", { p_variant: id });
+    prices.set(id, typeof unit === "number" ? unit : null);
+  }));
+  for (const r of rfqs) for (const x of r.replacements) x.unit_piastres = prices.get(x.variant_id) ?? null;
   // product names picked at render time by locale
   return { lang, status, rfqs: JSON.parse(JSON.stringify(rfqs)) };
 }
@@ -128,6 +159,8 @@ export async function action({ request, params }: Route.ActionArgs) {
         shipping_refund_piastres: egpToPiastres(form.get("shipping_refund")) ?? 0,
         deduction_piastres: egpToPiastres(form.get("deduction")) ?? 0,
         logistics_status: String(form.get("logistics_status") ?? "awaiting_return"),
+        ...(form.get("resolution_override") === "refund" ? { resolution: "refund" } : {}),
+        ...(form.get("credit_destination") ? { credit_destination: String(form.get("credit_destination")) } : {}),
       },
     });
     if (res.error) return data({ ok: false, reason: res.error.message }, { status: 500 });
@@ -209,11 +242,26 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                 </Badge>
                 {r.source === "admin" ? <Badge tone="info">{t("ret.source_admin")}</Badge> : null}
                 {r.source === "cancel" ? <Badge tone="warning">{t("rf.sourceCancel")}</Badge> : null}
+                {r.resolution !== "refund" ? <Badge tone="info">{t(`exchange.res_${r.resolution}`)}</Badge> : null}
                 {r.status === "approved" ? <Badge tone={r.logistics_status === "awaiting_return" ? "warning" : "neutral"}>{t(`ret.log_${r.logistics_status}`)}</Badge> : null}
                 {r.status === "approved" || r.status === "refunded" ? <span className="num text-sm font-black text-action">{money(r.refund_total_piastres)}</span> : null}
                 <span className="text-xs text-text-muted" dir="ltr">{r.created_at.slice(0, 10)}</span>
               </div>
               {r.description ? <p className="mt-1.5 text-sm text-text-muted">{r.description}</p> : null}
+              {r.exchange_order ? (
+                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-md border border-border bg-surface-tint px-3 py-2 text-xs">
+                  <span className="font-bold text-text">
+                    {t("exchange.newOrder")}{" "}
+                    <a href={`/${lang}/admin/orders/${encodeURIComponent(r.exchange_order.number)}`} className="text-action hover:underline" dir="ltr">{r.exchange_order.number}</a>
+                  </span>
+                  <span className="text-text-muted">{t("exchange.creditApplied")}: <span className="num font-bold text-text" dir="ltr">{money(r.exchange_applied_piastres)}</span></span>
+                  <span className="text-text-muted">{t("exchange.leftToPay")}: <span className="num font-bold text-text" dir="ltr">{money(Math.max(0, r.exchange_order.total_piastres - r.exchange_order.wallet_paid_piastres))}</span></span>
+                  {r.exchange_wallet_piastres > 0 ? (
+                    <span className="text-text-muted">{t("exchange.keptInWallet")}: <span className="num font-bold text-text" dir="ltr">{money(r.exchange_wallet_piastres)}</span></span>
+                  ) : null}
+                  <span className="text-text-muted">{t(`order.pay_${r.exchange_order.payment_status}`, { defaultValue: r.exchange_order.payment_status })}</span>
+                </div>
+              ) : null}
               {/* A-03: the admin rules on money here, so the customer's proof
                   is shown inline rather than left in the database. */}
               <EvidenceStrip paths={r.evidence} />
@@ -258,6 +306,9 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                         </div>
                       </fieldset>
                     ))}
+                    {r.resolution !== "refund" ? (
+                      <ExchangeDecision r={r} money={money} />
+                    ) : null}
                     <div className="grid gap-2 sm:grid-cols-3">
                       <label className="flex flex-col gap-1 text-xs font-bold text-text-muted">
                         {t("ret.shippingRefund")}
@@ -279,7 +330,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                       <Button type="submit" disabled={busy}>{t("rf.submit")}</Button>
                     </div>
                     {fetcher.data && !fetcher.data.ok ? (
-                      <p role="alert" className="text-xs font-bold text-danger">{String(fetcher.data.reason)}</p>
+                      <p role="alert" className="text-xs font-bold text-danger">{decisionError(String(fetcher.data.reason ?? ""), t)}</p>
                     ) : null}
                   </fetcher.Form>
                 ) : r.status === "approved" && r.logistics_status === "awaiting_return" ? (
@@ -293,8 +344,11 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                   <fetcher.Form method="post" className="mt-2 flex flex-wrap items-center gap-2">
                     <input type="hidden" name="intent" value="execute" />
                     <input type="hidden" name="request_id" value={r.id} />
+                    <span className="text-xs font-bold text-text">
+                      {t("exchange.toRefund")}: <span className="num" dir="ltr">{money(Math.max(0, r.refund_total_piastres - r.exchange_applied_piastres - r.exchange_wallet_piastres))}</span>
+                    </span>
                     <label htmlFor={`m-${r.id}`} className="sr-only">{t("ret.method")}</label>
-                    <select id={`m-${r.id}`} name="method" defaultValue="store_wallet" className="rounded-md border border-border bg-surface px-2 py-2 text-sm">
+                    <select id={`m-${r.id}`} name="method" defaultValue={r.resolution !== "refund" && r.credit_destination === "original" ? "original" : "store_wallet"} className="rounded-md border border-border bg-surface px-2 py-2 text-sm">
                       {["store_wallet", "original", "bank_transfer", "wallet", "cash", "other"].map((m) => <option key={m} value={m}>{t(`ret.method_${m}`)}</option>)}
                     </select>
                     <input name="reference" dir="ltr" placeholder={t("ret.reference")} className="w-36 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />
@@ -324,6 +378,81 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
   );
 }
 
+
+/**
+ * The exchange part of a decision: the replacements at today's price, the
+ * choice to turn it into a plain refund, and where any leftover credit goes
+ * (the admin decides; nothing is automatic).
+ */
+function ExchangeDecision({ r, money }: { r: Rfq; money: (p: number) => string }) {
+  const { t } = useTranslation();
+  const [mode, setMode] = useState<"exchange" | "refund">("exchange");
+  const total = r.replacements.reduce((sum, x) => sum + (x.unit_piastres ?? 0) * x.qty, 0);
+  return (
+    <fieldset className="rounded-md border border-action/40 bg-surface-tint p-3 text-sm">
+      <legend className="px-1 font-bold text-text">{t(`exchange.res_${r.resolution}`)}</legend>
+      <ul className="flex flex-col gap-1">
+        {r.replacements.map((x) => (
+          <li key={x.variant_id} className="flex flex-wrap justify-between gap-2">
+            <span className="text-text">{x.name}{x.label ? ` (${x.label})` : ""} × {x.qty}</span>
+            <span className="num font-bold text-text" dir="ltr">
+              {x.unit_piastres == null ? t("exchange.unavailableNow") : money(x.unit_piastres * x.qty)}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-1 text-xs text-text-muted">{t("exchange.todayTotal")}: <span className="num font-bold text-text" dir="ltr">{money(total)}</span> · {t("exchange.shippingRule")}</p>
+      <div className="mt-2 flex flex-wrap gap-3">
+        <label className="flex items-center gap-1.5 text-xs font-bold text-text">
+          <input type="radio" name="resolution_override" value="exchange" checked={mode === "exchange"} onChange={() => setMode("exchange")} className="size-4 accent-[var(--color-action)]" />
+          {t("exchange.doExchange")}
+        </label>
+        <label className="flex items-center gap-1.5 text-xs font-bold text-text">
+          <input type="radio" name="resolution_override" value="refund" checked={mode === "refund"} onChange={() => setMode("refund")} className="size-4 accent-[var(--color-action)]" />
+          {t("exchange.turnToRefund")}
+        </label>
+      </div>
+      {mode === "exchange" ? (
+        <div className="mt-2">
+          <p className="text-xs font-bold text-text">{t("exchange.leftoverQuestion")}</p>
+          <div className="mt-1 flex flex-wrap gap-3">
+            <label className="flex items-center gap-1.5 text-xs text-text">
+              <input type="radio" name="credit_destination" value="wallet" required className="size-4 accent-[var(--color-action)]" />
+              {t("exchange.destWallet")}
+            </label>
+            <label className="flex items-center gap-1.5 text-xs text-text">
+              <input type="radio" name="credit_destination" value="original" required className="size-4 accent-[var(--color-action)]" />
+              {t("exchange.destOriginal")}
+            </label>
+          </div>
+        </div>
+      ) : null}
+    </fieldset>
+  );
+}
+
+/** Server reasons from a decision, in words (exchange_* carry the checkout reason). */
+function decisionError(reason: string, t: (k: string, o?: Record<string, unknown>) => string): string {
+  const [head = "", names = ""] = reason.split(":");
+  const key = head.split(" — ")[0] ?? head;
+  const known: Record<string, string> = {
+    destination_required: "exchange.err_destination_required",
+    no_replacements: "exchange.err_no_replacements",
+    exchange_insufficient_stock: "exchange.err_stock",
+    exchange_items_unavailable: "exchange.err_items_unavailable",
+    exchange_area_unavailable: "exchange.err_area",
+    exchange_phone_invalid: "exchange.err_address",
+    exchange_phones_equal: "exchange.err_address",
+    exchange_address_incomplete: "exchange.err_address",
+    exchange_cod_cap: "exchange.err_cod_cap",
+    exchange_cod_vendor_ship: "exchange.err_cod_vendor",
+    exchange_cod_disabled: "exchange.err_cod_disabled",
+    group_not_delivered: "exchange.err_not_delivered",
+    qty_exceeded: "returns.qtyExceeded",
+  };
+  const k = known[key];
+  return k ? t(k, { names: names.split(" — ")[0] ?? "" }) : t("returns.failed") + (reason ? ` (${reason})` : "");
+}
 
 /**
  * Refund evidence: paths stored in refund_requests.evidence (jsonb array of

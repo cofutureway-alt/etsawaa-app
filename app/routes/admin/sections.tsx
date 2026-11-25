@@ -37,9 +37,9 @@ import { KASHIER_METHODS, parseKashierSettings } from "~/features/checkout/kashi
  * (Legal pages), SEO, email provider/SMTP, notification channels.
  */
 
-type SectionKey = "vendors" | "verification" | "wallet" | "payments" | "pickup" | "packaging" | "site.social" | "site.contact" | "shipping_rules";
+type SectionKey = "vendors" | "verification" | "wallet" | "payments" | "pickup" | "returns" | "packaging" | "site.social" | "site.contact" | "shipping_rules";
 
-const SECTIONS: SectionKey[] = ["vendors", "verification", "wallet", "payments", "pickup", "packaging", "site.social", "site.contact", "shipping_rules"];
+const SECTIONS: SectionKey[] = ["vendors", "verification", "wallet", "payments", "pickup", "returns", "packaging", "site.social", "site.contact", "shipping_rules"];
 
 const NUMERIC_FIELDS: Partial<Record<SectionKey, string[]>> = {
   wallet: ["min_withdrawal_piastres", "hold_days"],
@@ -156,6 +156,12 @@ export async function action({ request, params }: Route.ActionArgs) {
   }
   if (section === "shipping_rules") {
     value.vendor_allowed_category_ids = form.getAll("f_vendor_allowed_category_ids").map(String).filter((id) => /^[0-9a-f-]{36}$/i.test(id));
+  }
+  if (section === "returns") {
+    // how the customer may pay an exchange difference (read by fn_refund_make_exchange
+    // and fn_exchange_choose_cod); at least one way must stay on
+    value.exchange_pay_methods = form.getAll("f_exchange_pay_methods").map(String).filter((m) => m === "kashier" || m === "cod");
+    if ((value.exchange_pay_methods as string[]).length === 0) return data({ ok: false, reason: "no_exchange_method" }, { status: 400 });
   }
   if (section === "pickup" && value.billing_mode !== "per_shipment" && value.billing_mode !== "per_product") {
     return data({ ok: false, reason: "bad_billing_mode" }, { status: 400 });
@@ -302,6 +308,24 @@ export default function AdminSettingsSections({ loaderData }: Route.ComponentPro
               ))}
             </fieldset>
             <Check name="charge_vendor_fault_returns" label={t("st.pickupReturns")} defaultChecked={on("pickup", "charge_vendor_fault_returns", true)} />
+          </SectionCard>
+
+          {/* RETURNS & EXCHANGES — read when a return is requested and approved */}
+          <SectionCard section="returns" title={t("st.sec_returns")} hint={t("st.returnsHint")}>
+            <Check name="exchange_enabled" label={t("st.exchangeEnabled")} hint={t("st.exchangeEnabledHint")} defaultChecked={on("returns", "exchange_enabled", true)} />
+            <fieldset className="flex flex-col gap-2">
+              <legend className="mb-1 text-sm font-bold text-text">{t("st.exchangePayMethods")}</legend>
+              {(["kashier", "cod"] as const).map((m) => {
+                const list = (loaderData.settings.returns?.exchange_pay_methods as string[] | undefined) ?? ["kashier", "cod"];
+                return (
+                  <label key={m} className={CHECK}>
+                    <input type="checkbox" name="f_exchange_pay_methods" value={m} defaultChecked={list.includes(m)} className={BOOL} />
+                    <span><b className="block">{t(`st.exchangePay_${m}`)}</b></span>
+                  </label>
+                );
+              })}
+              <p className="text-xs text-text-muted">{t("st.exchangePayHint")}</p>
+            </fieldset>
           </SectionCard>
 
           {/* PAYMENTS */}

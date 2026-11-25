@@ -107,8 +107,8 @@ export default function AccountOverview({ loaderData }: Route.ComponentProps) {
                 >
                   <span className="min-w-0">
                     <span className="block font-extrabold text-text" dir="ltr">{o.number}</span>
-                    <span className="block text-xs text-text-muted num" dir="ltr">
-                      {new Date(o.created_at).toLocaleDateString(en ? "en-EG" : "ar-EG-u-nu-latn")}
+                    <span className="block text-xs text-text-muted num">
+                      {new Date(o.created_at).toLocaleDateString(en ? "en-GB" : "ar-EG-u-nu-latn", { day: "numeric", month: "short", year: "numeric" })}
                     </span>
                   </span>
                   <span className={`ms-auto rounded-full px-3 py-1 text-xs font-extrabold ${STATUS_TONE[o.status] ?? "bg-surface-tint text-text-muted"}`}>
