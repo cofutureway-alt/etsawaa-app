@@ -71,22 +71,17 @@ export default function CustomerWallet({ loaderData }: Route.ComponentProps) {
 
   const balancePanel = (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <BalanceCard
-          tone="refund"
-          icon={<WalletIcon aria-hidden="true" className="size-5" />}
-          label={t("cw.refundBalance")}
-          amount={money(loaderData.refund)}
-          foot={t("cw.refundHint")}
-        />
-        <BalanceCard
-          tone="gift"
-          icon={<GiftIcon aria-hidden="true" className="size-5" />}
-          label={t("cw.giftBalance")}
-          amount={money(loaderData.gift)}
-          foot={nextExpiry ? t("cw.cardExpiry", { date: day(nextExpiry) }) : ""}
-        />
-      </div>
+      <BalanceCard
+        totalLabel={t("cw.totalAvailable")}
+        total={money(total)}
+        rows={[
+          { icon: <WalletIcon aria-hidden="true" className="size-4" />, label: t("cw.refundBalance"), amount: money(loaderData.refund), note: t("cw.refundHint") },
+          {
+            icon: <GiftIcon aria-hidden="true" className="size-4" />, label: t("cw.giftBalance"), amount: money(loaderData.gift),
+            note: nextExpiry ? t("cw.cardExpiry", { date: day(nextExpiry) }) : "",
+          },
+        ]}
+      />
       <p className="flex items-start gap-1.5 text-xs text-text-muted">
         <InfoIcon aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
         {t("cw.noWithdrawal")}
@@ -151,12 +146,8 @@ export default function CustomerWallet({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-black text-text">{t("cw.customerTitle")}</h1>
-          <p className="mt-1 text-sm text-text-muted">{t("cw.totalLead")}</p>
-          <p className="num mt-0.5 text-3xl font-black text-text" dir="ltr">{money(total)}</p>
-        </div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-black text-text">{t("cw.customerTitle")}</h1>
         <a href={`/${lang}/cart`} className="inline-flex min-h-10 items-center gap-1.5 rounded-md bg-action px-4 text-sm font-extrabold text-on-action hover:bg-action-hover">
           <CartIcon aria-hidden="true" className="size-4" />
           {t("cw.spendHint")}
@@ -185,34 +176,42 @@ function TabLabel({ icon, text, count }: { icon: ReactNode; text: string; count?
 }
 
 /**
- * A balance shown as a payment card. The gradients are fixed brand colours,
- * so the card reads the same in light and dark mode: a chip, the store mark,
- * the amount, and one line at the bottom (no expiry / nearest expiry).
+ * The wallet as one payment card: the total on top, the two balances
+ * (refund / gift) at the bottom, and the store logo in white. The gradient is
+ * a fixed brand colour, so the card reads the same in light and dark mode.
  */
-function BalanceCard({ tone, icon, label, amount, foot }: {
-  tone: "refund" | "gift"; icon: ReactNode; label: string; amount: string; foot: string;
+function BalanceCard({ totalLabel, total, rows }: {
+  totalLabel: string; total: string;
+  rows: Array<{ icon: ReactNode; label: string; amount: string; note: string }>;
 }) {
-  const bg = tone === "refund"
-    ? "linear-gradient(135deg, #1b1f2a 0%, #3a1216 55%, #b3121b 100%)"
-    : "linear-gradient(135deg, #b3121b 0%, #e2452f 50%, #f2a33a 100%)";
   return (
     <div
-      className="relative isolate flex aspect-[1.586/1] w-full flex-col justify-between overflow-hidden rounded-2xl p-5 text-white shadow-lg"
-      style={{ backgroundImage: bg }}
+      className="relative isolate mx-auto flex aspect-[1.586/1] w-full max-w-md flex-col justify-between overflow-hidden rounded-2xl p-5 text-white shadow-lg"
+      style={{ backgroundImage: "linear-gradient(135deg, #1b1f2a 0%, #3a1216 50%, #b3121b 100%)" }}
     >
       <span aria-hidden="true" className="pointer-events-none absolute -end-12 -top-16 -z-10 size-48 rounded-full bg-white/10" />
-      <span aria-hidden="true" className="pointer-events-none absolute -bottom-20 -start-10 -z-10 size-56 rounded-full bg-black/10" />
-      <div className="flex items-start justify-between gap-2">
-        <span className="flex items-center gap-2 text-sm font-extrabold">
-          <span className="grid size-9 place-items-center rounded-xl bg-white/15">{icon}</span>
-          {label}
+      <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -start-10 -z-10 size-60 rounded-full bg-black/15" />
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-bold opacity-80">{totalLabel}</p>
+          <p className="num mt-1 text-3xl font-black leading-tight" dir="ltr">{total}</p>
+        </div>
+        {/* the brand logo in its own colours on a light plate */}
+        <span className="shrink-0 rounded-xl bg-white px-2.5 py-1.5 shadow-sm">
+          <img src="/logo-mark.webp" alt="" width={548} height={245} className="h-7 w-auto" />
         </span>
-        <span className="text-xs font-black tracking-widest opacity-80" dir="ltr">ETSAWAA</span>
       </div>
-      <span aria-hidden="true" className="h-7 w-10 rounded-md bg-gradient-to-br from-amber-200 to-amber-400 opacity-90 shadow-inner" />
-      <div>
-        <p className="num text-3xl font-black leading-tight" dir="ltr">{amount}</p>
-        <p className="mt-1 min-h-4 text-xs font-bold opacity-85">{foot}</p>
+      <div className="grid grid-cols-2 gap-3 border-t border-white/15 pt-3">
+        {rows.map((r) => (
+          <div key={r.label} className="min-w-0">
+            <p className="flex items-center gap-1.5 text-2xs font-bold opacity-80">
+              {r.icon}
+              <span className="truncate">{r.label}</span>
+            </p>
+            <p className="num mt-0.5 text-base font-black" dir="ltr">{r.amount}</p>
+            <p className="min-h-4 truncate text-2xs opacity-75">{r.note}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
