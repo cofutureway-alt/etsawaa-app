@@ -179,6 +179,8 @@ export interface RefundRequestRow {
   refund_total_piastres?: number;
   exchange_applied_piastres?: number;
   exchange_wallet_piastres?: number;
+  /** exchange credit held until the returned products arrive */
+  exchange_hold_piastres?: number;
   credit_destination?: "wallet" | "original" | null;
   exchange_order?: { number: string; total_piastres: number; wallet_paid_piastres: number; payment_status: string; status: string } | null;
 }

@@ -25,8 +25,7 @@ const KNOWN_PLACE_ERRORS = [
   "cod_cap", "cod_vendor_ship", "cod_disabled", "items_unavailable", "insufficient_stock",
   "phones_equal", "phone_invalid", "address_incomplete", "area_unavailable",
   "coupon_expired", "coupon_limit", "coupon_min_subtotal", "coupon_invalid",
-  "payment_unavailable", "duplicate",
-] as const;
+  "payment_unavailable", "duplicate", "wallet_test_mode"] as const;
 
 export function PlaceErrorSummary({
   lang, reason, capPiastres, names, fallbackCap,
@@ -64,6 +63,7 @@ export function PlaceErrorSummary({
         {reason === "coupon_invalid" && t("cart.coupon.error.not_eligible")}
         {reason === "payment_unavailable" && t("checkout.payUnavailable")}
         {reason === "duplicate" && t("checkout.duplicateAttempt")}
+        {reason === "wallet_test_mode" && t("checkout.walletTestMode")}
         {!KNOWN_PLACE_ERRORS.includes(reason as (typeof KNOWN_PLACE_ERRORS)[number]) && t("checkout.genericError")}
       </p>
       <p className="mt-2 text-sm">

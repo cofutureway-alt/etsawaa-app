@@ -83,12 +83,16 @@ export async function action({ request, params }: Route.ActionArgs) {
   const intent = String(form.get("intent") ?? "");
   const userId = params.id ?? "";
 
+  // one id per opened form: a retried submit is applied once
+  const opRaw = String(form.get("op") ?? "");
+  const op = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(opRaw) ? opRaw : null;
+
   if (intent === "adjust") {
     // signed: a positive amount credits, a negative one debits
     const amount = signedEgpToPiastres(form.get("amount"));
     if (amount == null || amount === 0) return data({ ok: false, reason: "bad_amount" }, { status: 400 });
     const res = await client.rpc("fn_admin_wallet_adjust", {
-      p_user: userId, p_amount: amount, p_reason: String(form.get("reason") ?? ""),
+      p_user: userId, p_amount: amount, p_reason: String(form.get("reason") ?? ""), p_op: op,
     });
     if (res.error) return data({ ok: false, reason: res.error.message }, { status: 500 });
     const r = res.data as { ok: boolean; reason?: string };
@@ -104,7 +108,7 @@ export async function action({ request, params }: Route.ActionArgs) {
     if (!expiresAt) return data({ ok: false, reason: "bad_expiry" }, { status: 400 });
     const res = await client.rpc("fn_admin_wallet_gift", {
       p_user: userId, p_amount: amount, p_expires_at: expiresAt,
-      p_reason: String(form.get("reason") ?? ""),
+      p_reason: String(form.get("reason") ?? ""), p_op: op,
     });
     if (res.error) return data({ ok: false, reason: res.error.message }, { status: 500 });
     const r = res.data as { ok: boolean; reason?: string };
@@ -135,6 +139,8 @@ export default function AdminCustomerWallet({ loaderData }: Route.ComponentProps
   const busy = fetcher.state !== "idle";
   const [dialog, setDialog] = useState<null | "adjust" | "gift" | "cancel">(null);
   const [cancelGift, setCancelGift] = useState<GiftLot | null>(null);
+  const [op, setOp] = useState("");
+  const openForm = (d: "adjust" | "gift") => { setOp(crypto.randomUUID()); setDialog(d); };
   const total = walletAvailable({ refund_piastres: loaderData.refund, gift_piastres: loaderData.gift });
   const next = nearestExpiry(loaderData.gifts);
   const activeGifts = loaderData.gifts.filter((g) => g.status === "active");
@@ -147,8 +153,8 @@ export default function AdminCustomerWallet({ loaderData }: Route.ComponentProps
           <p className="text-xs text-text-muted" dir="ltr">{loaderData.user.phone || loaderData.user.email || "—"}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button size="sm" onClick={() => setDialog("adjust")}>{t("cw.adjustTitle")}</Button>
-          <Button size="sm" variant="outline" onClick={() => setDialog("gift")}>{t("cw.giftTitle")}</Button>
+          <Button size="sm" onClick={() => openForm("adjust")}>{t("cw.adjustTitle")}</Button>
+          <Button size="sm" variant="outline" onClick={() => openForm("gift")}>{t("cw.giftTitle")}</Button>
         </div>
       </div>
 
@@ -241,6 +247,7 @@ export default function AdminCustomerWallet({ loaderData }: Route.ComponentProps
       <Dialog open={dialog === "adjust"} onClose={() => setDialog(null)} title={t("cw.adjustTitle")}>
         <fetcher.Form method="post" className="flex flex-col gap-3" onSubmit={() => setDialog(null)}>
           <input type="hidden" name="intent" value="adjust" />
+          <input type="hidden" name="op" value={op} />
           <p className="text-xs text-text-muted">{t("cw.adjustHint")}</p>
           <Input id="cw-amount" name="amount" required label={t("cw.amount")} dir="ltr" inputClassName="ltr:text-left" hint={t("cw.adjustSignHint")} />
           <div className="flex flex-col gap-1">
@@ -255,6 +262,7 @@ export default function AdminCustomerWallet({ loaderData }: Route.ComponentProps
       <Dialog open={dialog === "gift"} onClose={() => setDialog(null)} title={t("cw.giftTitle")}>
         <fetcher.Form method="post" className="flex flex-col gap-3" onSubmit={() => setDialog(null)}>
           <input type="hidden" name="intent" value="gift" />
+          <input type="hidden" name="op" value={op} />
           <p className="text-xs text-text-muted">{t("cw.giftFirst")}</p>
           <Input id="cw-gift-amount" name="amount" required label={t("cw.amount")} dir="ltr" inputClassName="ltr:text-left" />
           <div className="flex flex-col gap-1">

@@ -176,7 +176,9 @@ function paymentStatus(order: OrderRow, lang: "ar" | "en"): string {
 }
 
 /** What the courier still collects: the total minus the wallet part. */
+/** what is still to pay: nothing once the order is paid, collected or cancelled */
 function cashDue(order: OrderRow): number {
+  if (order.status === "cancelled" || ["paid", "cod_collected", "partially_refunded", "refunded"].includes(order.payment_status)) return 0;
   return Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0));
 }
 
@@ -193,7 +195,7 @@ export interface DocInput {
   /** settings['documents'] — header/footer/logo/watermark/barcode height. */
   docSettings?: DocSettings;
   /** a replacement order: the original order and the returned products it replaces */
-  exchange?: { originalNumber: string; returned: Array<{ name_ar: string; name_en: string; qty: number; amount_piastres: number }> } | null;
+  exchange?: { originalNumber: string; applied_piastres: number; returned: Array<{ name_ar: string; name_en: string; qty: number; amount_piastres: number }> } | null;
 }
 
 export interface DocSettings {
@@ -292,8 +294,10 @@ export function renderAdminInvoice(input: DocInput): string {
         ${order.discount_piastres > 0 ? `<tr><td>${L.discount}${order.coupon_code ? ` (${esc(order.coupon_code)})` : ""}</td><td class="num">−${money(order.discount_piastres, lang)}</td></tr>` : ""}
         <tr><td>${L.shipping}</td><td class="num">${money(order.shipping_fee_piastres, lang)}</td></tr>
         <tr><td class="grand">${L.grand}</td><td class="num grand">${money(order.total_piastres, lang)}</td></tr>
-        ${(order.wallet_paid_piastres ?? 0) > 0 ? `<tr><td>${input.exchange ? (ar ? "قيمة المرتجع" : "Return value") : ar ? "مدفوع من المحفظة" : "Paid from wallet"}</td><td class="num">−${money(order.wallet_paid_piastres ?? 0, lang)}</td></tr>
-        <tr><td class="grand">${input.exchange ? (ar ? "الفرق" : "Difference") : ar ? "المتبقي" : "Due"}</td><td class="num grand">${money(cashDue(order), lang)}</td></tr>` : ""}
+        ${input.exchange ? `<tr><td>${ar ? "قيمة المرتجع" : "Return value"}</td><td class="num">−${money(input.exchange.applied_piastres, lang)}</td></tr>
+        <tr><td class="grand">${ar ? "الفرق" : "Difference"}</td><td class="num grand">${money(Math.max(0, order.total_piastres - input.exchange.applied_piastres), lang)}</td></tr>` : ""}
+        ${(order.wallet_paid_piastres ?? 0) - (input.exchange?.applied_piastres ?? 0) > 0 ? `<tr><td>${ar ? "مدفوع من المحفظة" : "Paid from wallet"}</td><td class="num">−${money((order.wallet_paid_piastres ?? 0) - (input.exchange?.applied_piastres ?? 0), lang)}</td></tr>` : ""}
+        ${(order.wallet_paid_piastres ?? 0) > 0 ? `<tr><td class="grand">${ar ? "المتبقي" : "Due"}</td><td class="num grand">${money(cashDue(order), lang)}</td></tr>` : ""}
       </tbody>
     </table>
     <p class="copy-note">${L.copyNote}</p>${footer(lang, docSettings)}

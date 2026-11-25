@@ -13,6 +13,10 @@ import { Button } from "~/components/ui/Button";
 import { MediaImg } from "~/components/catalog/MediaImg";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 import { RotateIcon } from "~/components/ui/icons";
+import { walletAvailable } from "~/features/wallet/split";
+
+/** an order whose money is settled: nothing is left to pay */
+const SETTLED = new Set(["paid", "cod_collected", "partially_refunded", "refunded"]);
 
 
 /**
@@ -61,6 +65,12 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     getGeoNames(client, order.governorate_id, order.area_id),
     loadExchangeInfo(client, order.exchange_request_id ?? null),
   ]);
+  // a replacement order still to pay: can the wallet cover the difference?
+  let walletBalance = 0;
+  if (exchange && order.status !== "cancelled" && (order.payment_status === "unpaid" || order.payment_status === "cod_pending")) {
+    const { data: w } = await client.rpc("fn_my_wallet");
+    walletBalance = walletAvailable(w as { refund_piastres: number; gift_piastres: number } | null);
+  }
 
   return {
     lang,
@@ -71,6 +81,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     governorate: geo.governorate,
     area: geo.area,
     exchange,
+    walletBalance,
     flags: {
       placed: new URL(request.url).searchParams.get("placed") === "1",
       kashierReturn: new URL(request.url).searchParams.get("kashier") === "return",
@@ -139,6 +150,15 @@ export async function action({ request, params }: Route.ActionArgs) {
     return { ok: true as const };
   }
 
+  if (intent === "exchange_wallet") {
+    // the whole difference of an exchange from the customer's wallet
+    const { data: res, error } = await client.rpc("fn_exchange_pay_wallet", { p_order_id: order.id });
+    if (error) return data({ ok: false, reason: "server_error" }, { status: 500 });
+    const r = res as { ok: boolean; reason?: string };
+    if (!r.ok) return data({ ok: false, reason: r.reason ?? "server_error" }, { status: 400 });
+    return { ok: true as const };
+  }
+
   if (intent === "pay") {
     // retry on the SAME order (US-07) — no new order is created
     if (order.payment_method !== "kashier" || order.payment_status === "paid") {
@@ -174,11 +194,16 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
   const cancelFetcher = useFetcher<typeof action>();
   const payFetcher = useFetcher<typeof action>();
   const exchangeFetcher = useFetcher<typeof action>();
+  const walletFetcher = useFetcher<typeof action>();
   const { order, groups, items, history } = loaderData;
   const [liveStatus, setLiveStatus] = useState({ status: order.status, payment_status: order.payment_status });
 
   const en = i18n.language?.startsWith("en");
   const money = (p: number) => formatPiastres(p, en ? "en" : "ar");
+  // what is still to pay: nothing once the order is paid or collected
+  const outstanding = SETTLED.has(liveStatus.payment_status) || SETTLED.has(order.payment_status)
+    || liveStatus.status === "cancelled" || order.status === "cancelled"
+    ? 0 : Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0));
 
   // Kashier return: poll until the webhook lands (never trust the query)
   const awaitingWebhook =
@@ -279,12 +304,18 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
             </div>
             <div className="flex justify-between gap-2">
               <dt className="font-extrabold text-text">{t("exchange.leftToPay")}</dt>
-              <dd className="num font-black text-text" dir="ltr">{money(Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0)))}</dd>
+              <dd className="num font-black text-text" dir="ltr">{money(outstanding)}</dd>
             </div>
           </dl>
-          {order.payment_status === "unpaid" && liveStatus.status !== "cancelled" && order.total_piastres - (order.wallet_paid_piastres ?? 0) > 0 ? (
+          {(order.payment_status === "unpaid" || order.payment_status === "cod_pending") && outstanding > 0 ? (
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              {loaderData.exchange.payOnDelivery && order.payment_method === "kashier" ? (
+              {loaderData.walletBalance >= outstanding ? (
+                <Button loading={walletFetcher.state !== "idle"}
+                  onClick={() => walletFetcher.submit({ intent: "exchange_wallet" }, { method: "post", preventScrollReset: true })}>
+                  {t("exchange.payFromWallet", { amount: money(outstanding) })}
+                </Button>
+              ) : null}
+              {loaderData.exchange.payOnDelivery && order.payment_method === "kashier" && liveStatus.payment_status === "unpaid" ? (
                 <Button variant="outline" loading={exchangeFetcher.state !== "idle"}
                   onClick={() => exchangeFetcher.submit({ intent: "exchange_cod" }, { method: "post", preventScrollReset: true })}>
                   {t("exchange.payOnDelivery")}
@@ -292,6 +323,9 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
               ) : null}
               {exchangeFetcher.data && !exchangeFetcher.data.ok ? (
                 <p role="alert" className="text-xs font-bold text-danger">{t(`exchange.codErr_${exchangeFetcher.data.reason}`, { defaultValue: t("returns.failed") })}</p>
+              ) : null}
+              {walletFetcher.data && !walletFetcher.data.ok ? (
+                <p role="alert" className="text-xs font-bold text-danger">{t(`exchange.walletErr_${walletFetcher.data.reason}`, { defaultValue: t("returns.failed") })}</p>
               ) : null}
             </div>
           ) : null}
@@ -409,7 +443,7 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
               </div>
               <div className="flex justify-between">
                 <dt className="text-text-muted">{t("order.dueNow")}</dt>
-                <dd className="font-bold text-text">{money(Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0)))}</dd>
+                <dd className="font-bold text-text">{money(outstanding)}</dd>
               </div>
             </>
           ) : null}

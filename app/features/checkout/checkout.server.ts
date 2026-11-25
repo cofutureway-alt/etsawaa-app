@@ -208,6 +208,10 @@ export async function checkoutAction(request: Request, params: { lang?: string }
     const couponCode = String(form.get("coupon_code") ?? "").trim();
     // the wallet part is re-capped server-side inside fn_create_order
     const walletRequested = Math.max(0, Math.trunc(Number(form.get("wallet_piastres") ?? 0) || 0));
+    // a sandbox card payment never runs on real wallet money
+    if (method === "kashier" && kashierMode === "test" && walletRequested > 0) {
+      return data({ ok: false, reason: "wallet_test_mode" }, { status: 400 });
+    }
     const { data: res, error } = await client.rpc("fn_create_order", {
       p_payload: {
         attempt_key: attemptKey || null,

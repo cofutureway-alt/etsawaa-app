@@ -43,7 +43,7 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
             id: string; order: { number: string } | null; kind: string; status: string;
             created_at: string; decision_note: string | null;
             resolution?: string; refund_total_piastres?: number; exchange_applied_piastres?: number;
-            exchange_wallet_piastres?: number; credit_destination?: string | null;
+            exchange_wallet_piastres?: number; exchange_hold_piastres?: number; credit_destination?: string | null;
             exchange_order?: { number: string; total_piastres: number; wallet_paid_piastres: number; payment_status: string; status: string } | null;
           }) => {
             const ex = r.exchange_order ?? null;
@@ -80,7 +80,10 @@ export default function AccountReturnsPage({ loaderData }: Route.ComponentProps)
                     <Link to={`/${loaderData.lang}/order/${encodeURIComponent(ex.number)}`} className="text-action hover:underline" dir="ltr">{ex.number}</Link>
                   </p>
                   <p className="mt-1 text-xs text-text-muted">{t("exchange.creditUsed", { amount: money(r.exchange_applied_piastres ?? 0) })}</p>
-                  {leftover > 0 ? (
+                  {(r.exchange_hold_piastres ?? 0) > 0 ? (
+                    <p className="mt-0.5 text-xs font-bold text-text">{t("exchange.heldCustomer", { amount: money(r.exchange_hold_piastres ?? 0) })}</p>
+                  ) : null}
+                  {leftover > 0 && !((r.exchange_hold_piastres ?? 0) > 0 && r.credit_destination === "wallet") ? (
                     <p className="mt-0.5 text-xs text-text-muted">
                       {r.credit_destination === "wallet" ? t("exchange.leftoverWallet", { amount: money(leftover) }) : t("exchange.leftoverRefund", { amount: money(leftover) })}
                     </p>

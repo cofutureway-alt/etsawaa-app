@@ -123,9 +123,12 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
   const walletPaysAll = walletCoversAll(orderTotal, walletPart);
   const cardRemainder = walletRemainder(orderTotal, walletPart);
   // the COD cap applies to what the courier collects (the non-wallet part)
-  const codEffective = codState.allowed && cardRemainder > codState.cap_piastres
-    ? { ...codState, allowed: false, reason: "cap" as const }
-    : codState;
+  // (the quote blocks on the full total; the wallet can bring the rest under the cap)
+  const codEffective = codState.reason === "cap" && walletPart > 0 && cardRemainder <= codState.cap_piastres
+    ? { ...codState, allowed: true, reason: null }
+    : codState.allowed && cardRemainder > codState.cap_piastres
+      ? { ...codState, allowed: false, reason: "cap" as const }
+      : codState;
   // COD picked, then the quote changed (cap, vendor-shipped item, COD switched off) → make them choose again
   useEffect(() => { if (paymentMethod === "cod" && quote && !codEffective.allowed) setPaymentMethod(null); }, [paymentMethod, quote, codEffective.allowed]);
   // the wallet covers everything: no method to choose

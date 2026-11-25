@@ -176,18 +176,20 @@ async function renderOne(request: Request, params: Record<string, string | undef
   }
 
   // a replacement order's invoice lists the returned products it replaces
-  let exchange: { originalNumber: string; returned: Array<{ name_ar: string; name_en: string; qty: number; amount_piastres: number }> } | null = null;
+  let exchange: { originalNumber: string; applied_piastres: number; returned: Array<{ name_ar: string; name_en: string; qty: number; amount_piastres: number }> } | null = null;
   if (doc === "invoice_admin" && order.exchange_request_id) {
     const { data: ex } = await client.from("refund_requests")
-      .select("orders!refund_requests_order_id_fkey(number), refund_request_items(qty, decision, refund_amount_piastres, order_items(product_name_ar, product_name_en))")
+      .select("exchange_applied_piastres, orders!refund_requests_order_id_fkey(number), refund_request_items(qty, decision, refund_amount_piastres, order_items(product_name_ar, product_name_en))")
       .eq("id", order.exchange_request_id).maybeSingle();
     const row = ex as unknown as {
+      exchange_applied_piastres: number | null;
       orders: { number: string } | null;
       refund_request_items: Array<{ qty: number; decision: string | null; refund_amount_piastres: number | null; order_items: { product_name_ar: string; product_name_en: string } | null }>;
     } | null;
     if (row) {
       exchange = {
         originalNumber: row.orders?.number ?? "",
+        applied_piastres: row.exchange_applied_piastres ?? 0,
         returned: (row.refund_request_items ?? []).filter((i) => i.decision !== "reject").map((i) => ({
           name_ar: i.order_items?.product_name_ar ?? "", name_en: i.order_items?.product_name_en ?? "",
           qty: i.qty, amount_piastres: i.refund_amount_piastres ?? 0,

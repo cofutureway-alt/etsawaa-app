@@ -41,7 +41,8 @@ interface Rfq {
   credit_destination: "wallet" | "original" | null;
   exchange_applied_piastres: number;
   exchange_wallet_piastres: number;
-  exchange_order: { number: string; total_piastres: number; wallet_paid_piastres: number; payment_status: string; payment_method: string } | null;
+  exchange_hold_piastres: number;
+  exchange_order: { number: string; total_piastres: number; wallet_paid_piastres: number; payment_status: string; payment_method: string; status: string } | null;
   replacements: Array<{ variant_id: string; qty: number; name: string; label: string | null; unit_piastres: number | null }>;
 }
 
@@ -58,9 +59,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     .from("refund_requests")
     .select(`id, kind, description, evidence, status, created_at, source, logistics_status, refund_total_piastres,
              refund_method, refund_reference, resolution, credit_destination,
-             exchange_applied_piastres, exchange_wallet_piastres,
+             exchange_applied_piastres, exchange_wallet_piastres, exchange_hold_piastres,
              orders!refund_requests_order_id_fkey(number, ship_name),
-             exchange_order:orders!refund_requests_exchange_order_id_fkey(number, total_piastres, wallet_paid_piastres, payment_status, payment_method),
+             exchange_order:orders!refund_requests_exchange_order_id_fkey(number, total_piastres, wallet_paid_piastres, payment_status, payment_method, status),
              refund_replacements(variant_id, qty, products(name_ar, name_en), variants(option_label_ar, option_label_en)),
              refund_request_items(id, order_item_id, qty, reason, decision, fault,
                refund_amount_piastres, restock,
@@ -109,6 +110,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       credit_destination: (r.credit_destination as Rfq["credit_destination"]) ?? null,
       exchange_applied_piastres: (r.exchange_applied_piastres as number) ?? 0,
       exchange_wallet_piastres: (r.exchange_wallet_piastres as number) ?? 0,
+      exchange_hold_piastres: (r.exchange_hold_piastres as number) ?? 0,
       exchange_order: (r.exchange_order as Rfq["exchange_order"]) ?? null,
       replacements: ((r.refund_replacements ?? []) as Array<Record<string, unknown>>).map((x) => {
         const prod = x.products as { name_ar: string; name_en: string } | null;
@@ -255,9 +257,12 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                     <a href={`/${lang}/admin/orders/${encodeURIComponent(r.exchange_order.number)}`} className="text-action hover:underline" dir="ltr">{r.exchange_order.number}</a>
                   </span>
                   <span className="text-text-muted">{t("exchange.creditApplied")}: <span className="num font-bold text-text" dir="ltr">{money(r.exchange_applied_piastres)}</span></span>
-                  <span className="text-text-muted">{t("exchange.leftToPay")}: <span className="num font-bold text-text" dir="ltr">{money(Math.max(0, r.exchange_order.total_piastres - r.exchange_order.wallet_paid_piastres))}</span></span>
+                  <span className="text-text-muted">{t("exchange.leftToPay")}: <span className="num font-bold text-text" dir="ltr">{money(["paid", "cod_collected", "partially_refunded", "refunded"].includes(r.exchange_order.payment_status) || r.exchange_order.status === "cancelled" ? 0 : Math.max(0, r.exchange_order.total_piastres - r.exchange_order.wallet_paid_piastres))}</span></span>
                   {r.exchange_wallet_piastres > 0 ? (
                     <span className="text-text-muted">{t("exchange.keptInWallet")}: <span className="num font-bold text-text" dir="ltr">{money(r.exchange_wallet_piastres)}</span></span>
+                  ) : null}
+                  {r.exchange_hold_piastres > 0 ? (
+                    <span className="font-bold text-warning-strong">{t("exchange.heldAdmin", { amount: money(r.exchange_hold_piastres) })}</span>
                   ) : null}
                   <span className="text-text-muted">{t(`order.pay_${r.exchange_order.payment_status}`, { defaultValue: r.exchange_order.payment_status })}</span>
                 </div>
