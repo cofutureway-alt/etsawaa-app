@@ -25,6 +25,7 @@ export function PaymentStep({
   codState,
   paymentMethod,
   onPaymentMethod,
+  walletRemainder = null,
 }: {
   open: boolean;
   index: number;
@@ -40,14 +41,20 @@ export function PaymentStep({
   codState: CodState;
   paymentMethod: "kashier" | "cod" | null;
   onPaymentMethod: (method: "kashier" | "cod" | null) => void;
+  /** piastres left after the wallet part; null = no wallet part in play */
+  walletRemainder?: number | null;
 }) {
   const { t, i18n } = useTranslation();
   const money = (p: number) => formatMoney(i18n.language, p);
+  const dueNote = walletRemainder != null && walletRemainder > 0
+    ? <p className="mt-1.5 text-xs font-bold text-text">{t("walletCheckout.payRemainder", { amount: money(walletRemainder) })}</p>
+    : null;
   return (
     <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-1">
       <StepHeader index={index} total={total} state={stepState} open={open} onOpen={onOpen} />
       {open ? (
         <div className="border-t border-border p-4">
+          {dueNote}
           <div role="radiogroup" aria-label={t("checkout.stepPayment")} className="flex flex-col gap-2">
             <label className={`flex cursor-pointer items-start gap-3 rounded-md border p-3.5 transition-colors duration-150 ${
               paymentMethod === "kashier" ? "border-action bg-surface-tint" : "border-border hover:border-primary"

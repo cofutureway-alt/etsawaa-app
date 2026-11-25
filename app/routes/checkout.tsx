@@ -15,6 +15,8 @@ import { ShippingStep } from "~/components/checkout/ShippingStep";
 import { PaymentStep } from "~/components/checkout/PaymentStep";
 import { ConfirmStep } from "~/components/checkout/ConfirmStep";
 import { OrderSummary } from "~/components/checkout/OrderSummary";
+import { WalletStep } from "~/components/checkout/WalletStep";
+import { walletAvailable, walletCap, walletCoversAll, walletRemainder } from "~/features/wallet/split";
 import type { StepViewState } from "~/components/checkout/StepHeader";
 import { SkeletonPage } from "~/components/ui/Skeleton";
 import { Dialog } from "~/components/ui/Overlay";
@@ -77,6 +79,8 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
   const [couponInput, setCouponInput] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"kashier" | "cod" | null>(null);
+  // piastres the customer wants to pay from the wallet (server re-caps it)
+  const [walletAmount, setWalletAmount] = useState(0);
   const [terms, setTerms] = useState(false);
   const [phoneDone, setPhoneDone] = useState(false);
   const submitRef = useRef<() => void>(() => undefined);
@@ -111,11 +115,23 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
   const sellable = quote?.lines.filter((l) => l.listable) ?? [];
   const totals = quote?.totals ?? null;
   const codState = quote?.cod ?? { allowed: false, reason: null as null, cap_piastres: loaderData.codCap };
+  // wallet: the applied part is always the capped request; the rest is paid by card/cash
+  const wallet = loaderData.wallet;
+  const walletBalance = walletAvailable(wallet);
+  const orderTotal = totals?.total_piastres ?? 0;
+  const walletPart = walletCap(walletAmount, walletBalance, orderTotal);
+  const walletPaysAll = walletCoversAll(orderTotal, walletPart);
+  const cardRemainder = walletRemainder(orderTotal, walletPart);
+  // the COD cap applies to what the courier collects (the non-wallet part)
+  const codEffective = codState.allowed && cardRemainder > codState.cap_piastres
+    ? { ...codState, allowed: false, reason: "cap" as const }
+    : codState;
   // COD picked, then the quote changed (cap, vendor-shipped item, COD switched off) → make them choose again
-  useEffect(() => { if (paymentMethod === "cod" && quote && !codState.allowed) setPaymentMethod(null); }, [paymentMethod, quote, codState.allowed]);
-
+  useEffect(() => { if (paymentMethod === "cod" && quote && !codEffective.allowed) setPaymentMethod(null); }, [paymentMethod, quote, codEffective.allowed]);
+  // the wallet covers everything: no method to choose
+  useEffect(() => { if (walletPaysAll) setPaymentMethod(null); }, [walletPaysAll]);
   const canPlace =
-    !placed && sellable.length > 0 && paymentMethod !== null && terms &&
+    !placed && sellable.length > 0 && (paymentMethod !== null || walletPaysAll) && terms &&
     (addr.addressMode === "saved" ? addr.selectedAddressId !== "" : true);
 
   const groups = useMemo(() => {
@@ -159,7 +175,11 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
       value: addr.addressMode === "saved" && addr.selectedAddress ? (addr.selectedAddress.address1) : addr.addr1,
     },
     shipping: { done: Boolean(activeGov) && addr.addressDone, label: t("checkout.stepShipping"), value: activeGov ? (i18n.language?.startsWith("en") ? activeGov.name_en : activeGov.name_ar) : "" },
-    payment: { done: paymentMethod !== null, label: t("checkout.stepPayment"), value: paymentMethod ? t(`checkout.pay_${paymentMethod}`) : "" },
+    payment: {
+      done: paymentMethod !== null || walletPaysAll,
+      label: t("checkout.stepPayment"),
+      value: walletPaysAll ? t("checkout.pay_wallet") : paymentMethod ? t(`checkout.pay_${paymentMethod}`) : "",
+    },
     confirm: { done: false, label: t("checkout.stepConfirm"), value: "" },
   };
 
@@ -167,9 +187,10 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
     setPhoneDone(false);
     const fd = new FormData();
     fd.set("intent", "place");
-    fd.set("payment_method", paymentMethod ?? "");
+    fd.set("payment_method", walletPaysAll ? "wallet" : (paymentMethod ?? ""));
     fd.set("attempt_key", loaderData.attemptKey);
     fd.set("coupon_code", couponCode);
+    if (walletPart > 0) fd.set("wallet_piastres", String(walletPart));
     if (addr.addressMode === "saved") {
       fd.set("address_id", addr.selectedAddressId);
       fd.set("phone_alternate", addr.alternatePhone);
@@ -260,20 +281,37 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           />
 
           {/* Step 3 — payment */}
-          <PaymentStep
-            open={step === "payment"}
-            index={2}
-            total={STEPS.length}
-            stepState={stepStates.payment}
-            onOpen={() => setStep("payment")}
-            onBack={() => setStep("shipping")}
-            onContinue={() => setStep("confirm")}
-            kashierAvailable={loaderData.kashier}
-            kashierTest={loaderData.kashierTest}
-            codState={codState}
-            paymentMethod={paymentMethod}
-            onPaymentMethod={setPaymentMethod}
-          />
+          {walletBalance > 0 ? (
+            <WalletStep
+              wallet={wallet}
+              total={orderTotal}
+              amount={walletPart}
+              onAmount={setWalletAmount}
+            />
+          ) : null}
+
+          {walletPaysAll ? (
+            <section className="rounded-lg border border-border bg-surface p-4 shadow-1">
+              <h2 className="text-sm font-extrabold text-text">{t("checkout.stepPayment")}</h2>
+              <p className="mt-1 text-sm text-text-muted">{t("walletCheckout.coversAll")}</p>
+            </section>
+          ) : (
+            <PaymentStep
+              open={step === "payment"}
+              index={2}
+              total={STEPS.length}
+              stepState={stepStates.payment}
+              onOpen={() => setStep("payment")}
+              onBack={() => setStep("shipping")}
+              onContinue={() => setStep("confirm")}
+              kashierAvailable={loaderData.kashier}
+              kashierTest={loaderData.kashierTest}
+              codState={codEffective}
+              paymentMethod={paymentMethod}
+              onPaymentMethod={setPaymentMethod}
+              walletRemainder={walletPart > 0 ? cardRemainder : null}
+            />
+          )}
 
           {/* Step 4 — confirm */}
           <ConfirmStep
@@ -288,7 +326,7 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
             addressMode={addr.addressMode}
             fullName={addr.fullName}
             addr1={addr.addr1}
-            paymentMethod={paymentMethod}
+            paymentMethod={walletPaysAll ? "wallet" : paymentMethod}
             terms={terms}
             onTermsChange={setTerms}
             canPlace={canPlace}
@@ -306,6 +344,8 @@ export default function CheckoutPage({ loaderData }: Route.ComponentProps) {
           onCouponInput={setCouponInput}
           onApplyCoupon={() => setCouponCode(couponInput.trim())}
           quotePending={quotePending}
+          walletPart={walletPart}
+          walletRemainder={cardRemainder}
         />
       </div>
     </div>

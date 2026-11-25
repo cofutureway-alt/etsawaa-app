@@ -114,8 +114,8 @@ export function ReturnsPanel({ items, groups, refundables, returns, en }: {
             <p className="text-sm text-text">{t("ret.issueBody", { amount: money(refundFor.refund_total_piastres) })}</p>
             <label className="flex flex-col gap-1 text-sm font-bold text-text">
               {t("ret.method")}
-              <select name="method" defaultValue="original" className="rounded-md border border-border bg-surface p-2.5 text-sm">
-                {["original", "bank_transfer", "wallet", "cash", "other"].map((m) => <option key={m} value={m}>{t(`ret.method_${m}`)}</option>)}
+              <select name="method" defaultValue="store_wallet" className="rounded-md border border-border bg-surface p-2.5 text-sm">
+                {["store_wallet", "original", "bank_transfer", "wallet", "cash", "other"].map((m) => <option key={m} value={m}>{t(`ret.method_${m}`)}</option>)}
               </select>
             </label>
             <label className="flex flex-col gap-1 text-sm font-bold text-text">

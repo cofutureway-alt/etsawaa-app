@@ -22,6 +22,8 @@ export function OrderSummary({
   onCouponInput,
   onApplyCoupon,
   quotePending,
+  walletPart = 0,
+  walletRemainder = 0,
 }: {
   lang: string;
   groups: VendorGroup[];
@@ -32,6 +34,9 @@ export function OrderSummary({
   onApplyCoupon: () => void;
   /** true while a live re-quote is in flight (Apply disabled) */
   quotePending: boolean;
+  /** piastres from the wallet balance, and what is still to pay */
+  walletPart?: number;
+  walletRemainder?: number;
 }) {
   const { t, i18n } = useTranslation();
   const money = (p: number) => formatMoney(i18n.language, p);
@@ -125,6 +130,18 @@ export function OrderSummary({
             <dt className="text-sm font-extrabold text-text">{t("cart.total")}</dt>
             <dd className="text-base font-extrabold text-text">{money(totals?.total_piastres ?? 0)}</dd>
           </div>
+          {walletPart > 0 ? (
+            <>
+              <div className="flex justify-between">
+                <dt className="text-text-muted">{t("checkout.pay_wallet")}</dt>
+                <dd className="font-bold text-success">−{money(walletPart)}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="font-bold text-text">{t("walletCheckout.remaining")}</dt>
+                <dd className="font-extrabold text-text">{money(walletRemainder)}</dd>
+              </div>
+            </>
+          ) : null}
         </dl>
         <p className="mt-2 text-2xs text-text-faint">{t("checkout.totalServerSide")}</p>
       </div>

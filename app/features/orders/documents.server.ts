@@ -167,9 +167,17 @@ function paymentStatus(order: OrderRow, lang: "ar" | "en"): string {
       ? (lang === "ar" ? "الدفع عند الاستلام — محصّل" : "COD — collected")
       : (lang === "ar" ? "الدفع عند الاستلام — غير محصّل" : "COD — pending");
   }
+  if (order.payment_method === "wallet") {
+    return lang === "ar" ? "مدفوع من المحفظة" : "Paid from wallet";
+  }
   return order.payment_status === "paid"
     ? (lang === "ar" ? "مدفوع (بطاقة/محفظة)" : "Paid (card/wallet)")
     : (lang === "ar" ? "غير مدفوع" : "Unpaid");
+}
+
+/** What the courier still collects: the total minus the wallet part. */
+function cashDue(order: OrderRow): number {
+  return Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0));
 }
 
 export interface DocInput {
@@ -265,7 +273,7 @@ export function renderAdminInvoice(input: DocInput): string {
       <div style="text-align:${ar ? "left" : "right"};font-size:12px;">
         <p><strong>${L.no}:</strong> <span class="num">${esc(order.number)}</span></p>
         <p><strong>${L.date}:</strong> <span class="num" dir="ltr">${docDate(order.created_at)}</span></p>
-        <p><strong>${L.pay}:</strong> ${order.payment_method === "cod" ? L.payCod : L.payCard}${L.paid ? L.payPaid : L.payUnpaid}</p>
+        <p><strong>${L.pay}:</strong> ${order.payment_method === "cod" ? L.payCod : order.payment_method === "wallet" ? (ar ? "محفظة العميل" : "Customer wallet") : L.payCard}${L.paid ? L.payPaid : L.payUnpaid}</p>
       </div>
     </div>
     <p style="margin:12px 0 2px;font-size:18px;font-weight:900;">${L.invoice}</p>
@@ -278,6 +286,8 @@ export function renderAdminInvoice(input: DocInput): string {
         ${order.discount_piastres > 0 ? `<tr><td>${L.discount}${order.coupon_code ? ` (${esc(order.coupon_code)})` : ""}</td><td class="num">−${money(order.discount_piastres, lang)}</td></tr>` : ""}
         <tr><td>${L.shipping}</td><td class="num">${money(order.shipping_fee_piastres, lang)}</td></tr>
         <tr><td class="grand">${L.grand}</td><td class="num grand">${money(order.total_piastres, lang)}</td></tr>
+        ${(order.wallet_paid_piastres ?? 0) > 0 ? `<tr><td>${ar ? "مدفوع من المحفظة" : "Paid from wallet"}</td><td class="num">${money(order.wallet_paid_piastres ?? 0, lang)}</td></tr>
+        <tr><td>${ar ? "المتبقي" : "Due"}</td><td class="num">${money(cashDue(order), lang)}</td></tr>` : ""}
       </tbody>
     </table>
     <p class="copy-note">${L.copyNote}</p>${footer(lang, docSettings)}
@@ -307,6 +317,7 @@ export async function renderCarrierLabel(input: DocInput): Promise<string> {
     shipping: ar ? "الشحن" : "Shipping",
     cod: ar ? "المطلوب تحصيله (COD)" : "COD amount",
     only: ar ? "فقط لا غير" : "only",
+    wallet: ar ? "مدفوع من المحفظة" : "Paid from wallet",
     missingData: ar ? "لا يمكن طباعة بطاقة الشحن: بيانات المستلم أو العنوان ناقصة" : "Cannot print the carrier label: recipient phone or address is missing",
     codOnly: ar ? "COD" : "COD",
   };
@@ -349,8 +360,9 @@ export async function renderCarrierLabel(input: DocInput): Promise<string> {
         <tbody>
           <tr><td>${L.products}</td><td class="num">${money(order.subtotal_piastres, lang)}</td></tr>
           <tr><td>${L.shipping}</td><td class="num">${money(order.shipping_fee_piastres, lang)}</td></tr>
-          ${order.payment_method === "cod" ? `<tr><td class="grand">${L.cod}</td><td class="num grand">${money(order.total_piastres, lang)} ${L.only}</td></tr>`
+          ${order.payment_method === "cod" ? `<tr><td class="grand">${L.cod}</td><td class="num grand">${money(cashDue(order), lang)} ${L.only}</td></tr>`
             : `<tr><td>${L.cod}</td><td class="num">${L.codOnly} — 0.00</td></tr>`}
+          ${(order.wallet_paid_piastres ?? 0) > 0 ? `<tr><td>${L.wallet}</td><td class="num">${money(order.wallet_paid_piastres ?? 0, lang)}</td></tr>` : ""}
         </tbody>
       </table>
     </div>

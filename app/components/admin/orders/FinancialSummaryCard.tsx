@@ -42,6 +42,20 @@ export function FinancialSummaryCard({
           <dt className="font-black text-text">{t("cart.total")}</dt>
           <dd className="font-black font-mono text-action text-base">{money(order.total_piastres)}</dd>
         </div>
+        {(order.wallet_paid_piastres ?? 0) > 0 ? (
+          <>
+            <div className="flex justify-between">
+              <dt className="text-text-muted">{t("checkout.pay_wallet")}</dt>
+              <dd className="font-bold font-mono text-success">−{money(order.wallet_paid_piastres ?? 0)}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="font-bold text-text">{t("order.dueNow")}</dt>
+              <dd className="font-bold font-mono text-text">
+                {money(Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0)))}
+              </dd>
+            </div>
+          </>
+        ) : null}
       </dl>
 
       <div className="rounded-lg border border-border/60 bg-surface-tint/30 p-3 space-y-1.5">
@@ -55,7 +69,7 @@ export function FinancialSummaryCard({
             {t("order.paymentMethod")}:
           </span>
           <span className="font-bold text-text">
-            {order.payment_method === "cod" ? t("checkout.pay_cod") : t("checkout.pay_kashier")}
+            {order.payment_method === "cod" ? t("checkout.pay_cod") : order.payment_method === "wallet" ? t("checkout.pay_wallet") : t("checkout.pay_kashier")}
           </span>
         </div>
         <div className="flex items-center justify-between text-xs">

@@ -59,6 +59,35 @@ The Terms (v2.0) were imported from the two uploaded `.docx` files: 22 sections 
 
 ---
 
+## 1a. Customer wallet (phase A)
+
+The site keeps money for a customer in two separate balances (`customer_wallets`). The ledger (`customer_wallet_transactions`) is the source of truth: the two balance columns move only from the trigger that applies each ledger row, and a `>= 0` check makes overspending impossible. Every movement is a security-definer function that locks the rows it reads and carries a unique reference, so a retry is harmless.
+
+- **Refund balance (your own money).** Refunds credited to the wallet land here, and it never expires.
+- **Gift balance.** An admin grants each gift with its own expiry date. There is no global setting. A gift can also be cancelled by the admin, which removes what is left of it right away.
+- **No withdrawal.** The balance is spent on the site only.
+
+**At checkout** (`/checkout`):
+- The "use wallet balance" block appears only when the balance is above zero. It shows the available amount, split into the refund part and the gift part with the nearest expiry.
+- The customer takes the whole balance or types a smaller amount. `fn_create_order` re-caps it server-side to `least(requested, available, order total)`, so a forged request cannot overspend.
+- **Spending order:** the gift lots first, earliest expiry first, then the refund balance (`fn_wallet_spend`). The lot split is kept in the payment row's `meta.lots`.
+- **If the wallet covers the whole total:** the payment method becomes `wallet`, the order is paid at once, and it takes the same status a confirmed card payment gives it. No card or cash step is needed.
+- **Otherwise** the customer pays the remainder by card (Kashier) or cash on delivery. The Kashier session amount and `fn_confirm_payment` both compare against `total − wallet_paid_piastres`, and the COD cap applies to the remainder as well. Order documents and the admin/vendor order pages show "paid from wallet" and the amount still due.
+
+**Expiry.** A daily job (`fn_wallet_expire_gifts`, pg_cron) warns the customer three days before a gift expires, then posts `gift_expiry` for whatever is left once the date passes.
+
+**Cancellation.** When an order is cancelled by the customer (`fn_cancel_order`) or by an admin (`fn_cancel_order_admin`):
+- **The wallet part always goes straight back to the wallet** (`fn_wallet_restore`): each `order_payment` row is reversed once, the gift money returns to the same lots, and a lot already past its date expires again at once.
+- **The card part already paid** opens a `refund_requests` row with `source = 'cancel'`, status `approved`, logistics `not_required`, and the card amount as `refund_total_piastres`. It shows in `/admin/refunds` under "approved" with the «طلب ملغى» badge, and the admin then chooses:
+  - **store wallet balance** (`store_wallet`): the amount is credited to the refund balance as `refund_credit`, or `cancel_credit` for a cancelled order, with reference `refund:<request id>`; or
+  - any other method, recorded as today.
+
+**Screens.** `/account/wallet` (added to the account nav) shows the balances, the active gift lots and the ledger with a link to each order. `/admin/customer-wallets` (next to refunds, gated by `refunds.view`) shows the totals the platform owes customers and a searchable list; each customer page has the balances, the gift lots and the ledger plus the adjust, grant-gift and cancel-gift dialogs. Notifications and emails go out for `wallet_credited`, `wallet_debited_admin`, `wallet_gift` and `wallet_gift_expiring`.
+
+Test-mode orders never move wallet money: `fn_wallet_post` skips them, the same rule the seller wallet follows.
+
+---
+
 ## 2. Seller perspective
 
 1. **New order.** The seller sees only their own shipment of the order (`/vendor/orders`), with their items, quantities and payout, and gets a notification.

@@ -19,6 +19,7 @@ import {
   StarIcon,
   TruckIcon,
   UserIcon,
+  WalletIcon,
 } from "~/components/ui/icons";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -52,6 +53,7 @@ export default function AccountLayout({ loaderData }: Route.ComponentProps) {
     { to: `/${lang}/account`, label: t("account.overview"), end: true, Icon: ChartIcon },
     { to: `/${lang}/account/orders`, label: t("account.ordersTab"), end: false, Icon: PackageIcon },
     { to: `/${lang}/account/returns`, label: t("account.returnsTab"), end: false, Icon: RotateIcon },
+    { to: `/${lang}/account/wallet`, label: t("wallet.title"), end: false, Icon: WalletIcon },
     { to: `/${lang}/account/addresses`, label: t("account.addressesTab"), end: false, Icon: TruckIcon },
     { to: `/${lang}/account/reviews`, label: t("account.reviewsTab"), end: false, Icon: StarIcon },
     { to: `/${lang}/account/wishlist`, label: t("account.wishlistTab"), end: false, Icon: HeartIcon },

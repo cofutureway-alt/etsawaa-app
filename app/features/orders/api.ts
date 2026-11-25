@@ -11,8 +11,8 @@ export interface OrderRow {
   id: string;
   number: string;
   status: "pending_payment" | "processing" | "on_hold" | "completed" | "cancelled";
-  payment_method: "kashier" | "cod";
-  payment_status: "unpaid" | "paid" | "cod_pending" | "cod_collected";
+  payment_method: "kashier" | "cod" | "wallet";
+  payment_status: "unpaid" | "paid" | "cod_pending" | "cod_collected" | "partially_refunded" | "refunded";
   /** Kashier mode — "test" orders are sandbox payments kept out of wallets and billing */
   payment_mode?: "live" | "test";
   email: string;
@@ -28,6 +28,8 @@ export interface OrderRow {
   discount_piastres: number;
   shipping_fee_piastres: number;
   total_piastres: number;
+  /** part of the total paid from the customer wallet (phase A) */
+  wallet_paid_piastres?: number;
   coupon_code: string | null;
   delivered_at: string | null;
   cancel_reason: string | null;

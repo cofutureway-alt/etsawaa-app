@@ -357,7 +357,9 @@ export default function AdminOrdersPage({ loaderData }: Route.ComponentProps) {
                           <span className="font-bold text-xs text-text">
                             {o.payment_method === "cod"
                               ? t("checkout.pay_cod")
-                              : t("checkout.pay_kashier")}
+                              : o.payment_method === "wallet"
+                                ? t("checkout.pay_wallet")
+                                : t("checkout.pay_kashier")}
                           </span>
                           <span
                             className={`text-2xs font-semibold ${

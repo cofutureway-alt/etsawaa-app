@@ -112,7 +112,8 @@ export async function action({ request, params }: Route.ActionArgs) {
     const session = await startKashierPayment(admin, "order", {
       mode,
       orderNumber: order.number,
-      totalPiastres: order.total_piastres,
+      // the card covers only what the wallet did not pay
+      totalPiastres: Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0)),
       lang: lang === "en" ? "en" : "ar",
       siteUrl: getSiteUrl(request.url),
       customer: { email: viewer.user.email ?? "", reference: viewer.user.id },
@@ -317,9 +318,27 @@ export default function OrderPage({ loaderData }: Route.ComponentProps) {
             <dt className="font-extrabold text-text">{t("cart.total")}</dt>
             <dd className="text-base font-extrabold text-text">{money(order.total_piastres)}</dd>
           </div>
+          {(order.wallet_paid_piastres ?? 0) > 0 ? (
+            <>
+              <div className="flex justify-between">
+                <dt className="text-text-muted">{t("checkout.pay_wallet")}</dt>
+                <dd className="font-bold text-success">−{money(order.wallet_paid_piastres ?? 0)}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-text-muted">{t("order.dueNow")}</dt>
+                <dd className="font-bold text-text">{money(Math.max(0, order.total_piastres - (order.wallet_paid_piastres ?? 0)))}</dd>
+              </div>
+            </>
+          ) : null}
           <div className="flex justify-between">
             <dt className="text-text-muted">{t("order.paymentMethod")}</dt>
-            <dd className="font-bold text-text">{order.payment_method === "cod" ? t("checkout.pay_cod") : t("checkout.pay_kashier")}</dd>
+            <dd className="font-bold text-text">
+              {order.payment_method === "cod"
+                ? t("checkout.pay_cod")
+                : order.payment_method === "wallet"
+                  ? t("checkout.pay_wallet")
+                  : t("checkout.pay_kashier")}
+            </dd>
           </div>
         </dl>
       </section>

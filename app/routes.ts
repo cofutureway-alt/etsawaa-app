@@ -78,6 +78,8 @@ export default [
         route("orders/:number", "routes/account/order-detail.tsx"),
         route("orders/:number/return", "routes/account/return-new.tsx"),
         route("returns", "routes/account/returns.tsx"),
+        // phase A — customer wallet (refund + gift balance)
+        route("wallet", "routes/account/wallet.tsx"),
         route("addresses", "routes/account/addresses.tsx"),
         route("reviews", "routes/account/reviews.tsx"),
         route("wishlist", "routes/account/wishlist.tsx"),
@@ -156,6 +158,9 @@ export default [
       route("withdrawals", "routes/admin/withdrawals.tsx"),
       route("reports", "routes/admin/reports.tsx"),
       route("refunds", "routes/admin/refunds.tsx"),
+      // phase A — customer wallets (balances, gifts, ledger)
+      route("customer-wallets", "routes/admin/customer-wallets.tsx"),
+      route("customer-wallets/:id", "routes/admin/customer-wallets_.$id.tsx", { id: "admin-customer-wallet" }),
       route("coupons", "routes/admin/coupons.tsx"),
       route("reviews", "routes/admin/reviews.tsx"),
       route("penalties", "routes/admin/penalties.tsx"),

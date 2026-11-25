@@ -34,6 +34,7 @@ export const ADMIN_NAV: readonly AdminNavGroup[] = [
   { label: "adminNav.group.orders", items: [
     { path: "orders", label: "adminNav.orders", icon: "list", perms: ["orders.view"] },
     { path: "refunds", label: "rf.title", icon: "rotate", perms: ["refunds.view"] },
+    { path: "customer-wallets", label: "cw.title", icon: "wallet", perms: ["refunds.view"] },
     { path: "shipping", label: "adminNav.shipping", icon: "truck", perms: ["shipping.manage"] },
     { path: "packaging/orders", label: "pkg.opsTitle", icon: "package", perms: ["packaging.view"] },
   ] },

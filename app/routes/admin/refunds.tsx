@@ -208,6 +208,7 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                   {t(`rfund.status_${r.status}`)}
                 </Badge>
                 {r.source === "admin" ? <Badge tone="info">{t("ret.source_admin")}</Badge> : null}
+                {r.source === "cancel" ? <Badge tone="warning">{t("rf.sourceCancel")}</Badge> : null}
                 {r.status === "approved" ? <Badge tone={r.logistics_status === "awaiting_return" ? "warning" : "neutral"}>{t(`ret.log_${r.logistics_status}`)}</Badge> : null}
                 {r.status === "approved" || r.status === "refunded" ? <span className="num text-sm font-black text-action">{money(r.refund_total_piastres)}</span> : null}
                 <span className="text-xs text-text-muted" dir="ltr">{r.created_at.slice(0, 10)}</span>
@@ -293,8 +294,8 @@ export default function AdminRefunds({ loaderData }: Route.ComponentProps) {
                     <input type="hidden" name="intent" value="execute" />
                     <input type="hidden" name="request_id" value={r.id} />
                     <label htmlFor={`m-${r.id}`} className="sr-only">{t("ret.method")}</label>
-                    <select id={`m-${r.id}`} name="method" defaultValue="original" className="rounded-md border border-border bg-surface px-2 py-2 text-sm">
-                      {["original", "bank_transfer", "wallet", "cash", "other"].map((m) => <option key={m} value={m}>{t(`ret.method_${m}`)}</option>)}
+                    <select id={`m-${r.id}`} name="method" defaultValue="store_wallet" className="rounded-md border border-border bg-surface px-2 py-2 text-sm">
+                      {["store_wallet", "original", "bank_transfer", "wallet", "cash", "other"].map((m) => <option key={m} value={m}>{t(`ret.method_${m}`)}</option>)}
                     </select>
                     <input name="reference" dir="ltr" placeholder={t("ret.reference")} className="w-36 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />
                     <input name="note" placeholder={t("rf.executeNote")} className="w-56 rounded-md border border-border bg-surface px-2.5 py-2 text-sm" />

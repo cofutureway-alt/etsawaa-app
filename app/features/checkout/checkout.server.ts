@@ -11,6 +11,14 @@ import { sendOrderEmail } from "~/features/orders/emails.server";
 import { codesAvailable, isPhoneVerified } from "~/lib/messaging/otp.server";
 import { rememberLocale } from "~/lib/locale-preference.server";
 import type { CheckoutAddressRow, CheckoutAreaRow, CheckoutGovernorateRow } from "~/features/checkout/types";
+import type { WalletGiftLot } from "~/features/wallet/split";
+
+/** The wallet snapshot the checkout block renders (fn_my_wallet). */
+export interface WalletSnapshot {
+  refund_piastres: number;
+  gift_piastres: number;
+  gifts: WalletGiftLot[];
+}
 
 /**
  * Server bodies for the checkout route (JOURNEYS §6). Extracted from
@@ -52,18 +60,23 @@ export async function loadCheckoutPage(request: Request, params: { lang?: string
       areas: [] as CheckoutAreaRow[],
       quote: null, kashier: resolveKashierMode(await loadKashierSettings(client), null) !== null, kashierTest: false, attemptKey: "",
       codCap: 500000,
+      wallet: { refund_piastres: 0, gift_piastres: 0, gifts: [] } as WalletSnapshot,
     };
   }
 
   const kashierMode = resolveKashierMode(await loadKashierSettings(client), viewer.profile.role);
-  const [{ data: addresses }, codSettings] = await Promise.all([
+  const [{ data: addresses }, codSettings, walletRes] = await Promise.all([
     client.from("user_addresses")
       .select("id, label, full_name, phone, phone_alternate, governorate_id, area_id, address1, address2, postal_code, is_default, lat, lng, geo_accuracy")
       .eq("user_id", viewer.user.id)
       .order("is_default", { ascending: false })
       .order("created_at"),
     loadCodSettings(client),
+    // the wallet block only appears when there is something to spend
+    client.rpc("fn_my_wallet"),
   ]);
+
+  const wallet = (walletRes.data ?? null) as WalletSnapshot | null;
 
   const url = new URL(request.url);
   const govId = url.searchParams.get("governorate_id");
@@ -86,6 +99,11 @@ export async function loadCheckoutPage(request: Request, params: { lang?: string
     kashierTest: kashierMode === "test",
     attemptKey: crypto.randomUUID(),
     codCap: codSettings.cap,
+    wallet: {
+      refund_piastres: Number(wallet?.refund_piastres ?? 0),
+      gift_piastres: Number(wallet?.gift_piastres ?? 0),
+      gifts: Array.isArray(wallet?.gifts) ? wallet!.gifts : [],
+    } as WalletSnapshot,
   };
 }
 
@@ -121,7 +139,8 @@ export async function checkoutAction(request: Request, params: { lang?: string }
       return data({ ok: false, reason: "terms_required" }, { status: 403 });
     }
     const method = String(form.get("payment_method") ?? "");
-    if (method !== "kashier" && method !== "cod") {
+    // "wallet" = the wallet covers the whole order (fn_create_order verifies it)
+    if (method !== "kashier" && method !== "cod" && method !== "wallet") {
       return data({ ok: false, reason: "bad_payment_method" }, { status: 400 });
     }
     const kashierSettings = await loadKashierSettings(client);
@@ -187,18 +206,29 @@ export async function checkoutAction(request: Request, params: { lang?: string }
 
     const attemptKey = String(form.get("attempt_key") ?? "");
     const couponCode = String(form.get("coupon_code") ?? "").trim();
+    // the wallet part is re-capped server-side inside fn_create_order
+    const walletRequested = Math.max(0, Math.trunc(Number(form.get("wallet_piastres") ?? 0) || 0));
     const { data: res, error } = await client.rpc("fn_create_order", {
       p_payload: {
         attempt_key: attemptKey || null,
         payment_method: method,
         coupon_code: couponCode || null,
+        ...(walletRequested > 0 ? { wallet_piastres: walletRequested } : {}),
         address,
       },
     });
     if (error) return data({ ok: false, reason: "server_error", detail: error.message }, { status: 500 });
-    const r = res as { ok: boolean; reason?: string; number?: string; cap_piastres?: number; names?: string };
+    const r = res as { ok: boolean; reason?: string; number?: string; cap_piastres?: number; names?: string; payment_method?: string };
     if (!r.ok) {
       return data({ ok: false, reason: r.reason ?? "server_error", cap_piastres: r.cap_piastres, names: r.names }, { status: 400 });
+    }
+
+    // the wallet covered the whole order: nothing to charge, go to the order
+    if (r.payment_method === "wallet") {
+      await rememberLocale(client, lang);
+      const walletAdmin = getSupabaseAdminClient();
+      if (walletAdmin) void sendOrderEmail(walletAdmin, r.number!, "order_confirmation", lang).catch(() => undefined);
+      throw redirect(`/${lang}/order/${encodeURIComponent(r.number!)}?placed=1`);
     }
 
     // confirmation email for COD (Kashier's arrives with the webhook)
@@ -211,14 +241,18 @@ export async function checkoutAction(request: Request, params: { lang?: string }
     if (method === "cod") {
       throw redirect(`/${lang}/order/${encodeURIComponent(r.number!)}?placed=1`);
     }
-    // amount must match the created order — read it back
+    // amount must match the created order minus the wallet part — read both back
     const { data: created } = await client
-      .from("orders").select("total_piastres").eq("number", r.number!).maybeSingle();
+      .from("orders").select("total_piastres, wallet_paid_piastres").eq("number", r.number!).maybeSingle();
     const admin = getSupabaseAdminClient();
     if (!created || !admin || !kashierMode) return data({ ok: false, reason: "payment_session_failed" }, { status: 500 });
+    const duePiastres = Math.max(0, created.total_piastres - (created.wallet_paid_piastres ?? 0));
+    if (duePiastres === 0) {
+      throw redirect(`/${lang}/order/${encodeURIComponent(r.number!)}?placed=1`);
+    }
     const session = await startKashierPayment(admin, "order", {
       mode: kashierMode,
-      orderNumber: r.number!, totalPiastres: created.total_piastres,
+      orderNumber: r.number!, totalPiastres: duePiastres,
       lang: lang === "en" ? "en" : "ar", siteUrl: getSiteUrl(request.url),
       customer: { email: viewer.user.email ?? "", reference: viewer.user.id },
       methods: kashierSettings.methods,

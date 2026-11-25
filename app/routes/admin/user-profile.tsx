@@ -404,6 +404,12 @@ export default function AdminUserProfile({ loaderData }: Route.ComponentProps) {
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
+          {!isSeller ? (
+            <a href={`/${lang}/admin/customer-wallets/${encodeURIComponent(profile.id)}`}
+              className="inline-flex items-center gap-2 rounded-md border border-action px-5 py-2.5 text-sm font-bold text-action hover:bg-surface-tint">
+              {t("cw.openWallet")}
+            </a>
+          ) : null}
           {allow.account ? (
             <Button size="sm" onClick={() => setEditing(true)}>{t("users.editAccount")}</Button>
           ) : null}

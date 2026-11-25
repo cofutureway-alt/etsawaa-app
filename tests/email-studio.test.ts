@@ -9,9 +9,10 @@ import { authEmailMessages, authEmailLocale, verifyAuthEmailHook, type AuthEmail
 import { cookieLocale, localeFromRedirect, sameOriginRequest } from "../app/lib/locale-preference.server";
 import { encryptAuthEmail, decryptAuthEmail } from "../app/lib/email/auth-queue.server";
 
-test("all 62 current messages and 7 Auth templates render cleanly in both languages", () => {
-  assert.equal(EMAIL_CATALOG.length, 69);
-  assert.equal(new Set(EMAIL_CATALOG.map((t) => t.key)).size, 69);
+// count grows with the catalogs; the invariant is uniqueness + clean render
+test("every message and Auth template renders cleanly in both languages", () => {
+  assert.ok(EMAIL_CATALOG.length >= 69);
+  assert.equal(new Set(EMAIL_CATALOG.map((t) => t.key)).size, EMAIL_CATALOG.length);
   for (const template of EMAIL_CATALOG) {
     assert.deepEqual(validateContent(template.content, template.variables).ok, true, template.key);
     for (const locale of ["ar", "en"] as const) {

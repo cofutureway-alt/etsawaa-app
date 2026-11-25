@@ -55,6 +55,10 @@ export const MESSAGE_EVENTS: MessageEvent[] = [
   ev("refund_submitted", "customer", "refunds", "استلام طلب الاسترجاع", "Return request received"),
   ev("refund_decided", "customer", "refunds", "قرار طلب الاسترجاع", "Return request decision"),
   ev("refund_executed", "customer", "refunds", "تنفيذ الاسترجاع المالي", "Refund processed"),
+  ev("wallet_credited", "customer", "money", "إضافة رصيد إلى المحفظة", "Wallet balance credited"),
+  ev("wallet_debited_admin", "customer", "money", "خصم رصيد من المحفظة", "Wallet balance deducted"),
+  ev("wallet_gift", "customer", "money", "هدية في المحفظة", "Gift added to the wallet"),
+  ev("wallet_gift_expiring", "customer", "money", "هدية تقترب من الانتهاء", "Gift balance is expiring"),
 
   // ── sellers
   ev("vendor.new_order", "vendor", "orders", "طلب جديد للمتجر", "New order for the store", { defaults: { email: true, whatsapp: true } }),

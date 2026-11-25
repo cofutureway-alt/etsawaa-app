@@ -44,7 +44,7 @@ export function ConfirmStep({
   addressMode: "saved" | "new";
   fullName: string;
   addr1: string;
-  paymentMethod: "kashier" | "cod" | null;
+  paymentMethod: "kashier" | "cod" | "wallet" | null;
   terms: boolean;
   onTermsChange: (checked: boolean) => void;
   /** every gate passed — Place Order is enabled */
