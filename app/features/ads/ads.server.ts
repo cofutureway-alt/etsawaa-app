@@ -65,7 +65,7 @@ export async function getSpotlightStores(client: SupabaseClient, max = 4): Promi
   const ads = await getActiveAds(client, ["store_spotlight"]);
   if (!ads.length) return { stores: [], campaignOf: {} };
   const ids = [...new Set(ads.map((a) => a.vendor_id))];
-  const { data } = await client.from("v_storefront_stores").select(STORE_COLUMNS).in("id", ids).eq("status", "active").eq("is_listable", true);
+  const { data } = await client.from("v_storefront_stores").select(STORE_COLUMNS).in("id", ids).eq("status", "active").eq("in_store_lists", true);
   const stores = pickRandom((data ?? []) as StoreCard[], max);
   const campaignOf: Record<string, string> = {};
   for (const s of stores) { const ad = ads.find((a) => a.vendor_id === s.id); if (ad) campaignOf[s.id] = ad.id; }

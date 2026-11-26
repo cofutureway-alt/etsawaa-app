@@ -60,11 +60,17 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     client.from("vendor_change_requests").select("id, changes, previous, status, reason, created_at, reviewed_at")
       .eq("vendor_id", vendor.id).order("created_at", { ascending: false }).limit(10),
   ]);
+  // stores of admins and staff stay off the home and stores pages until listed
+  const team = viewer.profile.role === "admin" || viewer.profile.role === "staff";
+  const teamRow = team
+    ? (await client.from("vendors").select("team_listed, team_products_hidden").eq("id", vendor.id).maybeSingle()).data
+    : null;
   const history = (requests.data ?? []) as ChangeRequest[];
   const pending = history.find((r) => r.status === "pending") ?? null;
   return data({
     lang,
     uid: viewer.user.id,
+    team: team ? { listed: Boolean(teamRow?.team_listed), hideProducts: Boolean(teamRow?.team_products_hidden) } : null,
     // the form edits the pending values, so a new submission builds on them
     vendor: pending ? { ...vendor, ...(pending.changes as Partial<typeof vendor>) } : vendor,
     reviewed: vendor.status === "active",
@@ -79,7 +85,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   });
 }
 
-type ActionData = { ok: boolean; error?: string; pending?: boolean; unchanged?: boolean };
+type ActionData = { ok: boolean; error?: string; pending?: boolean; unchanged?: boolean; team?: boolean };
 
 export async function action({ request, params }: Route.ActionArgs) {
   const lang = requireLang(params);
@@ -90,6 +96,15 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (!vendor) return data<ActionData>({ ok: false, error: "no_store" }, { status: 400 });
 
   const form = await request.formData();
+  if (form.get("intent") === "team_listing") {
+    const { data: res, error } = await client.rpc("fn_vendor_set_team_listing", {
+      p_listed: form.get("listed") === "on",
+      p_hide_products: form.get("hide_products") === "on",
+    });
+    const r = res as { ok: boolean; reason?: string } | null;
+    if (error || !r?.ok) return data<ActionData>({ ok: false, error: r?.reason ?? "server_error" }, { status: 400 });
+    return { ok: true, team: true };
+  }
   if (form.get("intent") === "cancel") {
     const { error } = await client.rpc("fn_vendor_cancel_store_change");
     return error ? data<ActionData>({ ok: false, error: error.message }, { status: 400 }) : { ok: true, unchanged: true };
@@ -168,7 +183,8 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
     const stamp = fetcher.data.ok ? "ok" : (fetcher.data.error ?? "err");
     if (lastToast.current === stamp) return;
     lastToast.current = stamp;
-    if (fetcher.data.ok) toast.showToast("success", t(fetcher.data.pending ? "storeChange.sent" : fetcher.data.unchanged ? "storeChange.nothing" : "vendorStore.saved"));
+    if (fetcher.data.ok && fetcher.data.team) toast.showToast("success", t("teamListing.saved"));
+    else if (fetcher.data.ok) toast.showToast("success", t(fetcher.data.pending ? "storeChange.sent" : fetcher.data.unchanged ? "storeChange.nothing" : "vendorStore.saved"));
     else if (fetcher.data.error === "store_suspended") toast.showToast("error", t("verify.suspendedAction"));
     else if (fetcher.data.error === "area_mismatch") toast.showToast("error", t("vendorOnboarding.errors.area_required"));
     else toast.showToast("error", t("errors.generic"));
@@ -204,6 +220,34 @@ export default function VendorStoreSettings({ loaderData }: Route.ComponentProps
           </div>
           <div className="rounded-lg bg-surface p-3"><ChangeDiff changes={loaderData.pending.changes} previous={loaderData.pending.previous} lookups={lookups} /></div>
         </section>
+      ) : null}
+
+      {loaderData.team ? (
+        <Card>
+          <CardBody className="p-5">
+            <fetcher.Form method="post" className="flex flex-col gap-3" key={`${loaderData.team.listed}-${loaderData.team.hideProducts}`}>
+              <input type="hidden" name="intent" value="team_listing" />
+              <div>
+                <h2 className="font-extrabold text-text">{t("teamListing.title")}</h2>
+                <p className="text-sm text-text-muted">{t("teamListing.hint")}</p>
+              </div>
+              <label className="flex items-start gap-2 text-sm text-text">
+                <input type="checkbox" name="listed" defaultChecked={loaderData.team.listed} className="mt-0.5 size-4 accent-[var(--color-action)]" />
+                <span><b>{t("teamListing.listed")}</b><span className="block text-xs text-text-muted">{t("teamListing.listedHint")}</span></span>
+              </label>
+              <label className="flex items-start gap-2 text-sm text-text">
+                <input type="checkbox" name="hide_products" defaultChecked={loaderData.team.hideProducts} className="mt-0.5 size-4 accent-[var(--color-action)]" />
+                <span><b>{t("teamListing.hideProducts")}</b><span className="block text-xs text-text-muted">{t("teamListing.hideProductsHint")}</span></span>
+              </label>
+              <div className="flex justify-end">
+                <Button type="submit" size="sm" loading={fetcher.state !== "idle" && fetcher.formData?.get("intent") === "team_listing"}>
+                  <CheckIcon aria-hidden="true" className="size-4" />
+                  {t("teamListing.save")}
+                </Button>
+              </div>
+            </fetcher.Form>
+          </CardBody>
+        </Card>
       ) : null}
 
       <fetcher.Form method="post" className="flex flex-col gap-4">

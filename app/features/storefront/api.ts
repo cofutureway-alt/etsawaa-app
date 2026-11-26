@@ -440,7 +440,7 @@ export async function getFeaturedStores(client: SupabaseClient, limit = 8): Prom
     .select(STORE_COLUMNS)
     .eq("status", "active")
     .eq("is_featured", true)
-    .eq("is_listable", true)
+    .eq("in_store_lists", true)
     .order("product_count", { ascending: false })
     .limit(limit);
   if (error) throw new Error(error.message);
@@ -448,7 +448,7 @@ export async function getFeaturedStores(client: SupabaseClient, limit = 8): Prom
 }
 
 export async function listStores(client: SupabaseClient, opts: { featuredOnly?: boolean } = {}): Promise<StoreCard[]> {
-  let query = client.from("v_storefront_stores").select(STORE_COLUMNS).eq("status", "active").eq("is_listable", true);
+  let query = client.from("v_storefront_stores").select(STORE_COLUMNS).eq("status", "active").eq("in_store_lists", true);
   if (opts.featuredOnly) query = query.eq("is_featured", true);
   const { data, error } = await query.order("is_featured", { ascending: false }).order("product_count", { ascending: false });
   if (error) throw new Error(error.message);
