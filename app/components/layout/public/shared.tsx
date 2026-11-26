@@ -73,9 +73,6 @@ export function IconLink({
   );
 }
 
-/** The team's webmail (mail.etsawaa.com). The mail server's admin site (dmail) is never linked. */
-export const TEAM_MAIL_URL = "https://mail.etsawaa.com";
-
 /** Company mail is for the team only: administrators and staff (supervisors are staff roles). */
 export function canOpenTeamMail(role: string | null | undefined): boolean {
   return role === "admin" || role === "staff";

@@ -4,7 +4,6 @@ import type { RootLoaderData } from "~/features/settings/api";
 import { useTranslation } from "react-i18next";
 import { Drawer } from "~/components/ui";
 import { CheckIcon, ChevronDownIcon, GridIcon, HomeIcon, MailIcon, MenuIcon, PanelLeftIcon, StoreIcon, UsersIcon, XIcon } from "~/components/ui/icons";
-import { TEAM_MAIL_URL } from "./public/shared";
 import { SidebarNav, type SidebarGroup } from "./SidebarNav";
 
 /** One dashboard the signed-in user can open (label stays an i18n key). */
@@ -95,9 +94,9 @@ function PanelSwitcher({ panels, onNavigate }: { panels: PanelLink[]; onNavigate
           </li>
         ) : null}
         {/* company mail: the team only (same rule as the staff portal) */}
-        {isTeam ? (
+        {isTeam && root?.teamMailUrl ? (
           <li>
-            <a href={TEAM_MAIL_URL} target="_blank" rel="noopener noreferrer"
+            <a href={root.teamMailUrl} target="_blank" rel="noopener noreferrer"
               className="flex min-h-10 items-center gap-2 rounded-sm px-2.5 py-2 text-xs font-bold text-side-text transition-colors duration-150 hover:bg-white/10 hover:text-white">
               <MailIcon aria-hidden="true" className="size-3.5 shrink-0" />
               <span className="truncate">{t("nav.teamMail")}</span>

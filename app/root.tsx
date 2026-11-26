@@ -1,3 +1,4 @@
+import { getViewer } from "~/lib/auth/guards";
 import { useEffect } from "react";
 import {
   isRouteErrorResponse,
@@ -57,9 +58,17 @@ export async function loader({ request }: Route.LoaderArgs) {
   if (typeof window === "undefined") void import("~/lib/email/auth-queue.server").then((m) => m.ensureAuthEmailWorker()).catch(() => undefined);
   // unused uploads older than 30 days are removed daily (media retention)
   if (typeof window === "undefined") void import("~/lib/media-cleanup.server").then((m) => m.ensureMediaCleanupWorker()).catch(() => undefined);
+  // the staff portal address goes to the team only (admins and staff, supervisors included);
+  // everyone else never gets it, not even in the page data
+  // the same rule for the team webmail (mail.etsawaa.com); the mail admin site (dmail) is never linked
+  const role = client ? (await getViewer(client).catch(() => null))?.viewer?.profile.role : null;
+  const team = role === "admin" || role === "staff";
+  const site = team ? settings.site : { ...settings.site, portal_url: "", portal_label_ar: "", portal_label_en: "" };
+  const teamMailUrl = team ? "https://mail.etsawaa.com" : "";
   return data({
     locale,
-    site: settings.site,
+    site,
+    teamMailUrl,
     design: settings.design,
     social: settings.social,
     contact: settings.contact,

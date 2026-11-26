@@ -82,6 +82,8 @@ export interface RootLoaderData {
   social: SocialLinks;
   contact: ContactChannels;
   dbConnected: boolean;
+  /** team webmail address: set for admins and staff only, empty for everyone else */
+  teamMailUrl?: string;
 }
 
 function parseSiteGeneral(raw: unknown): SiteGeneral {

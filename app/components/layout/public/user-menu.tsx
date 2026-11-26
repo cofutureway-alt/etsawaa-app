@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { MediaImg } from "~/components/catalog/MediaImg";
 import { ChartIcon, MailIcon, StoreIcon, UserIcon, UsersIcon } from "~/components/ui/icons";
 import type { RootLoaderData } from "~/features/settings/api";
-import { canOpenTeamMail, panelLinks, TEAM_MAIL_URL } from "./shared";
+import { canOpenTeamMail, panelLinks } from "./shared";
 
 export function UserMenu({ lang, name, avatarUrl, role }: { lang: string; name: string; avatarUrl: string | null; role?: string }) {
   const { t } = useTranslation();
@@ -28,7 +28,9 @@ export function UserMenu({ lang, name, avatarUrl, role }: { lang: string; name: 
   }, [open]);
   const panels = panelLinks(lang, role);
   // the staff portal (external site, admin → settings) — for the team only
-  const site = (useRouteLoaderData("root") as RootLoaderData | undefined)?.site;
+  const rootData = useRouteLoaderData("root") as RootLoaderData | undefined;
+  const site = rootData?.site;
+  const teamMailUrl = rootData?.teamMailUrl;
   const portal = (role === "admin" || role === "staff") && site?.portal_url
     ? { url: site.portal_url, label: lang === "en" ? site.portal_label_en : site.portal_label_ar }
     : null;
@@ -83,8 +85,8 @@ export function UserMenu({ lang, name, avatarUrl, role }: { lang: string; name: 
                   <span aria-hidden="true" className="text-xs opacity-70">↗</span>
                 </a>
               ) : null}
-              {canOpenTeamMail(role) ? (
-                <a href={TEAM_MAIL_URL} target="_blank" rel="noopener noreferrer" role="menuitem" onClick={() => setOpen(false)}
+              {canOpenTeamMail(role) && teamMailUrl ? (
+                <a href={teamMailUrl} target="_blank" rel="noopener noreferrer" role="menuitem" onClick={() => setOpen(false)}
                   className="flex min-h-11 items-center gap-2.5 rounded-md bg-surface-tint px-3 text-sm font-extrabold text-action hover:bg-action hover:text-on-action">
                   <MailIcon aria-hidden="true" className="size-4 shrink-0" />
                   <span className="min-w-0 flex-1 truncate">{t("nav.teamMail")}</span>
